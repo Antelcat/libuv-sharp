@@ -46,7 +46,7 @@ public class Program
                 CurrentWorkingDirectory = @".",
                 File =
                     @"D:\Shared\WorkSpace\Git\ThirdPart\Tubumu.Mediasoup\src\Tubumu.Meeting.Web\mediasoup-worker.exe",
-                Streams = new List<UVStream>(){ pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
+                Streams = new List<UVStream> { pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
             }, Console.WriteLine);
         }
         catch(Exception e)
