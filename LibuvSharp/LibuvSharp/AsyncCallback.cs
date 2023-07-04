@@ -1,12 +1,10 @@
-﻿namespace LibuvSharp
+﻿namespace LibuvSharp;
+
+public class AsyncCallback : AsyncWatcher<Action>
 {
-	public class AsyncCallback : AsyncWatcher<Action>
+	public AsyncCallback(Loop loop)
+		: base(loop)
 	{
-		public AsyncCallback(Loop loop)
-			: base(loop)
-		{
-			Callback += (callback) => callback();
-		}
+		Callback += callback => callback();
 	}
 }
-

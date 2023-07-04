@@ -1,8 +1,6 @@
-﻿namespace LibuvSharp
-{
-	public interface ILocalAddress<T>
-	{
-		T LocalAddress { get; }
-	}
-}
+﻿namespace LibuvSharp;
 
+public interface ILocalAddress<out T>
+{
+	T LocalAddress { get; }
+}

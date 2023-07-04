@@ -1,8 +1,6 @@
-namespace LibuvSharp
-{
-	struct uv_pipe_t
-	{
-		public int rpc;
-	}
-}
+namespace LibuvSharp;
 
+struct uv_pipe_t
+{
+	public int rpc;
+}

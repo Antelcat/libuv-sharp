@@ -1,65 +1,63 @@
 using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+internal unsafe class FileSystemRequest : PermaRequest
 {
-	internal unsafe class FileSystemRequest : PermaRequest
+	private static readonly int Size = UV.Sizeof(RequestType.UV_FS);
+
+	protected uv_fs_t *fsrequest;
+
+	public string Path { get; private set; }
+
+	public FileSystemRequest()
+		: base(Size)
 	{
-		private static readonly int Size = UV.Sizeof(RequestType.UV_FS);
+		fsrequest = (uv_fs_t *)(Handle.ToInt64() + UV.Sizeof(RequestType.UV_REQ));
+	}
 
-		protected uv_fs_t *fsrequest;
+	public FileSystemRequest(string path)
+		: this()
+	{
+		Path = path;
+	}
 
-		public string Path { get; private set; }
+	public Action<Exception> Callback { get; set; }
 
-		public FileSystemRequest()
-			: base(Size)
-		{
-			fsrequest = (uv_fs_t *)(Handle.ToInt64() + UV.Sizeof(RequestType.UV_REQ));
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	private static extern void uv_fs_req_cleanup(IntPtr req);
+
+	public override void Dispose(bool disposing)
+	{
+		uv_fs_req_cleanup(Handle);
+		base.Dispose(disposing);
+	}
+
+	public IntPtr Result => fsrequest->result;
+
+	public IntPtr Pointer => fsrequest->ptr;
+
+	public uv_stat_t stat => fsrequest->buf;
+
+	public void End(IntPtr ptr)
+	{
+		Exception e = null;
+		var r = Result.ToInt32();
+		if (r < 0) {
+			e = Ensure.Map(r, string.IsNullOrEmpty(Path) ? null : Path);
 		}
 
-		public FileSystemRequest(string path)
-			: this()
-		{
-			Path = path;
+		if (Callback != null) {
+			Callback(e);
 		}
 
-		public Action<Exception> Callback { get; set; }
+		Dispose();
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		private static extern void uv_fs_req_cleanup(IntPtr req);
+	public static NativeMethods.uv_fs_cb CallbackDelegate = StaticEnd;
 
-		public override void Dispose(bool disposing)
-		{
-			uv_fs_req_cleanup(Handle);
-			base.Dispose(disposing);
-		}
-
-		public IntPtr Result => fsrequest->result;
-
-        public IntPtr Pointer => fsrequest->ptr;
-
-        public uv_stat_t stat => fsrequest->buf;
-
-        public void End(IntPtr ptr)
-		{
-			Exception e = null;
-			var r = Result.ToInt32();
-			if (r < 0) {
-				e = Ensure.Map(r, (string.IsNullOrEmpty(Path) ? null : Path));
-			}
-
-			if (Callback != null) {
-				Callback(e);
-			}
-
-			Dispose();
-		}
-
-		public static NativeMethods.uv_fs_cb CallbackDelegate = StaticEnd;
-
-		public static void StaticEnd(IntPtr ptr)
-		{
-			PermaRequest.GetObject<FileSystemRequest>(ptr).End(ptr);
-		}
+	public static void StaticEnd(IntPtr ptr)
+	{
+		PermaRequest.GetObject<FileSystemRequest>(ptr)?.End(ptr);
 	}
 }
-

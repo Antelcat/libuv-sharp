@@ -1,62 +1,60 @@
 using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public enum PollEvent : int
 {
-	public enum PollEvent : int
+	Read = 1,
+	Write = 2,
+}
+
+public class Poll : Handle
+{
+	delegate void poll_callback(IntPtr handle, int status, int events);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_poll_init(IntPtr loop, IntPtr handle, int fd);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_poll_start(IntPtr handle, int events, poll_callback callback);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_poll_stop(IntPtr handle);
+
+	public Poll(int fd)
+		: this(Loop.Constructor, fd)
 	{
-		Read = 1,
-		Write = 2,
 	}
 
-	public class Poll : Handle
+	public Poll(Loop loop, int fd)
+		: base(loop, HandleType.UV_POLL, uv_poll_init, fd)
 	{
-		delegate void poll_callback(IntPtr handle, int status, int events);
+		poll_cb += pollcallback;
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_poll_init(IntPtr loop, IntPtr handle, int fd);
+	public void Start(PollEvent events)
+	{
+		Invoke(uv_poll_start, (int)events, poll_cb);
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_poll_start(IntPtr handle, int events, poll_callback callback);
+	public void Stop()
+	{
+		Invoke(uv_poll_stop);
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_poll_stop(IntPtr handle);
+	event poll_callback poll_cb;
 
-		public Poll(int fd)
-			: this(Loop.Constructor, fd)
-		{
-		}
+	void pollcallback(IntPtr handle, int status, int events)
+	{
+		OnEvent((PollEvent)events);
+	}
 
-		public Poll(Loop loop, int fd)
-			: base(loop, HandleType.UV_POLL, uv_poll_init, fd)
-		{
-			poll_cb += pollcallback;
-		}
+	public event Action<PollEvent>? Event;
 
-		public void Start(PollEvent events)
-		{
-			Invoke(uv_poll_start, (int)events, poll_cb);
-		}
-
-		public void Stop()
-		{
-			Invoke(uv_poll_stop);
-		}
-
-		event poll_callback poll_cb;
-
-		void pollcallback(IntPtr handle, int status, int events)
-		{
-			OnEvent((PollEvent)events);
-		}
-
-		public event Action<PollEvent>? Event;
-
-		void OnEvent(PollEvent events)
-		{
-			if (Event != null) {
-				Event(events);
-			}
+	void OnEvent(PollEvent events)
+	{
+		if (Event != null) {
+			Event(events);
 		}
 	}
 }
-

@@ -1,11 +1,9 @@
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public static class IFileDescriptorExtensions
 {
-	public static class IFileDescriptorExtensions
+	public static void Open(this IFileDescriptor fileDescriptor, int fd)
 	{
-		public static void Open(this IFileDescriptor fileDescriptor, int fd)
-		{
-			fileDescriptor.Open((IntPtr)fd);
-		}
+		fileDescriptor.Open((IntPtr)fd);
 	}
 }
-

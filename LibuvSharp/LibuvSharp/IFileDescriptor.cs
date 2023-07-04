@@ -1,9 +1,7 @@
-﻿namespace LibuvSharp
-{
-	public interface IFileDescriptor
-	{
-		void Open(IntPtr socket);
-		IntPtr FileDescriptor { get; }
-	}
-}
+﻿namespace LibuvSharp;
 
+public interface IFileDescriptor
+{
+	void Open(IntPtr socket);
+	IntPtr FileDescriptor { get; }
+}

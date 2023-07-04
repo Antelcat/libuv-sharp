@@ -1,8 +1,6 @@
-﻿namespace LibuvSharp
-{
-	public interface IReceiveBufferSize
-	{
-		int ReceiveBufferSize { get; set; }
-	}
-}
+﻿namespace LibuvSharp;
 
+public interface IReceiveBufferSize
+{
+	int ReceiveBufferSize { get; set; }
+}

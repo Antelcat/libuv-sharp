@@ -1,15 +1,13 @@
-﻿namespace LibuvSharp
+﻿namespace LibuvSharp;
+
+public class UVDirectoryEntity
 {
-	public class UVDirectoryEntity
+	internal unsafe UVDirectoryEntity(uv_dirent_t entity)
 	{
-		internal unsafe UVDirectoryEntity(uv_dirent_t entity)
-		{
-			Name = new string(entity.name);
-			Type = entity.type;
-		}
-
-		public string Name { get; set; }
-		public UVDirectoryEntityType Type { get; set; }
+		Name = new string(entity.name);
+		Type = entity.type;
 	}
-}
 
+	public string Name { get; set; }
+	public UVDirectoryEntityType Type { get; set; }
+}

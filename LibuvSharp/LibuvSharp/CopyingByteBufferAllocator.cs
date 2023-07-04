@@ -1,37 +1,35 @@
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
 {
-	public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
+	BufferPin pin;
+
+	public byte[] Buffer => pin.Buffer;
+
+	public override int Alloc(int size, out IntPtr ptr)
 	{
-		BufferPin pin;
-
-		public byte[] Buffer => pin.Buffer;
-
-        public override int Alloc(int size, out IntPtr ptr)
-		{
-			if (pin == null) {
-				pin = new BufferPin(size);
-			} else if (pin.Buffer.Length < size) {
-				pin.Dispose();
-				pin = new BufferPin(size);
-			}
-			ptr = pin.Start;
-			return pin.Count.ToInt32();
+		if (pin == null) {
+			pin = new BufferPin(size);
+		} else if (pin.Buffer.Length < size) {
+			pin.Dispose();
+			pin = new BufferPin(size);
 		}
+		ptr = pin.Start;
+		return pin.Count.ToInt32();
+	}
 
-		public override void Dispose(bool disposing)
-		{
-			if (pin != null) {
-				pin.Dispose();
-			}
-			pin = null;
+	public override void Dispose(bool disposing)
+	{
+		if (pin != null) {
+			pin.Dispose();
 		}
+		pin = null;
+	}
 
-		public override ArraySegment<byte> Retrieve(int size)
-		{
-			var ret = new byte[size];
-			Array.Copy(Buffer, 0, ret, 0, size);
-			return new ArraySegment<byte>(ret);
-		}
+	public override ArraySegment<byte> Retrieve(int size)
+	{
+		var ret = new byte[size];
+		Array.Copy(Buffer, 0, ret, 0, size);
+		return new ArraySegment<byte>(ret);
 	}
 }
-

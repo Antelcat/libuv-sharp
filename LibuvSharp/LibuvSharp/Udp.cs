@@ -1,210 +1,207 @@
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpReceiveMessage>, ITrySend<UdpMessage>, IBindable<Udp, IPEndPoint>
 {
-	public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpReceiveMessage>, ITrySend<UdpMessage>, IBindable<Udp, IPEndPoint>
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	delegate void recv_start_callback(IntPtr handle, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_init(IntPtr loop, IntPtr handle);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
+
+	ByteBufferAllocatorBase allocator;
+	public ByteBufferAllocatorBase ByteBufferAllocator {
+		get => allocator ?? Loop.ByteBufferAllocator;
+		set => allocator = value;
+	}
+
+	public Udp()
+		: this(Loop.Constructor)
 	{
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void recv_start_callback(IntPtr handle, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags);
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_init(IntPtr loop, IntPtr handle);
+	public Udp(Loop loop)
+		: base(loop, HandleType.UV_UDP, uv_udp_init)
+	{
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
+	void Bind(IPAddress ipAddress, int port, bool dualstack)
+	{
+		CheckDisposed();
+		UV.Bind(this, uv_udp_bind, uv_udp_bind, ipAddress, port, dualstack);
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
+	public void Bind(int port)
+	{
+		Bind(IPAddress.IPv6Any, port, true);
+	}
 
-		ByteBufferAllocatorBase allocator;
-		public ByteBufferAllocatorBase ByteBufferAllocator {
-			get => allocator ?? Loop.ByteBufferAllocator;
-            set => allocator = value;
-        }
+	public void Bind(IPEndPoint endPoint)
+	{
+		Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
+		Bind(endPoint.Address, endPoint.Port, false);
+	}
 
-		public Udp()
-			: this(Loop.Constructor)
-		{
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr, callback callback);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
+
+	public void Send(UdpMessage message, Action<Exception> callback)
+	{
+		CheckDisposed();
+
+		Ensure.ArgumentNotNull(message.EndPoint, "message EndPoint");
+		Ensure.AddressFamily(message.EndPoint.Address);
+
+		var ipEndPoint = message.EndPoint;
+		var data = message.Payload;
+
+		var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
+		var cpr = new CallbackPermaRequest(RequestType.UV_UDP_SEND);
+		cpr.Callback = (status, cpr2) => {
+			datagchandle.Free();
+			Ensure.Success(status, callback);
+		};
+
+		var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + data.Offset);
+
+		int r;
+		var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
+
+		if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+			var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+			r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
+		} else {
+			var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+			r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
+		}
+		Ensure.Success(r);
+	}
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_recv_start(IntPtr handle, alloc_callback alloc_callback, recv_start_callback callback);
+
+	static recv_start_callback recv_start_cb = recv_callback;
+	static void recv_callback(IntPtr handlePointer, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags)
+	{
+		var handle = FromIntPtr<Udp>(handlePointer);
+		handle.recv_callback(handlePointer, nread, sockaddr, flags);
+	}
+	void recv_callback(IntPtr handle, IntPtr nread, IntPtr sockaddr, ushort flags)
+	{
+		var n = (int)nread;
+
+		if (n == 0) {
+			return;
 		}
 
-		public Udp(Loop loop)
-			: base(loop, HandleType.UV_UDP, uv_udp_init)
-		{
-		}
+		if (Message == null) return;
+		var ep = UV.GetIPEndPoint(sockaddr, true);
 
-		void Bind(IPAddress ipAddress, int port, bool dualstack)
-		{
+		var msg = new UdpReceiveMessage(
+			ep,
+			ByteBufferAllocator.Retrieve(n),
+			(flags & (short)uv_udp_flags.UV_UDP_PARTIAL) > 0
+		);
+
+		Message(msg);
+	}
+
+
+	public void Resume()
+	{
+		CheckDisposed();
+
+		var r = uv_udp_recv_start(NativeHandle, ByteBufferAllocator.AllocCallback, recv_start_cb);
+		Ensure.Success(r);
+	}
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_recv_stop(IntPtr handle);
+
+	public void Pause()
+	{
+		Invoke(uv_udp_recv_stop);
+	}
+
+	public event Action<UdpReceiveMessage> Message;
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_set_ttl(IntPtr handle, int ttl);
+
+	public byte TTL {
+		set => Invoke(uv_udp_set_ttl, (int)value);
+	}
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_set_broadcast(IntPtr handle, int on);
+
+	public bool Broadcast {
+		set => Invoke(uv_udp_set_broadcast, value ? 1 : 0);
+	}
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_set_multicast_ttl(IntPtr handle, int ttl);
+
+	public byte MulticastTTL {
+		set => Invoke(uv_udp_set_multicast_ttl, (int)value);
+	}
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_set_multicast_loop(IntPtr handle, int on);
+
+	public bool MulticastLoop {
+		set => Invoke(uv_udp_set_multicast_loop, value ? 1 : 0);
+	}
+
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_udp_getsockname(IntPtr handle, IntPtr addr, ref int length);
+
+	public IPEndPoint LocalAddress {
+		get {
 			CheckDisposed();
 
-			UV.Bind(this, uv_udp_bind, uv_udp_bind, ipAddress, port, dualstack);
+			return UV.GetSockname(this, uv_udp_getsockname);
 		}
+	}
 
-		public void Bind(int port)
-		{
-			Bind(IPAddress.IPv6Any, port, true);
-		}
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr);
 
-		public void Bind(IPEndPoint endPoint)
-		{
-			Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
-			Bind(endPoint.Address, endPoint.Port, false);
-		}
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr);
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr, callback callback);
+	public unsafe int TrySend(UdpMessage message)
+	{
+		Ensure.ArgumentNotNull(message, nameof(message));
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
+		var data = message.Payload;
+		var ipEndPoint = message.EndPoint;
 
-		public void Send(UdpMessage message, Action<Exception> callback)
-		{
-			CheckDisposed();
-
-			Ensure.ArgumentNotNull(message.EndPoint, "message EndPoint");
-			Ensure.AddressFamily(message.EndPoint.Address);
-
-			var ipEndPoint = message.EndPoint;
-			var data = message.Payload;
-
-			var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
-			var cpr = new CallbackPermaRequest(RequestType.UV_UDP_SEND);
-			cpr.Callback = (status, cpr2) => {
-				datagchandle.Free();
-				Ensure.Success(status, callback);
-			};
-
-			var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + data.Offset);
-
+		fixed (byte* bytePtr = data.Array) {
+			var ptr = (IntPtr)(bytePtr + message.Payload.Offset);
 			int r;
 			var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
 
 			if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
 				var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
-				r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
+				r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
 			} else {
 				var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
-				r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
+				r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
 			}
-			Ensure.Success(r);
-		}
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_recv_start(IntPtr handle, alloc_callback alloc_callback, recv_start_callback callback);
-
-		static recv_start_callback recv_start_cb = recv_callback;
-		static void recv_callback(IntPtr handlePointer, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags)
-		{
-			var handle = FromIntPtr<Udp>(handlePointer);
-			handle.recv_callback(handlePointer, nread, sockaddr, flags);
-		}
-		void recv_callback(IntPtr handle, IntPtr nread, IntPtr sockaddr, ushort flags)
-		{
-			var n = (int)nread;
-
-			if (n == 0) {
-				return;
-			}
-
-            if (Message == null) return;
-            var ep = UV.GetIPEndPoint(sockaddr, true);
-
-            var msg = new UdpReceiveMessage(
-                ep,
-                ByteBufferAllocator.Retrieve(n),
-                (flags & (short)uv_udp_flags.UV_UDP_PARTIAL) > 0
-            );
-
-            Message(msg);
-        }
-
-
-		public void Resume()
-		{
-			CheckDisposed();
-
-			var r = uv_udp_recv_start(NativeHandle, ByteBufferAllocator.AllocCallback, recv_start_cb);
-			Ensure.Success(r);
-		}
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_recv_stop(IntPtr handle);
-
-		public void Pause()
-		{
-			Invoke(uv_udp_recv_stop);
-		}
-
-		public event Action<UdpReceiveMessage> Message;
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_set_ttl(IntPtr handle, int ttl);
-
-		public byte TTL {
-			set => Invoke(uv_udp_set_ttl, (int)value);
-        }
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_set_broadcast(IntPtr handle, int on);
-
-		public bool Broadcast {
-			set => Invoke(uv_udp_set_broadcast, value ? 1 : 0);
-        }
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_set_multicast_ttl(IntPtr handle, int ttl);
-
-		public byte MulticastTTL {
-			set => Invoke(uv_udp_set_multicast_ttl, (int)value);
-        }
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_set_multicast_loop(IntPtr handle, int on);
-
-		public bool MulticastLoop {
-			set => Invoke(uv_udp_set_multicast_loop, value ? 1 : 0);
-        }
-
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_udp_getsockname(IntPtr handle, IntPtr addr, ref int length);
-
-		public IPEndPoint LocalAddress {
-			get {
-				CheckDisposed();
-
-				return UV.GetSockname(this, uv_udp_getsockname);
-			}
-		}
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr);
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr);
-
-		public unsafe int TrySend(UdpMessage message)
-		{
-			Ensure.ArgumentNotNull(message, nameof(message));
-
-			var data = message.Payload;
-			var ipEndPoint = message.EndPoint;
-
-			fixed (byte* bytePtr = data.Array) {
-				var ptr = (IntPtr)(bytePtr + message.Payload.Offset);
-				int r;
-				var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
-
-				if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
-					var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
-					r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
-				} else {
-					var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
-					r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
-				}
-				return r;
-			}
+			return r;
 		}
 	}
 }
-

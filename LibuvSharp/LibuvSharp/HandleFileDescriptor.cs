@@ -1,57 +1,57 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public partial class HandleBase : IFileDescriptor
 {
-	public partial class HandleBase : IFileDescriptor
-	{
-		[DllImport(libuv.Lib, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_fileno_windows(IntPtr handle, out IntPtr fd);
+	[DllImport(libuv.Lib, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_fileno_windows(IntPtr handle, out IntPtr fd);
 
-		[DllImport(libuv.Lib, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_fileno_unix(IntPtr handle, out int fd);
+	[DllImport(libuv.Lib, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_fileno_unix(IntPtr handle, out int fd);
 
-		public IntPtr FileDescriptor {
-			get {
-				if (UV.IsUnix) {
-					int value;
-					uv_fileno_unix(NativeHandle, out value);
-					return (IntPtr)value;
-				} else {
-					IntPtr value;
-					uv_fileno_windows(NativeHandle, out value);
-					return value;
-				}
-			}
-		}
-
-		[DllImport(libuv.Lib, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_tcp_open_unix(IntPtr handle, int sock);
-
-		[DllImport(libuv.Lib, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_tcp_open_windows(IntPtr handle, IntPtr sock);
-
-		[DllImport(libuv.Lib, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_open_unix(IntPtr handle, int sock);
-
-		[DllImport(libuv.Lib, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int uv_udp_open_windows(IntPtr handle, IntPtr sock);
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_pipe_open(IntPtr handle, int fd);
-
-		public int Open(Func<IntPtr, int, int> unix, Func<IntPtr, IntPtr, int> windows, IntPtr handle, IntPtr fileDescriptor)
-		{
+	public IntPtr FileDescriptor {
+		get {
 			if (UV.IsUnix) {
-				return unix(handle, fileDescriptor.ToInt32());
+				int value;
+				uv_fileno_unix(NativeHandle, out value);
+				return (IntPtr)value;
 			} else {
-				return windows(handle, fileDescriptor);
+				IntPtr value;
+				uv_fileno_windows(NativeHandle, out value);
+				return value;
 			}
 		}
+	}
 
-		public void Open(IntPtr fileDescriptor)
-		{
-			int r;
-			switch (HandleType) {
+	[DllImport(libuv.Lib, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_tcp_open_unix(IntPtr handle, int sock);
+
+	[DllImport(libuv.Lib, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_tcp_open_windows(IntPtr handle, IntPtr sock);
+
+	[DllImport(libuv.Lib, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_open_unix(IntPtr handle, int sock);
+
+	[DllImport(libuv.Lib, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
+	internal static extern int uv_udp_open_windows(IntPtr handle, IntPtr sock);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_pipe_open(IntPtr handle, int fd);
+
+	public int Open(Func<IntPtr, int, int> unix, Func<IntPtr, IntPtr, int> windows, IntPtr handle, IntPtr fileDescriptor)
+	{
+		if (UV.IsUnix) {
+			return unix(handle, fileDescriptor.ToInt32());
+		} else {
+			return windows(handle, fileDescriptor);
+		}
+	}
+
+	public void Open(IntPtr fileDescriptor)
+	{
+		int r;
+		switch (HandleType) {
 			case HandleType.UV_TCP:
 				r = Open(uv_tcp_open_unix, uv_tcp_open_windows, NativeHandle, fileDescriptor);
 				break;
@@ -63,9 +63,7 @@ namespace LibuvSharp
 				break;
 			default:
 				throw new NotSupportedException();
-			}
-			Ensure.Success(r);
 		}
+		Ensure.Success(r);
 	}
 }
-

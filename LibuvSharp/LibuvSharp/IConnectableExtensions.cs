@@ -1,28 +1,35 @@
 ﻿using System.Net;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public static class IConnectableExtensions
 {
-	public static class IConnectableExtensions
+	#region IP Extensions
+
+	public static void Connect<TType>(this IConnectable<TType, IPEndPoint> client, 
+		IPAddress ipAddress, 
+		int port, 
+		Action<Exception> callback)
 	{
-		#region IP Extensions
+		Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
 
-		public static void Connect<TType>(this IConnectable<TType, IPEndPoint> client, IPAddress ipAddress, int port, Action<Exception> callback)
-		{
-			Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
+		client.Connect(new IPEndPoint(ipAddress, port), callback);
+	}
 
-			client.Connect(new IPEndPoint(ipAddress, port), callback);
-		}
+	public static void Connect<TType>(this IConnectable<TType, IPEndPoint> client, 
+		string ipAddress, 
+		int port, 
+		Action<Exception> callback)
+	{
+		client.Connect(IPAddress.Parse(ipAddress), port, callback);
+	}
 
-		public static void Connect<TType>(this IConnectable<TType, IPEndPoint> client, string ipAddress, int port, Action<Exception> callback)
-		{
-			client.Connect(IPAddress.Parse(ipAddress), port, callback);
-		}
+	#endregion
 
-		#endregion
-
-		public static void Connect<TType, TEndPoint>(this IConnectable<TType, TEndPoint> client, ILocalAddress<TEndPoint> remote, Action<Exception> callback)
-		{
-			client.Connect(remote.LocalAddress, callback);
-		}
+	public static void Connect<TType, TEndPoint>(this IConnectable<TType, TEndPoint> client, 
+		ILocalAddress<TEndPoint> remote, 
+		Action<Exception> callback)
+	{
+		client.Connect(remote.LocalAddress, callback);
 	}
 }

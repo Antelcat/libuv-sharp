@@ -1,37 +1,35 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public class Check : StartableCallbackHandle
 {
-	public class Check : StartableCallbackHandle
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_check_init(IntPtr loop, IntPtr idle);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_check_start(IntPtr check, uv_handle_cb callback);
+
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_check_stop(IntPtr check);
+
+	public Check()
+		: this(Loop.Constructor)
 	{
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_check_init(IntPtr loop, IntPtr idle);
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_check_start(IntPtr check, uv_handle_cb callback);
+	public Check(Loop loop)
+		: base(loop, HandleType.UV_IDLE, uv_check_init)
+	{
+	}
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_check_stop(IntPtr check);
+	public override void Start()
+	{
+		Invoke(uv_check_start);
+	}
 
-		public Check()
-			: this(Loop.Constructor)
-		{
-		}
-
-		public Check(Loop loop)
-			: base(loop, HandleType.UV_IDLE, uv_check_init)
-		{
-		}
-
-		public override void Start()
-		{
-			Invoke(uv_check_start);
-		}
-
-		public override void Stop()
-		{
-			Invoke(uv_check_stop);
-		}
+	public override void Stop()
+	{
+		Invoke(uv_check_stop);
 	}
 }
-

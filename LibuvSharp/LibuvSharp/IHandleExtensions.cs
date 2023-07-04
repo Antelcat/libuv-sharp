@@ -1,11 +1,9 @@
-﻿namespace LibuvSharp
+﻿namespace LibuvSharp;
+
+public static class IHandleExtensions
 {
-	public static class IHandleExtensions
+	public static void Close(this IHandle handle)
 	{
-		public static void Close(this IHandle handle)
-		{
-			handle.Close(null);
-		}
+		handle.Close(null);
 	}
 }
-

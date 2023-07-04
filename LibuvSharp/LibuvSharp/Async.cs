@@ -1,31 +1,29 @@
 using System.Runtime.InteropServices;
 
-namespace LibuvSharp
+namespace LibuvSharp;
+
+public class Async : CallbackHandle
 {
-	public class Async : CallbackHandle
+	[DllImport(libuv.Lib, CallingConvention=CallingConvention.Cdecl)]
+	static extern int uv_async_init(IntPtr loop, IntPtr handle, uv_handle_cb callback);
+
+	public Async()
+		: this(Loop.Constructor)
 	{
-		[DllImport(libuv.Lib, CallingConvention=CallingConvention.Cdecl)]
-		static extern int uv_async_init(IntPtr loop, IntPtr handle, uv_handle_cb callback);
+	}
 
-		public Async()
-			: this(Loop.Constructor)
-		{
-		}
+	public Async(Loop loop)
+		: base(loop, HandleType.UV_ASYNC)
+	{
+		var r = uv_async_init(loop.NativeHandle, NativeHandle, uv_callback);
+		Ensure.Success(r);
+	}
 
-		public Async(Loop loop)
-			: base(loop, HandleType.UV_ASYNC)
-		{
-			var r = uv_async_init(loop.NativeHandle, NativeHandle, uv_callback);
-			Ensure.Success(r);
-		}
+	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	static extern int uv_async_send(IntPtr handle);
 
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		static extern int uv_async_send(IntPtr handle);
-
-		public void Send()
-		{
-			Invoke(uv_async_send);
-		}
+	public void Send()
+	{
+		Invoke(uv_async_send);
 	}
 }
-
