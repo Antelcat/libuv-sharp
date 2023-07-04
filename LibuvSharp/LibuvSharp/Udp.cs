@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -11,24 +8,20 @@ namespace LibuvSharp
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void recv_start_callback(IntPtr handle, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_init(IntPtr loop, IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
 
 		ByteBufferAllocatorBase allocator;
 		public ByteBufferAllocatorBase ByteBufferAllocator {
-			get {
-				return allocator ?? Loop.ByteBufferAllocator;
-			}
-			set {
-				allocator = value;
-			}
-		}
+			get => allocator ?? Loop.ByteBufferAllocator;
+            set => allocator = value;
+        }
 
 		public Udp()
 			: this(Loop.Constructor)
@@ -54,15 +47,15 @@ namespace LibuvSharp
 
 		public void Bind(IPEndPoint endPoint)
 		{
-			Ensure.ArgumentNotNull(endPoint, "endPoint");
+			Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
 			Bind(endPoint.Address, endPoint.Port, false);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr, callback callback);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr, callback callback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_udp_send(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr, callback callback);
 
 		public void Send(UdpMessage message, Action<Exception> callback)
 		{
@@ -74,8 +67,8 @@ namespace LibuvSharp
 			var ipEndPoint = message.EndPoint;
 			var data = message.Payload;
 
-			GCHandle datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
-			CallbackPermaRequest cpr = new CallbackPermaRequest(RequestType.UV_UDP_SEND);
+			var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
+			var cpr = new CallbackPermaRequest(RequestType.UV_UDP_SEND);
 			cpr.Callback = (status, cpr2) => {
 				datagchandle.Free();
 				Ensure.Success(status, callback);
@@ -84,20 +77,20 @@ namespace LibuvSharp
 			var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + data.Offset);
 
 			int r;
-			uv_buf_t[] buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
+			var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
 
 			if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
-				sockaddr_in address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+				var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 				r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
 			} else {
-				sockaddr_in6 address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+				var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 				r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
 			}
 			Ensure.Success(r);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		extern static int uv_udp_recv_start(IntPtr handle, alloc_callback alloc_callback, recv_start_callback callback);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		static extern int uv_udp_recv_start(IntPtr handle, alloc_callback alloc_callback, recv_start_callback callback);
 
 		static recv_start_callback recv_start_cb = recv_callback;
 		static void recv_callback(IntPtr handlePointer, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags)
@@ -107,36 +100,35 @@ namespace LibuvSharp
 		}
 		void recv_callback(IntPtr handle, IntPtr nread, IntPtr sockaddr, ushort flags)
 		{
-			int n = (int)nread;
+			var n = (int)nread;
 
 			if (n == 0) {
 				return;
 			}
 
-			if (Message != null) {
-				var ep = UV.GetIPEndPoint(sockaddr, true);
+            if (Message == null) return;
+            var ep = UV.GetIPEndPoint(sockaddr, true);
 
-				var msg = new UdpReceiveMessage(
-					ep,
-					ByteBufferAllocator.Retrieve(n),
-					(flags & (short)uv_udp_flags.UV_UDP_PARTIAL) > 0
-				);
+            var msg = new UdpReceiveMessage(
+                ep,
+                ByteBufferAllocator.Retrieve(n),
+                (flags & (short)uv_udp_flags.UV_UDP_PARTIAL) > 0
+            );
 
-				Message(msg);
-			}
-		}
+            Message(msg);
+        }
 
 
 		public void Resume()
 		{
 			CheckDisposed();
 
-			int r = uv_udp_recv_start(NativeHandle, ByteBufferAllocator.AllocCallback, recv_start_cb);
+			var r = uv_udp_recv_start(NativeHandle, ByteBufferAllocator.AllocCallback, recv_start_cb);
 			Ensure.Success(r);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_udp_recv_stop(IntPtr handle);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_udp_recv_stop(IntPtr handle);
 
 		public void Pause()
 		{
@@ -145,44 +137,36 @@ namespace LibuvSharp
 
 		public event Action<UdpReceiveMessage> Message;
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_set_ttl(IntPtr handle, int ttl);
 
 		public byte TTL {
-			set {
-				Invoke(uv_udp_set_ttl, (int)value);
-			}
-		}
+			set => Invoke(uv_udp_set_ttl, (int)value);
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_set_broadcast(IntPtr handle, int on);
 
 		public bool Broadcast {
-			set {
-				Invoke(uv_udp_set_broadcast, value ? 1 : 0);
-			}
-		}
+			set => Invoke(uv_udp_set_broadcast, value ? 1 : 0);
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_set_multicast_ttl(IntPtr handle, int ttl);
 
 		public byte MulticastTTL {
-			set {
-				Invoke(uv_udp_set_multicast_ttl, (int)value);
-			}
-		}
+			set => Invoke(uv_udp_set_multicast_ttl, (int)value);
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_set_multicast_loop(IntPtr handle, int on);
 
 		public bool MulticastLoop {
-			set {
-				Invoke(uv_udp_set_multicast_loop, value ? 1 : 0);
-			}
-		}
+			set => Invoke(uv_udp_set_multicast_loop, value ? 1 : 0);
+        }
 
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_udp_getsockname(IntPtr handle, IntPtr addr, ref int length);
 
 		public IPEndPoint LocalAddress {
@@ -193,15 +177,15 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in addr);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_udp_try_send(IntPtr handle, uv_buf_t[] bufs, int nbufs, ref sockaddr_in6 addr);
 
-		unsafe public int TrySend(UdpMessage message)
+		public unsafe int TrySend(UdpMessage message)
 		{
-			Ensure.ArgumentNotNull(message, "message");
+			Ensure.ArgumentNotNull(message, nameof(message));
 
 			var data = message.Payload;
 			var ipEndPoint = message.EndPoint;
@@ -212,10 +196,10 @@ namespace LibuvSharp
 				var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
 
 				if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
-					sockaddr_in address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+					var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 					r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
 				} else {
-					sockaddr_in6 address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+					var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 					r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
 				}
 				return r;

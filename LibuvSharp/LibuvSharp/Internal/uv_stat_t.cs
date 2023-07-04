@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
 	struct uv_stat_t {
 		public ulong st_dev;

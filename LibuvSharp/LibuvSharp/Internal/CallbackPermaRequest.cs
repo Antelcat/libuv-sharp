@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	internal class CallbackPermaRequest : PermaRequest
@@ -24,7 +22,7 @@ namespace LibuvSharp
 
 		public static Handle.callback CallbackDelegate = StaticEnd;
 
-		static public void StaticEnd(IntPtr ptr, int status)
+		public static void StaticEnd(IntPtr ptr, int status)
 		{
 			var obj = PermaRequest.GetObject<CallbackPermaRequest>(ptr);
 			if (obj == null) {

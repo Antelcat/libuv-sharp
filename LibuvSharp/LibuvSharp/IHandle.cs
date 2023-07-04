@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
 	public interface IHandle
 	{

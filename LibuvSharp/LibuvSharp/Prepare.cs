@@ -1,17 +1,16 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
 	public class Prepare : StartableCallbackHandle
 	{
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_prepare_init(IntPtr loop, IntPtr prepare);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_prepare_start(IntPtr prepare, uv_handle_cb callback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_prepare_stop(IntPtr prepare);
 
 		public Prepare()

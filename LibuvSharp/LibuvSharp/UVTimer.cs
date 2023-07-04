@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -8,22 +7,22 @@ namespace LibuvSharp
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void uv_timer_cb(IntPtr loop);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_timer_init(IntPtr loop, IntPtr timer);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_timer_start(IntPtr timer, uv_timer_cb callback, ulong timeout, ulong repeat);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_timer_stop(IntPtr timer);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_timer_again(IntPtr timer);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void uv_timer_set_repeat(IntPtr timer, ulong repeat);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern ulong uv_timer_get_repeat(IntPtr timer);
 
 		Action onehit;
@@ -44,19 +43,13 @@ namespace LibuvSharp
 
 				return uv_timer_get_repeat(NativeHandle);
 			}
-			set {
-				uv_timer_set_repeat(NativeHandle, value);
-			}
-		}
+			set => uv_timer_set_repeat(NativeHandle, value);
+        }
 
 		public TimeSpan Repeat {
-			get {
-				return TimeSpan.FromMilliseconds(LongRepeat);
-			}
-			set {
-				LongRepeat = (ulong)value.TotalMilliseconds;
-			}
-		}
+			get => TimeSpan.FromMilliseconds(LongRepeat);
+            set => LongRepeat = (ulong)value.TotalMilliseconds;
+        }
 
 		public bool Running { get; private set; }
 
@@ -70,7 +63,7 @@ namespace LibuvSharp
 			Running = true;
 			LongRepeat = repeat;
 
-			int r = uv_timer_start(NativeHandle, cb, timeout, repeat);
+			var r = uv_timer_start(NativeHandle, cb, timeout, repeat);
 			Ensure.Success(r);
 		}
 
@@ -125,7 +118,7 @@ namespace LibuvSharp
 			CheckDisposed();
 
 			if (Running) {
-				int r = uv_timer_stop(NativeHandle);
+				var r = uv_timer_stop(NativeHandle);
 				Ensure.Success(r);
 			}
 			Running = false;
@@ -136,7 +129,7 @@ namespace LibuvSharp
 			Invoke(uv_timer_again);
 		}
 
-		public static UVTimer Once(Loop loop, TimeSpan timeout, Action callback)
+		public static UVTimer Once(Loop loop, TimeSpan timeout, Action? callback)
 		{
 			var timer = new UVTimer(loop);
 			timer.Tick += () => {
@@ -154,10 +147,10 @@ namespace LibuvSharp
 			return Once(Loop.Constructor, timeout, callback);
 		}
 
-		public static UVTimer Times(Loop loop, int times, TimeSpan repeat, Action<int> callback)
+		public static UVTimer Times(Loop loop, int times, TimeSpan repeat, Action<int>? callback)
 		{
 			var timer = new UVTimer(loop);
-			int i = 0;
+			var i = 0;
 			timer.Tick += () => {
 				i++;
 				if (callback != null) {

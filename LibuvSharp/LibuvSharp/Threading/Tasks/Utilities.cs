@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace LibuvSharp.Utilities
 {
 	public static partial class UtilitiesExtensions

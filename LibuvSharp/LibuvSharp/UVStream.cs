@@ -1,28 +1,25 @@
-using System;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace LibuvSharp
 {
-	unsafe public abstract class UVStream : HandleBase, IUVStream<ArraySegment<byte>>, ITryWrite<ArraySegment<byte>>
+	public abstract unsafe class UVStream : HandleBase, IUVStream<ArraySegment<byte>>, ITryWrite<ArraySegment<byte>>
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void read_callback(IntPtr stream, IntPtr size, uv_buf_t buf);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_read_start(IntPtr stream, alloc_callback alloc_callback, read_callback rcallback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_read_watcher_start(IntPtr stream, Action<IntPtr> read_watcher_callback);
 
-		[DllImport ("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_read_stop(IntPtr stream);
 
-		[DllImport("uv", EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_write(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, callback callback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_shutdown(IntPtr req, IntPtr handle, callback callback);
 
 		uv_stream_t *stream;
@@ -39,13 +36,9 @@ namespace LibuvSharp
 
 		ByteBufferAllocatorBase allocator;
 		public ByteBufferAllocatorBase ByteBufferAllocator {
-			get {
-				return allocator ?? Loop.ByteBufferAllocator;
-			}
-			set {
-				allocator = value;
-			}
-		}
+			get => allocator ?? Loop.ByteBufferAllocator;
+            set => allocator = value;
+        }
 
 		internal UVStream(Loop loop, IntPtr handle)
 			: base(loop, handle)
@@ -85,7 +78,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = uv_read_start(NativeHandle, ByteBufferAllocator.AllocCallback, read_cb);
+			var r = uv_read_start(NativeHandle, ByteBufferAllocator.AllocCallback, read_cb);
 			Ensure.Success(r);
 		}
 
@@ -103,54 +96,48 @@ namespace LibuvSharp
 
 		void rcallback(IntPtr streamPointer, IntPtr size)
 		{
-			long nread = size.ToInt64();
+			var nread = size.ToInt64();
 			if (nread == 0) {
 				return;
-			} else if (nread < 0) {
-				if (UVException.Map((int)nread) == UVErrorCode.EOF) {
-					Close(Complete);
-				} else {
-					OnError(Ensure.Map((int)nread));
-					Close();
-				}
-			} else {
-				OnData(ByteBufferAllocator.Retrieve(size.ToInt32()));
 			}
-		}
+
+            if (nread < 0) {
+                if (UVException.Map((int)nread) == UVErrorCode.EOF) {
+                    Close(Complete);
+                } else {
+                    OnError(Ensure.Map((int)nread));
+                    Close();
+                }
+            } else {
+                OnData(ByteBufferAllocator.Retrieve(size.ToInt32()));
+            }
+        }
 
 		protected virtual void OnComplete()
-		{
-			if (Complete != null) {
-				Complete();
-			}
-		}
+        {
+            Complete?.Invoke();
+        }
 
 		public event Action Complete;
 
 		protected virtual void OnError(Exception exception)
-		{
-			if (Error != null) {
-				Error(exception);
-			}
-		}
+        {
+            Error?.Invoke(exception);
+        }
 
 		public event Action<Exception> Error;
 
 		protected virtual void OnData(ArraySegment<byte> data)
-		{
-			if (Data != null) {
-				Data(data);
-			}
-		}
+        {
+            Data?.Invoke(data);
+        }
 
 		public event Action<ArraySegment<byte>> Data;
 
 		void OnDrain()
-		{
-			if (Drain != null) {
-				Drain();
-			}
-		}
+        {
+            Drain?.Invoke();
+        }
 
 		public event Action Drain;
 
@@ -158,13 +145,13 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int index = data.Offset;
-			int count = data.Count;
+			var index = data.Offset;
+			var count = data.Count;
 
 			PendingWrites++;
 
-			GCHandle datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
-			CallbackPermaRequest cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
+			var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
+			var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
 			cpr.Callback = (status, cpr2) => {
 				datagchandle.Free();
 				PendingWrites--;
@@ -179,7 +166,7 @@ namespace LibuvSharp
 			var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + index);
 
 			var buf = new uv_buf_t[] { new uv_buf_t(ptr, count) };
-			int r = uv_write(cpr.Handle, NativeHandle, buf, 1, CallbackPermaRequest.CallbackDelegate);
+			var r = uv_write(cpr.Handle, NativeHandle, buf, 1, CallbackPermaRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 
@@ -190,9 +177,9 @@ namespace LibuvSharp
 			PendingWrites++;
 
 			int i;
-			int n = buffers.Count;
-			GCHandle[] datagchandles = new GCHandle[n];
-			CallbackPermaRequest cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
+			var n = buffers.Count;
+			var datagchandles = new GCHandle[n];
+			var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
 			cpr.Callback = (status, cpr2) => {
 				for (i = 0; i < n; ++i)
 					datagchandles[i].Free();
@@ -207,19 +194,19 @@ namespace LibuvSharp
 			};
 			var bufs = new uv_buf_t[n];
 			for (i = 0; i < n; ++i) {
-				ArraySegment<byte> data = buffers[i];
-				int index = data.Offset;
-				int count = data.Count;
-				GCHandle datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
+				var data = buffers[i];
+				var index = data.Offset;
+				var count = data.Count;
+				var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
 				var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + index);
 				bufs[i] = new uv_buf_t(ptr, count);
 				datagchandles[i] = datagchandle;
 			}
-			int r = uv_write(cpr.Handle, NativeHandle, bufs, n, CallbackPermaRequest.CallbackDelegate);
+			var r = uv_write(cpr.Handle, NativeHandle, bufs, n, CallbackPermaRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 
-		public void Shutdown(Action<Exception> callback)
+		public void Shutdown(Action<Exception>? callback)
 		{
 			CheckDisposed();
 
@@ -234,7 +221,7 @@ namespace LibuvSharp
 			uv_shutdown(cbr.Handle, NativeHandle, CallbackPermaRequest.CallbackDelegate);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_is_readable(IntPtr handle);
 
 		internal bool readable;
@@ -244,12 +231,10 @@ namespace LibuvSharp
 
 				return uv_is_readable(NativeHandle) != 0;
 			}
-			set {
-				readable = value;
-			}
-		}
+			set => readable = value;
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_is_writable(IntPtr handle);
 
 		internal bool writeable;
@@ -259,25 +244,23 @@ namespace LibuvSharp
 
 				return uv_is_writable(NativeHandle) != 0;
 			}
-			set {
-				writeable = value;
-			}
-		}
+			set => writeable = value;
+        }
 
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_try_write(IntPtr handle, uv_buf_t[] bufs, int nbufs);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_try_write(IntPtr handle, uv_buf_t[] bufs, int nbufs);
 
-		unsafe public int TryWrite(ArraySegment<byte> data)
+		public unsafe int TryWrite(ArraySegment<byte> data)
 		{
 			CheckDisposed();
 
 			Ensure.ArgumentNotNull(data.Array, "data");
 
 			fixed (byte* bytePtr = data.Array) {
-				IntPtr ptr = (IntPtr)(bytePtr + data.Offset);
+				var ptr = (IntPtr)(bytePtr + data.Offset);
 				var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
-				int r = uv_try_write(NativeHandle, buf, 1);
+				var r = uv_try_write(NativeHandle, buf, 1);
 				Ensure.Success(r);
 				return r;
 			}

@@ -1,19 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace LibuvSharp
 {
 	public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
 	{
 		BufferPin pin;
 
-		public byte[] Buffer {
-			get {
-				return pin.Buffer;
-			}
-		}
+		public byte[] Buffer => pin.Buffer;
 
-		public override int Alloc(int size, out IntPtr ptr)
+        public override int Alloc(int size, out IntPtr ptr)
 		{
 			if (pin == null) {
 				pin = new BufferPin(size);
@@ -35,7 +28,7 @@ namespace LibuvSharp
 
 		public override ArraySegment<byte> Retrieve(int size)
 		{
-			byte[] ret = new byte[size];
+			var ret = new byte[size];
 			Array.Copy(Buffer, 0, ret, 0, size);
 			return new ArraySegment<byte>(ret);
 		}

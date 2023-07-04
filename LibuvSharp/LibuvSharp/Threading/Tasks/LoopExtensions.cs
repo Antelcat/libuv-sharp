@@ -1,9 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using LibuvSharp.Threading;
-using LibuvSharp.Threading.Tasks;
-
 namespace LibuvSharp.Threading.Tasks
 {
 	public static class LoopExtensions
@@ -42,7 +36,7 @@ namespace LibuvSharp.Threading.Tasks
 			HelperFunctions.SetStatus(tcs.Task, TaskStatus.Running);
 			#endif
 			Exception exception = null;
-			T res = default(T);
+			var res = default(T);
 			try {
 				loop.QueueUserWorkItem(() => {
 					try {

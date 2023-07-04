@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using LibuvSharp;
+﻿using System.Net;
 
 namespace LibuvSharp.Threading.Tasks
 {

@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace LibuvSharp
 {
 	public abstract class Listener<TStream> : Handle, IListener<TStream> where TStream : class

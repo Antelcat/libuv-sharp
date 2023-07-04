@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
-	public interface IBindable<TType, TEndPoint>
+	public interface IBindable<TType, in TEndPoint>
 	{
 		void Bind(TEndPoint endPoint);
 	}

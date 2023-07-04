@@ -2,5 +2,8 @@
 
 public class libuv
 {
-    public const string Lib = @"./runtimes/win-x64/native/libuv.dll";
+    public const string Lib =
+#if true
+        @"./runtimes/win-x64/native/libuv.dll";
+#endif
 }

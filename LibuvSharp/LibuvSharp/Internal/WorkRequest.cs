@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	unsafe class WorkRequest : PermaRequest

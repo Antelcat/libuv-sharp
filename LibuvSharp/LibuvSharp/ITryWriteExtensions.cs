@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace LibuvSharp
 {
@@ -12,7 +11,7 @@ namespace LibuvSharp
 
 		public static int TryWrite(this ITryWrite<ArraySegment<byte>> handle, byte[] data)
 		{
-			Ensure.ArgumentNotNull(data, "data");
+			Ensure.ArgumentNotNull(data, nameof(data));
 			return handle.TryWrite(data, 0, data.Length);
 		}
 

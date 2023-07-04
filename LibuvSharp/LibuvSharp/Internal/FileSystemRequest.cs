@@ -1,9 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	unsafe internal class FileSystemRequest : PermaRequest
+	internal unsafe class FileSystemRequest : PermaRequest
 	{
 		private static readonly int Size = UV.Sizeof(RequestType.UV_FS);
 
@@ -25,7 +24,7 @@ namespace LibuvSharp
 
 		public Action<Exception> Callback { get; set; }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void uv_fs_req_cleanup(IntPtr req);
 
 		public override void Dispose(bool disposing)
@@ -34,25 +33,13 @@ namespace LibuvSharp
 			base.Dispose(disposing);
 		}
 
-		public IntPtr Result {
-			get {
-				return fsrequest->result;
-			}
-		}
+		public IntPtr Result => fsrequest->result;
 
-		public IntPtr Pointer {
-			get {
-				return fsrequest->ptr;
-			}
-		}
+        public IntPtr Pointer => fsrequest->ptr;
 
-		public uv_stat_t stat {
-			get {
-				return fsrequest->buf;
-			}
-		}
+        public uv_stat_t stat => fsrequest->buf;
 
-		public void End(IntPtr ptr)
+        public void End(IntPtr ptr)
 		{
 			Exception e = null;
 			var r = Result.ToInt32();

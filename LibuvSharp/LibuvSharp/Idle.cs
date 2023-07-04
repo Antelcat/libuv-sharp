@@ -1,17 +1,16 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
 	public class Idle : StartableCallbackHandle
 	{
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_idle_init(IntPtr loop, IntPtr idle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_idle_start(IntPtr idle, uv_handle_cb callback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_idle_stop(IntPtr idle);
 
 		public Idle()

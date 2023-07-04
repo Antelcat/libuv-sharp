@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -13,13 +12,13 @@ namespace LibuvSharp
 	{
 		delegate void poll_callback(IntPtr handle, int status, int events);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_poll_init(IntPtr loop, IntPtr handle, int fd);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_poll_start(IntPtr handle, int events, poll_callback callback);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_poll_stop(IntPtr handle);
 
 		public Poll(int fd)
@@ -50,7 +49,7 @@ namespace LibuvSharp
 			OnEvent((PollEvent)events);
 		}
 
-		public event Action<PollEvent> Event;
+		public event Action<PollEvent>? Event;
 
 		void OnEvent(PollEvent events)
 		{

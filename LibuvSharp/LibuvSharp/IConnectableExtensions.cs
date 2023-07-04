@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 namespace LibuvSharp
 {
@@ -9,7 +8,7 @@ namespace LibuvSharp
 
 		public static void Connect<TType>(this IConnectable<TType, IPEndPoint> client, IPAddress ipAddress, int port, Action<Exception> callback)
 		{
-			Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+			Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
 
 			client.Connect(new IPEndPoint(ipAddress, port), callback);
 		}

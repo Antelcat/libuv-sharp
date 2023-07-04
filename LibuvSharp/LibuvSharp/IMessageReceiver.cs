@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
-	public interface IMessageReceiver<TMessage>
+	public interface IMessageReceiver<out TMessage>
 	{
 		event Action<TMessage> Message;
 	}

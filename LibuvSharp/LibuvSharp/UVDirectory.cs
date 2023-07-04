@@ -1,19 +1,17 @@
-using System;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace LibuvSharp
 {
 	public class UVDirectory
 	{
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int uv_fs_mkdir(IntPtr loop, IntPtr req, string path, int mode, NativeMethods.uv_fs_cb callback);
 
 		public static void Create(Loop loop, string path, int mode, Action<Exception> callback)
 		{
 			var fsr = new FileSystemRequest();
 			fsr.Callback = callback;
-			int r = uv_fs_mkdir(loop.NativeHandle, fsr.Handle, path, mode, FileSystemRequest.CallbackDelegate);
+			var r = uv_fs_mkdir(loop.NativeHandle, fsr.Handle, path, mode, FileSystemRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 		public static void Create(Loop loop, string path, int mode)
@@ -45,14 +43,14 @@ namespace LibuvSharp
 			Create(path, 511);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int uv_fs_rmdir(IntPtr loop, IntPtr req, string path, NativeMethods.uv_fs_cb callback);
 
 		public static void Delete(Loop loop, string path, Action<Exception> callback)
 		{
 			var fsr = new FileSystemRequest();
 			fsr.Callback = callback;
-			int r = uv_fs_rmdir(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
+			var r = uv_fs_rmdir(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 		public static void Delete(Loop loop, string path)
@@ -68,14 +66,14 @@ namespace LibuvSharp
 			Delete(path, null);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int uv_fs_rename(IntPtr loop, IntPtr req, string path, string newPath, NativeMethods.uv_fs_cb callback);
 
 		public static void Rename(Loop loop, string path, string newPath, Action<Exception> callback)
 		{
 			var fsr = new FileSystemRequest();
 			fsr.Callback = callback;
-			int r = uv_fs_rename(loop.NativeHandle, fsr.Handle, path, newPath, fsr.End);
+			var r = uv_fs_rename(loop.NativeHandle, fsr.Handle, path, newPath, fsr.End);
 			Ensure.Success(r);
 		}
 		public static void Rename(Loop loop, string path, string newPath)
@@ -91,10 +89,10 @@ namespace LibuvSharp
 			Rename(path, newPath, null);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int uv_fs_scandir_next(IntPtr req, out uv_dirent_t ent);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int uv_fs_scandir(IntPtr loop, IntPtr req, string path, int flags, NativeMethods.uv_fs_cb callback);
 
 		public static void Read(Loop loop, string path, Action<Exception, UVDirectoryEntity[]> callback)
@@ -114,7 +112,7 @@ namespace LibuvSharp
 
 				Ensure.Success(ex, callback, list.ToArray());
 			};
-			int r = uv_fs_scandir(loop.NativeHandle, fsr.Handle, path, 0, FileSystemRequest.CallbackDelegate);
+			var r = uv_fs_scandir(loop.NativeHandle, fsr.Handle, path, 0, FileSystemRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 

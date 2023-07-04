@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
-	public interface ITrySend<TMessage>
+	public interface ITrySend<in TMessage>
 	{
 		int TrySend(TMessage message);
 	}

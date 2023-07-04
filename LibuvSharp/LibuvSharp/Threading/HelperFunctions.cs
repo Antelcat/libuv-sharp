@@ -1,7 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using System.Reflection;
-
 namespace LibuvSharp
 {
 	class HelperFunctions
@@ -35,7 +31,7 @@ namespace LibuvSharp
 
 		public static Action<Exception, T> Finish<T>(TaskCompletionSource<T> tcs, Action callback)
 		{
-			bool finished = false;
+			var finished = false;
 
 			return (Exception exception, T value) => {
 				if (finished) {

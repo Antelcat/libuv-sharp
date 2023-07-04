@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using LibuvSharp.Threading.Tasks;
 
 namespace LibuvSharp
@@ -17,13 +14,9 @@ namespace LibuvSharp
 			}
 		}
 
-		public TaskScheduler Scheduler {
-			get {
-				return LoopTaskScheduler.Instance;
-			}
-		}
+		public TaskScheduler Scheduler => LoopTaskScheduler.Instance;
 
-		public bool Run(Func<Task> asyncMethod)
+        public bool Run(Func<Task> asyncMethod)
 		{
 			var previousContext = SynchronizationContext.Current;
 			try {
@@ -71,11 +64,7 @@ namespace LibuvSharp
 		/// Returns Default Loop value when creating LibuvSharp objects.
 		/// </summary>
 		/// <value>A loop.</value>
-		internal static Loop Constructor {
-			get {
-				return Loop.Current ?? Loop.Default;
-			}
-		}
-	}
+		internal static Loop Constructor => Loop.Current ?? Loop.Default;
+    }
 }
 

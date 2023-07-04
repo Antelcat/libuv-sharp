@@ -1,6 +1,4 @@
-using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LibuvSharp.Threading.Tasks
 {
@@ -17,7 +15,7 @@ namespace LibuvSharp.Threading.Tasks
 
 			Action<Exception> error = (e) => finish(e, null);
 			Action<TData> data = (val) => finish(null, val);
-			Action end = () => finish(null, null);
+			var end = () => finish(null, null);
 
 			finish = HelperFunctions.Finish(tcs, () => {
 				stream.Pause();

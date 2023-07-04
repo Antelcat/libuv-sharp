@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -12,23 +11,15 @@ namespace LibuvSharp
 			nativeHandle = loop.NativeHandle;
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_backend_fd(IntPtr loop);
 
-		public int FileDescriptor {
-			get {
-				return uv_backend_fd(nativeHandle);
-			}
-		}
+		public int FileDescriptor => uv_backend_fd(nativeHandle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_backend_timeout(IntPtr loop);
 
-		public int Timeout {
-			get {
-				return uv_backend_timeout(nativeHandle);
-			}
-		}
-	}
+		public int Timeout => uv_backend_timeout(nativeHandle);
+    }
 }
 

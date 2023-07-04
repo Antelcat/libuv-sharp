@@ -1,9 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	unsafe public abstract class Handle : IHandle, IDisposable
+	public abstract unsafe class Handle : IHandle, IDisposable
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void callback(IntPtr req, int status);
@@ -25,26 +24,18 @@ namespace LibuvSharp
 		}
 
 		internal IntPtr DataPointer {
-			get {
-				return handle->data;
-			}
-			set {
-				handle->data = value;
-			}
-		}
+			get => handle->data;
+            set => handle->data = value;
+        }
 
 		internal static T FromIntPtr<T>(IntPtr ptr)
 		{
 			return (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
 		}
 
-		public HandleType HandleType {
-			get {
-				return handle->type;
-			}
-		}
+		public HandleType HandleType => handle->type;
 
-		internal Handle(Loop loop, IntPtr handle)
+        internal Handle(Loop loop, IntPtr handle)
 		{
 			Ensure.ArgumentNotNull(loop, "loop");
 
@@ -81,25 +72,25 @@ namespace LibuvSharp
 
 		internal void Construct(Func<IntPtr, IntPtr, int> constructor)
 		{
-			int r = constructor(Loop.NativeHandle, NativeHandle);
+			var r = constructor(Loop.NativeHandle, NativeHandle);
 			Ensure.Success(r);
 		}
 
 		internal void Construct(Func<IntPtr, IntPtr, int, int> constructor, int arg1)
 		{
-			int r = constructor(Loop.NativeHandle, NativeHandle, arg1);
+			var r = constructor(Loop.NativeHandle, NativeHandle, arg1);
 			Ensure.Success(r);
 		}
 
 		internal void Construct(Func<IntPtr, IntPtr, int, int, int> constructor, int arg1, int arg2)
 		{
-			int r = constructor(Loop.NativeHandle, NativeHandle, arg1, arg2);
+			var r = constructor(Loop.NativeHandle, NativeHandle, arg1, arg2);
 			Ensure.Success(r);
 		}
 
 		public event Action Closed;
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void uv_close(IntPtr handle, close_callback cb);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -152,13 +143,9 @@ namespace LibuvSharp
 			Close(null);
 		}
 
-		public bool IsClosed {
-			get {
-				return NativeHandle == IntPtr.Zero;
-			}
-		}
+		public bool IsClosed => NativeHandle == IntPtr.Zero;
 
-		public void Dispose()
+        public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
@@ -169,7 +156,7 @@ namespace LibuvSharp
 			Close();
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_is_active(IntPtr handle);
 
 		public bool IsActive {
@@ -181,7 +168,7 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_is_closing(IntPtr handle);
 
 		public bool IsClosing {
@@ -198,19 +185,15 @@ namespace LibuvSharp
 		/// is not closing or closed.
 		/// </summary>
 		/// <value><c>true</c> if this instance is not closing or closed; otherwise, <c>false</c>.</value>
-		public bool IsAlive {
-			get {
-				return !IsClosed && !IsClosing;
-			}
-		}
+		public bool IsAlive => !IsClosed && !IsClosing;
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void uv_ref(IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void uv_unref(IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_has_ref(IntPtr handle);
 
 		public void Ref()
@@ -238,7 +221,7 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_handle_size(HandleType type);
 
 		public static int Size(HandleType type)
@@ -246,7 +229,7 @@ namespace LibuvSharp
 			return uv_handle_size(type);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern HandleType uv_guess_handle(int fd);
 
 		public static HandleType Guess(int fd)
@@ -265,7 +248,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle);
+			var r = function(NativeHandle);
 			Ensure.Success(r);
 		}
 
@@ -273,7 +256,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle, arg1);
+			var r = function(NativeHandle, arg1);
 			Ensure.Success(r);
 		}
 
@@ -281,7 +264,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle, arg1, arg2);
+			var r = function(NativeHandle, arg1, arg2);
 			Ensure.Success(r);
 		}
 
@@ -289,7 +272,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle, arg1, arg2, arg3);
+			var r = function(NativeHandle, arg1, arg2, arg3);
 			Ensure.Success(r);
 		}
 	}

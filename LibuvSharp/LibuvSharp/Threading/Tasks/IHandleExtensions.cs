@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace LibuvSharp.Threading.Tasks
+﻿namespace LibuvSharp.Threading.Tasks
 {
 	public static class IHandleExtensions
 	{

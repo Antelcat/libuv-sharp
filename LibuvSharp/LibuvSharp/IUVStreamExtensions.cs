@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 
 namespace LibuvSharp
@@ -24,7 +23,7 @@ namespace LibuvSharp
 
 		public static void Write(this IUVStream<ArraySegment<byte>> stream, byte[] data, Action<Exception> callback)
 		{
-			Ensure.ArgumentNotNull(data, "data");
+			Ensure.ArgumentNotNull(data, nameof(data));
 			stream.Write(data, 0, data.Length, callback);
 		}
 		public static void Write(this IUVStream<ArraySegment<byte>> stream, byte[] data)
@@ -110,7 +109,7 @@ namespace LibuvSharp
 
 		public static int End(this IUVStream<ArraySegment<byte>> stream, Encoding encoding, string text, Action<Exception> callback)
 		{
-			int size = stream.Write(encoding, text);
+			var size = stream.Write(encoding, text);
 			stream.Shutdown(callback);
 			return size;
 		}

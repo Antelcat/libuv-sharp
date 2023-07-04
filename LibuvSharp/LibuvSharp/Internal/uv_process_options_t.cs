@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -94,7 +93,7 @@ namespace LibuvSharp
 
 			stdio = (uv_stdio_container_stream_t *)Marshal.AllocHGlobal(stdio_count * sizeof(uv_stdio_container_stream_t));
 
-			int i = 0;
+			var i = 0;
 			foreach (var stream in options.Streams) {
 				stdio[i].flags = 0;
 				if (stream != null) {
@@ -151,7 +150,7 @@ namespace LibuvSharp
 			}
 
 			var arr = Marshal.AllocHGlobal((args.Length + 1) * sizeof(IntPtr));
-			for (int i = 0; i < args.Length; i++) {
+			for (var i = 0; i < args.Length; i++) {
 				Marshal.WriteIntPtr(arr, i * sizeof(IntPtr), Marshal.StringToHGlobalAnsi(args[i]));
 			}
 			Marshal.WriteIntPtr(arr, args.Length * sizeof(IntPtr), IntPtr.Zero);
@@ -164,8 +163,8 @@ namespace LibuvSharp
 				return;
 			}
 
-			int i = 0;
-			IntPtr p = Marshal.ReadIntPtr(ptr);
+			var i = 0;
+			var p = Marshal.ReadIntPtr(ptr);
 			while (p != IntPtr.Zero) {
 				Marshal.FreeHGlobal(p);
 				i++;

@@ -1,10 +1,9 @@
-using System;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	unsafe public class UVException : Exception
+	public unsafe class UVException : Exception
 	{
 		/// <summary>
 		/// Independent error code, has the same value on all
@@ -38,10 +37,10 @@ namespace LibuvSharp
 		}
 
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern sbyte *uv_strerror(int systemErrorCode);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		private static extern sbyte *uv_err_name(int systemErrorCode);
 
 		internal static string StringError(int systemErrorCode)

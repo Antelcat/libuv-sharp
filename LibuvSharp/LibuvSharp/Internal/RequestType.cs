@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	enum RequestType : int

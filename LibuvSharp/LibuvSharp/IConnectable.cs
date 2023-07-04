@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	public interface IConnectable<TType, TEndPoint>

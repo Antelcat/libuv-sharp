@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
 	struct uv_timespec_t {
 		public IntPtr tv_sec;

@@ -1,8 +1,3 @@
-using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace LibuvSharp.Threading.Tasks
 {
 	public static class UVFileAsync

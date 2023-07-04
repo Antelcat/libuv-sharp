@@ -1,11 +1,10 @@
-using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	unsafe internal struct uv_cpu_times_t
+	internal unsafe struct uv_cpu_times_t
 	{
 		public ulong user;
 		public ulong nice;
@@ -14,7 +13,7 @@ namespace LibuvSharp
 		public ulong irq;
 	}
 
-	unsafe internal struct uv_cpu_info_t
+	internal unsafe struct uv_cpu_info_t
 	{
 		public IntPtr model;
 		public int speed;
@@ -39,7 +38,7 @@ namespace LibuvSharp
 		public ulong IRQ { get; protected set; }
 	}
 
-	unsafe public class CpuInformation
+	public unsafe class CpuInformation
 	{
 		internal CpuInformation(uv_cpu_info_t *info)
 		{
@@ -52,23 +51,23 @@ namespace LibuvSharp
 		public int Speed { get; protected set; }
 		public CpuTimes Times { get; protected set; }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_cpu_info(out IntPtr info, out int count);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void uv_free_cpu_info(IntPtr info, int count);
 
 		internal static CpuInformation[] GetInfo()
 		{
 			IntPtr info;
 			int count;
-			int r = uv_cpu_info(out info, out count);
+			var r = uv_cpu_info(out info, out count);
 			Ensure.Success(r);
 
 			CpuInformation[] ret = new CpuInformation[count];
 
-			for (int i = 0; i < count; i++) {
-				uv_cpu_info_t *cpuinfo = (uv_cpu_info_t *)(info.ToInt64() + i * sizeof(uv_cpu_info_t));
+			for (var i = 0; i < count; i++) {
+				var cpuinfo = (uv_cpu_info_t *)(info.ToInt64() + i * sizeof(uv_cpu_info_t));
 				ret[i] = new CpuInformation(cpuinfo);
 			}
 
@@ -79,7 +78,7 @@ namespace LibuvSharp
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	unsafe internal struct uv_interface_address_t
+	internal unsafe struct uv_interface_address_t
 	{
 		public IntPtr name;
 		public fixed byte phys_addr[6];
@@ -88,14 +87,14 @@ namespace LibuvSharp
 		public sockaddr_in6 netmask;
 	}
 
-	unsafe public class NetworkInterface
+	public unsafe class NetworkInterface
 	{
 		internal NetworkInterface(uv_interface_address_t *iface)
 		{
 			Name = Marshal.PtrToStringAnsi(iface->name);
 			Internal = iface->is_internal != 0;
-			byte[] phys_addr = new byte[6];
-			for (int i = 0; i < phys_addr.Length; i++) {
+			var phys_addr = new byte[6];
+			for (var i = 0; i < phys_addr.Length; i++) {
 				phys_addr[i] = iface->phys_addr[i];
 			}
 			PhysicalAddress = new PhysicalAddress(phys_addr);
@@ -110,23 +109,23 @@ namespace LibuvSharp
 		public IPAddress Netmask { get; protected set; }
 
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_interface_addresses(out IntPtr address, out int count);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void uv_free_interface_addresses(IntPtr address, int count);
 
 		internal static NetworkInterface[] GetInterfaces()
 		{
 			IntPtr interfaces;
 			int count;
-			int r = uv_interface_addresses(out interfaces, out count);
+			var r = uv_interface_addresses(out interfaces, out count);
 			Ensure.Success(r);
 
 			NetworkInterface[] ret = new NetworkInterface[count];
 
-			for (int i = 0; i < count; i++) {
-				uv_interface_address_t *iface = (uv_interface_address_t *)(interfaces.ToInt64() + i * sizeof(uv_interface_address_t));
+			for (var i = 0; i < count; i++) {
+				var iface = (uv_interface_address_t *)(interfaces.ToInt64() + i * sizeof(uv_interface_address_t));
 				ret[i] = new NetworkInterface(iface);
 			}
 
@@ -135,14 +134,14 @@ namespace LibuvSharp
 		}
 	}
 
-	unsafe public class LoadAverage
+	public unsafe class LoadAverage
 	{
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void uv_loadavg(IntPtr avg);
 
 		internal LoadAverage()
 		{
-			IntPtr ptr = Marshal.AllocHGlobal(sizeof(double) * 3);
+			var ptr = Marshal.AllocHGlobal(sizeof(double) * 3);
 			uv_loadavg(ptr);
 			Last = *((double *)ptr);
 			Five = *((double *)(ptr.ToInt64() + sizeof(double)));
@@ -160,59 +159,31 @@ namespace LibuvSharp
 	{
 		public static class Memory
 		{
-			[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+			[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern long uv_get_free_memory();
 
-			public static long Free {
-				get {
-					return uv_get_free_memory();
-				}
-			}
+			public static long Free => uv_get_free_memory();
 
-			[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 			internal static extern long uv_get_total_memory();
 
-			public static long Total {
-				get {
-					return uv_get_total_memory();
-				}
-			}
+			public static long Total => uv_get_total_memory();
 
-			public static long Used {
-				get {
-					return Total - Free;
-				}
-			}
-		}
+            public static long Used => Total - Free;
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern ulong uv_hrtime();
 
-		public static ulong HighResolutionTime {
-			get {
-				return uv_hrtime();
-			}
-		}
+		public static ulong HighResolutionTime => uv_hrtime();
 
-		public static LoadAverage Load {
-			get {
-				return new LoadAverage();
-			}
-		}
+        public static LoadAverage Load => new();
 
-		public static NetworkInterface[] NetworkInterfaces {
-			get {
-				return NetworkInterface.GetInterfaces();
-			}
-		}
+        public static NetworkInterface[] NetworkInterfaces => NetworkInterface.GetInterfaces();
 
-		public static CpuInformation[] CpuInfo {
-			get {
-				return CpuInformation.GetInfo();
-			}
-		}
+        public static CpuInformation[] CpuInfo => CpuInformation.GetInfo();
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_uptime(out double uptime);
 
 		public static double Uptime {

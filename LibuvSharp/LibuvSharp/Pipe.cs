@@ -1,10 +1,9 @@
-using System;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	public abstract class BasePipeListener<TListener, TStream> : Listener<TStream>, ILocalAddress<string>, IBindable<TListener, string>
+	public abstract class BasePipeListener<TListener, TStream> 
+        : Listener<TStream>, ILocalAddress<string>, IBindable<TListener, string>
 		where TStream : class, IUVStream<ArraySegment<byte>>
 		where TListener : IListener<TStream>
 	{
@@ -19,12 +18,9 @@ namespace LibuvSharp
 			Invoke(NativeMethods.uv_pipe_bind, name);
 		}
 
-		public string LocalAddress {
-			get {
-				return UV.ToString(4096, (IntPtr buffer, ref IntPtr length) => NativeMethods.uv_pipe_getsockname(NativeHandle, buffer, ref length));
-			}
-		}
-	}
+		public string LocalAddress => 
+            UV.ToString(4096, (IntPtr buffer, ref IntPtr length) => NativeMethods.uv_pipe_getsockname(NativeHandle, buffer, ref length));
+    }
 
 	public class PipeListener : BasePipeListener<PipeListener, Pipe>
 	{
@@ -76,37 +72,33 @@ namespace LibuvSharp
 		{
 		}
 
-		unsafe internal Pipe(Loop loop, bool interProcessCommunication)
+		internal unsafe Pipe(Loop loop, bool interProcessCommunication)
 			: base(loop, HandleType.UV_NAMED_PIPE, NativeMethods.uv_pipe_init, interProcessCommunication ? 1 : 0)
 		{
 			pipe_t = (uv_pipe_t *)(this.NativeHandle.ToInt64() + Handle.Size(HandleType.UV_STREAM));
 		}
 
-		unsafe public bool InterProcessCommunication {
-			get {
-				return pipe_t->rpc >= 1;
-			}
-		}
+		public unsafe bool InterProcessCommunication => pipe_t->rpc >= 1;
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void uv_pipe_connect(IntPtr req, IntPtr handle, string name, callback connect_cb);
 
 		public void Connect(string name, Action<Exception> callback)
 		{
 			CheckDisposed();
 
-			Ensure.ArgumentNotNull(name, "name");
-			Ensure.ArgumentNotNull(callback, "callback");
+			Ensure.ArgumentNotNull(name, nameof(name));
+			Ensure.ArgumentNotNull(callback, nameof(callback));
 
-			ConnectRequest cpr = new ConnectRequest();
-			Pipe pipe = this;
+			var cpr = new ConnectRequest();
+			var pipe = this;
 
 			cpr.Callback = (status, cpr2) => Ensure.Success(status, callback, name);
 
 			uv_pipe_connect(cpr.Handle, pipe.NativeHandle, name, ConnectRequest.CallbackDelegate);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_pipe_getpeername(IntPtr handle, IntPtr buf, ref IntPtr len);
 
 		public string RemoteAddress {
@@ -130,15 +122,15 @@ namespace LibuvSharp
 		{
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_write2(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, IntPtr sendHandle, callback callback);
 
 		public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception> callback)
 		{
 			CheckDisposed();
 
-			GCHandle datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
-			CallbackPermaRequest cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
+			var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
+			var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
 			cpr.Callback = (status, cpr2) => {
 				datagchandle.Free();
 				Ensure.Success(status, callback);
@@ -147,14 +139,14 @@ namespace LibuvSharp
 			var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + segment.Offset);
 
 			var buf = new uv_buf_t[] { new uv_buf_t(ptr, segment.Count) };
-			int r = uv_write2(cpr.Handle, NativeHandle, buf, 1, handle.NativeHandle, CallbackPermaRequest.CallbackDelegate);
+			var r = uv_write2(cpr.Handle, NativeHandle, buf, 1, handle.NativeHandle, CallbackPermaRequest.CallbackDelegate);
 			Ensure.Success(r);
 		}
 
-		[DllImport(NativeMethods.libuv, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int uv_pipe_pending_count(IntPtr handle);
 
-		[DllImport(NativeMethods.libuv, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		public static extern HandleType uv_pipe_pending_type(IntPtr pipe);
 
 		protected override void OnData(ArraySegment<byte> data)
@@ -162,18 +154,14 @@ namespace LibuvSharp
 			var count = uv_pipe_pending_count(NativeHandle);
 			if (count-- > 0) {
 				var type = uv_pipe_pending_type(NativeHandle);
-				Handle handle = null;
-				switch (type) {
-				case HandleType.UV_UDP:
-					handle = new Udp(Loop);
-					break;
-				case HandleType.UV_TCP:
-					handle = new Tcp(Loop);
-					break;
-				case HandleType.UV_NAMED_PIPE:
-					handle = new Pipe(Loop);
-					break;
-				}
+				Handle? handle = type switch
+				{
+					HandleType.UV_UDP => new Udp(Loop),
+					HandleType.UV_TCP => new Tcp(Loop),
+					HandleType.UV_NAMED_PIPE => new Pipe(Loop),
+					_ => null
+				};
+
 				if (handle != null) {
 					Invoke(NativeMethods.uv_accept, handle.NativeHandle);
 					OnHandleData(handle, data);

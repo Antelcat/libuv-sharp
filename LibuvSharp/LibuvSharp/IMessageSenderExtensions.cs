@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 namespace LibuvSharp
 {
@@ -102,21 +101,21 @@ namespace LibuvSharp
 		public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, string ipAddress, int port, TPayload payload, Action<Exception> callback)
 			where TMessage : IMessage<IPEndPoint, TPayload>, new()
 		{
-			Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+			Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
 			sender.Send(IPAddress.Parse(ipAddress), port, payload, callback);
 		}
 
 		public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, string ipAddress, int port, TPayload payload)
 			where TMessage : IMessage<IPEndPoint, TPayload>, new()
 		{
-			Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+			Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
 			sender.Send(ipAddress, port, payload, null);
 		}
 
 		public static void Send<TMessage, TPayload>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, TPayload payload, Action<Exception> callback)
 			where TMessage : IMessage<IPEndPoint, TPayload>, new()
 		{
-			Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+			Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
 			sender.Send(new IPEndPoint(ipAddress, port), payload, callback);
 		}
 

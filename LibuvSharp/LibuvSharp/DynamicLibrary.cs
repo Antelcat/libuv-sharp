@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -40,33 +39,29 @@ namespace LibuvSharp
 
 	class LibuvDynamicLibrary : DynamicLibrary
 	{
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_dlopen(IntPtr name, IntPtr handle);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_dlopen(IntPtr name, IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_dlopen(string name, IntPtr handle);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_dlopen(string name, IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void uv_dlclose(IntPtr handle);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern void uv_dlclose(IntPtr handle);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
 
-		[DllImport("uv")]
-		internal extern static IntPtr uv_dlerror(IntPtr handle);
+		[DllImport(libuv.Lib)]
+		internal static extern IntPtr uv_dlerror(IntPtr handle);
 
-		[DllImport("uv")]
-		internal extern static IntPtr uv_dlerror_free(IntPtr handle);
+		[DllImport(libuv.Lib)]
+		internal static extern IntPtr uv_dlerror_free(IntPtr handle);
 
 		IntPtr handle = IntPtr.Zero;
 
-		public override bool Closed {
-			get {
-				return handle == IntPtr.Zero;
-			}
-		}
+		public override bool Closed => handle == IntPtr.Zero;
 
-		void Check(int ret)
+        void Check(int ret)
 		{
 			if (ret < 0) {
 				throw new Exception(Marshal.PtrToStringAnsi(uv_dlerror(handle)));
@@ -103,7 +98,7 @@ namespace LibuvSharp
 
 		public override IntPtr GetSymbol(string name)
 		{
-			IntPtr ptr = IntPtr.Zero;
+			var ptr = IntPtr.Zero;
 			if (uv_dlsym(handle, name, out ptr) < 0) {
 				throw new Exception(Marshal.PtrToStringAnsi(uv_dlerror(handle)));
 			}
@@ -136,13 +131,9 @@ namespace LibuvSharp
 			Check(LoadLibraryEx(name, IntPtr.Zero, LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH));
 		}
 
-		public override bool Closed {
-			get {
-				return handle == IntPtr.Zero;
-			}
-		}
+		public override bool Closed => handle == IntPtr.Zero;
 
-		public override void Close()
+        public override void Close()
 		{
 			if (!Closed) {
 				FreeLibrary(handle);

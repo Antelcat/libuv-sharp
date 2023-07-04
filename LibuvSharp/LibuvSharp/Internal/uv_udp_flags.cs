@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	enum uv_udp_flags : short

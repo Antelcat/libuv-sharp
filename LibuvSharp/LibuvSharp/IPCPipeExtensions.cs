@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Text;
 
 namespace LibuvSharp
 {
@@ -18,7 +16,7 @@ namespace LibuvSharp
 		}
 		public static void Write(this IPCPipe pipe, Handle handle, byte[] data, int index, Action<Exception> callback)
 		{
-			Ensure.ArgumentNotNull(data, "data");
+			Ensure.ArgumentNotNull(data, nameof(data));
 			pipe.Write(handle, data, index, data.Length - index, callback);
 		}
 		public static void Write(this IPCPipe pipe, Handle handle, byte[] data, int index)
@@ -58,7 +56,6 @@ namespace LibuvSharp
 		}
 
 		#endregion
-
 	}
 }
 

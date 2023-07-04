@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -66,18 +65,11 @@ namespace LibuvSharp
 		public IntPtr Offset { get; protected set; }
 		public IntPtr Count { get; protected set; }
 
-		public IntPtr Start {
-			get {
-				return At(Offset);
-			}
-		}
-		public IntPtr End {
-			get {
-				return At(Offset.ToInt64() + Count.ToInt64());
-			}
-		}
+		public IntPtr Start => At(Offset);
 
-		public IntPtr At(int offset)
+        public IntPtr End => At(Offset.ToInt64() + Count.ToInt64());
+
+        public IntPtr At(int offset)
 		{
 			return At((IntPtr)offset);
 		}

@@ -1,22 +1,20 @@
-﻿using System;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
 	public static class Timeout
 	{
 		private static Action<Exception> End(TimeSpan timeSpan, Action<Exception> callback)
 		{
-			UVTimer timer = null;
+			UVTimer? timer = null;
 
-			Action<Exception> end = (Exception exception) => {
-				if (timer != null) {
-					timer.Close();
-					timer = null;
-					if (callback != null) {
-						callback(exception);
-					}
-				}
-			};
+			var end = (Exception exception) =>
+            {
+                if (timer == null) return;
+                timer.Close();
+                timer = null;
+                if (callback != null) {
+                    callback(exception);
+                }
+            };
 
 			timer = UVTimer.Once(timeSpan, () => end(new TimeoutException()));
 

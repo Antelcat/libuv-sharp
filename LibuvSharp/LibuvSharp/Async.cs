@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -16,7 +15,7 @@ namespace LibuvSharp
 		public Async(Loop loop)
 			: base(loop, HandleType.UV_ASYNC)
 		{
-			int r = uv_async_init(loop.NativeHandle, NativeHandle, uv_callback);
+			var r = uv_async_init(loop.NativeHandle, NativeHandle, uv_callback);
 			Ensure.Success(r);
 		}
 

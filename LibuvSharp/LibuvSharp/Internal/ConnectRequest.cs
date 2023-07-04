@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -20,7 +19,7 @@ namespace LibuvSharp
 		public IntPtr handle;
 	}
 
-	unsafe internal class ConnectRequest : CallbackPermaRequest
+	internal unsafe class ConnectRequest : CallbackPermaRequest
 	{
 		uv_connect_t *connect;
 
@@ -30,11 +29,7 @@ namespace LibuvSharp
 			connect = (uv_connect_t *)Handle;
 		}
 
-		public IntPtr ConnectHandle {
-			get {
-				return connect->handle;
-			}
-		}
-	}
+		public IntPtr ConnectHandle => connect->handle;
+    }
 }
 

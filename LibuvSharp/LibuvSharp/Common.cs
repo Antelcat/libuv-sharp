@@ -1,7 +1,5 @@
-using System;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace LibuvSharp
 {
@@ -26,21 +24,21 @@ namespace LibuvSharp
 
 	public static class UV
 	{
-		unsafe internal static readonly int PointerSize = sizeof(IntPtr) / 4;
+		internal static readonly unsafe int PointerSize = sizeof(IntPtr) / 4;
 
 		internal static bool isUnix = (System.Environment.OSVersion.Platform == PlatformID.Unix) || (System.Environment.OSVersion.Platform == PlatformID.MacOSX);
-		internal static bool IsUnix { get { return isUnix; } }
+		internal static bool IsUnix => isUnix;
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_ip4_addr(string ip, int port, out sockaddr_in address);
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_ip4_addr(string ip, int port, out sockaddr_in address);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_ip6_addr(string ip, int port, out sockaddr_in6 address);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_ip6_addr(string ip, int port, out sockaddr_in6 address);
 
 		internal static sockaddr_in ToStruct(string ip, int port)
 		{
 			sockaddr_in address;
-			int r = uv_ip4_addr(ip, port, out address);
+			var r = uv_ip4_addr(ip, port, out address);
 			Ensure.Success(r);
 			return address;
 		}
@@ -48,31 +46,27 @@ namespace LibuvSharp
 		internal static sockaddr_in6 ToStruct6(string ip, int port)
 		{
 			sockaddr_in6 address;
-			int r = uv_ip6_addr(ip, port, out address);
+			var r = uv_ip6_addr(ip, port, out address);
 			Ensure.Success(r);
 			return address;
 		}
 
 		[DllImport("__Internal", EntryPoint = "ntohs", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static ushort ntohs_unix(ushort bytes);
+		internal static extern ushort ntohs_unix(ushort bytes);
 
 		[DllImport("Ws2_32", EntryPoint = "ntohs")]
-		internal extern static ushort ntohs_win(ushort bytes);
+		internal static extern ushort ntohs_win(ushort bytes);
 
 		internal static ushort ntohs(ushort bytes)
-		{
-			if (isUnix) {
-				return ntohs_unix(bytes);
-			} else {
-				return ntohs_win(bytes);
-			}
-		}
+        {
+            return isUnix ? ntohs_unix(bytes) : ntohs_win(bytes);
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_ip4_name(IntPtr src, byte[] dst, IntPtr size);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_ip4_name(IntPtr src, byte[] dst, IntPtr size);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int uv_ip6_name(IntPtr src, byte[] dst, IntPtr size);
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int uv_ip6_name(IntPtr src, byte[] dst, IntPtr size);
 
 
 		static bool IsMapping(byte[] data)
@@ -81,7 +75,7 @@ namespace LibuvSharp
 				return false;
 			}
 
-			for (int i = 0; i < 10; i++) {
+			for (var i = 0; i < 10; i++) {
 				if (data[i] != 0) {
 					return false;
 				}
@@ -93,25 +87,21 @@ namespace LibuvSharp
 		static IPAddress GetMapping(byte[] data)
 		{
 			var ip = new byte[4];
-			for (int i = 0; i < 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				ip[i] = data[12 + i];
 			}
 			return new IPAddress(ip);
 		}
 
-		unsafe internal static IPEndPoint GetIPEndPoint(IntPtr sockaddr, bool map)
+		internal static unsafe IPEndPoint GetIPEndPoint(IntPtr sockaddr, bool map)
 		{
-			sockaddr *sa = (sockaddr *)sockaddr;
-			byte[] addr = new byte[64];
+			var sa = (sockaddr *)sockaddr;
+			var addr = new byte[64];
 			int r;
-			if (sa->sin_family == 2) {
-				r = uv_ip4_name(sockaddr, addr, (IntPtr)addr.Length);
-			} else {
-				r = uv_ip6_name(sockaddr, addr, (IntPtr)addr.Length);
-			}
+			r = sa->sin_family == 2 ? uv_ip4_name(sockaddr, addr, (IntPtr)addr.Length) : uv_ip6_name(sockaddr, addr, (IntPtr)addr.Length);
 			Ensure.Success(r);
 
-			IPAddress ip = IPAddress.Parse(System.Text.Encoding.ASCII.GetString(addr, 0, strlen(addr)));
+			var ip = IPAddress.Parse(System.Text.Encoding.ASCII.GetString(addr, 0, strlen(addr)));
 
 			var bytes = ip.GetAddressBytes();
 			if (map && ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 && IsMapping(bytes)) {
@@ -122,14 +112,14 @@ namespace LibuvSharp
 		}
 
 		static int strlen(byte[] bytes) {
-			int i = 0;
+			var i = 0;
 			while (i < bytes.Length && bytes[i] != 0) {
 				i++;
 			}
 			return i;
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_req_size(RequestType type);
 
 		internal static int Sizeof(RequestType type)
@@ -153,7 +143,7 @@ namespace LibuvSharp
 
 		internal static IntPtr Alloc(int size)
 		{
-			IntPtr ptr = Marshal.AllocHGlobal(size);
+			var ptr = Marshal.AllocHGlobal(size);
 #if DEBUG
 			pointers.Add(ptr);
 #endif
@@ -174,13 +164,9 @@ namespace LibuvSharp
 #endif
 		}
 #if DEBUG
-		public static int PointerCount {
-			get {
-				return pointers.Count;
-			}
-		}
+		public static int PointerCount => pointers.Count;
 
-		public static void PrintPointers()
+        public static void PrintPointers()
 		{
 			var e = pointers.GetEnumerator();
 			Console.Write("[");
@@ -195,12 +181,12 @@ namespace LibuvSharp
 		}
 #endif
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		internal extern static uint uv_version();
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern uint uv_version();
 
 		public static void GetVersion(out int major, out int minor, out int patch)
 		{
-			uint version = uv_version();
+			var version = uv_version();
 			major = (int)(version & 0xFF0000) >> 16;
 			minor = (int)(version & 0xFF00) >> 8;
 			patch = (int)(version & 0xFF);
@@ -214,29 +200,21 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
-		unsafe internal extern static sbyte *uv_version_string();
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern unsafe sbyte *uv_version_string();
 
-		unsafe public static string VersionString {
-			get {
-				return new string(uv_version_string());
-			}
-		}
+		public static unsafe string VersionString => new(uv_version_string());
 
-		public static bool IsPreRelease {
-			get {
-				return VersionString.EndsWith("-pre");
-			}
-		}
+        public static bool IsPreRelease => VersionString.EndsWith("-pre");
 
-		internal delegate int uv_getsockname(IntPtr handle, IntPtr addr, ref int length);
+        internal delegate int uv_getsockname(IntPtr handle, IntPtr addr, ref int length);
 
-		unsafe internal static IPEndPoint GetSockname(Handle handle, uv_getsockname getsockname)
+		internal static unsafe IPEndPoint GetSockname(Handle handle, uv_getsockname getsockname)
 		{
 			sockaddr_in6 addr;
-			IntPtr ptr = new IntPtr(&addr);
-			int length = sizeof(sockaddr_in6);
-			int r = getsockname(handle.NativeHandle, ptr, ref length);
+			var ptr = new IntPtr(&addr);
+			var length = sizeof(sockaddr_in6);
+			var r = getsockname(handle.NativeHandle, ptr, ref length);
 			Ensure.Success(r);
 			return UV.GetIPEndPoint(ptr, true);
 		}
@@ -250,10 +228,10 @@ namespace LibuvSharp
 
 			int r;
 			if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
-				sockaddr_in address = UV.ToStruct(ipAddress.ToString(), port);
+				var address = UV.ToStruct(ipAddress.ToString(), port);
 				r = bind(handle.NativeHandle, ref address, 0);
 			} else {
-				sockaddr_in6 address = UV.ToStruct6(ipAddress.ToString(), port);
+				var address = UV.ToStruct6(ipAddress.ToString(), port);
 				r = bind6(handle.NativeHandle, ref address, (uint)(dualstack ? 0 : 1));
 			}
 			Ensure.Success(r);
@@ -263,11 +241,11 @@ namespace LibuvSharp
 
 		internal static string ToString(int size, callback func)
 		{
-			IntPtr ptr = IntPtr.Zero;
+			var ptr = IntPtr.Zero;
 			try {
 				ptr = Marshal.AllocHGlobal(size);
-				IntPtr sizePointer = (IntPtr)size;
-				int r = func(ptr, ref sizePointer);
+				var sizePointer = (IntPtr)size;
+				var r = func(ptr, ref sizePointer);
 				Ensure.Success(r);
 				return Marshal.PtrToStringAuto(ptr, sizePointer.ToInt32());
 			} finally {
@@ -279,10 +257,10 @@ namespace LibuvSharp
 
 		internal static string ToString(int size, Func<IntPtr, IntPtr, int> func)
 		{
-			IntPtr ptr = IntPtr.Zero;
+			var ptr = IntPtr.Zero;
 			try {
 				ptr = Marshal.AllocHGlobal(size);
-				int r = func(ptr, (IntPtr)size);
+				var r = func(ptr, (IntPtr)size);
 				Ensure.Success(r);
 				return Marshal.PtrToStringAuto(ptr);
 			} finally {

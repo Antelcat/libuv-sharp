@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-
 namespace LibuvSharp.Threading
 {
 	public static class LoopExtensions

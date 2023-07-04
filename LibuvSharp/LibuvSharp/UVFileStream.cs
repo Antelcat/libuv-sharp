@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace LibuvSharp
 {
 	public class UVFileStream : IUVStream<ArraySegment<byte>>, IDisposable, IHandle
@@ -22,21 +19,13 @@ namespace LibuvSharp
 			});
 		}
 
-		public bool HasRef {
-			get {
-				return true;
-			}
-		}
+		public bool HasRef => true;
 
-		public Loop Loop { get; private set; }
+        public Loop Loop { get; private set; }
 
-		public bool IsClosed {
-			get {
-				return uvfile == null;
-			}
-		}
+		public bool IsClosed => uvfile == null;
 
-		public bool IsClosing { get; private set; }
+        public bool IsClosing { get; private set; }
 
 		public UVFileStream()
 			: this(Loop.Constructor)

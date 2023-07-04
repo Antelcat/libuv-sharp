@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace LibuvSharp
+﻿namespace LibuvSharp
 {
 	public class AsyncWatcher<T> : IHandle, IDisposable
 	{
@@ -40,19 +37,11 @@ namespace LibuvSharp
 			async.Unref();
 		}
 
-		public bool HasRef {
-			get {
-				return async.HasRef;
-			}
-		}
+		public bool HasRef => async.HasRef;
 
-		public bool IsClosed {
-			get {
-				return async.IsClosed;
-			}
-		}
+        public bool IsClosed => async.IsClosed;
 
-		public void Close(Action callback)
+        public void Close(Action callback)
 		{
 			async.Close(callback);
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
@@ -49,7 +48,7 @@ namespace LibuvSharp
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle, uv_callback);
+			var r = function(NativeHandle, uv_callback);
 			Ensure.Success(r);
 		}
 	}

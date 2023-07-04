@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
@@ -8,17 +7,17 @@ namespace LibuvSharp
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int buffer_size_function(IntPtr handle, out int value);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_send_buffer_size(IntPtr handle, out int value);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_recv_buffer_size(IntPtr handle, out int value);
 
 		int Invoke(buffer_size_function function, int value)
 		{
 			CheckDisposed();
 
-			int r = function(NativeHandle, out value);
+			var r = function(NativeHandle, out value);
 			Ensure.Success(r);
 			return r;
 		}
@@ -29,22 +28,14 @@ namespace LibuvSharp
 		}
 
 		public int SendBufferSize {
-			get {
-				return Apply(uv_send_buffer_size, 0);
-			}
-			set {
-				Apply(uv_send_buffer_size, @value);
-			}
-		}
+			get => Apply(uv_send_buffer_size, 0);
+            set => Apply(uv_send_buffer_size, @value);
+        }
 
 		public int ReceiveBufferSize {
-			get {
-				return Apply(uv_recv_buffer_size, 0);
-			}
-			set {
-				Apply(uv_recv_buffer_size, @value);
-			}
-		}
+			get => Apply(uv_recv_buffer_size, 0);
+            set => Apply(uv_recv_buffer_size, @value);
+        }
 	}
 }
 

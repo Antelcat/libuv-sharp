@@ -1,40 +1,27 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
 {
-	unsafe internal class PermaRequest : IDisposable
+	internal unsafe class PermaRequest : IDisposable
 	{
 		public IntPtr Handle { get; protected set; }
 
 		protected uv_req_t *request;
 
 		public IntPtr Data {
-			get {
-				return request->data;
-			}
-			set {
-				request->data = value;
-			}
-		}
+			get => request->data;
+            set => request->data = value;
+        }
 
 		public RequestType RequestType {
-			get {
-				return request->type;
-			}
-			set {
-				request->type = value;
-			}
-		}
+			get => request->type;
+            set => request->type = value;
+        }
 
 		public GCHandle GCHandle {
-			get {
-				return GCHandle.FromIntPtr(Data);
-			}
-			set {
-				Data = GCHandle.ToIntPtr(value);
-			}
-		}
+			get => GCHandle.FromIntPtr(Data);
+            set => Data = GCHandle.ToIntPtr(value);
+        }
 
 		public PermaRequest(int size)
 			: this(UV.Alloc(size))
@@ -70,9 +57,9 @@ namespace LibuvSharp
 			}
 		}
 
-		unsafe public static T GetObject<T>(IntPtr ptr) where T : class
+		public static unsafe T? GetObject<T>(IntPtr ptr) where T : class
 		{
-			uv_req_t *req = (uv_req_t *)ptr.ToPointer();
+			var req = (uv_req_t *)ptr.ToPointer();
 			return GCHandle.FromIntPtr(req->data).Target as T;
 		}
 	}

@@ -1,5 +1,3 @@
-using System;
-
 namespace LibuvSharp
 {
 	public class UVFileStat

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -56,36 +54,28 @@ namespace LibuvSharp
 		public ICollection<UVStream> Streams { get; set; }
 	}
 
-	unsafe public class Process : Handle
+	public unsafe class Process : Handle
 	{
 		public long ExitCode { get; private set; }
 		public int TermSignal { get; private set; }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_get_process_title(IntPtr buffer, IntPtr size);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_set_process_title(string title);
 
 		public static string Title {
-			get {
-				return UV.ToString(4096, uv_get_process_title);
-			}
-			set {
-				uv_set_process_title(value);
-			}
-		}
+			get => UV.ToString(4096, uv_get_process_title);
+            set => uv_set_process_title(value);
+        }
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_exepath(IntPtr buffer, ref IntPtr size);
 
-		public static string ExecutablePath {
-			get {
-				return UV.ToString(4096, uv_exepath);
-			}
-		}
+		public static string ExecutablePath => UV.ToString(4096, uv_exepath);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_spawn(IntPtr loop, IntPtr handle, ref uv_process_options_t options);
 
 		uv_process_options_t process_options;
@@ -117,13 +107,9 @@ namespace LibuvSharp
 			}
 		}
 
-		public int ID {
-			get {
-				return process->pid;
-			}
-		}
+		public int ID => process->pid;
 
-		public static Process Spawn(ProcessOptions options)
+        public static Process Spawn(ProcessOptions options)
 		{
 			return Spawn(options, null);
 		}
@@ -141,12 +127,12 @@ namespace LibuvSharp
 		public static Process Spawn(Loop loop, ProcessOptions options, Action<Process> exitCallback)
 		{
 			var process = new Process(loop, options, exitCallback);
-			int r = uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options);
+			var r = uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options);
 			Ensure.Success(r);
 			return process;
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int uv_process_kill(IntPtr handle, int signum);
 
 		public void Kill(int signum)
@@ -159,7 +145,7 @@ namespace LibuvSharp
 			Kill((int)signum);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void uv_disable_stdio_inheritance();
 
 		public static void DisableStdioInheritance()

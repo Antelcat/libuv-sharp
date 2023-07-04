@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace LibuvSharp.Threading.Tasks
 {
 	public static class ListenerExtensions
@@ -26,7 +23,7 @@ namespace LibuvSharp.Threading.Tasks
 
 			Action<Exception, TClient> finish = null;
 
-			Action connectioncb = () => {
+			var connectioncb = () => {
 				try {
 					finish(null, listener.Accept());
 				} catch (Exception ex) {

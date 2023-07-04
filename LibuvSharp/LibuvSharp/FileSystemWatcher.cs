@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LibuvSharp
@@ -22,7 +21,7 @@ namespace LibuvSharp
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_fs_event_init(IntPtr loop, IntPtr handle);
 
 		static uv_fs_event_cb fs_event_callback;
@@ -46,7 +45,7 @@ namespace LibuvSharp
 			Start(path, FileSystemEventFlags.Default);
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_fs_event_start(IntPtr handle, uv_fs_event_cb callback, string filename, int flags);
 
 		public void Start(string path, FileSystemEventFlags flags)
@@ -74,7 +73,7 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_fs_event_getpath(IntPtr handle, IntPtr buf, ref IntPtr len);
 
 		public string Path {
@@ -85,7 +84,7 @@ namespace LibuvSharp
 			}
 		}
 
-		[DllImport("uv", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 		static extern int uv_fs_event_stop(IntPtr handle);
 
 		public void Stop()
