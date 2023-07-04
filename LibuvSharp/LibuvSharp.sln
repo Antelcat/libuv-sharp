@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp", "LibuvSharp\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp.Test", "LibuvSharp.Test\LibuvSharp.Test.csproj", "{F7021181-074A-4AA3-BB06-29EF09C727C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp.Consola", "LibuvSharp.Consola\LibuvSharp.Consola.csproj", "{BFD442B6-F5B0-4F9F-8406-B4630B995250}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
