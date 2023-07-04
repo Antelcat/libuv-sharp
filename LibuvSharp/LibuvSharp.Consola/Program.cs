@@ -45,25 +45,17 @@ public class Program
                     "--rtcMinPort=20000", "--rtcMaxPort=29999"
                 },
                 Environment = dic.Select(x => $"{x.Key}={x.Value}").ToArray(),
-                CurrentWorkingDirectory =
-                    @"D:\Shared\WorkSpace\Git\ThirdPart\Tubumu.Mediasoup\src\Tubumu.Meeting.Web\",
+                CurrentWorkingDirectory = @".",
                 File =
                     @"D:\Shared\WorkSpace\Git\ThirdPart\Tubumu.Mediasoup\src\Tubumu.Meeting.Web\mediasoup-worker.exe",
-                Streams = { pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
-            }, err =>
-            {
-                Console.WriteLine(err);
-            });
+                Streams = new List<UVStream>(){ pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
+            }, Console.WriteLine);
         }
         catch(Exception e)
         {
             throw e;
         }
-        process.Closed += () =>
-        {
-            source.SetResult();
-        };
-        Console.WriteLine(process.ID);
+        process.Closed += () => source.SetResult();
         await source.Task;
     }
     
