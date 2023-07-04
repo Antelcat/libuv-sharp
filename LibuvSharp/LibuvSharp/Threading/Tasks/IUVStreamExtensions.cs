@@ -13,9 +13,9 @@ public static class IUVStreamExtensions
 
 		Action<Exception, TData?> finish = null;
 
-		Action<Exception> error = (e) => finish(e, null);
-		Action<TData> data = (val) => finish(null, val);
-		var end = () => finish(null, null);
+		Action<Exception> error = (e) => finish?.Invoke(e, null);
+		Action<TData> data = (val) => finish?.Invoke(null, val);
+		var end = () => finish?.Invoke(null, null);
 
 		finish = HelperFunctions.Finish(tcs, () => {
 			stream.Pause();

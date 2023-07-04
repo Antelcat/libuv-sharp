@@ -21,13 +21,13 @@ public static class ListenerExtensions
 			return tcs.Task;
 		}
 
-		Action<Exception, TClient> finish = null;
+		Action<Exception, TClient>? finish = null;
 
 		var connectioncb = () => {
 			try {
-				finish(null, listener.Accept());
+				finish?.Invoke(null, listener.Accept());
 			} catch (Exception ex) {
-				finish(ex, default(TClient));
+				finish?.Invoke(ex, default(TClient));
 			}
 		};
 

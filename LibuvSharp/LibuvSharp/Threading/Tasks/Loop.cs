@@ -4,15 +4,8 @@ namespace LibuvSharp;
 
 public partial class Loop
 {
-	TaskFactory taskfactory = null;
-	public TaskFactory TaskFactory {
-		get {
-			if (taskfactory == null) {
-				taskfactory = new TaskFactory(Scheduler);
-			}
-			return taskfactory;
-		}
-	}
+	TaskFactory? taskfactory = null;
+	public TaskFactory TaskFactory => taskfactory ??= new TaskFactory(Scheduler);
 
 	public TaskScheduler Scheduler => LoopTaskScheduler.Instance;
 
@@ -44,15 +37,15 @@ public partial class Loop
 		}
 	}
 
-	public static Loop Current {
+	public static Loop? Current {
 		get {
 			if (currentLoop != null) {
 				return currentLoop;
 			}
 
 			var current = SynchronizationContext.Current;
-			if (current is LoopSynchronizationContext) {
-				return (current as LoopSynchronizationContext).Loop;
+			if (current is LoopSynchronizationContext context) {
+				return context.Loop;
 			}
 
 			// TODO: Think about returning exception
@@ -64,5 +57,5 @@ public partial class Loop
 	/// Returns Default Loop value when creating LibuvSharp objects.
 	/// </summary>
 	/// <value>A loop.</value>
-	internal static Loop Constructor => Loop.Current ?? Loop.Default;
+	internal static Loop Constructor => Current ?? Default;
 }

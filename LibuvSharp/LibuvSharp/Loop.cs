@@ -37,7 +37,7 @@ public partial class Loop : IDisposable
 	public static Loop Default => @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
 
 	[ThreadStatic]
-	private static Loop currentLoop;
+	private static Loop? currentLoop;
 
 	public IntPtr NativeHandle { get; protected set; }
 

@@ -59,5 +59,4 @@ public class Tests
         process.Closed += () => source.SetResult();
         await source.Task;
     }
-
 }
