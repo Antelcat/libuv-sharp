@@ -7,8 +7,6 @@ public class Program
     public static async Task Main(string[] args)
     {
         await Run();
-        //ConsoleDriver.Run(new Library());
-        //ParseSourceFile(@"D:\Shared\WorkSpace\Git\libuv-sharp\LibuvSharp\libuv\include\uv.h");
     }
 
     internal static async Task Run()
