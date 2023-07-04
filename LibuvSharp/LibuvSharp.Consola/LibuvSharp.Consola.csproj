@@ -11,8 +11,4 @@
       <ProjectReference Include="..\LibuvSharp\LibuvSharp.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="CppSharp" Version="1.0.54.626" />
-    </ItemGroup>
-
 </Project>
