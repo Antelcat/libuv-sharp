@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp", "LibuvSharp\LibuvSharp.csproj", "{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp.Test", "LibuvSharp.Test\LibuvSharp.Test.csproj", "{F7021181-074A-4AA3-BB06-29EF09C727C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp.Consola", "LibuvSharp.Consola\LibuvSharp.Consola.csproj", "{BFD442B6-F5B0-4F9F-8406-B4630B995250}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "process", "process\process.vcxproj", "{F52EC2B2-367A-456D-B7C4-A7349FB0D98E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7021181-074A-4AA3-BB06-29EF09C727C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFD442B6-F5B0-4F9F-8406-B4630B995250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52EC2B2-367A-456D-B7C4-A7349FB0D98E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F52EC2B2-367A-456D-B7C4-A7349FB0D98E}.Debug|Any CPU.Build.0 = Debug|Win32
+		{F52EC2B2-367A-456D-B7C4-A7349FB0D98E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F52EC2B2-367A-456D-B7C4-A7349FB0D98E}.Release|Any CPU.Build.0 = Release|Win32
+	EndGlobalSection
+EndGlobal
