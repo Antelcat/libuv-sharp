@@ -2,8 +2,8 @@
 
 public class AsyncWatcher<T> : IHandle, IDisposable
 {
-	Async async;
-	Queue<T> queue = new Queue<T>();
+	private readonly Async async;
+	private readonly Queue<T> queue = new Queue<T>(); 
 
 	public AsyncWatcher()
 		: this(Loop.Constructor)
@@ -59,12 +59,13 @@ public class AsyncWatcher<T> : IHandle, IDisposable
 		async.Send();
 	}
 
-	public void Send(IEnumerable<T> data) {
-		Ensure.ArgumentNotNull(data, "data");
+	public void Send(IEnumerable<T> data)
+	{
+		Ensure.ArgumentNotNull(data, nameof(data));
 
 		lock (queue) {
-			foreach (var dataitem in data) {
-				queue.Enqueue(dataitem);
+			foreach (var datafile in data) {
+				queue.Enqueue(datafile);
 			}
 		}
 		async.Send();
@@ -72,10 +73,8 @@ public class AsyncWatcher<T> : IHandle, IDisposable
 
 	public void OnCallback(T item)
 	{
-		if (Callback != null) {
-			Callback(item);
-		}
+		Callback?.Invoke(item);
 	}
 
-	public event Action<T> Callback;
+	public event Action<T>? Callback;
 }

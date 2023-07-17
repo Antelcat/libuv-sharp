@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
@@ -10,10 +11,9 @@ internal unsafe class FileSystemRequest : PermaRequest
 
 	public string Path { get; private set; }
 
-	public FileSystemRequest()
-		: base(Size)
+	public FileSystemRequest() : base(Size)
 	{
-		fsrequest = (uv_fs_t *)(Handle.ToInt64() + UV.Sizeof(RequestType.UV_REQ));
+		fsrequest = (uv_fs_t*)(Handle.ToInt64() + UV.Sizeof(RequestType.UV_REQ));
 	}
 
 	public FileSystemRequest(string path)
@@ -22,10 +22,8 @@ internal unsafe class FileSystemRequest : PermaRequest
 		Path = path;
 	}
 
-	public Action<Exception> Callback { get; set; }
+	public Action<Exception>? Callback { get; set; }
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	private static extern void uv_fs_req_cleanup(IntPtr req);
 
 	public override void Dispose(bool disposing)
 	{
@@ -41,23 +39,21 @@ internal unsafe class FileSystemRequest : PermaRequest
 
 	public void End(IntPtr ptr)
 	{
-		Exception e = null;
+		Exception? e = null;
 		var r = Result.ToInt32();
 		if (r < 0) {
 			e = Ensure.Map(r, string.IsNullOrEmpty(Path) ? null : Path);
 		}
 
-		if (Callback != null) {
-			Callback(e);
-		}
+		Callback?.Invoke(e);
 
 		Dispose();
 	}
 
-	public static NativeMethods.uv_fs_cb CallbackDelegate = StaticEnd;
+	public static uv_fs_cb CallbackDelegate = StaticEnd;
 
 	public static void StaticEnd(IntPtr ptr)
 	{
-		PermaRequest.GetObject<FileSystemRequest>(ptr)?.End(ptr);
+		GetObject<FileSystemRequest>(ptr)?.End(ptr);
 	}
 }

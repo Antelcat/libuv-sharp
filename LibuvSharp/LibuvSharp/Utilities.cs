@@ -7,7 +7,7 @@ public static partial class UtilitiesExtensions
 		Pump(readStream, writeStream, null);
 	}
 
-	public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception> callback)
+	public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception>? callback)
 	{
 		var pending = false;
 		var done = false;

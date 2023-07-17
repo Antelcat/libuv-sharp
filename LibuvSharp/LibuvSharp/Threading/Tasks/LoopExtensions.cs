@@ -8,7 +8,7 @@ public static class LoopExtensions
 #if TASK_STATUS
 			HelperFunctions.SetStatus(tcs.Task, TaskStatus.Running);
 #endif
-		Exception exception = null;
+		Exception? exception = null;
 		try {
 			loop.QueueUserWorkItem(() => {
 				try {

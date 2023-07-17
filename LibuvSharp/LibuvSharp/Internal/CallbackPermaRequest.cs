@@ -20,7 +20,7 @@ internal class CallbackPermaRequest : PermaRequest
 		Dispose();
 	}
 
-	public static Handle.callback CallbackDelegate = StaticEnd;
+	public static callback CallbackDelegate = StaticEnd;
 
 	public static void StaticEnd(IntPtr ptr, int status)
 	{

@@ -4,9 +4,6 @@ namespace LibuvSharp;
 
 public abstract class CallbackHandle : Handle
 {
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	protected delegate void uv_handle_cb(IntPtr handle);
-
 	protected static uv_handle_cb uv_callback = uv_handle;
 
 	public CallbackHandle(Loop loop, HandleType handleType)
@@ -24,13 +21,11 @@ public abstract class CallbackHandle : Handle
 		FromIntPtr<CallbackHandle>(handle).OnCallback();
 	}
 
-	public event Action Callback;
+	public event Action? Callback;
 
 	protected void OnCallback()
 	{
-		if (Callback != null) {
-			Callback();
-		}
+		Callback?.Invoke();
 	}
 }
 
@@ -47,7 +42,6 @@ public abstract class StartableCallbackHandle : CallbackHandle
 	protected void Invoke(Func<IntPtr, uv_handle_cb, int> function)
 	{
 		CheckDisposed();
-
 		var r = function(NativeHandle, uv_callback);
 		Ensure.Success(r);
 	}

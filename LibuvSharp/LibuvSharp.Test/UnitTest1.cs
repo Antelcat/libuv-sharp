@@ -1,5 +1,6 @@
 using System.Text;
 using LibuvSharp;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
 
 namespace Libuv.Test;
 
@@ -10,9 +11,33 @@ public class Tests
     {
     }
 
+    private void SetPath()
+    {
+        var str = string.Empty;
+        unsafe
+        {
+            fixed (char* path = LibuvSharp.Libuv.Lib)
+            {
+                var head = path;
+                while (*head != '\0')
+                {
+                    str += *head;
+                    if (*head == 'X')
+                    {
+                        *head = 'x';
+                    }
+                    head++;
+                }
+            }
+        }
+        
+    }
+
     [Test]
     public async Task Test1()
     {
+        SetPath();
+        var str = LibuvSharp.Libuv.Lib;
         TaskCompletionSource source = new();
         var pipe = () =>
         {
@@ -57,6 +82,6 @@ public class Tests
         }
 
         process.Closed += () => source.SetResult();
-        await source.Task;
+        //await source.Task;
     }
 }

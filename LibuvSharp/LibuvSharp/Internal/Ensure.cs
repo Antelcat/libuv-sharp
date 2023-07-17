@@ -4,7 +4,7 @@ namespace LibuvSharp;
 
 internal class Ensure
 {
-	internal static Exception Map(int systemErrorCode, string name = null)
+	internal static Exception? Map(int systemErrorCode, string? name = null)
 	{
 		// no error, just return null
 		if (!(systemErrorCode < 0)) {
@@ -18,7 +18,7 @@ internal class Ensure
 				return new ArgumentException(UVException.StringError(systemErrorCode));
 			case UVErrorCode.ENOENT:
 				var path = (name == null ? System.IO.Directory.GetCurrentDirectory() : Path.Combine(System.IO.Directory.GetCurrentDirectory(), name));
-				return new System.IO.FileNotFoundException(string.Format("Could not find file '{0}'.", path), path);
+				return new System.IO.FileNotFoundException($"Could not find file '{path}'.", path);
 			case UVErrorCode.ENOTSUP:
 				return new NotSupportedException();
 			default:
@@ -39,18 +39,14 @@ internal class Ensure
 		}
 	}
 
-	internal static void Success(int errorCode, Action<Exception> callback, string name = null)
+	internal static void Success(int errorCode, Action<Exception?>? callback, string? name = null)
 	{
-		if (callback != null) {
-			callback(Map(errorCode));
-		}
+		callback?.Invoke(Map(errorCode));
 	}
 
-	internal static void Success<T>(Exception ex, Action<Exception, T> callback, T arg)
+	internal static void Success<T>(Exception ex, Action<Exception, T>? callback, T arg)
 	{
-		if (callback != null) {
-			callback(ex, arg);
-		}
+		callback?.Invoke(ex, arg);
 	}
 
 	public static void ArgumentNotNull(object argumentValue, string argumentName)

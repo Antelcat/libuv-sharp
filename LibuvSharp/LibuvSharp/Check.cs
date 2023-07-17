@@ -1,18 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
+﻿using static LibuvSharp.Libuv;
 namespace LibuvSharp;
 
 public class Check : StartableCallbackHandle
 {
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_check_init(IntPtr loop, IntPtr idle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_check_start(IntPtr check, uv_handle_cb callback);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_check_stop(IntPtr check);
-
 	public Check()
 		: this(Loop.Constructor)
 	{

@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
@@ -59,27 +60,16 @@ public unsafe class Process : Handle
 	public long ExitCode { get; private set; }
 	public int TermSignal { get; private set; }
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_get_process_title(IntPtr buffer, IntPtr size);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_set_process_title(string title);
 
 	public static string Title {
 		get => UV.ToString(4096, uv_get_process_title);
 		set => uv_set_process_title(value);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_exepath(IntPtr buffer, ref IntPtr size);
-
 	public static string ExecutablePath => UV.ToString(4096, uv_exepath);
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_spawn(IntPtr loop, IntPtr handle, ref uv_process_options_t options);
-
 	uv_process_options_t process_options;
-	Action<Process> exitCallback;
+	Action<Process>? exitCallback;
 
 	internal Process(Loop loop, ProcessOptions options, Action<Process> exitCallback)
 		: base(loop, HandleType.UV_PROCESS)
@@ -93,9 +83,7 @@ public unsafe class Process : Handle
 		process_options.Dispose();
 		ExitCode = exit_status;
 		TermSignal = term_status;
-		if (exitCallback != null) {
-			exitCallback(this);
-		}
+		exitCallback?.Invoke(this);
 		Close();
 	}
 
@@ -132,8 +120,6 @@ public unsafe class Process : Handle
 		return process;
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_process_kill(IntPtr handle, int signum);
 
 	public void Kill(int signum)
 	{
@@ -145,8 +131,6 @@ public unsafe class Process : Handle
 		Kill((int)signum);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern void uv_disable_stdio_inheritance();
 
 	public static void DisableStdioInheritance()
 	{

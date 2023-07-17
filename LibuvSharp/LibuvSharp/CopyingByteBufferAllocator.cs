@@ -2,9 +2,9 @@ namespace LibuvSharp;
 
 public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
 {
-	BufferPin pin;
+	BufferPin? pin;
 
-	public byte[] Buffer => pin.Buffer;
+	public byte[]? Buffer => pin?.Buffer;
 
 	public override int Alloc(int size, out IntPtr ptr)
 	{

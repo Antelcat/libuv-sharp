@@ -11,12 +11,11 @@ public class UVFileStream
 	{
 	}
 
-	public void Close(Action callback)
+	public void Close(Action? callback)
 	{
-		Close((ex) => {
-			if (callback != null) {
-				callback();
-			}
+		Close(_ =>
+		{
+			callback?.Invoke();
 		});
 	}
 
@@ -38,7 +37,7 @@ public class UVFileStream
 		Loop = loop;
 	}
 
-	UVFile uvfile;
+	UVFile? uvfile;
 
 	public void OpenRead(string path, Action<Exception> callback)
 	{
@@ -50,7 +49,7 @@ public class UVFileStream
 		Open(path, UVFileAccess.Write, callback);
 	}
 
-	public void Open(string path, UVFileAccess access, Action<Exception> callback)
+	public void Open(string path, UVFileAccess access, Action<Exception>? callback)
 	{
 		Ensure.ArgumentNotNull(callback, "path");
 
@@ -79,21 +78,17 @@ public class UVFileStream
 
 	protected void OnComplete()
 	{
-		if (Complete != null) {
-			Complete();
-		}
+		Complete?.Invoke();
 	}
 
-	public event Action Complete;
+	public event Action? Complete;
 
 	protected void OnError(Exception ex)
 	{
-		if (Error != null) {
-			Error(ex);
-		}
+		Error?.Invoke(ex);
 	}
 
-	public event Action<Exception> Error;
+	public event Action<Exception>? Error;
 
 	public bool Readable { get; private set; }
 
@@ -101,7 +96,7 @@ public class UVFileStream
 	bool reading = false;
 	int readposition = 0;
 
-	void HandleRead(Exception ex, int size)
+	void HandleRead(Exception? ex, int size)
 	{
 		if (!reading) {
 			return;
@@ -197,12 +192,10 @@ public class UVFileStream
 
 	void OnDrain()
 	{
-		if (Drain != null) {
-			Drain();
-		}
+		Drain?.Invoke();
 	}
 
-	public event Action Drain;
+	public event Action? Drain;
 
 	public long WriteQueueSize { get; private set; }
 
@@ -218,7 +211,7 @@ public class UVFileStream
 	}
 
 	bool shutdown = false;
-	Action<Exception> shutdownCallback = null;
+	Action<Exception>? shutdownCallback;
 	public void Shutdown(Action<Exception> callback)
 	{
 		shutdown = true;
@@ -230,10 +223,9 @@ public class UVFileStream
 
 	void Close(Action<Exception> callback)
 	{
-		if (!IsClosed && !IsClosing) {
-			IsClosing = true;
-			uvfile.Close(callback);
-		}
+		if (IsClosed || IsClosing) return;
+		IsClosing = true;
+		uvfile.Close(callback);
 	}
 
 	void Close()

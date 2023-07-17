@@ -145,7 +145,7 @@ unsafe struct uv_process_options_t : IDisposable
 		}
 	}
 
-	static IntPtr alloc(string[] args)
+	static IntPtr alloc(string[]? args)
 	{
 		if (args == null) {
 			return IntPtr.Zero;

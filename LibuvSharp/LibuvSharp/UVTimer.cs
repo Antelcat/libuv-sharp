@@ -1,29 +1,11 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
 public class UVTimer : Handle
 {
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	delegate void uv_timer_cb(IntPtr loop);
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_timer_init(IntPtr loop, IntPtr timer);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_timer_start(IntPtr timer, uv_timer_cb callback, ulong timeout, ulong repeat);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_timer_stop(IntPtr timer);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_timer_again(IntPtr timer);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_timer_set_repeat(IntPtr timer, ulong repeat);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern ulong uv_timer_get_repeat(IntPtr timer);
 
 	Action onehit;
 

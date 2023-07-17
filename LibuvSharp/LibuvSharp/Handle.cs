@@ -1,15 +1,10 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
 public abstract unsafe class Handle : IHandle, IDisposable
 {
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void callback(IntPtr req, int status);
-
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void alloc_callback(IntPtr data, int size, out uv_buf_t buf);
-
 	public Loop Loop { get; protected set; }
 
 	public IntPtr NativeHandle { get; protected set; }
@@ -88,15 +83,10 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		Ensure.Success(r);
 	}
 
-	public event Action Closed;
+	public event Action? Closed;
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_close(IntPtr handle, close_callback cb);
 
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	delegate void close_callback(IntPtr handle);
-
-	Action closeCallback;
+	Action? closeCallback;
 
 	static close_callback close_cb = CloseCallback;
 
@@ -106,36 +96,27 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		handle.Cleanup(handlePointer, handle.closeCallback);
 	}
 
-	public void Cleanup(IntPtr nativeHandle, Action callback)
+	public void Cleanup(IntPtr nativeHandle, Action? callback)
 	{
 		// Remove handle
-		if (NativeHandle != IntPtr.Zero) {
-			Loop.handles.Remove(nativeHandle);
+		if (NativeHandle == IntPtr.Zero) return;
+		Loop.handles.Remove(nativeHandle);
 
-			UV.Free(nativeHandle);
+		UV.Free(nativeHandle);
+		NativeHandle = IntPtr.Zero;
+		Closed?.Invoke();
+		callback?.Invoke();
 
-			NativeHandle = IntPtr.Zero;
-
-			if (Closed != null) {
-				Closed();
-			}
-
-			if (callback != null) {
-				callback();
-			}
-
-			if (GCHandle.IsAllocated) {
-				GCHandle.Free();
-			}
+		if (GCHandle.IsAllocated) {
+			GCHandle.Free();
 		}
 	}
 
-	public void Close(Action callback)
+	public void Close(Action? callback)
 	{
-		if (!IsClosing && !IsClosed ) {
-			closeCallback = callback;
-			uv_close(NativeHandle, close_cb);
-		}
+		if (IsClosing || IsClosed) return;
+		closeCallback = callback;
+		uv_close(NativeHandle, close_cb);
 	}
 
 	public void Close()
@@ -156,9 +137,6 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		Close();
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_is_active(IntPtr handle);
-
 	public bool IsActive {
 		get {
 			if (IsClosed) {
@@ -167,10 +145,7 @@ public abstract unsafe class Handle : IHandle, IDisposable
 			return uv_is_active(NativeHandle) != 0;
 		}
 	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_is_closing(IntPtr handle);
-
+	
 	public bool IsClosing {
 		get {
 			if (IsClosed) {
@@ -186,15 +161,6 @@ public abstract unsafe class Handle : IHandle, IDisposable
 	/// </summary>
 	/// <value><c>true</c> if this instance is not closing or closed; otherwise, <c>false</c>.</value>
 	public bool IsAlive => !IsClosed && !IsClosing;
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_ref(IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_unref(IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_has_ref(IntPtr handle);
 
 	public void Ref()
 	{
@@ -221,17 +187,13 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		}
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_handle_size(HandleType type);
-
+	
 	public static int Size(HandleType type)
 	{
 		return uv_handle_size(type);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern HandleType uv_guess_handle(int fd);
-
+	
 	public static HandleType Guess(int fd)
 	{
 		return uv_guess_handle(fd);

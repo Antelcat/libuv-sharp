@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
@@ -18,12 +19,6 @@ public enum FileSystemEvent
 
 public class FileSystemWatcher : Handle
 {
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_fs_event_init(IntPtr loop, IntPtr handle);
-
 	static uv_fs_event_cb fs_event_callback;
 	static FileSystemWatcher()
 	{
@@ -45,9 +40,7 @@ public class FileSystemWatcher : Handle
 		Start(path, FileSystemEventFlags.Default);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_fs_event_start(IntPtr handle, uv_fs_event_cb callback, string filename, int flags);
-
+	
 	public void Start(string path, FileSystemEventFlags flags)
 	{
 		Invoke(uv_fs_event_start, fs_event_callback, path, (int)flags);
@@ -64,17 +57,12 @@ public class FileSystemWatcher : Handle
 
 	}
 
-	public event Action<string, FileSystemEvent> Change;
+	public event Action<string, FileSystemEvent>? Change;
 
 	void OnChange(string filename, FileSystemEvent @event)
 	{
-		if (Change != null) {
-			Change(filename, @event);
-		}
+		Change?.Invoke(filename, @event);
 	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_fs_event_getpath(IntPtr handle, IntPtr buf, ref IntPtr len);
 
 	public string Path {
 		get {
@@ -83,9 +71,6 @@ public class FileSystemWatcher : Handle
 			return UV.ToString(4096, (IntPtr buffer, ref IntPtr length) => uv_fs_event_getpath(NativeHandle, buffer, ref length));
 		}
 	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_fs_event_stop(IntPtr handle);
 
 	public void Stop()
 	{

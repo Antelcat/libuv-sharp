@@ -29,20 +29,18 @@ class HelperFunctions
 		}
 #endif
 
-	public static Action<Exception, T> Finish<T>(TaskCompletionSource<T> tcs, Action? callback)
+	public static Action<Exception?, T> Finish<T>(TaskCompletionSource<T> tcs, Action? callback)
 	{
 		var finished = false;
 
-		return (Exception exception, T value) => {
+		return (Exception? exception, T value) => {
 			if (finished) {
 				return;
 			}
 
 			finished = true;
 
-			if (callback != null) {
-				callback();
-			}
+			callback?.Invoke();
 
 			if (exception != null) {
 				tcs.SetException(exception);
@@ -52,9 +50,9 @@ class HelperFunctions
 		};
 	}
 
-	public static Action<Exception> Exception(TaskCompletionSource<object> tcs)
+	public static Action<Exception?> Exception(TaskCompletionSource<object> tcs)
 	{
-		return (Exception exception) => {
+		return (Exception? exception) => {
 			if (exception != null) {
 				tcs.SetException(exception);
 			} else {
@@ -63,9 +61,9 @@ class HelperFunctions
 		};
 	}
 
-	public static Action<Exception, TResult> Exception<TResult>(TaskCompletionSource<TResult> tcs)
+	public static Action<Exception?, TResult> Exception<TResult>(TaskCompletionSource<TResult> tcs)
 	{
-		return (Exception exception, TResult result) => {
+		return (Exception? exception, TResult result) => {
 			if (exception != null) {
 				tcs.SetException(exception);
 			} else {

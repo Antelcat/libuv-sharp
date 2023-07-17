@@ -1,6 +1,6 @@
 namespace LibuvSharp;
 
-unsafe class WorkRequest : PermaRequest
+class WorkRequest : PermaRequest
 {
 	public static readonly int Size = UV.Sizeof(LibuvSharp.RequestType.UV_WORK);
 
@@ -27,7 +27,7 @@ unsafe class WorkRequest : PermaRequest
 	public static void AfterCallback(IntPtr req)
 	{
 		var workreq = PermaRequest.GetObject<WorkRequest>(req);
-		workreq.after();
-		workreq.Dispose();
+		workreq?.after();
+		workreq?.Dispose();
 	}
 }

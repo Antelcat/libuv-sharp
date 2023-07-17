@@ -2,35 +2,27 @@ namespace LibuvSharp.Threading;
 
 public static class LoopExtensions
 {
-	public static void QueueUserWorkItem(this Loop loop, Action work, Action after)
+	public static void QueueUserWorkItem(this Loop loop, Action? work, Action? after)
 	{
 		loop.Ref();
 		ThreadPool.QueueUserWorkItem((_) => {
-			if (work != null) {
-				work();
-			}
+			work?.Invoke();
 			loop.Sync(() => {
 				loop.Unref();
-				if (after != null) {
-					after();
-				}
+				after?.Invoke();
 			});
 		});
 	}
 
-	public static void QueueUserWorkItem<T>(this Loop loop, T state, Action<T> work, Action after)
+	public static void QueueUserWorkItem<T>(this Loop loop, T state, Action<T>? work, Action? after)
 	{
 		loop.Ref();
 		ThreadPool.QueueUserWorkItem((o) => {
-			if (work != null) {
-				work((T)o);
-			}
+			work?.Invoke((T)o);
 			loop.Sync(() => {
 				loop.Unref();
-				if (after != null) {
-					after();
-				}
+				after?.Invoke();
 			});
-		}, (object)state);
+		}, (object?)state);
 	}
 }

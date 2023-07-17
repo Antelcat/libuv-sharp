@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
@@ -50,13 +51,7 @@ public unsafe class CpuInformation
 	public string Name { get; protected set; }
 	public int Speed { get; protected set; }
 	public CpuTimes Times { get; protected set; }
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_cpu_info(out IntPtr info, out int count);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern void uv_free_cpu_info(IntPtr info, int count);
-
+	
 	internal static CpuInformation[] GetInfo()
 	{
 		IntPtr info;
@@ -108,13 +103,6 @@ public unsafe class NetworkInterface
 	public IPAddress Address { get; protected set; }
 	public IPAddress Netmask { get; protected set; }
 
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_interface_addresses(out IntPtr address, out int count);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern void uv_free_interface_addresses(IntPtr address, int count);
-
 	internal static NetworkInterface[] GetInterfaces()
 	{
 		IntPtr interfaces;
@@ -136,9 +124,7 @@ public unsafe class NetworkInterface
 
 public unsafe class LoadAverage
 {
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern void uv_loadavg(IntPtr avg);
-
+	
 	internal LoadAverage()
 	{
 		var ptr = Marshal.AllocHGlobal(sizeof(double) * 3);
@@ -159,21 +145,12 @@ public static class Computer
 {
 	public static class Memory
 	{
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern long uv_get_free_memory();
-
 		public static long Free => uv_get_free_memory();
-
-		[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern long uv_get_total_memory();
 
 		public static long Total => uv_get_total_memory();
 
 		public static long Used => Total - Free;
 	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern ulong uv_hrtime();
 
 	public static ulong HighResolutionTime => uv_hrtime();
 
@@ -182,9 +159,6 @@ public static class Computer
 	public static NetworkInterface[] NetworkInterfaces => NetworkInterface.GetInterfaces();
 
 	public static CpuInformation[] CpuInfo => CpuInformation.GetInfo();
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_uptime(out double uptime);
 
 	public static double Uptime {
 		get {

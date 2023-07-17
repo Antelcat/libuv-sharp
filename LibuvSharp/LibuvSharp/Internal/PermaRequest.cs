@@ -49,10 +49,9 @@ internal unsafe class PermaRequest : IDisposable
 			Data = IntPtr.Zero;
 		}
 
-		if (Handle != IntPtr.Zero) {
-			UV.Free(Handle);
-			Handle = IntPtr.Zero;
-		}
+		if (Handle == IntPtr.Zero) return;
+		UV.Free(Handle);
+		Handle = IntPtr.Zero;
 	}
 
 	public static unsafe T? GetObject<T>(IntPtr ptr) where T : class

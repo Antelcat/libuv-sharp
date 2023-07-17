@@ -1,12 +1,9 @@
-using System.Runtime.InteropServices;
-
+using static LibuvSharp.Libuv;
 namespace LibuvSharp;
 
 public class Async : CallbackHandle
 {
-	[DllImport(libuv.Lib, CallingConvention=CallingConvention.Cdecl)]
-	static extern int uv_async_init(IntPtr loop, IntPtr handle, uv_handle_cb callback);
-
+	
 	public Async()
 		: this(Loop.Constructor)
 	{
@@ -19,8 +16,7 @@ public class Async : CallbackHandle
 		Ensure.Success(r);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_async_send(IntPtr handle);
+
 
 	public void Send()
 	{

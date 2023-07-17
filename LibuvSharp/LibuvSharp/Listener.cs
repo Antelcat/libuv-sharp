@@ -1,4 +1,6 @@
 namespace LibuvSharp;
+using static Libuv;
+
 
 public abstract class Listener<TStream> : Handle, IListener<TStream> where TStream : class
 {
@@ -33,7 +35,7 @@ public abstract class Listener<TStream> : Handle, IListener<TStream> where TStre
 
 	public void Listen(int backlog)
 	{
-		Invoke(NativeMethods.uv_listen, backlog, listen_cb);
+		Invoke(uv_listen, backlog, listen_cb);
 	}
 
 	public void Listen()
@@ -45,7 +47,7 @@ public abstract class Listener<TStream> : Handle, IListener<TStream> where TStre
 	{
 		var stream = Create();
 		try {
-			Invoke(NativeMethods.uv_accept, stream.NativeHandle);
+			Invoke(uv_accept, stream.NativeHandle);
 		} catch (Exception) {
 			stream.Dispose();
 			throw;
@@ -55,10 +57,8 @@ public abstract class Listener<TStream> : Handle, IListener<TStream> where TStre
 
 	void OnConnection()
 	{
-		if (Connection != null) {
-			Connection();
-		}
+		Connection?.Invoke();
 	}
 
-	public event Action Connection;
+	public event Action? Connection;
 }

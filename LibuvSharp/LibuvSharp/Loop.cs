@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-
+using static LibuvSharp.Libuv;
 namespace LibuvSharp;
 
 enum uv_run_mode : int
@@ -11,27 +11,7 @@ enum uv_run_mode : int
 
 public partial class Loop : IDisposable
 {
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern IntPtr uv_default_loop();
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_loop_init(IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_loop_close(IntPtr ptr);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern IntPtr uv_loop_size();
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_run(IntPtr loop, uv_run_mode mode);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_update_time(IntPtr loop);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern ulong uv_now(IntPtr loop);
-
+	
 	static Loop? @default;
 
 	public static Loop Default => @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
@@ -41,7 +21,7 @@ public partial class Loop : IDisposable
 
 	public IntPtr NativeHandle { get; protected set; }
 
-	public ByteBufferAllocatorBase ByteBufferAllocator { get; protected set; }
+	public ByteBufferAllocatorBase? ByteBufferAllocator { get; protected set; }
 
 	Async async;
 	AsyncCallback callback;
@@ -94,7 +74,7 @@ public partial class Loop : IDisposable
 
 	public bool IsRunning { get; private set; }
 
-	private bool RunGuard(Action action)
+	private bool RunGuard(Action? action)
 	{
 		if (IsRunning) {
 			return false;
@@ -106,9 +86,7 @@ public partial class Loop : IDisposable
 		IsRunning = true;
 		currentLoop = this;
 
-		if (action != null) {
-			action();
-		}
+		action?.Invoke();
 
 		IsRunning = false;
 		currentLoop = tmp;
@@ -118,10 +96,7 @@ public partial class Loop : IDisposable
 
 	private bool RunGuard(Action context, Func<bool> func)
 	{
-		if (!RunGuard(context)) {
-			return false;
-		}
-		return func();
+		return RunGuard(context) && func();
 	}
 
 	public bool Run()
@@ -206,12 +181,6 @@ public partial class Loop : IDisposable
 		Ensure.Success(r);
 	}
 
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	delegate void walk_cb(IntPtr handle, IntPtr arg);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_walk(IntPtr loop, walk_cb cb, IntPtr arg);
-
 	static walk_cb walk_callback = WalkCallback;
 	static void WalkCallback(IntPtr handle, IntPtr arg)
 	{
@@ -276,26 +245,13 @@ public partial class Loop : IDisposable
 		RefCount--;
 	}
 
-	LoopBackend loopBackend;
-	public LoopBackend Backend {
-		get {
-			if (loopBackend == null) {
-				loopBackend = new LoopBackend(this);
-			}
-			return loopBackend;
-		}
-	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern void uv_stop(IntPtr loop);
+	LoopBackend? loopBackend;
+	public LoopBackend Backend => loopBackend ??= new LoopBackend(this);
 
 	public void Stop()
 	{
 		uv_stop(NativeHandle);
 	}
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_loop_alive(IntPtr loop);
-
+	
 	public bool IsAlive => uv_loop_alive(NativeHandle) != 0;
 }

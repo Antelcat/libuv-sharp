@@ -2,7 +2,7 @@ namespace LibuvSharp;
 
 public abstract class ByteBufferAllocatorBase : IDisposable
 {
-	internal Handle.alloc_callback AllocCallback { get; set; }
+	internal alloc_callback AllocCallback { get; set; }
 
 	public ByteBufferAllocatorBase()
 	{

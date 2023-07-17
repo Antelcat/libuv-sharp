@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
@@ -10,17 +11,6 @@ public enum PollEvent : int
 
 public class Poll : Handle
 {
-	delegate void poll_callback(IntPtr handle, int status, int events);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_poll_init(IntPtr loop, IntPtr handle, int fd);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_poll_start(IntPtr handle, int events, poll_callback callback);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	static extern int uv_poll_stop(IntPtr handle);
-
 	public Poll(int fd)
 		: this(Loop.Constructor, fd)
 	{
@@ -53,8 +43,6 @@ public class Poll : Handle
 
 	void OnEvent(PollEvent events)
 	{
-		if (Event != null) {
-			Event(events);
-		}
+		Event?.Invoke(events);
 	}
 }

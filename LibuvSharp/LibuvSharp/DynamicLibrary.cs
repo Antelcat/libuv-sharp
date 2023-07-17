@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+using static LibuvSharp.Libuv;
+
 
 namespace LibuvSharp;
 
@@ -35,25 +37,7 @@ public abstract class DynamicLibrary
 
 class LibuvDynamicLibrary : DynamicLibrary
 {
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_dlopen(IntPtr name, IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_dlopen(string name, IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern void uv_dlclose(IntPtr handle);
-
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
-	internal static extern int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
-
-	[DllImport(libuv.Lib)]
-	internal static extern IntPtr uv_dlerror(IntPtr handle);
-
-	[DllImport(libuv.Lib)]
-	internal static extern IntPtr uv_dlerror_free(IntPtr handle);
-
-	IntPtr handle = IntPtr.Zero;
+	private IntPtr handle = IntPtr.Zero;
 
 	public override bool Closed => handle == IntPtr.Zero;
 
@@ -151,31 +135,4 @@ class WindowsDynamicLibrary : DynamicLibrary
 		pointer = GetProcAddress(handle, name);
 		return pointer != IntPtr.Zero;
 	}
-
-	[Flags]
-	public enum LoadLibraryFlags : uint
-	{
-		DONT_RESOLVE_DLL_REFERENCES = 0x00000001,
-		LOAD_IGNORE_CODE_AUTHZ_LEVEL = 0x00000010,
-		LOAD_LIBRARY_AS_DATAFILE = 0x00000002,
-		LOAD_WITH_ALTERED_SEARCH_PATH = 0x00000008,
-	}
-
-	[DllImport("kernel32.dll", EntryPoint = "FreeLibrary", SetLastError = true)]
-	public static extern bool FreeLibrary(IntPtr hModule);
-
-	[DllImport("kernel32.dll", EntryPoint = "LoadLibraryExW", CharSet = CharSet.Unicode, SetLastError = true)]
-	public static extern IntPtr LoadLibraryEx(
-		[MarshalAs(UnmanagedType.LPWStr)] string lpFileName,
-		IntPtr hFile,
-		[MarshalAs(UnmanagedType.U4)] LoadLibraryFlags dwFlags);
-
-	[DllImport("kernel32.dll", EntryPoint = "LoadLibraryExW", CharSet = CharSet.Unicode, SetLastError = true)]
-	public static extern IntPtr LoadLibraryEx(
-		IntPtr lpFileName,
-		IntPtr hFile,
-		[MarshalAs(UnmanagedType.U4)] LoadLibraryFlags dwFlags);
-
-	[DllImport("kernel32.dll", CharSet = CharSet.Ansi, EntryPoint = "GetProcAddress", ExactSpelling = true, SetLastError = true)]
-	public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 }

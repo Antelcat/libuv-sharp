@@ -10,7 +10,7 @@ public enum TTYMode : int
 
 public class TTY : UVStream
 {
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 	static extern int uv_tty_init(IntPtr loop, IntPtr tty, int fd, int readable);
 
 	public TTY(int fd)
@@ -33,14 +33,14 @@ public class TTY : UVStream
 	{
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 	static extern int uv_tty_set_mode(IntPtr tty, int mode);
 
 	public TTYMode Mode {
 		set => Invoke(uv_tty_set_mode, (int)value);
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 	static extern void uv_tty_reset_mode();
 
 	public static void ResetMode()
@@ -48,7 +48,7 @@ public class TTY : UVStream
 		uv_tty_reset_mode();
 	}
 
-	[DllImport(libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
 	static extern int uv_tty_get_winsize(IntPtr tty, out int width, out int height);
 
 	public bool GetWindowSize(out int width, out int height)
