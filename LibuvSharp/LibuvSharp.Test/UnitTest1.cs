@@ -1,6 +1,7 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using LibuvSharp;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
 
 namespace Libuv.Test;
 
@@ -9,6 +10,11 @@ public class Tests
     [SetUp]
     public void Setup()
     {
+        NativeLibrary.SetDllImportResolver(typeof(LibuvSharp.Libuv).Assembly, 
+            (a, b, c) =>
+        {
+            return IntPtr.Zero;
+        });
     }
 
     private void SetPath()
@@ -32,11 +38,11 @@ public class Tests
         }
         
     }
-
+    
     [Test]
     public async Task Test1()
     {
-        SetPath();
+        //SetPath();
         var str = LibuvSharp.Libuv.Lib;
         TaskCompletionSource source = new();
         var pipe = () =>
@@ -84,4 +90,6 @@ public class Tests
         process.Closed += () => source.SetResult();
         //await source.Task;
     }
+    
 }
+

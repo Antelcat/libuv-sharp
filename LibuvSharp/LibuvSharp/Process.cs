@@ -52,7 +52,7 @@ public class ProcessOptions
 	public int? UID { get; set; }
 	public int? GID { get; set ;}
 
-	public ICollection<UVStream> Streams { get; set; }
+	public ICollection<UVStream>? Streams { get; set; }
 }
 
 public unsafe class Process : Handle

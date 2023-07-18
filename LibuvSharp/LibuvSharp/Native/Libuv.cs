@@ -438,8 +438,8 @@ public static class Libuv
 
     [DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
     internal static extern void uv_walk(IntPtr loop, walk_cb cb, IntPtr arg);
-    
-    [DllImport(Libuv.Lib, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
+
+    [DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
     internal static extern int uv_write(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, callback callback);
 
     [DllImport(Libuv.Lib, CallingConvention = CallingConvention.Cdecl)]
@@ -448,12 +448,6 @@ public static class Libuv
     internal static extern int uv_write2(IntPtr req, IntPtr handle, uv_buf_t[] bufs, int bufcnt, IntPtr sendHandle,
         callback callback);
     
- 
-    
- 
-
-
-
 
     [DllImport("__Internal", EntryPoint = "ntohs", CallingConvention = CallingConvention.Cdecl)]
     internal static extern ushort ntohs_unix(ushort bytes);
@@ -480,6 +474,8 @@ public static class Libuv
         SetLastError = true)]
     public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 }
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+delegate void uv_exit_cb(IntPtr handle, long exit_status, int term_signal);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 delegate void uv_timer_cb(IntPtr loop);
