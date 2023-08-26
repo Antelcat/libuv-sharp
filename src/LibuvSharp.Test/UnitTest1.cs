@@ -87,8 +87,7 @@ public class Tests
             throw e;
         }
 
-        process.Closed += () => source.SetResult();
-        //await source.Task;
+        await Task.Delay(5000);
     }
     
 }
