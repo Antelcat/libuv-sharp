@@ -10,33 +10,6 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        NativeLibrary.SetDllImportResolver(typeof(LibuvSharp.Libuv).Assembly, 
-            (a, b, c) =>
-        {
-            return IntPtr.Zero;
-        });
-    }
-
-    private void SetPath()
-    {
-        var str = string.Empty;
-        unsafe
-        {
-            fixed (char* path = LibuvSharp.Libuv.Lib)
-            {
-                var head = path;
-                while (*head != '\0')
-                {
-                    str += *head;
-                    if (*head == 'X')
-                    {
-                        *head = 'x';
-                    }
-                    head++;
-                }
-            }
-        }
-        
     }
     
     [Test]
