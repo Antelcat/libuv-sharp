@@ -91,7 +91,10 @@ public unsafe class Process : Handle
 		get {
 			CheckDisposed();
 
-			return (uv_process_t*)(NativeHandle.ToInt32() + Handle.Size(HandleType.UV_HANDLE));
+			return (uv_process_t*)((Environment.Is64BitProcess
+				? NativeHandle.ToInt64()
+				: NativeHandle.ToInt32()) 
+			                       + Handle.Size(HandleType.UV_HANDLE));
 		}
 	}
 
