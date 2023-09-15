@@ -17,6 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CppSharp.Runtime" Version="1.0.54.626" />
       <PackageReference Include="Libuv" Version="1.10.0" />
     </ItemGroup>
 
