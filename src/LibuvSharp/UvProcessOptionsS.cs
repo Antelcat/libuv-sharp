@@ -14,11 +14,11 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         internal IntPtr args;
         internal IntPtr env;
         internal IntPtr cwd;
-        internal uint     flags;
-        internal int      stdio_count;
+        internal uint   flags;
+        internal int    stdio_count;
         internal IntPtr stdio;
-        internal byte     uid;
-        internal byte     gid;
+        internal byte   uid;
+        internal byte   gid;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_process_options_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
@@ -130,7 +130,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.UvExitCb ExitCb
+    public global::LibuvSharp.UvExitCb? ExitCb
     {
         get
         {
@@ -150,16 +150,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             if (__file_OwnsNativeMemory)
                 Marshal.FreeHGlobal(((__Internal*)__Instance)->file);
             __file_OwnsNativeMemory = true;
-            if (value == null)
-            {
-                ((__Internal*)__Instance)->file = global::System.IntPtr.Zero;
-                return;
-            }
-            var __bytes0   = global::System.Text.Encoding.UTF8.GetBytes(value);
-            var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
-            Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
-            Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
-            ((__Internal*)__Instance)->file = (IntPtr) __bytePtr0;
+            ((__Internal*)__Instance)->file = value.CopyToPointer();
         }
     }
 
@@ -238,10 +229,16 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         
         set
         {
-            if(value is null || value.Length == 0)return ;
-            var list   = value.Select(x => x == null ? IntPtr.Zero : x.__Instance);
-            var handle = Marshal.AllocHGlobal(list.Count());
-            StdioCount                       = value?.Length ?? 0;
+            if (value is null || value.Length == 0) return;
+            var start  = Marshal.AllocHGlobal(value.Length * sizeof(IntPtr));
+            var handle = start;
+            foreach (var containerS in value)
+            {
+                Marshal.WriteIntPtr(handle, containerS == null ? IntPtr.Zero : containerS.__Instance);
+                handle = IntPtr.Add(handle, 1);
+            }
+            ((__Internal*)__Instance)->stdio = start;
+            StdioCount                       = value.Length;
         }
     }
 

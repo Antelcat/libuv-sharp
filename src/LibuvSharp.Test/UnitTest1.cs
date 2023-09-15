@@ -20,8 +20,8 @@ public class Tests
             ios.Add(pipe);
         }
 
-        uv.UvSpawn(null,
-            null,
+        uv.UvSpawn(new UvLoopS(),
+            new UvProcessS(),
             new UvProcessOptionsS
             {
                 File =
