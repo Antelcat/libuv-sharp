@@ -9,16 +9,19 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CppSharp.Runtime" Version="1.0.54.626" />
-      <PackageReference Include="Libuv" Version="1.10.0" />
+        <PackageReference Include="CppSharp.Runtime" Version="1.0.54.626"/>
+        <PackageReference Include="Libuv" Version="1.10.0"/>
+
+        <InternalsVisibleTo Include="LibuvSharp.Test"/>
     </ItemGroup>
+
 
 </Project>

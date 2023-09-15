@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
+using LibuvSharp.Extensions;
 
 namespace LibuvSharp;
 
@@ -140,7 +141,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         set => ((__Internal*)__Instance)->exit_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public string File
+    public string? File
     {
         get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->file);
 
@@ -162,21 +163,33 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         }
     }
 
-    public sbyte** Args
+    public string[]? Args
     {
-        get => (sbyte**) ((__Internal*)__Instance)->args;
+        get => __internalArgs;
 
-        set => ((__Internal*)__Instance)->args = (IntPtr) value;
+        set
+        {
+            __internalArgs                  = value;
+            ((__Internal*)__Instance)->args = value.CopyToPointer();
+        }
+    }
+    
+    private string[]? __internalArgs;
+
+    public string[]? Env
+    {
+        get => __internalEnv;
+
+        set
+        {
+            __internalEnv                  = value;
+            ((__Internal*)__Instance)->env = value.CopyToPointer();
+        }
     }
 
-    public sbyte** Env
-    {
-        get => (sbyte**) ((__Internal*)__Instance)->env;
+    private string[]? __internalEnv;
 
-        set => ((__Internal*)__Instance)->env = (IntPtr) value;
-    }
-
-    public string Cwd
+    public string? Cwd
     {
         get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->cwd);
 
@@ -209,18 +222,29 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => ((__Internal*)__Instance)->stdio_count;
 
-        set => ((__Internal*)__Instance)->stdio_count = value;
+        private set => ((__Internal*)__Instance)->stdio_count = value;
     }
 
-    public global::LibuvSharp.UvStdioContainerS Stdio
+    public global::LibuvSharp.UvStdioContainerS[]? Stdio
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvStdioContainerS.__GetOrCreateInstance(((__Internal*)__Instance)->stdio, false);
-            return __result0;
+            var ret     = new UvStdioContainerS[StdioCount];
+            var pointer = (UvStdioContainerS.__Internal*)((__Internal*)__Instance)->stdio;
+            for (var i = 0; i < StdioCount; i++)
+            {
+                ret[StdioCount] = global::LibuvSharp.UvStdioContainerS.__GetOrCreateInstance((nint)pointer, false);
+                pointer++;
+            }
+
+            return ret;
         }
 
-        set => ((__Internal*)__Instance)->stdio = value is null ? IntPtr.Zero : value.__Instance;
+        set
+        {
+            ((__Internal*)__Instance)->stdio = value is null ? IntPtr.Zero : value[0].__Instance;
+            StdioCount                       = value?.Length ?? 0;
+        }
     }
 
     public byte Uid
