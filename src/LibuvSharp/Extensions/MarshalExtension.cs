@@ -16,15 +16,13 @@ internal static class MarshalExtension
     
     public static nint CopyToPointer(this string[]? arr,IntPtr? position = null)
     {
-        if (arr == null || arr.Length == 0) return IntPtr.Zero;
-        var lists = arr.Select(s => System.Text.Encoding.UTF8.GetBytes(s)).ToList();
-        var start = position ??= Marshal.AllocHGlobal(lists.Sum(x => x.Length + 1));
-        foreach (var bytes in lists)
+        if (arr == null || arr.Length <= 0) return IntPtr.Zero;
+        var start = position ??= Marshal.AllocHGlobal(IntPtr.Size * arr.Length);
+        foreach (var s in arr)
         {
-            var length = bytes.Length;
-            Marshal.Copy(bytes, 0, position.Value, length);
-            Marshal.WriteByte(position.Value + length, 0);
-            position = IntPtr.Add(position.Value, length + 1);
+            var ptr = s.CopyToPointer();
+            Marshal.WriteIntPtr(position.Value, ptr);
+            position = IntPtr.Add(position.Value, 1);
         }
         return start;
     }

@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Diagnostics;
 using LibuvSharp;
+using LibuvSharp.Extensions;
 
 namespace Libuv.Test;
 
@@ -20,8 +22,8 @@ public class Tests
             ios.Add(pipe);
         }
 
-        uv.UvSpawn(new UvLoopS(),
-            new UvProcessS(),
+        uv.UvSpawn(new(),
+            new(),
             new UvProcessOptionsS
             {
                 File =
@@ -29,18 +31,8 @@ public class Tests
                 Env = (from DictionaryEntry arg
                             in Environment.GetEnvironmentVariables()
                         select $"{arg.Key}={arg.Value}")
-                    .Append("MEDIASOUP_VERSION=__MEDIASOUP_VERSION__")
+                    .Append("MEDIASOUP_VERSION=3.11.12")
                     .ToArray(),
-                Args = new[]
-                {
-                    "--logLevel=debug", "--logTag=info",
-                    "--logTag=ice", "--logTag=rtx",
-                    "--logTag=bwe", "--logTag=score",
-                    "--logTag=simulcast", "--logTag=svc",
-                    "--logTag=sctp", "--logTag=message",
-                    "--rtcMinPort=20000", "--rtcMaxPort=29999"
-                },
-                Stdio = ios.ToArray()
             });
 
         await Task.Delay(10000);

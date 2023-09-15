@@ -130,7 +130,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.UvExitCb? ExitCb
+    public UvExitCb? ExitCb
     {
         get
         {
