@@ -7,841 +7,841 @@ public unsafe partial class uv
 {
     public partial struct __Internal
     {
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_version", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_version", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint UvVersion();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_version_string", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_version_string", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvVersionString();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_library_shutdown", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_library_shutdown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvLibraryShutdown();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_replace_allocator", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_replace_allocator", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReplaceAllocator(IntPtr malloc_func, IntPtr realloc_func, IntPtr calloc_func, IntPtr free_func);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_default_loop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_default_loop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvDefaultLoop();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopInit(IntPtr loop);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_close", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_close", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopClose(IntPtr loop);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_new", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_new", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvLoopNew();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_delete", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_delete", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvLoopDelete(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvLoopSize();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_alive", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_alive", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopAlive(IntPtr loop);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_configure", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_configure", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopConfigure(IntPtr loop, global::LibuvSharp.UvLoopOption option);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_fork", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_fork", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopFork(IntPtr loop);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_run", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_run", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRun(IntPtr _0, global::LibuvSharp.UvRunMode mode);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvStop(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_ref", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_ref", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRef(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_unref", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_unref", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvUnref(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_has_ref", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_has_ref", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvHasRef(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_update_time", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_update_time", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvUpdateTime(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_now", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_now", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvNow(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_backend_fd", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_backend_fd", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvBackendFd(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_backend_timeout", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_backend_timeout", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvBackendTimeout(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_translate_sys_error", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_translate_sys_error", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTranslateSysError(int sys_errno);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_strerror", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_strerror", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvStrerror(int err);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_strerror_r", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_strerror_r", CallingConvention = CallingConvention.Cdecl)]
         internal static extern sbyte* UvStrerrorR(int err, sbyte* buf, ulong buflen);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_err_name", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_err_name", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvErrName(int err);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_err_name_r", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_err_name_r", CallingConvention = CallingConvention.Cdecl)]
         internal static extern sbyte* UvErrNameR(int err, sbyte* buf, ulong buflen);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_shutdown", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_shutdown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvShutdown(IntPtr req, IntPtr handle, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvHandleSize(global::LibuvSharp.UvHandleType type);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_get_type", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_get_type", CallingConvention = CallingConvention.Cdecl)]
         internal static extern global::LibuvSharp.UvHandleType UvHandleGetType(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_type_name", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_type_name", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvHandleTypeName(global::LibuvSharp.UvHandleType type);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_get_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_get_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvHandleGetData(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_get_loop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_get_loop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvHandleGetLoop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_handle_set_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_set_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvHandleSetData(IntPtr handle, IntPtr data);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_req_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvReqSize(global::LibuvSharp.UvReqType type);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_req_get_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_get_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvReqGetData(IntPtr req);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_req_set_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_set_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvReqSetData(IntPtr req, IntPtr data);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_req_get_type", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_get_type", CallingConvention = CallingConvention.Cdecl)]
         internal static extern global::LibuvSharp.UvReqType UvReqGetType(IntPtr req);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_req_type_name", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_type_name", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvReqTypeName(global::LibuvSharp.UvReqType type);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_is_active", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_active", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsActive(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_walk", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_walk", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvWalk(IntPtr loop, IntPtr walk_cb, IntPtr arg);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_print_all_handles", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_print_all_handles", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvPrintAllHandles(IntPtr loop, IntPtr stream);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_print_active_handles", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_print_active_handles", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvPrintActiveHandles(IntPtr loop, IntPtr stream);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_close", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_close", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvClose(IntPtr handle, IntPtr close_cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_send_buffer_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_send_buffer_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSendBufferSize(IntPtr handle, int* value);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_recv_buffer_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_recv_buffer_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRecvBufferSize(IntPtr handle, int* value);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fileno", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFileno(IntPtr handle, IntPtr* fd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_buf_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_buf_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvBufInit(IntPtr @return, sbyte* @base, uint len);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipe(int[] fds, int read_flags, int write_flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_socketpair", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_socketpair", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSocketpair(int type, int protocol, ulong[] socket_vector, int flags0, int flags1);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_stream_get_write_queue_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_stream_get_write_queue_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvStreamGetWriteQueueSize(IntPtr stream);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_listen", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_listen", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvListen(IntPtr stream, int backlog, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_accept", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_accept", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvAccept(IntPtr server, IntPtr client);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_read_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_read_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReadStart(IntPtr _0, IntPtr alloc_cb, IntPtr read_cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_read_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_read_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReadStop(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvWrite(IntPtr req, IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_write2", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write2", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvWrite2(IntPtr req, IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_try_write", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTryWrite(IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_try_write2", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write2", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTryWrite2(IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_is_readable", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_readable", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsReadable(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_is_writable", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_writable", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsWritable(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_stream_set_blocking", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_stream_set_blocking", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvStreamSetBlocking(IntPtr handle, int blocking);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_is_closing", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_closing", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsClosing(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpInit(IntPtr _0, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_init_ex", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_init_ex", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpInitEx(IntPtr _0, IntPtr handle, uint flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpOpen(IntPtr handle, ulong sock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_nodelay", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_nodelay", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpNodelay(IntPtr handle, int enable);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_keepalive", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_keepalive", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpKeepalive(IntPtr handle, int enable, uint delay);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_simultaneous_accepts", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_simultaneous_accepts", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpSimultaneousAccepts(IntPtr handle, int enable);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tcp_close_reset", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tcp_close_reset", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTcpCloseReset(IntPtr handle, IntPtr close_cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpInit(IntPtr _0, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_init_ex", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_init_ex", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpInitEx(IntPtr _0, IntPtr handle, uint flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpOpen(IntPtr handle, ulong sock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_membership", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_membership", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr, global::LibuvSharp.UvMembership membership);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_source_membership", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_source_membership", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetSourceMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string source_addr, global::LibuvSharp.UvMembership membership);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_multicast_loop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_multicast_loop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetMulticastLoop(IntPtr handle, int on);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_multicast_ttl", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_multicast_ttl", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetMulticastTtl(IntPtr handle, int ttl);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_multicast_interface", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_multicast_interface", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetMulticastInterface(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_broadcast", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_broadcast", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetBroadcast(IntPtr handle, int on);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_set_ttl", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_ttl", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetTtl(IntPtr handle, int ttl);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_using_recvmmsg", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_using_recvmmsg", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpUsingRecvmmsg(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_recv_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_recv_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpRecvStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_get_send_queue_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_get_send_queue_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvUdpGetSendQueueSize(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_udp_get_send_queue_count", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_get_send_queue_count", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvUdpGetSendQueueCount(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtyInit(IntPtr _0, IntPtr _1, int fd, int readable);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_set_mode", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_set_mode", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtySetMode(IntPtr _0, global::LibuvSharp.UvTtyModeT mode);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_reset_mode", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_reset_mode", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtyResetMode();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_get_winsize", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_get_winsize", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtyGetWinsize(IntPtr _0, int* width, int* height);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_set_vterm_state", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_set_vterm_state", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvTtySetVtermState(global::LibuvSharp.UvTtyVtermstateT state);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_tty_get_vterm_state", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_get_vterm_state", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtyGetVtermState(global::LibuvSharp.UvTtyVtermstateT* state);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "?uv_tty_set_mode@@YAHPEAUuv_tty_s@@H@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "?uv_tty_set_mode@@YAHPEAUuv_tty_s@@H@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtySetMode_1(IntPtr handle, int mode);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_guess_handle", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_guess_handle", CallingConvention = CallingConvention.Cdecl)]
         internal static extern global::LibuvSharp.UvHandleType UvGuessHandle(int file);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeInit(IntPtr _0, IntPtr handle, int ipc);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_open", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeOpen(IntPtr _0, int file);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_bind", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_bind", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeBind(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_bind2", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_bind2", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeBind2(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, ulong namelen, uint flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_connect", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_connect", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvPipeConnect(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_connect2", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_connect2", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeConnect2(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, ulong namelen, uint flags, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_getsockname", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_getsockname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeGetsockname(IntPtr handle, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_getpeername", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_getpeername", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeGetpeername(IntPtr handle, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_pending_instances", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_pending_instances", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvPipePendingInstances(IntPtr handle, int count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_pending_count", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_pending_count", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipePendingCount(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_pending_type", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_pending_type", CallingConvention = CallingConvention.Cdecl)]
         internal static extern global::LibuvSharp.UvHandleType UvPipePendingType(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_pipe_chmod", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_chmod", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeChmod(IntPtr handle, int flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_poll_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_poll_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPollInit(IntPtr loop, IntPtr handle, int fd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_poll_init_socket", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_poll_init_socket", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPollInitSocket(IntPtr loop, IntPtr handle, ulong socket);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_poll_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_poll_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPollStart(IntPtr handle, int events, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_poll_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_poll_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPollStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_prepare_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_prepare_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPrepareInit(IntPtr _0, IntPtr prepare);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_prepare_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_prepare_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPrepareStart(IntPtr prepare, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_prepare_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_prepare_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPrepareStop(IntPtr prepare);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_check_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_check_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCheckInit(IntPtr _0, IntPtr check);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_check_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_check_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCheckStart(IntPtr check, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_check_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_check_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCheckStop(IntPtr check);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_idle_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_idle_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIdleInit(IntPtr _0, IntPtr idle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_idle_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_idle_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIdleStart(IntPtr idle, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_idle_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_idle_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIdleStop(IntPtr idle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_async_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_async_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvAsyncInit(IntPtr _0, IntPtr async, IntPtr async_cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_async_send", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_async_send", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvAsyncSend(IntPtr async);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTimerInit(IntPtr _0, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTimerStart(IntPtr handle, IntPtr cb, ulong timeout, ulong repeat);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTimerStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_again", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_again", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTimerAgain(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_set_repeat", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_set_repeat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvTimerSetRepeat(IntPtr handle, ulong repeat);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_get_repeat", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_get_repeat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvTimerGetRepeat(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_timer_get_due_in", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_timer_get_due_in", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvTimerGetDueIn(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_spawn", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_spawn", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSpawn(IntPtr loop, IntPtr handle, IntPtr options);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_process_kill", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_process_kill", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvProcessKill(IntPtr _0, int signum);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_kill", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_kill", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvKill(int pid, int signum);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_process_get_pid", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_process_get_pid", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvProcessGetPid(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_queue_work", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_queue_work", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvQueueWork(IntPtr loop, IntPtr req, IntPtr work_cb, IntPtr after_work_cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cancel", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cancel", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCancel(IntPtr req);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_setup_args", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_setup_args", CallingConvention = CallingConvention.Cdecl)]
         internal static extern sbyte** UvSetupArgs(int argc, sbyte** argv);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_process_title", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_process_title", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvGetProcessTitle(sbyte* buffer, ulong size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_set_process_title", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_set_process_title", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSetProcessTitle([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string title);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_resident_set_memory", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_resident_set_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvResidentSetMemory(ulong* rss);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_uptime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_uptime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUptime(double* uptime);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_osfhandle", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_osfhandle", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvGetOsfhandle(int fd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_open_osfhandle", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_open_osfhandle", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOpenOsfhandle(IntPtr os_fd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_getrusage", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_getrusage", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvGetrusage(IntPtr rusage);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_homedir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_homedir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsHomedir(sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_tmpdir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_tmpdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsTmpdir(sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_get_passwd", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_get_passwd", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetPasswd(IntPtr pwd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_free_passwd", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_free_passwd", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvOsFreePasswd(IntPtr pwd);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_get_passwd2", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_get_passwd2", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetPasswd2(IntPtr pwd, byte uid);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_get_group", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_get_group", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetGroup(IntPtr grp, byte gid);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_free_group", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_free_group", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvOsFreeGroup(IntPtr grp);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_getpid", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_getpid", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetpid();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_getppid", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_getppid", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetppid();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_getpriority", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_getpriority", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetpriority(int pid, int* priority);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_setpriority", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_setpriority", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsSetpriority(int pid, int priority);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_available_parallelism", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_available_parallelism", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint UvAvailableParallelism();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cpu_info", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cpu_info", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCpuInfo(IntPtr cpu_infos, int* count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_free_cpu_info", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_free_cpu_info", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvFreeCpuInfo(IntPtr cpu_infos, int count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cpumask_size", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cpumask_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCpumaskSize();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_interface_addresses", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_interface_addresses", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvInterfaceAddresses(IntPtr addresses, int* count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_free_interface_addresses", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_free_interface_addresses", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvFreeInterfaceAddresses(IntPtr addresses, int count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_environ", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_environ", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsEnviron(IntPtr envitems, int* count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_free_environ", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_free_environ", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvOsFreeEnviron(IntPtr envitems, int count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_getenv", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_getenv", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_setenv", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_setenv", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsSetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string value);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_unsetenv", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_unsetenv", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsUnsetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_gethostname", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_gethostname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGethostname(sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_os_uname", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_uname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsUname(IntPtr buffer);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_metrics_info", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_metrics_info", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvMetricsInfo(IntPtr loop, IntPtr metrics);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_metrics_idle_time", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_metrics_idle_time", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvMetricsIdleTime(IntPtr loop);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_type", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_type", CallingConvention = CallingConvention.Cdecl)]
         internal static extern global::LibuvSharp.UvFsType UvFsGetType(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_result", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_result", CallingConvention = CallingConvention.Cdecl)]
         internal static extern long UvFsGetResult(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_system_error", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_system_error", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsGetSystemError(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_ptr", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_ptr", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvFsGetPtr(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_path", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_path", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvFsGetPath(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_get_statbuf", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_statbuf", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvFsGetStatbuf(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_req_cleanup", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_req_cleanup", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvFsReqCleanup(IntPtr req);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_close", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_close", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsClose(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_open", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_open", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsOpen(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int flags, int mode, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_read", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_read", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsRead(IntPtr loop, IntPtr req, int file, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_unlink", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_unlink", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsUnlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_write", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_write", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsWrite(IntPtr loop, IntPtr req, int file, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_copyfile", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_copyfile", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsCopyfile(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, int flags, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_mkdir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsMkdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_mkdtemp", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkdtemp", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsMkdtemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string tpl, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_mkstemp", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkstemp", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsMkstemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string tpl, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_rmdir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_rmdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsRmdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_scandir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_scandir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsScandir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int flags, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_scandir_next", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_scandir_next", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsScandirNext(IntPtr req, IntPtr ent);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_opendir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_opendir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsOpendir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_readdir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_readdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsReaddir(IntPtr loop, IntPtr req, IntPtr dir, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_closedir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_closedir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsClosedir(IntPtr loop, IntPtr req, IntPtr dir, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_stat", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_stat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsStat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_fstat", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fstat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFstat(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_rename", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_rename", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsRename(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_fsync", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fsync", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFsync(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_fdatasync", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fdatasync", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFdatasync(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_ftruncate", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_ftruncate", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFtruncate(IntPtr loop, IntPtr req, int file, long offset, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_sendfile", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_sendfile", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsSendfile(IntPtr loop, IntPtr req, int out_fd, int in_fd, long in_offset, ulong length, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_access", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_access", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsAccess(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_chmod", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_chmod", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsChmod(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_utime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_utime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsUtime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_futime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_futime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFutime(IntPtr loop, IntPtr req, int file, double atime, double mtime, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_lutime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lutime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsLutime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_lstat", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lstat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsLstat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_link", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_link", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsLink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_symlink", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_symlink", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsSymlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, int flags, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_readlink", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_readlink", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsReadlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_realpath", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_realpath", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsRealpath(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_fchmod", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fchmod", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFchmod(IntPtr loop, IntPtr req, int file, int mode, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_chown", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_chown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsChown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_fchown", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fchown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFchown(IntPtr loop, IntPtr req, int file, byte uid, byte gid, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_lchown", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lchown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsLchown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_statfs", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_statfs", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsStatfs(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_poll_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollInit(IntPtr loop, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_poll_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollStart(IntPtr handle, IntPtr poll_cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, uint interval);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_poll_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_poll_getpath", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_getpath", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollGetpath(IntPtr handle, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_signal_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_signal_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSignalInit(IntPtr loop, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_signal_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_signal_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSignalStart(IntPtr handle, IntPtr signal_cb, int signum);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_signal_start_oneshot", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_signal_start_oneshot", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSignalStartOneshot(IntPtr handle, IntPtr signal_cb, int signum);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_signal_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_signal_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSignalStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loadavg", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loadavg", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvLoadavg(double[] avg);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_event_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsEventInit(IntPtr loop, IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_event_start", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsEventStart(IntPtr handle, IntPtr cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, uint flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_event_stop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsEventStop(IntPtr handle);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_fs_event_getpath", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_getpath", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsEventGetpath(IntPtr handle, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_inet_ntop", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_inet_ntop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvInetNtop(int af, IntPtr src, sbyte* dst, ulong size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_inet_pton", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_inet_pton", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvInetPton(int af, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string src, IntPtr dst);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_random", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_random", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRandom(IntPtr loop, IntPtr req, IntPtr buf, ulong buflen, uint flags, IntPtr cb);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_if_indextoname", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_if_indextoname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIfIndextoname(uint ifindex, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_if_indextoiid", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_if_indextoiid", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIfIndextoiid(uint ifindex, sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_exepath", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_exepath", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvExepath(sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cwd", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cwd", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCwd(sbyte* buffer, ulong* size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_chdir", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_chdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvChdir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string dir);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_free_memory", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_free_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvGetFreeMemory();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_total_memory", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_total_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvGetTotalMemory();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_constrained_memory", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_constrained_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvGetConstrainedMemory();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_get_available_memory", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_available_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvGetAvailableMemory();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_clock_gettime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_clock_gettime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvClockGettime(global::LibuvSharp.UvClockId clock_id, IntPtr ts);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_hrtime", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_hrtime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvHrtime();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sleep", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sleep", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvSleep(uint msec);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_disable_stdio_inheritance", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_disable_stdio_inheritance", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvDisableStdioInheritance();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_dlopen", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlopen", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvDlopen([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string filename, IntPtr lib);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_dlclose", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlclose", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvDlclose(IntPtr lib);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_dlsym", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlsym", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvDlsym(IntPtr lib, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, IntPtr* ptr);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_dlerror", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlerror", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvDlerror(IntPtr lib);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRwlockInit(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_destroy", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_destroy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRwlockDestroy(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_rdlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_rdlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRwlockRdlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_tryrdlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_tryrdlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRwlockTryrdlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_rdunlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_rdunlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRwlockRdunlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_wrlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_wrlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRwlockWrlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_trywrlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_trywrlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRwlockTrywrlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_rwlock_wrunlock", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_rwlock_wrunlock", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvRwlockWrunlock(IntPtr rwlock);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sem_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sem_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSemInit(IntPtr* sem, uint value);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sem_destroy", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sem_destroy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvSemDestroy(IntPtr* sem);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sem_post", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sem_post", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvSemPost(IntPtr* sem);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sem_wait", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sem_wait", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvSemWait(IntPtr* sem);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_sem_trywait", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_sem_trywait", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSemTrywait(IntPtr* sem);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cond_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cond_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvCondInit(IntPtr cond);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cond_destroy", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cond_destroy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvCondDestroy(IntPtr cond);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cond_signal", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cond_signal", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvCondSignal(IntPtr cond);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_cond_broadcast", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_cond_broadcast", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvCondBroadcast(IntPtr cond);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_barrier_init", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_barrier_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvBarrierInit(IntPtr barrier, uint count);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_barrier_destroy", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_barrier_destroy", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvBarrierDestroy(IntPtr barrier);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_barrier_wait", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_barrier_wait", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvBarrierWait(IntPtr barrier);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_once", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_once", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvOnce(IntPtr guard, IntPtr callback);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_key_create", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_key_create", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvKeyCreate(IntPtr key);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_key_delete", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_key_delete", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvKeyDelete(IntPtr key);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_key_get", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_key_get", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvKeyGet(IntPtr key);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_key_set", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_key_set", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvKeySet(IntPtr key, IntPtr value);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_gettimeofday", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_gettimeofday", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvGettimeofday(IntPtr tv);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_create", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_create", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadCreate(IntPtr* tid, IntPtr entry, IntPtr arg);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_create_ex", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_create_ex", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadCreateEx(IntPtr* tid, IntPtr @params, IntPtr entry, IntPtr arg);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_setaffinity", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_setaffinity", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadSetaffinity(IntPtr* tid, sbyte* cpumask, sbyte* oldmask, ulong mask_size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_getaffinity", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_getaffinity", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadGetaffinity(IntPtr* tid, sbyte* cpumask, ulong mask_size);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_getcpu", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_getcpu", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadGetcpu();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_self", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_self", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvThreadSelf();
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_join", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_join", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadJoin(IntPtr* tid);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_thread_equal", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_thread_equal", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvThreadEqual(IntPtr* t1, IntPtr* t2);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_get_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_get_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvLoopGetData(IntPtr _0);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "uv_loop_set_data", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_set_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvLoopSetData(IntPtr _0, IntPtr data);
     }
 

@@ -25,7 +25,7 @@ public unsafe partial class UvProcessS : IDisposable
         internal IntPtr                                                process_handle;
         internal sbyte                                                   exit_cb_pending;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_process_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_process_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -40,7 +40,7 @@ public unsafe partial class UvProcessS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_process_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_process_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -123,7 +123,7 @@ public unsafe partial class UvProcessS : IDisposable
             internal global::LibuvSharp.UvProcessS.UvProcessExitS.U.__Internal u;
             internal IntPtr                                                  next_req;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_process_exit_s@uv_process_s@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_process_exit_s@uv_process_s@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
         }
 
@@ -138,7 +138,7 @@ public unsafe partial class UvProcessS : IDisposable
                 [FieldOffset(0)]
                 internal global::LibuvSharp.UvProcessS.UvProcessExitS.U.Connect.__Internal connect;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_process_exit_s@uv_process_s@@QEAA@AEBT012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_process_exit_s@uv_process_s@@QEAA@AEBT012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 
@@ -150,7 +150,7 @@ public unsafe partial class UvProcessS : IDisposable
                     internal global::OVERLAPPED.__Internal overlapped;
                     internal ulong                         queued_bytes;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_process_exit_s@uv_process_s@@QEAA@AEBU0123@@Z", CallingConvention = CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_process_exit_s@uv_process_s@@QEAA@AEBU0123@@Z", CallingConvention = CallingConvention.Cdecl)]
                     internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
                 }
 

@@ -14,7 +14,7 @@ public unsafe partial class UvCpuTimesS : IDisposable
         internal ulong idle;
         internal ulong irq;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_cpu_times_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_cpu_times_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 

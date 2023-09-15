@@ -11,7 +11,7 @@ public unsafe partial class UvLibT : IDisposable
         internal IntPtr handle;
         internal IntPtr errmsg;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_lib_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_lib_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 

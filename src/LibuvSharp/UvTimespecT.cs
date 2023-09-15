@@ -11,7 +11,7 @@ public unsafe partial class UvTimespecT : IDisposable
         internal int tv_sec;
         internal int tv_nsec;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_timespec_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_timespec_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 

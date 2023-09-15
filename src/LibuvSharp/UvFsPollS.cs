@@ -18,7 +18,7 @@ public unsafe partial class UvFsPollS : IDisposable
         internal uint                                      flags;
         internal IntPtr                                  poll_ctx;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_fs_poll_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_fs_poll_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -33,7 +33,7 @@ public unsafe partial class UvFsPollS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_fs_poll_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_fs_poll_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 

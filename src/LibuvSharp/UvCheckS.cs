@@ -20,7 +20,7 @@ public unsafe partial class UvCheckS : IDisposable
         internal IntPtr                                 check_next;
         internal IntPtr                                 check_cb;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_check_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_check_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -35,7 +35,7 @@ public unsafe partial class UvCheckS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_check_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_check_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 

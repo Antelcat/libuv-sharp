@@ -56,7 +56,7 @@ public unsafe partial struct UvAnyHandle
         [FieldOffset(0)]
         internal global::LibuvSharp.UvSignalS.__Internal signal;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_any_handle@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_any_handle@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 

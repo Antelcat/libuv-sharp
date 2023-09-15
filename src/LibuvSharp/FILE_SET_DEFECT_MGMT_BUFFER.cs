@@ -80,7 +80,7 @@ public unsafe partial class FILE_SET_DEFECT_MGMT_BUFFER : IDisposable
 
     partial void DisposePartial(bool disposing);
 
-    protected internal virtual void Dispose(bool disposing, bool callNativeDtor )
+    protected internal virtual void Dispose(bool disposing, bool callNativeDtor)
     {
         if (__Instance == IntPtr.Zero)
             return;

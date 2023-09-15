@@ -14,7 +14,7 @@ public unsafe partial class UvBarrierT : IDisposable
         internal global::RTL_CONDITION_VARIABLE.__Internal cond;
         internal uint                                      @out;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_barrier_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_barrier_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 

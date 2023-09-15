@@ -25,7 +25,7 @@ public unsafe partial class UvStatT : IDisposable
         internal global::LibuvSharp.UvTimespecT.__Internal st_ctim;
         internal global::LibuvSharp.UvTimespecT.__Internal st_birthtim;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_stat_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_stat_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 

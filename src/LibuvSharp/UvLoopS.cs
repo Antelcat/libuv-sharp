@@ -33,7 +33,7 @@ public unsafe partial class UvLoopS : IDisposable
         internal       global::RTL_CRITICAL_SECTION.__Internal          wq_mutex;
         internal       global::LibuvSharp.UvAsyncS.__Internal           wq_async;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_loop_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_loop_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -48,7 +48,7 @@ public unsafe partial class UvLoopS : IDisposable
             [FieldOffset(0)]
             internal uint count;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-active_reqs>@uv_loop_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-active_reqs>@uv_loop_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 

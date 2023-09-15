@@ -23,7 +23,7 @@ public unsafe partial class UvTimerS : IDisposable
         internal ulong                                    start_id;
         internal IntPtr                                 timer_cb;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_timer_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_timer_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -38,7 +38,7 @@ public unsafe partial class UvTimerS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_timer_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_timer_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 

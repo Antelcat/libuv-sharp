@@ -26,7 +26,7 @@ public unsafe partial class UvFsEventS : IDisposable
         internal IntPtr                                               dirw;
         internal IntPtr                                               buffer;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_fs_event_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_fs_event_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -41,7 +41,7 @@ public unsafe partial class UvFsEventS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_fs_event_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_fs_event_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -124,7 +124,7 @@ public unsafe partial class UvFsEventS : IDisposable
             internal global::LibuvSharp.UvFsEventS.UvFsEventReqS.U.__Internal u;
             internal IntPtr                                                 next_req;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
         }
 
@@ -139,7 +139,7 @@ public unsafe partial class UvFsEventS : IDisposable
                 [FieldOffset(0)]
                 internal global::LibuvSharp.UvFsEventS.UvFsEventReqS.U.Connect.__Internal connect;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBT012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBT012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 
@@ -151,7 +151,7 @@ public unsafe partial class UvFsEventS : IDisposable
                     internal global::OVERLAPPED.__Internal overlapped;
                     internal ulong                         queued_bytes;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBU0123@@Z", CallingConvention = CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_fs_event_req_s@uv_fs_event_s@@QEAA@AEBU0123@@Z", CallingConvention = CallingConvention.Cdecl)]
                     internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
                 }
 

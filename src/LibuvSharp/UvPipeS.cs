@@ -28,7 +28,7 @@ public unsafe partial class UvPipeS : IDisposable
         internal IntPtr                                     name;
         internal global::LibuvSharp.UvPipeS.Pipe.__Internal   pipe;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_pipe_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_pipe_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -43,7 +43,7 @@ public unsafe partial class UvPipeS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -126,7 +126,7 @@ public unsafe partial class UvPipeS : IDisposable
             [FieldOffset(0)]
             internal global::LibuvSharp.UvPipeS.Stream.Serv.__Internal serv;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-stream>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-stream>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -138,7 +138,7 @@ public unsafe partial class UvPipeS : IDisposable
                 internal uint     write_reqs_pending;
                 internal IntPtr shutdown_req;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-conn>@<unnamed-type-stream>@uv_pipe_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-conn>@<unnamed-type-stream>@uv_pipe_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 
@@ -328,7 +328,7 @@ public unsafe partial class UvPipeS : IDisposable
             [FieldOffset(0)]
             internal global::LibuvSharp.UvPipeS.Pipe.Conn.__Internal conn;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-pipe>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-pipe>@uv_pipe_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -341,7 +341,7 @@ public unsafe partial class UvPipeS : IDisposable
                 internal IntPtr accept_reqs;
                 internal IntPtr pending_accepts;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-serv>@<unnamed-type-pipe>@uv_pipe_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-serv>@<unnamed-type-pipe>@uv_pipe_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 

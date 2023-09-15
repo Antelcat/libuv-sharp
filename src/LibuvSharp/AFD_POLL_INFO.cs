@@ -13,7 +13,7 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
         internal       uint                             Exclusive;
         internal fixed byte                             Handles[16];
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0_AFD_POLL_INFO@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0_AFD_POLL_INFO@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 

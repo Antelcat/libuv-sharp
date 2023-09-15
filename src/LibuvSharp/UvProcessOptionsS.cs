@@ -20,7 +20,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         internal byte     uid;
         internal byte     gid;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_process_options_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_process_options_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -141,7 +141,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         set => ((__Internal*)__Instance)->exit_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public string? File
+    public string File
     {
         get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->file);
 
@@ -167,15 +167,11 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => __internalArgs;
 
-        set
-        {
-            __internalArgs                  = value;
-            ((__Internal*)__Instance)->args = value.CopyToPointer();
-        }
+        set => ((__Internal*)__Instance)->args = value.CopyToPointer();
     }
-    
-    private string[]? __internalArgs;
 
+    private string[]? __internalArgs;
+        
     public string[]? Env
     {
         get => __internalEnv;
@@ -189,7 +185,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
 
     private string[]? __internalEnv;
 
-    public string? Cwd
+    public string Cwd
     {
         get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->cwd);
 
@@ -222,7 +218,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => ((__Internal*)__Instance)->stdio_count;
 
-        private set => ((__Internal*)__Instance)->stdio_count = value;
+        set => ((__Internal*)__Instance)->stdio_count = value;
     }
 
     public global::LibuvSharp.UvStdioContainerS[]? Stdio
@@ -236,13 +232,15 @@ public unsafe partial class UvProcessOptionsS : IDisposable
                 ret[StdioCount] = global::LibuvSharp.UvStdioContainerS.__GetOrCreateInstance((nint)pointer, false);
                 pointer++;
             }
-
+        
             return ret;
         }
-
+        
         set
         {
-            ((__Internal*)__Instance)->stdio = value is null ? IntPtr.Zero : value[0].__Instance;
+            if(value is null || value.Length == 0)return ;
+            var list   = value.Select(x => x == null ? IntPtr.Zero : x.__Instance);
+            var handle = Marshal.AllocHGlobal(list.Count());
             StdioCount                       = value?.Length ?? 0;
         }
     }

@@ -26,7 +26,7 @@ public unsafe partial class UvTtyS : IDisposable
         internal IntPtr                                    handle;
         internal global::LibuvSharp.UvTtyS.Tty.__Internal    tty;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_tty_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_tty_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -41,7 +41,7 @@ public unsafe partial class UvTtyS : IDisposable
             [FieldOffset(0)]
             internal void* reserved;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-u>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -124,7 +124,7 @@ public unsafe partial class UvTtyS : IDisposable
             [FieldOffset(0)]
             internal global::LibuvSharp.UvTtyS.Stream.Serv.__Internal serv;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-stream>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-stream>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -136,7 +136,7 @@ public unsafe partial class UvTtyS : IDisposable
                 internal uint     write_reqs_pending;
                 internal IntPtr shutdown_req;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-conn>@<unnamed-type-stream>@uv_tty_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-conn>@<unnamed-type-stream>@uv_tty_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 
@@ -326,7 +326,7 @@ public unsafe partial class UvTtyS : IDisposable
             [FieldOffset(0)]
             internal global::LibuvSharp.UvTtyS.Tty.Wr.__Internal wr;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-tty>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-tty>@uv_tty_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -344,7 +344,7 @@ public unsafe partial class UvTtyS : IDisposable
                 internal       char                                 last_utf16_high_surrogate;
                 internal       global::INPUT_RECORD.__Internal      last_input_record;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-rd>@<unnamed-type-tty>@uv_tty_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-rd>@<unnamed-type-tty>@uv_tty_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
             }
 

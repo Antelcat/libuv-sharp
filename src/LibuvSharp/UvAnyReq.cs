@@ -38,7 +38,7 @@ public unsafe partial struct UvAnyReq
         [FieldOffset(0)]
         internal global::LibuvSharp.UvRandomS.__Internal random;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_any_req@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_any_req@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 

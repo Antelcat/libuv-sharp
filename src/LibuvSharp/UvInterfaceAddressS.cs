@@ -14,7 +14,7 @@ public unsafe partial class UvInterfaceAddressS : IDisposable
         internal       global::LibuvSharp.UvInterfaceAddressS.Address.__Internal address;
         internal       global::LibuvSharp.UvInterfaceAddressS.Netmask.__Internal netmask;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_interface_address_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_interface_address_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -29,7 +29,7 @@ public unsafe partial class UvInterfaceAddressS : IDisposable
             [FieldOffset(0)]
             internal global::SockaddrIn6.__Internal address6;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-address>@uv_interface_address_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-address>@uv_interface_address_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -80,7 +80,7 @@ public unsafe partial class UvInterfaceAddressS : IDisposable
             [FieldOffset(0)]
             internal global::SockaddrIn6.__Internal netmask6;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-netmask>@uv_interface_address_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-netmask>@uv_interface_address_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 

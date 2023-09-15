@@ -14,7 +14,7 @@ public unsafe partial struct UvCondT
         [FieldOffset(0)]
         internal global::LibuvSharp.UvCondT.Unused.__Internal unused_;
 
-        [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0uv_cond_t@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_cond_t@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 
@@ -28,7 +28,7 @@ public unsafe partial struct UvCondT
             internal IntPtr                                signal_event;
             internal IntPtr                                broadcast_event;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("LibuvSharp", EntryPoint = "??0<unnamed-type-unused_>@uv_cond_t@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-unused_>@uv_cond_t@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
