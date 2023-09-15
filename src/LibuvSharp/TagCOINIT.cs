@@ -1,0 +1,10 @@
+﻿namespace LibuvSharp;
+
+[Flags]
+public enum TagCOINIT
+{
+    COINIT_APARTMENTTHREADED = 2,
+    COINIT_MULTITHREADED     = 0,
+    COINIT_DISABLE_OLE1DDE   = 4,
+    COINIT_SPEED_OVER_MEMORY = 8
+}
