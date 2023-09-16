@@ -91,6 +91,10 @@ unsafe struct uv_process_options_t : IDisposable
             gid = options.GID.Value;
         }
 
+        uv_exit_cb cb = (handle, status, signal) =>
+        {
+            Handle.FromIntPtr<Process>(handle).OnExit(status, signal);
+        };
         exit_cb = Marshal.GetFunctionPointerForDelegate(cb);
 
         stdio_count = options.Streams == null && options.Streams is not UVStream[]
@@ -132,14 +136,6 @@ unsafe struct uv_process_options_t : IDisposable
 
             i++;
         }
-    }
-
-    static uv_exit_cb cb = exit;
-
-    static void exit(IntPtr handlePointer, long exit_status, int term_signal)
-    {
-        var process = Handle.FromIntPtr<Process>(handlePointer);
-        process.OnExit(exit_status, term_signal);
     }
 
     public void Dispose()

@@ -10,7 +10,7 @@ public abstract partial class HandleBase : Handle
     {
     }
 
-    internal HandleBase(Loop loop, HandleType type) : this(loop, Handle.Size(type))
+    internal HandleBase(Loop loop, HandleType type) : this(loop, Size(type))
     {
     }
 

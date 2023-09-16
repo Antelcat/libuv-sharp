@@ -21,7 +21,9 @@ public partial class Loop
 #endif
 			task.ContinueWith((t) => {
 				loop.Unref();
-				loop.Sync(() => { });
+				loop.Sync(() =>
+				{
+				});
 			});
 			loop.Ref();
 

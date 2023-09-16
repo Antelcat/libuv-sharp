@@ -9,7 +9,7 @@ public abstract unsafe class UVStream
 	
 	uv_stream_t *stream;
 
-	long PendingWrites { get; set; }
+	private long PendingWrites { get; set; }
 
 	public long WriteQueueSize {
 		get {
@@ -28,7 +28,7 @@ public abstract unsafe class UVStream
 	internal UVStream(Loop loop, IntPtr handle)
 		: base(loop, handle)
 	{
-		stream = (uv_stream_t *)(handle.ToInt64() + Handle.Size(HandleType.UV_HANDLE));
+		stream = (uv_stream_t *)(handle.ToInt64() + Size(HandleType.UV_HANDLE));
 	}
 
 	internal UVStream(Loop loop, int size)
@@ -37,7 +37,7 @@ public abstract unsafe class UVStream
 	}
 
 	internal UVStream(Loop loop, HandleType type)
-		: this(loop, Handle.Size(type))
+		: this(loop, Size(type))
 	{
 	}
 
@@ -63,7 +63,13 @@ public abstract unsafe class UVStream
 	{
 		CheckDisposed();
 
-		var r = uv_read_start(NativeHandle, ByteBufferAllocator.AllocCallback, read_cb);
+		void Cb(IntPtr ptr, IntPtr size, uv_buf_t buf)
+		{
+			var stream = FromIntPtr<UVStream>(ptr);
+			stream.rcallback(ptr, size);
+		}
+
+		var r = uv_read_start(NativeHandle, ByteBufferAllocator.AllocCallback, Cb);
 		Ensure.Success(r);
 	}
 
@@ -72,29 +78,24 @@ public abstract unsafe class UVStream
 		Invoke(uv_read_stop);
 	}
 
-	static read_callback read_cb = rcallback;
-	static void rcallback(IntPtr streamPointer, IntPtr size, uv_buf_t buf)
-	{
-		var stream = FromIntPtr<UVStream>(streamPointer);
-		stream.rcallback(streamPointer, size);
-	}
 
 	void rcallback(IntPtr streamPointer, IntPtr size)
 	{
 		var nread = size.ToInt64();
-		if (nread == 0) {
-			return;
-		}
-
-		if (nread < 0) {
-			if (UVException.Map((int)nread) == UVErrorCode.EOF) {
+		switch (nread)
+		{
+			case 0:
+				return;
+			case < 0 when UVException.Map((int)nread) == UVErrorCode.EOF:
 				Close(Complete);
-			} else {
+				break;
+			case < 0:
 				OnError(Ensure.Map((int)nread));
 				Close();
-			}
-		} else {
-			OnData(ByteBufferAllocator.Retrieve(size.ToInt32()));
+				break;
+			default:
+				OnData(ByteBufferAllocator.Retrieve(size.ToInt32()));
+				break;
 		}
 	}
 

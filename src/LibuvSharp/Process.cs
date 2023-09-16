@@ -94,7 +94,7 @@ public unsafe class Process : Handle
 			return (uv_process_t*)((Environment.Is64BitProcess
 				? NativeHandle.ToInt64()
 				: NativeHandle.ToInt32()) 
-			                       + Handle.Size(HandleType.UV_HANDLE));
+			                       + Size(HandleType.UV_HANDLE));
 		}
 	}
 

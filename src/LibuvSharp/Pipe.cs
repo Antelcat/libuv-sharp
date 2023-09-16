@@ -77,7 +77,7 @@ public class Pipe : UVStream, IConnectable<Pipe, string>, IRemoteAddress<string>
     internal unsafe Pipe(Loop loop, bool interProcessCommunication)
         : base(loop, HandleType.UV_NAMED_PIPE, uv_pipe_init, interProcessCommunication ? 1 : 0)
     {
-        pipe_t = (uv_pipe_t*)(this.NativeHandle.ToInt64() + Handle.Size(HandleType.UV_STREAM));
+        pipe_t = (uv_pipe_t*)(NativeHandle.ToInt64() + Size(HandleType.UV_STREAM));
     }
 
     public unsafe bool InterProcessCommunication => pipe_t->rpc >= 1;
@@ -95,7 +95,7 @@ public class Pipe : UVStream, IConnectable<Pipe, string>, IRemoteAddress<string>
 
         cpr.Callback = (status, cpr2) => Ensure.Success(status, callback, name);
 
-        uv_pipe_connect(cpr.Handle, pipe.NativeHandle, name, ConnectRequest.CallbackDelegate);
+        uv_pipe_connect(cpr.Handle, pipe.NativeHandle, name, CallbackPermaRequest.CallbackDelegate);
     }
 
     public string RemoteAddress

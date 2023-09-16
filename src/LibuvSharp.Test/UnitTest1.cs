@@ -1,7 +1,7 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Text;
 using LibuvSharp;
+using Process = LibuvSharp.Process;
 
 namespace Libuv.Test;
 
@@ -11,18 +11,19 @@ public class Tests
     public void Setup()
     {
     }
-    
+
     [Test]
     public async Task Test1()
     {
         //SetPath();
         var str = LibuvSharp.Libuv.Lib;
+        
         TaskCompletionSource source = new();
         var pipe = () =>
         {
             var ret = new Pipe { Writeable = true, Readable = true };
-            ret.Error += Console.WriteLine;
-            ret.Data += bytes => Console.WriteLine(Encoding.UTF8.GetString(bytes));
+            ret.Error += _ => Debugger.Break();
+            ret.Data  += _ => Debugger.Break();
             return ret;
         };
         var dic = new Dictionary<string, string>
@@ -36,7 +37,7 @@ public class Tests
         Process? process;
         try
         {
-            process = Process.Spawn(new ProcessOptions
+            Process.Spawn(new ProcessOptions
             {
                 Detached = false,
                 Arguments = new[]
@@ -48,10 +49,10 @@ public class Tests
                     "--logTag=sctp", "--logTag=message",
                     "--rtcMinPort=20000", "--rtcMaxPort=29999"
                 },
-                Environment = dic.Select(x => $"{x.Key}={x.Value}").ToArray(),
+                Environment             = dic.Select(x => $"{x.Key}={x.Value}").ToArray(),
                 CurrentWorkingDirectory = @".",
                 File =
-                    @"D:\Shared\WorkSpace\Git\ThirdPart\Tubumu.Mediasoup\src\Tubumu.Meeting.Web\mediasoup-worker.exe",
+                    @"D:\Shared\WorkSpace\Git\mediasoup-sharp\src\MediasoupSharp.Test\runtimes\win-x64\native\mediasoup-worker.exe",
                 Streams = new List<UVStream> { pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
             }, Console.WriteLine);
         }
@@ -60,8 +61,8 @@ public class Tests
             throw e;
         }
 
-        await Task.Delay(5000);
+        await Task.Delay(10000);
     }
-    
+
 }
 

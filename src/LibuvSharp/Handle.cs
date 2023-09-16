@@ -49,7 +49,7 @@ public abstract unsafe class Handle : IHandle, IDisposable
 	}
 
 	internal Handle(Loop loop, HandleType handleType)
-		: this(loop, Handle.Size(handleType))
+		: this(loop, Size(handleType))
 	{
 	}
 
@@ -92,7 +92,7 @@ public abstract unsafe class Handle : IHandle, IDisposable
 
 	static void CloseCallback(IntPtr handlePointer)
 	{
-		var handle = Handle.FromIntPtr<Handle>(handlePointer);
+		var handle = FromIntPtr<Handle>(handlePointer);
 		handle.Cleanup(handlePointer, handle.closeCallback);
 	}
 

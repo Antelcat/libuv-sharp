@@ -214,7 +214,7 @@ public static class UV
         var length = sizeof(sockaddr_in6);
         var r = getsockname(handle.NativeHandle, ptr, ref length);
         Ensure.Success(r);
-        return UV.GetIPEndPoint(ptr, true);
+        return GetIPEndPoint(ptr, true);
     }
 
     internal delegate int bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
@@ -228,12 +228,12 @@ public static class UV
         int r;
         if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
         {
-            var address = UV.ToStruct(ipAddress.ToString(), port);
+            var address = ToStruct(ipAddress.ToString(), port);
             r = bind(handle.NativeHandle, ref address, 0);
         }
         else
         {
-            var address = UV.ToStruct6(ipAddress.ToString(), port);
+            var address = ToStruct6(ipAddress.ToString(), port);
             r = bind6(handle.NativeHandle, ref address, (uint)(dualstack ? 0 : 1));
         }
 

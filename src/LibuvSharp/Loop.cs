@@ -141,7 +141,7 @@ public partial class Loop : IDisposable
 		callback.Send(cb);
 	}
 
-	public void Sync(System.Collections.Generic.IEnumerable<Action> callbacks)
+	public void Sync(IEnumerable<Action> callbacks)
 	{
 		callback.Send(callbacks);
 	}

@@ -17,8 +17,8 @@ internal class Ensure
 			case UVErrorCode.EINVAL:
 				return new ArgumentException(UVException.StringError(systemErrorCode));
 			case UVErrorCode.ENOENT:
-				var path = (name == null ? System.IO.Directory.GetCurrentDirectory() : Path.Combine(System.IO.Directory.GetCurrentDirectory(), name));
-				return new System.IO.FileNotFoundException($"Could not find file '{path}'.", path);
+				var path = (name == null ? Directory.GetCurrentDirectory() : Path.Combine(Directory.GetCurrentDirectory(), name));
+				return new FileNotFoundException($"Could not find file '{path}'.", path);
 			case UVErrorCode.ENOTSUP:
 				return new NotSupportedException();
 			default:

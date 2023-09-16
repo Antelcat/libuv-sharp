@@ -2,7 +2,7 @@ namespace LibuvSharp;
 
 class WorkRequest : PermaRequest
 {
-	public static readonly int Size = UV.Sizeof(LibuvSharp.RequestType.UV_WORK);
+	public static readonly int Size = UV.Sizeof(RequestType.UV_WORK);
 
 	public WorkRequest()
 		: base(Size)
@@ -21,12 +21,12 @@ class WorkRequest : PermaRequest
 
 	public static void BeforeCallback(IntPtr req)
 	{
-		PermaRequest.GetObject<WorkRequest>(req)?.before();
+		GetObject<WorkRequest>(req)?.before();
 	}
 
 	public static void AfterCallback(IntPtr req)
 	{
-		var workreq = PermaRequest.GetObject<WorkRequest>(req);
+		var workreq = GetObject<WorkRequest>(req);
 		workreq?.after();
 		workreq?.Dispose();
 	}
