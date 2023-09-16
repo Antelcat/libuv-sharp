@@ -22,7 +22,7 @@ public class Tests
             ios.Add(pipe);
         }
 
-        uv.UvSpawn(new(),
+        var result = uv.UvSpawn(new(),
             new(),
             new UvProcessOptionsS
             {

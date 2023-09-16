@@ -1818,13 +1818,13 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvSpawn(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvProcessS handle, global::LibuvSharp.UvProcessOptionsS options)
+    public static UvErrnoT UvSpawn(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvProcessS handle, global::LibuvSharp.UvProcessOptionsS options)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
         var __arg2 = options is null ? IntPtr.Zero : options.__Instance;
         var ___ret = __Internal.UvSpawn(__arg0, __arg1, __arg2);
-        return ___ret;
+        return (UvErrnoT)___ret;
     }
 
     public static int UvProcessKill(global::LibuvSharp.UvProcessS _0, int signum)
