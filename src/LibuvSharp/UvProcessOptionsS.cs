@@ -144,22 +144,22 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         set => ((__Internal*)__Instance)->exit_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public string File
+    public string? File
     {
-        get
-        {
-            return MarshalUtil.GetString(Encoding.UTF8, ((__Internal*)__Instance)->file);
-        }
+        get => __file_OwnsNativeMemory
+            ? Marshal.PtrToStringAnsi(((__Internal*)__Instance)->file)
+            : null;
 
         set
         {
             if (__file_OwnsNativeMemory)
                 Marshal.FreeHGlobal(((__Internal*)__Instance)->file);
-            __file_OwnsNativeMemory         = true;
-            ((__Internal*)__Instance)->file = Marshal.StringToHGlobalAnsi(value);
+            __file_OwnsNativeMemory = true;
+
+            ((__Internal*)__Instance)->file = value != null ? Marshal.StringToHGlobalAnsi(value) : IntPtr.Zero;
         }
     }
-
+    
     public string[]? Args
     {
         get => __internalArgs;
