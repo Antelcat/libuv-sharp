@@ -14,20 +14,23 @@ internal static class MarshalExtension
         Marshal.WriteByte(position.Value + bytes.Length, 0);
         return position.Value;
     }
-    
-    public static nint CopyToPointer(this string[]? arr,IntPtr? position = null)
+
+    public static nint CopyToPointer(this string[]? args)
     {
-        if (arr is not { Length: > 0 }) return IntPtr.Zero;
+        if (args == null)
+        {
+            return IntPtr.Zero;
+        }
+
         unsafe
         {
-            var start = position ??= Marshal.AllocHGlobal(sizeof(sbyte*) * arr.Length);
-            foreach (var s in arr)
+            var arr = Marshal.AllocHGlobal((args.Length + 1) * sizeof(IntPtr));
+            for (var i = 0; i < args.Length; i++)
             {
-                var ptr = s.CopyToPointer();
-                Marshal.WriteIntPtr(position.Value, ptr);
-                position = IntPtr.Add(position.Value, sizeof(sbyte*));
+                Marshal.WriteIntPtr(arr, i * sizeof(IntPtr), Marshal.StringToHGlobalAnsi(args[i]));
             }
-            return start;
+            Marshal.WriteIntPtr(arr, args.Length * sizeof(IntPtr), IntPtr.Zero);
+            return arr;
         }
     }
 }
