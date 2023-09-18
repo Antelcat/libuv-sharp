@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class VOLUME_DISK_EXTENTS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint NumberOfDiskExtents;
         internal fixed byte ExtentsPadding[4];
@@ -14,15 +15,15 @@ public unsafe partial class VOLUME_DISK_EXTENTS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VOLUME_DISK_EXTENTS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VOLUME_DISK_EXTENTS>();
+    internal static readonly ConcurrentDictionary<IntPtr, VOLUME_DISK_EXTENTS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, VOLUME_DISK_EXTENTS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.VOLUME_DISK_EXTENTS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, VOLUME_DISK_EXTENTS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.VOLUME_DISK_EXTENTS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out VOLUME_DISK_EXTENTS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -100,16 +101,16 @@ public unsafe partial class VOLUME_DISK_EXTENTS : IDisposable
         set => ((__Internal*)__Instance)->NumberOfDiskExtents = value;
     }
 
-    public global::LibuvSharp.DISK_EXTENT[] Extents
+    public DISK_EXTENT[] Extents
     {
         get
         {
-            global::LibuvSharp.DISK_EXTENT[] __value = null;
+            DISK_EXTENT[] __value = null;
             if (((__Internal*)__Instance)->Extents != null)
             {
-                __value = new global::LibuvSharp.DISK_EXTENT[1];
+                __value = new DISK_EXTENT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.DISK_EXTENT.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.DISK_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.DISK_EXTENT.__Internal)])), true, true);
+                    __value[i] = DISK_EXTENT.__GetOrCreateInstance((IntPtr)((DISK_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(DISK_EXTENT.__Internal)])), true, true);
             }
             return __value;
         }
@@ -121,7 +122,7 @@ public unsafe partial class VOLUME_DISK_EXTENTS : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.DISK_EXTENT.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.DISK_EXTENT.__Internal)] = *(global::LibuvSharp.DISK_EXTENT.__Internal*)value[i].__Instance;
+                    *(DISK_EXTENT.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(DISK_EXTENT.__Internal)] = *(DISK_EXTENT.__Internal*)value[i].__Instance;
             }
         }
     }

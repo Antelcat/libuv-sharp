@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate IntPtr UvReallocFunc(IntPtr ptr, ulong size);
+public delegate IntPtr UvReallocFunc(IntPtr ptr, ulong size);

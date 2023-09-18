@@ -1,37 +1,39 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_PERFORMANCE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 88)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LARGE_INTEGER.__Internal BytesRead;
-        internal       global::LARGE_INTEGER.__Internal BytesWritten;
-        internal       global::LARGE_INTEGER.__Internal ReadTime;
-        internal       global::LARGE_INTEGER.__Internal WriteTime;
-        internal       global::LARGE_INTEGER.__Internal IdleTime;
-        internal       uint                             ReadCount;
-        internal       uint                             WriteCount;
-        internal       uint                             QueueDepth;
-        internal       uint                             SplitCount;
-        internal       global::LARGE_INTEGER.__Internal QueryTime;
-        internal       uint                             StorageDeviceNumber;
-        internal fixed char                             StorageManagerName[8];
+        internal       LARGE_INTEGER.__Internal BytesRead;
+        internal       LARGE_INTEGER.__Internal BytesWritten;
+        internal       LARGE_INTEGER.__Internal ReadTime;
+        internal       LARGE_INTEGER.__Internal WriteTime;
+        internal       LARGE_INTEGER.__Internal IdleTime;
+        internal       uint                     ReadCount;
+        internal       uint                     WriteCount;
+        internal       uint                     QueueDepth;
+        internal       uint                     SplitCount;
+        internal       LARGE_INTEGER.__Internal QueryTime;
+        internal       uint                     StorageDeviceNumber;
+        internal fixed char                     StorageManagerName[8];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_PERFORMANCE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_PERFORMANCE>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_PERFORMANCE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_PERFORMANCE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_PERFORMANCE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_PERFORMANCE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_PERFORMANCE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_PERFORMANCE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -139,7 +141,7 @@ public unsafe partial class DISK_PERFORMANCE : IDisposable
 
     public char[] StorageManagerName
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->StorageManagerName, 8);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->StorageManagerName, 8);
 
         set
         {

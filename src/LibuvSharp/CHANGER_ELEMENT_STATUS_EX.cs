@@ -1,37 +1,39 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 156)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LibuvSharp.CHANGER_ELEMENT.__Internal Element;
-        internal       global::LibuvSharp.CHANGER_ELEMENT.__Internal SrcElementAddress;
-        internal       uint                                          Flags;
-        internal       uint                                          ExceptionCode;
-        internal       byte                                          TargetId;
-        internal       byte                                          Lun;
-        internal       ushort                                        Reserved;
-        internal fixed byte                                          PrimaryVolumeID[36];
-        internal fixed byte                                          AlternateVolumeID[36];
-        internal fixed byte                                          VendorIdentification[8];
-        internal fixed byte                                          ProductIdentification[16];
-        internal fixed byte                                          SerialNumber[32];
+        internal       CHANGER_ELEMENT.__Internal Element;
+        internal       CHANGER_ELEMENT.__Internal SrcElementAddress;
+        internal       uint                       Flags;
+        internal       uint                       ExceptionCode;
+        internal       byte                       TargetId;
+        internal       byte                       Lun;
+        internal       ushort                     Reserved;
+        internal fixed byte                       PrimaryVolumeID[36];
+        internal fixed byte                       AlternateVolumeID[36];
+        internal fixed byte                       VendorIdentification[8];
+        internal fixed byte                       ProductIdentification[16];
+        internal fixed byte                       SerialNumber[32];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_ELEMENT_STATUS_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_ELEMENT_STATUS_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, CHANGER_ELEMENT_STATUS_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CHANGER_ELEMENT_STATUS_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CHANGER_ELEMENT_STATUS_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CHANGER_ELEMENT_STATUS_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CHANGER_ELEMENT_STATUS_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CHANGER_ELEMENT_STATUS_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -102,27 +104,27 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.CHANGER_ELEMENT Element
+    public CHANGER_ELEMENT Element
     {
-        get => global::LibuvSharp.CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Element));
+        get => CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Element));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Element = *(global::LibuvSharp.CHANGER_ELEMENT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Element = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.CHANGER_ELEMENT SrcElementAddress
+    public CHANGER_ELEMENT SrcElementAddress
     {
-        get => global::LibuvSharp.CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->SrcElementAddress));
+        get => CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->SrcElementAddress));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->SrcElementAddress = *(global::LibuvSharp.CHANGER_ELEMENT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->SrcElementAddress = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }
 
@@ -163,7 +165,7 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 
     public byte[] PrimaryVolumeID
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->PrimaryVolumeID, 36);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->PrimaryVolumeID, 36);
 
         set
         {
@@ -177,7 +179,7 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 
     public byte[] AlternateVolumeID
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->AlternateVolumeID, 36);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->AlternateVolumeID, 36);
 
         set
         {
@@ -191,7 +193,7 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 
     public byte[] VendorIdentification
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VendorIdentification, 8);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VendorIdentification, 8);
 
         set
         {
@@ -205,7 +207,7 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 
     public byte[] ProductIdentification
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ProductIdentification, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ProductIdentification, 16);
 
         set
         {
@@ -219,7 +221,7 @@ public unsafe partial class CHANGER_ELEMENT_STATUS_EX : IDisposable
 
     public byte[] SerialNumber
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->SerialNumber, 32);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->SerialNumber, 32);
 
         set
         {

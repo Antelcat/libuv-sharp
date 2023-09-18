@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class READ_ELEMENT_ADDRESS_INFO : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 104)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint NumberOfElements;
         internal fixed byte ElementStatus[100];
@@ -13,15 +14,15 @@ public unsafe partial class READ_ELEMENT_ADDRESS_INFO : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.READ_ELEMENT_ADDRESS_INFO> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.READ_ELEMENT_ADDRESS_INFO>();
+    internal static readonly ConcurrentDictionary<IntPtr, READ_ELEMENT_ADDRESS_INFO> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, READ_ELEMENT_ADDRESS_INFO>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.READ_ELEMENT_ADDRESS_INFO managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, READ_ELEMENT_ADDRESS_INFO managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.READ_ELEMENT_ADDRESS_INFO managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out READ_ELEMENT_ADDRESS_INFO managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -99,16 +100,16 @@ public unsafe partial class READ_ELEMENT_ADDRESS_INFO : IDisposable
         set => ((__Internal*)__Instance)->NumberOfElements = value;
     }
 
-    public global::LibuvSharp.CHANGER_ELEMENT_STATUS[] ElementStatus
+    public CHANGER_ELEMENT_STATUS[] ElementStatus
     {
         get
         {
-            global::LibuvSharp.CHANGER_ELEMENT_STATUS[] __value = null;
+            CHANGER_ELEMENT_STATUS[] __value = null;
             if (((__Internal*)__Instance)->ElementStatus != null)
             {
-                __value = new global::LibuvSharp.CHANGER_ELEMENT_STATUS[1];
+                __value = new CHANGER_ELEMENT_STATUS[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.CHANGER_ELEMENT_STATUS.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.CHANGER_ELEMENT_STATUS.__Internal*)&(((__Internal*)__Instance)->ElementStatus[i * sizeof(global::LibuvSharp.CHANGER_ELEMENT_STATUS.__Internal)])), true, true);
+                    __value[i] = CHANGER_ELEMENT_STATUS.__GetOrCreateInstance((IntPtr)((CHANGER_ELEMENT_STATUS.__Internal*)&(((__Internal*)__Instance)->ElementStatus[i * sizeof(CHANGER_ELEMENT_STATUS.__Internal)])), true, true);
             }
             return __value;
         }
@@ -120,7 +121,7 @@ public unsafe partial class READ_ELEMENT_ADDRESS_INFO : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.CHANGER_ELEMENT_STATUS.__Internal*) &((__Internal*)__Instance)->ElementStatus[i * sizeof(global::LibuvSharp.CHANGER_ELEMENT_STATUS.__Internal)] = *(global::LibuvSharp.CHANGER_ELEMENT_STATUS.__Internal*)value[i].__Instance;
+                    *(CHANGER_ELEMENT_STATUS.__Internal*) &((__Internal*)__Instance)->ElementStatus[i * sizeof(CHANGER_ELEMENT_STATUS.__Internal)] = *(CHANGER_ELEMENT_STATUS.__Internal*)value[i].__Instance;
             }
         }
     }

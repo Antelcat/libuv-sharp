@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text;
 
 namespace LibuvSharp.Extensions;
 
@@ -7,7 +8,7 @@ internal static class MarshalExtension
     public static nint CopyToPointer(this string? str,IntPtr? position = null)
     {
         if (str == null) return IntPtr.Zero;
-        var bytes   = System.Text.Encoding.UTF8.GetBytes(str);
+        var bytes   = Encoding.UTF8.GetBytes(str);
         position ??= Marshal.AllocHGlobal(bytes.Length + 1);
         Marshal.Copy(bytes, 0, position.Value, bytes.Length);
         Marshal.WriteByte(position.Value + bytes.Length, 0);

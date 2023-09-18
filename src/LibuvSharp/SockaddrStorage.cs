@@ -3,7 +3,7 @@
 public unsafe partial class SockaddrStorage
 {
     [StructLayout(LayoutKind.Sequential, Size = 128)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       ushort ss_family;
         internal fixed sbyte  __ss_pad1[6];

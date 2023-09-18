@@ -1,30 +1,31 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_LIST_TRANSACTIONS_ENTRY : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::GUID.__Internal TransactionId;
-        internal uint                    TransactionState;
-        internal uint                    Reserved1;
-        internal uint                    Reserved2;
-        internal long                    Reserved3;
+        internal GUID.__Internal TransactionId;
+        internal uint            TransactionState;
+        internal uint            Reserved1;
+        internal uint            Reserved2;
+        internal long            Reserved3;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTIONS_ENTRY> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTIONS_ENTRY>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTIONS_ENTRY> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTIONS_ENTRY>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_LIST_TRANSACTIONS_ENTRY managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_LIST_TRANSACTIONS_ENTRY managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_LIST_TRANSACTIONS_ENTRY managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_LIST_TRANSACTIONS_ENTRY managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

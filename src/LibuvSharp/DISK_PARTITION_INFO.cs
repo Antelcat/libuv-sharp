@@ -1,68 +1,69 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_PARTITION_INFO : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
         internal uint SizeOfPartitionInfo;
 
         [FieldOffset(4)]
-        internal global::LibuvSharp.PARTITION_STYLE PartitionStyle;
+        internal PARTITION_STYLE PartitionStyle;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.DISK_PARTITION_INFO._0.Mbr.__Internal Mbr;
+        internal _0.Mbr.__Internal Mbr;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.DISK_PARTITION_INFO._0.Gpt.__Internal Gpt;
+        internal _0.Gpt.__Internal Gpt;
     }
 
-    public unsafe partial struct _0
+    public partial struct _0
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
-            internal global::LibuvSharp.DISK_PARTITION_INFO._0.Mbr.__Internal Mbr;
+            internal Mbr.__Internal Mbr;
 
             [FieldOffset(0)]
-            internal global::LibuvSharp.DISK_PARTITION_INFO._0.Gpt.__Internal Gpt;
+            internal Gpt.__Internal Gpt;
         }
 
-        public unsafe partial class Mbr
+        public partial class Mbr
         {
             [StructLayout(LayoutKind.Sequential, Size = 8)]
-            public partial struct __Internal
+            public struct __Internal
             {
                 internal uint Signature;
                 internal uint CheckSum;
             }
         }
 
-        public unsafe partial class Gpt
+        public partial class Gpt
         {
             [StructLayout(LayoutKind.Sequential, Size = 16)]
-            public partial struct __Internal
+            public struct __Internal
             {
-                internal global::GUID.__Internal DiskId;
+                internal GUID.__Internal DiskId;
             }
         }
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_PARTITION_INFO> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_PARTITION_INFO>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_PARTITION_INFO> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_PARTITION_INFO>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_PARTITION_INFO managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_PARTITION_INFO managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_PARTITION_INFO managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_PARTITION_INFO managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -140,7 +141,7 @@ public unsafe partial class DISK_PARTITION_INFO : IDisposable
         set => ((__Internal*)__Instance)->SizeOfPartitionInfo = value;
     }
 
-    public global::LibuvSharp.PARTITION_STYLE PartitionStyle
+    public PARTITION_STYLE PartitionStyle
     {
         get => ((__Internal*)__Instance)->PartitionStyle;
 

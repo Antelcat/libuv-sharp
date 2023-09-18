@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-public unsafe partial class SYSTEMTIME
+public partial class SYSTEMTIME
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ushort wYear;
         internal ushort wMonth;

@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvThreadCb(IntPtr arg);
+public delegate void UvThreadCb(IntPtr arg);

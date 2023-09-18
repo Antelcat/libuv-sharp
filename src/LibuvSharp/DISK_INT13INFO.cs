@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_INT13INFO : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ushort DriveSelect;
         internal uint   MaxCylinders;
@@ -16,15 +17,15 @@ public unsafe partial class DISK_INT13INFO : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_INT13INFO> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_INT13INFO>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_INT13INFO> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_INT13INFO>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_INT13INFO managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_INT13INFO managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_INT13INFO managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_INT13INFO managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

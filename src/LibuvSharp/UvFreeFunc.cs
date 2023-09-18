@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvFreeFunc(IntPtr ptr);
+public delegate void UvFreeFunc(IntPtr ptr);

@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class GET_FILTER_FILE_IDENTIFIER_OUTPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 4)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       ushort FilterFileIdentifierLength;
         internal fixed byte   FilterFileIdentifier[1];
@@ -13,15 +15,15 @@ public unsafe partial class GET_FILTER_FILE_IDENTIFIER_OUTPUT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GET_FILTER_FILE_IDENTIFIER_OUTPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GET_FILTER_FILE_IDENTIFIER_OUTPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, GET_FILTER_FILE_IDENTIFIER_OUTPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, GET_FILTER_FILE_IDENTIFIER_OUTPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.GET_FILTER_FILE_IDENTIFIER_OUTPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, GET_FILTER_FILE_IDENTIFIER_OUTPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.GET_FILTER_FILE_IDENTIFIER_OUTPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out GET_FILTER_FILE_IDENTIFIER_OUTPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -101,7 +103,7 @@ public unsafe partial class GET_FILTER_FILE_IDENTIFIER_OUTPUT : IDisposable
 
     public byte[] FilterFileIdentifier
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->FilterFileIdentifier, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->FilterFileIdentifier, 1);
 
         set
         {

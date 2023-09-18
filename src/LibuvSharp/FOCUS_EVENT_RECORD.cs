@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-public unsafe partial class FOCUS_EVENT_RECORD
+public partial class FOCUS_EVENT_RECORD
 {
     [StructLayout(LayoutKind.Sequential, Size = 4)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal int bSetFocus;
     }

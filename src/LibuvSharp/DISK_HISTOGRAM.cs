@@ -1,36 +1,37 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_HISTOGRAM : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 72)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal DiskSize;
-        internal global::LARGE_INTEGER.__Internal Start;
-        internal global::LARGE_INTEGER.__Internal End;
-        internal global::LARGE_INTEGER.__Internal Average;
-        internal global::LARGE_INTEGER.__Internal AverageRead;
-        internal global::LARGE_INTEGER.__Internal AverageWrite;
-        internal uint                             Granularity;
-        internal uint                             Size;
-        internal uint                             ReadCount;
-        internal uint                             WriteCount;
-        internal IntPtr                         Histogram;
+        internal LARGE_INTEGER.__Internal DiskSize;
+        internal LARGE_INTEGER.__Internal Start;
+        internal LARGE_INTEGER.__Internal End;
+        internal LARGE_INTEGER.__Internal Average;
+        internal LARGE_INTEGER.__Internal AverageRead;
+        internal LARGE_INTEGER.__Internal AverageWrite;
+        internal uint                     Granularity;
+        internal uint                     Size;
+        internal uint                     ReadCount;
+        internal uint                     WriteCount;
+        internal IntPtr                   Histogram;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_HISTOGRAM> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_HISTOGRAM>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_HISTOGRAM> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_HISTOGRAM>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_HISTOGRAM managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_HISTOGRAM managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_HISTOGRAM managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_HISTOGRAM managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -129,11 +130,11 @@ public unsafe partial class DISK_HISTOGRAM : IDisposable
         set => ((__Internal*)__Instance)->WriteCount = value;
     }
 
-    public global::LibuvSharp.HISTOGRAM_BUCKET Histogram
+    public HISTOGRAM_BUCKET Histogram
     {
         get
         {
-            var __result0 = global::LibuvSharp.HISTOGRAM_BUCKET.__GetOrCreateInstance(((__Internal*)__Instance)->Histogram, false);
+            var __result0 = HISTOGRAM_BUCKET.__GetOrCreateInstance(((__Internal*)__Instance)->Histogram);
             return __result0;
         }
 

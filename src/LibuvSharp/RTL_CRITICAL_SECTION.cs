@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-public unsafe partial class RTL_CRITICAL_SECTION
+public partial class RTL_CRITICAL_SECTION
 {
     [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr DebugInfo;
         internal int      LockCount;

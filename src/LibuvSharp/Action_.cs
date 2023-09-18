@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp.Delegates;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void Action_();
+public delegate void Action_();

@@ -1,22 +1,23 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_GET_METADATA_INFO_OUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 48)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId.__Internal TxfFileId;
-        internal global::GUID.__Internal                                            LockingTransaction;
-        internal ulong                                                              LastLsn;
-        internal uint                                                               TransactionState;
+        internal TxfFileId.__Internal TxfFileId;
+        internal GUID.__Internal      LockingTransaction;
+        internal ulong                LastLsn;
+        internal uint                 TransactionState;
     }
 
-    public unsafe partial class TxfFileId : IDisposable
+    public partial class TxfFileId : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 16)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal long LowPart;
             internal long HighPart;
@@ -24,15 +25,15 @@ public unsafe partial class TXFS_GET_METADATA_INFO_OUT : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId>();
+        internal static readonly ConcurrentDictionary<IntPtr, TxfFileId> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, TxfFileId>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, TxfFileId managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TxfFileId managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -120,15 +121,15 @@ public unsafe partial class TXFS_GET_METADATA_INFO_OUT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_GET_METADATA_INFO_OUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_GET_METADATA_INFO_OUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_GET_METADATA_INFO_OUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_GET_METADATA_INFO_OUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -199,15 +200,15 @@ public unsafe partial class TXFS_GET_METADATA_INFO_OUT : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId txfFileId
+    public TxfFileId txfFileId
     {
-        get => global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->TxfFileId));
+        get => TxfFileId.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->TxfFileId));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->TxfFileId = *(global::LibuvSharp.TXFS_GET_METADATA_INFO_OUT.TxfFileId.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->TxfFileId = *(TxfFileId.__Internal*) value.__Instance;
         }
     }
 

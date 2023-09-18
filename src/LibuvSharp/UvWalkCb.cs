@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvWalkCb(IntPtr handle, IntPtr arg);
+public delegate void UvWalkCb(IntPtr handle, IntPtr arg);

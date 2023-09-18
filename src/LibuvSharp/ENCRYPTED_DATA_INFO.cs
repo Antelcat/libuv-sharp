@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class ENCRYPTED_DATA_INFO : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       ulong  StartingFileOffset;
         internal       uint   OutputBufferOffset;
@@ -22,15 +24,15 @@ public unsafe partial class ENCRYPTED_DATA_INFO : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTED_DATA_INFO> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTED_DATA_INFO>();
+    internal static readonly ConcurrentDictionary<IntPtr, ENCRYPTED_DATA_INFO> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, ENCRYPTED_DATA_INFO>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.ENCRYPTED_DATA_INFO managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, ENCRYPTED_DATA_INFO managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.ENCRYPTED_DATA_INFO managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out ENCRYPTED_DATA_INFO managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -173,7 +175,7 @@ public unsafe partial class ENCRYPTED_DATA_INFO : IDisposable
 
     public uint[] DataBlockSize
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->DataBlockSize, 1);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->DataBlockSize, 1);
 
         set
         {

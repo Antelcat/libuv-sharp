@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvReadCb(IntPtr stream, long nread, IntPtr buf);
+public delegate void UvReadCb(IntPtr stream, long nread, IntPtr buf);

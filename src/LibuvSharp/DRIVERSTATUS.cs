@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class DRIVERSTATUS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       byte bDriverError;
         internal       byte bIDEError;
@@ -15,15 +17,15 @@ public unsafe partial class DRIVERSTATUS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVERSTATUS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVERSTATUS>();
+    internal static readonly ConcurrentDictionary<IntPtr, DRIVERSTATUS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DRIVERSTATUS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DRIVERSTATUS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DRIVERSTATUS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DRIVERSTATUS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DRIVERSTATUS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -110,7 +112,7 @@ public unsafe partial class DRIVERSTATUS : IDisposable
 
     public byte[] BReserved
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bReserved, 2);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bReserved, 2);
 
         set
         {
@@ -124,7 +126,7 @@ public unsafe partial class DRIVERSTATUS : IDisposable
 
     public uint[] DwReserved
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 2);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 2);
 
         set
         {

@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DPI_AWARENESS_CONTEXT_ : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 4)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal int unused;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DPI_AWARENESS_CONTEXT_> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DPI_AWARENESS_CONTEXT_>();
+    internal static readonly ConcurrentDictionary<IntPtr, DPI_AWARENESS_CONTEXT_> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DPI_AWARENESS_CONTEXT_>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DPI_AWARENESS_CONTEXT_ managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DPI_AWARENESS_CONTEXT_ managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DPI_AWARENESS_CONTEXT_ managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DPI_AWARENESS_CONTEXT_ managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

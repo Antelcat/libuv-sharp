@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_START_RM_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 48)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint   Flags;
         internal       ulong  LogContainerSize;
@@ -23,15 +25,15 @@ public unsafe partial class TXFS_START_RM_INFORMATION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_START_RM_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_START_RM_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_START_RM_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_START_RM_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_START_RM_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_START_RM_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_START_RM_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_START_RM_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -181,7 +183,7 @@ public unsafe partial class TXFS_START_RM_INFORMATION : IDisposable
 
     public char[] LogPath
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->LogPath, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->LogPath, 1);
 
         set
         {

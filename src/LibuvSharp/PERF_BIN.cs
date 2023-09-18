@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PERF_BIN : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint NumberOfBins;
         internal       uint TypeOfBin;
@@ -14,15 +15,15 @@ public unsafe partial class PERF_BIN : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_BIN> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_BIN>();
+    internal static readonly ConcurrentDictionary<IntPtr, PERF_BIN> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PERF_BIN>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PERF_BIN managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PERF_BIN managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PERF_BIN managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PERF_BIN managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -107,16 +108,16 @@ public unsafe partial class PERF_BIN : IDisposable
         set => ((__Internal*)__Instance)->TypeOfBin = value;
     }
 
-    public global::LibuvSharp.BIN_RANGE[] BinsRanges
+    public BIN_RANGE[] BinsRanges
     {
         get
         {
-            global::LibuvSharp.BIN_RANGE[] __value = null;
+            BIN_RANGE[] __value = null;
             if (((__Internal*)__Instance)->BinsRanges != null)
             {
-                __value = new global::LibuvSharp.BIN_RANGE[1];
+                __value = new BIN_RANGE[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.BIN_RANGE.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.BIN_RANGE.__Internal*)&(((__Internal*)__Instance)->BinsRanges[i * sizeof(global::LibuvSharp.BIN_RANGE.__Internal)])), true, true);
+                    __value[i] = BIN_RANGE.__GetOrCreateInstance((IntPtr)((BIN_RANGE.__Internal*)&(((__Internal*)__Instance)->BinsRanges[i * sizeof(BIN_RANGE.__Internal)])), true, true);
             }
             return __value;
         }
@@ -128,7 +129,7 @@ public unsafe partial class PERF_BIN : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.BIN_RANGE.__Internal*) &((__Internal*)__Instance)->BinsRanges[i * sizeof(global::LibuvSharp.BIN_RANGE.__Internal)] = *(global::LibuvSharp.BIN_RANGE.__Internal*)value[i].__Instance;
+                    *(BIN_RANGE.__Internal*) &((__Internal*)__Instance)->BinsRanges[i * sizeof(BIN_RANGE.__Internal)] = *(BIN_RANGE.__Internal*)value[i].__Instance;
             }
         }
     }

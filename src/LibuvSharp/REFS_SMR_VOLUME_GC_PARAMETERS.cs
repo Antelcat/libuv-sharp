@@ -1,16 +1,18 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class REFS_SMR_VOLUME_GC_PARAMETERS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 88)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint                                         Version;
         internal       uint                                         Flags;
-        internal       global::LibuvSharp.REFS_SMR_VOLUME_GC_ACTION Action;
-        internal       global::LibuvSharp.REFS_SMR_VOLUME_GC_METHOD Method;
+        internal       REFS_SMR_VOLUME_GC_ACTION Action;
+        internal       REFS_SMR_VOLUME_GC_METHOD Method;
         internal       uint                                         IoGranularity;
         internal       uint                                         CompressionFormat;
         internal fixed ulong                                        Unused[8];
@@ -18,15 +20,15 @@ public unsafe partial class REFS_SMR_VOLUME_GC_PARAMETERS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REFS_SMR_VOLUME_GC_PARAMETERS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REFS_SMR_VOLUME_GC_PARAMETERS>();
+    internal static readonly ConcurrentDictionary<IntPtr, REFS_SMR_VOLUME_GC_PARAMETERS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, REFS_SMR_VOLUME_GC_PARAMETERS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.REFS_SMR_VOLUME_GC_PARAMETERS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, REFS_SMR_VOLUME_GC_PARAMETERS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.REFS_SMR_VOLUME_GC_PARAMETERS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out REFS_SMR_VOLUME_GC_PARAMETERS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -111,14 +113,14 @@ public unsafe partial class REFS_SMR_VOLUME_GC_PARAMETERS : IDisposable
         set => ((__Internal*)__Instance)->Flags = value;
     }
 
-    public global::LibuvSharp.REFS_SMR_VOLUME_GC_ACTION Action
+    public REFS_SMR_VOLUME_GC_ACTION Action
     {
         get => ((__Internal*)__Instance)->Action;
 
         set => ((__Internal*)__Instance)->Action = value;
     }
 
-    public global::LibuvSharp.REFS_SMR_VOLUME_GC_METHOD Method
+    public REFS_SMR_VOLUME_GC_METHOD Method
     {
         get => ((__Internal*)__Instance)->Method;
 
@@ -141,7 +143,7 @@ public unsafe partial class REFS_SMR_VOLUME_GC_PARAMETERS : IDisposable
 
     public ulong[] Unused
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Unused, 8);
+        get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Unused, 8);
 
         set
         {

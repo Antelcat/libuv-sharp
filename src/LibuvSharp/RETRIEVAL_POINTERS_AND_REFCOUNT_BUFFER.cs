@@ -1,38 +1,39 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       uint                             ExtentCount;
-        internal       global::LARGE_INTEGER.__Internal StartingVcn;
-        internal fixed byte                             Extents[24];
+        internal       uint                     ExtentCount;
+        internal       LARGE_INTEGER.__Internal StartingVcn;
+        internal fixed byte                     Extents[24];
     }
 
-    public unsafe partial class _0 : IDisposable
+    public partial class _0 : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 24)]
-        public partial struct __Internal
+        public struct __Internal
         {
-            internal global::LARGE_INTEGER.__Internal NextVcn;
-            internal global::LARGE_INTEGER.__Internal Lcn;
-            internal uint                             ReferenceCount;
+            internal LARGE_INTEGER.__Internal NextVcn;
+            internal LARGE_INTEGER.__Internal Lcn;
+            internal uint                     ReferenceCount;
         }
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0>();
+        internal static readonly ConcurrentDictionary<IntPtr, _0> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, _0>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0 managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, _0 managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0 managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out _0 managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -113,15 +114,15 @@ public unsafe partial class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -199,16 +200,16 @@ public unsafe partial class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER : IDisposable
         set => ((__Internal*)__Instance)->ExtentCount = value;
     }
 
-    public global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0[] Extents
+    public _0[] Extents
     {
         get
         {
-            global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0[] __value = null;
+            _0[] __value = null;
             if (((__Internal*)__Instance)->Extents != null)
             {
-                __value = new global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0[1];
+                __value = new _0[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__Internal)])), true, true);
+                    __value[i] = _0.__GetOrCreateInstance((IntPtr)((_0.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(_0.__Internal)])), true, true);
             }
             return __value;
         }
@@ -220,7 +221,7 @@ public unsafe partial class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__Internal)] = *(global::LibuvSharp.RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER._0.__Internal*)value[i].__Instance;
+                    *(_0.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(_0.__Internal)] = *(_0.__Internal*)value[i].__Instance;
             }
         }
     }

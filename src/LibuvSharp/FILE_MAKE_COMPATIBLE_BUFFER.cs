@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_MAKE_COMPATIBLE_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte CloseDisc;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_MAKE_COMPATIBLE_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_MAKE_COMPATIBLE_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_MAKE_COMPATIBLE_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_MAKE_COMPATIBLE_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_MAKE_COMPATIBLE_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_MAKE_COMPATIBLE_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_MAKE_COMPATIBLE_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_MAKE_COMPATIBLE_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

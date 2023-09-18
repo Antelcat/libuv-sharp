@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class OLESTREAM : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr lpstbl;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.OLESTREAM> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.OLESTREAM>();
+    internal static readonly ConcurrentDictionary<IntPtr, OLESTREAM> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, OLESTREAM>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.OLESTREAM managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, OLESTREAM managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.OLESTREAM managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out OLESTREAM managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -91,11 +92,11 @@ public unsafe partial class OLESTREAM : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.OLESTREAMVTBL Lpstbl
+    public OLESTREAMVTBL Lpstbl
     {
         get
         {
-            var __result0 = global::LibuvSharp.OLESTREAMVTBL.__GetOrCreateInstance(((__Internal*)__Instance)->lpstbl, false);
+            var __result0 = OLESTREAMVTBL.__GetOrCreateInstance(((__Internal*)__Instance)->lpstbl);
             return __result0;
         }
 

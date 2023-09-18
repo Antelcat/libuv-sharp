@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class MARK_HANDLE_INFO32 : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 12)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint UsnSourceInfo;
         internal uint VolumeHandle;
@@ -14,15 +15,15 @@ public unsafe partial class MARK_HANDLE_INFO32 : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MARK_HANDLE_INFO32> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MARK_HANDLE_INFO32>();
+    internal static readonly ConcurrentDictionary<IntPtr, MARK_HANDLE_INFO32> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, MARK_HANDLE_INFO32>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.MARK_HANDLE_INFO32 managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, MARK_HANDLE_INFO32 managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.MARK_HANDLE_INFO32 managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MARK_HANDLE_INFO32 managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

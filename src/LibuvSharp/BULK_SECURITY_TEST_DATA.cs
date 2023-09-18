@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class BULK_SECURITY_TEST_DATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint DesiredAccess;
         internal fixed uint SecurityIds[1];
@@ -13,15 +15,15 @@ public unsafe partial class BULK_SECURITY_TEST_DATA : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BULK_SECURITY_TEST_DATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BULK_SECURITY_TEST_DATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, BULK_SECURITY_TEST_DATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, BULK_SECURITY_TEST_DATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.BULK_SECURITY_TEST_DATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, BULK_SECURITY_TEST_DATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.BULK_SECURITY_TEST_DATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out BULK_SECURITY_TEST_DATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -101,7 +103,7 @@ public unsafe partial class BULK_SECURITY_TEST_DATA : IDisposable
 
     public uint[] SecurityIds
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->SecurityIds, 1);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->SecurityIds, 1);
 
         set
         {

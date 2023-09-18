@@ -1,28 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class NTFS_FILE_RECORD_OUTPUT_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LARGE_INTEGER.__Internal FileReferenceNumber;
-        internal       uint                             FileRecordLength;
-        internal fixed byte                             FileRecordBuffer[1];
+        internal       LARGE_INTEGER.__Internal FileReferenceNumber;
+        internal       uint                     FileRecordLength;
+        internal fixed byte                     FileRecordBuffer[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_FILE_RECORD_OUTPUT_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_FILE_RECORD_OUTPUT_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, NTFS_FILE_RECORD_OUTPUT_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, NTFS_FILE_RECORD_OUTPUT_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_FILE_RECORD_OUTPUT_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, NTFS_FILE_RECORD_OUTPUT_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_FILE_RECORD_OUTPUT_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out NTFS_FILE_RECORD_OUTPUT_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -102,7 +104,7 @@ public unsafe partial class NTFS_FILE_RECORD_OUTPUT_BUFFER : IDisposable
 
     public byte[] FileRecordBuffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->FileRecordBuffer, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->FileRecordBuffer, 1);
 
         set
         {

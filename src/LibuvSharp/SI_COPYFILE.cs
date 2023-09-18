@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class SI_COPYFILE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint SourceFileNameLength;
         internal       uint DestinationFileNameLength;
@@ -15,15 +17,15 @@ public unsafe partial class SI_COPYFILE : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SI_COPYFILE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SI_COPYFILE>();
+    internal static readonly ConcurrentDictionary<IntPtr, SI_COPYFILE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SI_COPYFILE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SI_COPYFILE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SI_COPYFILE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SI_COPYFILE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SI_COPYFILE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -117,7 +119,7 @@ public unsafe partial class SI_COPYFILE : IDisposable
 
     public char[] FileNameBuffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileNameBuffer, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileNameBuffer, 1);
 
         set
         {

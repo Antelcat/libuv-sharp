@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DRIVE_LAYOUT_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint PartitionCount;
         internal       uint Signature;
@@ -14,15 +15,15 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DRIVE_LAYOUT_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DRIVE_LAYOUT_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DRIVE_LAYOUT_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -107,16 +108,16 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION : IDisposable
         set => ((__Internal*)__Instance)->Signature = value;
     }
 
-    public global::LibuvSharp.PARTITION_INFORMATION[] PartitionEntry
+    public PARTITION_INFORMATION[] PartitionEntry
     {
         get
         {
-            global::LibuvSharp.PARTITION_INFORMATION[] __value = null;
+            PARTITION_INFORMATION[] __value = null;
             if (((__Internal*)__Instance)->PartitionEntry != null)
             {
-                __value = new global::LibuvSharp.PARTITION_INFORMATION[1];
+                __value = new PARTITION_INFORMATION[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.PARTITION_INFORMATION.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.PARTITION_INFORMATION.__Internal*)&(((__Internal*)__Instance)->PartitionEntry[i * sizeof(global::LibuvSharp.PARTITION_INFORMATION.__Internal)])), true, true);
+                    __value[i] = PARTITION_INFORMATION.__GetOrCreateInstance((IntPtr)((PARTITION_INFORMATION.__Internal*)&(((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION.__Internal)])), true, true);
             }
             return __value;
         }
@@ -128,7 +129,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.PARTITION_INFORMATION.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(global::LibuvSharp.PARTITION_INFORMATION.__Internal)] = *(global::LibuvSharp.PARTITION_INFORMATION.__Internal*)value[i].__Instance;
+                    *(PARTITION_INFORMATION.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION.__Internal)] = *(PARTITION_INFORMATION.__Internal*)value[i].__Instance;
             }
         }
     }

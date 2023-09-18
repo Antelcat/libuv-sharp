@@ -8,4 +8,4 @@ namespace LibuvSharp;
 /// <para>see http://msdn.microsoft.com/en-us/library/ms741542(v=vs.85).aspx</para>
 /// </summary>
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvAllocCb(IntPtr handle, ulong suggested_size, IntPtr buf);
+public delegate void UvAllocCb(IntPtr handle, ulong suggested_size, IntPtr buf);

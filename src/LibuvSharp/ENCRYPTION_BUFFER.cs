@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class ENCRYPTION_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint EncryptionOperation;
         internal fixed byte Private[1];
@@ -13,15 +15,15 @@ public unsafe partial class ENCRYPTION_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTION_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTION_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, ENCRYPTION_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, ENCRYPTION_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.ENCRYPTION_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, ENCRYPTION_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.ENCRYPTION_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out ENCRYPTION_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -101,7 +103,7 @@ public unsafe partial class ENCRYPTION_BUFFER : IDisposable
 
     public byte[] Private
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Private, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Private, 1);
 
         set
         {

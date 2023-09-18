@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class REASSIGN_BLOCKS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       ushort Reserved;
         internal       ushort Count;
@@ -14,15 +16,15 @@ public unsafe partial class REASSIGN_BLOCKS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REASSIGN_BLOCKS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REASSIGN_BLOCKS>();
+    internal static readonly ConcurrentDictionary<IntPtr, REASSIGN_BLOCKS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, REASSIGN_BLOCKS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.REASSIGN_BLOCKS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, REASSIGN_BLOCKS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.REASSIGN_BLOCKS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out REASSIGN_BLOCKS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -109,7 +111,7 @@ public unsafe partial class REASSIGN_BLOCKS : IDisposable
 
     public uint[] BlockNumber
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->BlockNumber, 1);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->BlockNumber, 1);
 
         set
         {

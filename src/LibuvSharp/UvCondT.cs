@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,27 +7,27 @@ namespace LibuvSharp;
 public unsafe partial struct UvCondT
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
-        internal global::RTL_CONDITION_VARIABLE.__Internal cond_var;
+        internal RTL_CONDITION_VARIABLE.__Internal cond_var;
 
         [FieldOffset(0)]
-        internal global::LibuvSharp.UvCondT.Unused.__Internal unused_;
+        internal Unused.__Internal unused_;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_cond_t@@QEAA@AEBT0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
     }
 
-    public unsafe partial class Unused : IDisposable
+    public partial class Unused : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 64)]
-        public partial struct __Internal
+        public struct __Internal
         {
-            internal uint                                    waiters_count;
-            internal global::RTL_CRITICAL_SECTION.__Internal waiters_count_lock;
-            internal IntPtr                                signal_event;
-            internal IntPtr                                broadcast_event;
+            internal uint                            waiters_count;
+            internal RTL_CRITICAL_SECTION.__Internal waiters_count_lock;
+            internal IntPtr                          signal_event;
+            internal IntPtr                          broadcast_event;
 
             [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-unused_>@uv_cond_t@@QEAA@AEBU01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -34,15 +35,15 @@ public unsafe partial struct UvCondT
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvCondT.Unused> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvCondT.Unused>();
+        internal static readonly ConcurrentDictionary<IntPtr, Unused> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, Unused>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvCondT.Unused managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, Unused managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvCondT.Unused managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out Unused managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -97,17 +98,17 @@ public unsafe partial struct UvCondT
 
         public Unused()
         {
-            __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvCondT.Unused.__Internal));
+            __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
         }
 
-        public Unused(global::LibuvSharp.UvCondT.Unused __0)
+        public Unused(Unused __0)
         {
-            __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvCondT.Unused.__Internal));
+            __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
-            *((global::LibuvSharp.UvCondT.Unused.__Internal*) __Instance) = *((global::LibuvSharp.UvCondT.Unused.__Internal*) __0.__Instance);
+            *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
         }
 
         public void Dispose()
@@ -139,19 +140,19 @@ public unsafe partial struct UvCondT
         {
             get => ((__Internal*)__Instance)->signal_event;
 
-            set => ((__Internal*)__Instance)->signal_event = (IntPtr) value;
+            set => ((__Internal*)__Instance)->signal_event = value;
         }
 
         public IntPtr BroadcastEvent
         {
             get => ((__Internal*)__Instance)->broadcast_event;
 
-            set => ((__Internal*)__Instance)->broadcast_event = (IntPtr) value;
+            set => ((__Internal*)__Instance)->broadcast_event = value;
         }
     }
 
-    private  UvCondT.__Internal __instance;
-    internal UvCondT.__Internal __Instance => __instance;
+    private  __Internal __instance;
+    internal __Internal __Instance => __instance;
 
     internal static UvCondT __CreateInstance(IntPtr native, bool skipVTables = false)
     {
@@ -171,10 +172,10 @@ public unsafe partial struct UvCondT
 
     private UvCondT(void* native, bool skipVTables = false) : this()
     {
-        __instance = *(global::LibuvSharp.UvCondT.__Internal*) native;
+        __instance = *(__Internal*) native;
     }
 
-    public UvCondT(global::LibuvSharp.UvCondT __0)
+    public UvCondT(UvCondT __0)
         : this()
     {
         var ____arg0 = __0.__Instance;
@@ -185,15 +186,15 @@ public unsafe partial struct UvCondT
         }
     }
 
-    public global::LibuvSharp.UvCondT.Unused unused_
+    public Unused unused_
     {
-        get => global::LibuvSharp.UvCondT.Unused.__CreateInstance(__instance.unused_);
+        get => Unused.__CreateInstance(__instance.unused_);
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            __instance.unused_ = *(global::LibuvSharp.UvCondT.Unused.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            __instance.unused_ = *(Unused.__Internal*) value.__Instance;
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class USN_JOURNAL_DATA_V2 : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 80)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ulong  UsnJournalID;
         internal long   FirstUsn;
@@ -23,15 +24,15 @@ public unsafe partial class USN_JOURNAL_DATA_V2 : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_JOURNAL_DATA_V2> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_JOURNAL_DATA_V2>();
+    internal static readonly ConcurrentDictionary<IntPtr, USN_JOURNAL_DATA_V2> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, USN_JOURNAL_DATA_V2>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.USN_JOURNAL_DATA_V2 managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, USN_JOURNAL_DATA_V2 managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.USN_JOURNAL_DATA_V2 managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out USN_JOURNAL_DATA_V2 managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

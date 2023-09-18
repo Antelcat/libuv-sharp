@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_INITIATE_REPAIR_OUTPUT_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ulong Hint1;
         internal ulong Hint2;
@@ -15,15 +16,15 @@ public unsafe partial class FILE_INITIATE_REPAIR_OUTPUT_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_INITIATE_REPAIR_OUTPUT_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_INITIATE_REPAIR_OUTPUT_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_INITIATE_REPAIR_OUTPUT_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_INITIATE_REPAIR_OUTPUT_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_INITIATE_REPAIR_OUTPUT_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_INITIATE_REPAIR_OUTPUT_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_INITIATE_REPAIR_OUTPUT_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_INITIATE_REPAIR_OUTPUT_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

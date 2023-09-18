@@ -1,13 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 
-public unsafe partial class MOUSE_EVENT_RECORD
+public partial class MOUSE_EVENT_RECORD
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::COORD.__Internal dwMousePosition;
-        internal uint                     dwButtonState;
-        internal uint                     dwControlKeyState;
-        internal uint                     dwEventFlags;
+        internal COORD.__Internal dwMousePosition;
+        internal uint             dwButtonState;
+        internal uint             dwControlKeyState;
+        internal uint             dwEventFlags;
     }
 }

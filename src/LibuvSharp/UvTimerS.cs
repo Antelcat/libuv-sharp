@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,31 +7,31 @@ namespace LibuvSharp;
 public unsafe partial class UvTimerS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 160)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal IntPtr                                 data;
-        internal IntPtr                                 loop;
-        internal global::LibuvSharp.UvHandleType          type;
-        internal IntPtr                                 close_cb;
-        internal global::LibuvSharp.UvQueue.__Internal    handle_queue;
-        internal global::LibuvSharp.UvTimerS.U.__Internal u;
-        internal IntPtr                                 endgame_next;
-        internal uint                                     flags;
-        internal void*                                    heap_node;
-        internal int                                      unused;
-        internal ulong                                    timeout;
-        internal ulong                                    repeat;
-        internal ulong                                    start_id;
-        internal IntPtr                                 timer_cb;
+        internal IntPtr             data;
+        internal IntPtr             loop;
+        internal UvHandleType       type;
+        internal IntPtr             close_cb;
+        internal UvQueue.__Internal handle_queue;
+        internal U.__Internal       u;
+        internal IntPtr             endgame_next;
+        internal uint               flags;
+        internal void*              heap_node;
+        internal int                unused;
+        internal ulong              timeout;
+        internal ulong              repeat;
+        internal ulong              start_id;
+        internal IntPtr             timer_cb;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_timer_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct U
+    public partial struct U
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
             internal int fd;
@@ -42,8 +43,8 @@ public unsafe partial class UvTimerS : IDisposable
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        private  U.__Internal __instance;
-        internal U.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static U __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -63,10 +64,10 @@ public unsafe partial class UvTimerS : IDisposable
 
         private U(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvTimerS.U.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public U(global::LibuvSharp.UvTimerS.U __0)
+        public U(U __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -112,15 +113,15 @@ public unsafe partial class UvTimerS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTimerS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTimerS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvTimerS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvTimerS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvTimerS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvTimerS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvTimerS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvTimerS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -175,17 +176,17 @@ public unsafe partial class UvTimerS : IDisposable
 
     public UvTimerS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTimerS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvTimerS(global::LibuvSharp.UvTimerS _0)
+    public UvTimerS(UvTimerS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTimerS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvTimerS.__Internal*) __Instance) = *((global::LibuvSharp.UvTimerS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -210,62 +211,62 @@ public unsafe partial class UvTimerS : IDisposable
     {
         get => ((__Internal*)__Instance)->data;
 
-        set => ((__Internal*)__Instance)->data = (IntPtr) value;
+        set => ((__Internal*)__Instance)->data = value;
     }
 
-    public global::LibuvSharp.UvLoopS Loop
+    public UvLoopS Loop
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop, false);
+            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->loop = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvHandleType Type
+    public UvHandleType Type
     {
         get => ((__Internal*)__Instance)->type;
 
         set => ((__Internal*)__Instance)->type = value;
     }
 
-    public global::LibuvSharp.UvCloseCb CloseCb
+    public UvCloseCb CloseCb
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->close_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvCloseCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvCloseCb));
+            return __ptr0 == IntPtr.Zero? null : (UvCloseCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvCloseCb));
         }
 
-        set => ((__Internal*)__Instance)->close_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->close_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public global::LibuvSharp.UvQueue HandleQueue
+    public UvQueue HandleQueue
     {
-        get => global::LibuvSharp.UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
+        get => UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->handle_queue = *(global::LibuvSharp.UvQueue.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvTimerS.U u
+    public U u
     {
-        get => global::LibuvSharp.UvTimerS.U.__CreateInstance(((__Internal*)__Instance)->u);
+        get => U.__CreateInstance(((__Internal*)__Instance)->u);
 
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public global::LibuvSharp.UvHandleS EndgameNext
+    public UvHandleS EndgameNext
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next, false);
+            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
             return __result0;
         }
 
@@ -332,14 +333,14 @@ public unsafe partial class UvTimerS : IDisposable
         set => ((__Internal*)__Instance)->start_id = value;
     }
 
-    public global::LibuvSharp.UvTimerCb TimerCb
+    public UvTimerCb TimerCb
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->timer_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvTimerCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvTimerCb));
+            return __ptr0 == IntPtr.Zero? null : (UvTimerCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvTimerCb));
         }
 
-        set => ((__Internal*)__Instance)->timer_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->timer_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 }

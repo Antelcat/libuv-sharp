@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,7 +7,7 @@ namespace LibuvSharp;
 public unsafe partial class UvPasswdS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr username;
         internal uint     uid;
@@ -20,15 +21,15 @@ public unsafe partial class UvPasswdS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvPasswdS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvPasswdS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvPasswdS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvPasswdS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvPasswdS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvPasswdS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvPasswdS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvPasswdS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -83,17 +84,17 @@ public unsafe partial class UvPasswdS : IDisposable
 
     public UvPasswdS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvPasswdS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvPasswdS(global::LibuvSharp.UvPasswdS _0)
+    public UvPasswdS(UvPasswdS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvPasswdS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvPasswdS.__Internal*) __Instance) = *((global::LibuvSharp.UvPasswdS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()

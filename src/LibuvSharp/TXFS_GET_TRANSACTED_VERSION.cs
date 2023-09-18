@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_GET_TRANSACTED_VERSION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint   ThisBaseVersion;
         internal uint   LatestVersion;
@@ -16,15 +17,15 @@ public unsafe partial class TXFS_GET_TRANSACTED_VERSION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_TRANSACTED_VERSION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_GET_TRANSACTED_VERSION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_GET_TRANSACTED_VERSION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_GET_TRANSACTED_VERSION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_GET_TRANSACTED_VERSION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_GET_TRANSACTED_VERSION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_GET_TRANSACTED_VERSION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_GET_TRANSACTED_VERSION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

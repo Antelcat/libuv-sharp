@@ -1,29 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DRIVE_LAYOUT_INFORMATION_GPT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::GUID.__Internal          DiskId;
-        internal global::LARGE_INTEGER.__Internal StartingUsableOffset;
-        internal global::LARGE_INTEGER.__Internal UsableLength;
-        internal uint                             MaxPartitionCount;
+        internal GUID.__Internal          DiskId;
+        internal LARGE_INTEGER.__Internal StartingUsableOffset;
+        internal LARGE_INTEGER.__Internal UsableLength;
+        internal uint                     MaxPartitionCount;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT>();
+    internal static readonly ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION_GPT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION_GPT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DRIVE_LAYOUT_INFORMATION_GPT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DRIVE_LAYOUT_INFORMATION_GPT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

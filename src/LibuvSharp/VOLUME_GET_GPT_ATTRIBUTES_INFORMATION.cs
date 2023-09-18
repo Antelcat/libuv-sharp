@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class VOLUME_GET_GPT_ATTRIBUTES_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ulong GptAttributes;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VOLUME_GET_GPT_ATTRIBUTES_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VOLUME_GET_GPT_ATTRIBUTES_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, VOLUME_GET_GPT_ATTRIBUTES_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, VOLUME_GET_GPT_ATTRIBUTES_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.VOLUME_GET_GPT_ATTRIBUTES_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, VOLUME_GET_GPT_ATTRIBUTES_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.VOLUME_GET_GPT_ATTRIBUTES_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out VOLUME_GET_GPT_ATTRIBUTES_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

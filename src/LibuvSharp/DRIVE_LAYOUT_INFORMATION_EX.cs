@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 192)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
         internal uint PartitionStyle;
@@ -14,10 +15,10 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
         internal uint PartitionCount;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_MBR.__Internal Mbr;
+        internal DRIVE_LAYOUT_INFORMATION_MBR.__Internal Mbr;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT.__Internal Gpt;
+        internal DRIVE_LAYOUT_INFORMATION_GPT.__Internal Gpt;
 
         [FieldOffset(48)]
         internal fixed byte PartitionEntry[144];
@@ -25,15 +26,15 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DRIVE_LAYOUT_INFORMATION_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DRIVE_LAYOUT_INFORMATION_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DRIVE_LAYOUT_INFORMATION_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -118,40 +119,40 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
         set => ((__Internal*)__Instance)->PartitionCount = value;
     }
 
-    public global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_MBR Mbr
+    public DRIVE_LAYOUT_INFORMATION_MBR Mbr
     {
-        get => global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
+        get => DRIVE_LAYOUT_INFORMATION_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Mbr = *(global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_MBR.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Mbr = *(DRIVE_LAYOUT_INFORMATION_MBR.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT Gpt
+    public DRIVE_LAYOUT_INFORMATION_GPT Gpt
     {
-        get => global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
+        get => DRIVE_LAYOUT_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Gpt = *(global::LibuvSharp.DRIVE_LAYOUT_INFORMATION_GPT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Gpt = *(DRIVE_LAYOUT_INFORMATION_GPT.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.PARTITION_INFORMATION_EX[] PartitionEntry
+    public PARTITION_INFORMATION_EX[] PartitionEntry
     {
         get
         {
-            global::LibuvSharp.PARTITION_INFORMATION_EX[] __value = null;
+            PARTITION_INFORMATION_EX[] __value = null;
             if (((__Internal*)__Instance)->PartitionEntry != null)
             {
-                __value = new global::LibuvSharp.PARTITION_INFORMATION_EX[1];
+                __value = new PARTITION_INFORMATION_EX[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.PARTITION_INFORMATION_EX.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.PARTITION_INFORMATION_EX.__Internal*)&(((__Internal*)__Instance)->PartitionEntry[i * sizeof(global::LibuvSharp.PARTITION_INFORMATION_EX.__Internal)])), true, true);
+                    __value[i] = PARTITION_INFORMATION_EX.__GetOrCreateInstance((IntPtr)((PARTITION_INFORMATION_EX.__Internal*)&(((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION_EX.__Internal)])), true, true);
             }
             return __value;
         }
@@ -163,7 +164,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.PARTITION_INFORMATION_EX.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(global::LibuvSharp.PARTITION_INFORMATION_EX.__Internal)] = *(global::LibuvSharp.PARTITION_INFORMATION_EX.__Internal*)value[i].__Instance;
+                    *(PARTITION_INFORMATION_EX.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION_EX.__Internal)] = *(PARTITION_INFORMATION_EX.__Internal*)value[i].__Instance;
             }
         }
     }

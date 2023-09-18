@@ -1,64 +1,65 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class NTFS_STATISTICS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 216)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint LogFileFullExceptions;
-        internal uint OtherExceptions;
-        internal uint MftReads;
-        internal uint MftReadBytes;
-        internal uint MftWrites;
-        internal uint MftWriteBytes;
-        internal global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel.__Internal MftWritesUserLevel;
-        internal ushort MftWritesFlushForLogFileFull;
-        internal ushort MftWritesLazyWriter;
-        internal ushort MftWritesUserRequest;
-        internal uint Mft2Writes;
-        internal uint Mft2WriteBytes;
-        internal global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel.__Internal Mft2WritesUserLevel;
-        internal ushort Mft2WritesFlushForLogFileFull;
-        internal ushort Mft2WritesLazyWriter;
-        internal ushort Mft2WritesUserRequest;
-        internal uint RootIndexReads;
-        internal uint RootIndexReadBytes;
-        internal uint RootIndexWrites;
-        internal uint RootIndexWriteBytes;
-        internal uint BitmapReads;
-        internal uint BitmapReadBytes;
-        internal uint BitmapWrites;
-        internal uint BitmapWriteBytes;
-        internal ushort BitmapWritesFlushForLogFileFull;
-        internal ushort BitmapWritesLazyWriter;
-        internal ushort BitmapWritesUserRequest;
-        internal global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel.__Internal BitmapWritesUserLevel;
-        internal uint MftBitmapReads;
-        internal uint MftBitmapReadBytes;
-        internal uint MftBitmapWrites;
-        internal uint MftBitmapWriteBytes;
-        internal ushort MftBitmapWritesFlushForLogFileFull;
-        internal ushort MftBitmapWritesLazyWriter;
-        internal ushort MftBitmapWritesUserRequest;
-        internal global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel.__Internal MftBitmapWritesUserLevel;
-        internal uint UserIndexReads;
-        internal uint UserIndexReadBytes;
-        internal uint UserIndexWrites;
-        internal uint UserIndexWriteBytes;
-        internal uint LogFileReads;
-        internal uint LogFileReadBytes;
-        internal uint LogFileWrites;
-        internal uint LogFileWriteBytes;
-        internal global::LibuvSharp.NTFS_STATISTICS.Allocate.__Internal Allocate;
-        internal uint DiskResourcesExhausted;
+        internal uint                                LogFileFullExceptions;
+        internal uint                                OtherExceptions;
+        internal uint                                MftReads;
+        internal uint                                MftReadBytes;
+        internal uint                                MftWrites;
+        internal uint                                MftWriteBytes;
+        internal MftWritesUserLevel.__Internal       MftWritesUserLevel;
+        internal ushort                              MftWritesFlushForLogFileFull;
+        internal ushort                              MftWritesLazyWriter;
+        internal ushort                              MftWritesUserRequest;
+        internal uint                                Mft2Writes;
+        internal uint                                Mft2WriteBytes;
+        internal Mft2WritesUserLevel.__Internal      Mft2WritesUserLevel;
+        internal ushort                              Mft2WritesFlushForLogFileFull;
+        internal ushort                              Mft2WritesLazyWriter;
+        internal ushort                              Mft2WritesUserRequest;
+        internal uint                                RootIndexReads;
+        internal uint                                RootIndexReadBytes;
+        internal uint                                RootIndexWrites;
+        internal uint                                RootIndexWriteBytes;
+        internal uint                                BitmapReads;
+        internal uint                                BitmapReadBytes;
+        internal uint                                BitmapWrites;
+        internal uint                                BitmapWriteBytes;
+        internal ushort                              BitmapWritesFlushForLogFileFull;
+        internal ushort                              BitmapWritesLazyWriter;
+        internal ushort                              BitmapWritesUserRequest;
+        internal BitmapWritesUserLevel.__Internal    BitmapWritesUserLevel;
+        internal uint                                MftBitmapReads;
+        internal uint                                MftBitmapReadBytes;
+        internal uint                                MftBitmapWrites;
+        internal uint                                MftBitmapWriteBytes;
+        internal ushort                              MftBitmapWritesFlushForLogFileFull;
+        internal ushort                              MftBitmapWritesLazyWriter;
+        internal ushort                              MftBitmapWritesUserRequest;
+        internal MftBitmapWritesUserLevel.__Internal MftBitmapWritesUserLevel;
+        internal uint                                UserIndexReads;
+        internal uint                                UserIndexReadBytes;
+        internal uint                                UserIndexWrites;
+        internal uint                                UserIndexWriteBytes;
+        internal uint                                LogFileReads;
+        internal uint                                LogFileReadBytes;
+        internal uint                                LogFileWrites;
+        internal uint                                LogFileWriteBytes;
+        internal Allocate.__Internal                 Allocate;
+        internal uint                                DiskResourcesExhausted;
     }
 
-    public unsafe partial class MftWritesUserLevel : IDisposable
+    public partial class MftWritesUserLevel : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 8)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal ushort Write;
             internal ushort Create;
@@ -68,15 +69,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel>();
+        internal static readonly ConcurrentDictionary<IntPtr, MftWritesUserLevel> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, MftWritesUserLevel>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, MftWritesUserLevel managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MftWritesUserLevel managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -176,10 +177,10 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         }
     }
 
-    public unsafe partial class Mft2WritesUserLevel : IDisposable
+    public partial class Mft2WritesUserLevel : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 8)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal ushort Write;
             internal ushort Create;
@@ -189,15 +190,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel>();
+        internal static readonly ConcurrentDictionary<IntPtr, Mft2WritesUserLevel> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, Mft2WritesUserLevel>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, Mft2WritesUserLevel managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out Mft2WritesUserLevel managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -297,10 +298,10 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         }
     }
 
-    public unsafe partial class BitmapWritesUserLevel : IDisposable
+    public partial class BitmapWritesUserLevel : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 6)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal ushort Write;
             internal ushort Create;
@@ -309,15 +310,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel>();
+        internal static readonly ConcurrentDictionary<IntPtr, BitmapWritesUserLevel> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, BitmapWritesUserLevel>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, BitmapWritesUserLevel managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out BitmapWritesUserLevel managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -410,10 +411,10 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         }
     }
 
-    public unsafe partial class MftBitmapWritesUserLevel : IDisposable
+    public partial class MftBitmapWritesUserLevel : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 8)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal ushort Write;
             internal ushort Create;
@@ -423,15 +424,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel>();
+        internal static readonly ConcurrentDictionary<IntPtr, MftBitmapWritesUserLevel> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, MftBitmapWritesUserLevel>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, MftBitmapWritesUserLevel managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MftBitmapWritesUserLevel managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -531,10 +532,10 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         }
     }
 
-    public unsafe partial class Allocate : IDisposable
+    public partial class Allocate : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 40)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal uint Calls;
             internal uint Clusters;
@@ -550,15 +551,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.Allocate> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS.Allocate>();
+        internal static readonly ConcurrentDictionary<IntPtr, Allocate> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, Allocate>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS.Allocate managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, Allocate managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS.Allocate managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out Allocate managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -702,15 +703,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_STATISTICS>();
+    internal static readonly ConcurrentDictionary<IntPtr, NTFS_STATISTICS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, NTFS_STATISTICS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_STATISTICS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, NTFS_STATISTICS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_STATISTICS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out NTFS_STATISTICS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -823,15 +824,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         set => ((__Internal*)__Instance)->MftWriteBytes = value;
     }
 
-    public global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel mftWritesUserLevel
+    public MftWritesUserLevel mftWritesUserLevel
     {
-        get => global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->MftWritesUserLevel));
+        get => MftWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->MftWritesUserLevel));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->MftWritesUserLevel = *(global::LibuvSharp.NTFS_STATISTICS.MftWritesUserLevel.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->MftWritesUserLevel = *(MftWritesUserLevel.__Internal*) value.__Instance;
         }
     }
 
@@ -870,15 +871,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         set => ((__Internal*)__Instance)->Mft2WriteBytes = value;
     }
 
-    public global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel mft2WritesUserLevel
+    public Mft2WritesUserLevel mft2WritesUserLevel
     {
-        get => global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mft2WritesUserLevel));
+        get => Mft2WritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mft2WritesUserLevel));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Mft2WritesUserLevel = *(global::LibuvSharp.NTFS_STATISTICS.Mft2WritesUserLevel.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Mft2WritesUserLevel = *(Mft2WritesUserLevel.__Internal*) value.__Instance;
         }
     }
 
@@ -980,15 +981,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         set => ((__Internal*)__Instance)->BitmapWritesUserRequest = value;
     }
 
-    public global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel bitmapWritesUserLevel
+    public BitmapWritesUserLevel bitmapWritesUserLevel
     {
-        get => global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->BitmapWritesUserLevel));
+        get => BitmapWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->BitmapWritesUserLevel));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->BitmapWritesUserLevel = *(global::LibuvSharp.NTFS_STATISTICS.BitmapWritesUserLevel.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->BitmapWritesUserLevel = *(BitmapWritesUserLevel.__Internal*) value.__Instance;
         }
     }
 
@@ -1041,15 +1042,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         set => ((__Internal*)__Instance)->MftBitmapWritesUserRequest = value;
     }
 
-    public global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel mftBitmapWritesUserLevel
+    public MftBitmapWritesUserLevel mftBitmapWritesUserLevel
     {
-        get => global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->MftBitmapWritesUserLevel));
+        get => MftBitmapWritesUserLevel.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->MftBitmapWritesUserLevel));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->MftBitmapWritesUserLevel = *(global::LibuvSharp.NTFS_STATISTICS.MftBitmapWritesUserLevel.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->MftBitmapWritesUserLevel = *(MftBitmapWritesUserLevel.__Internal*) value.__Instance;
         }
     }
 
@@ -1109,15 +1110,15 @@ public unsafe partial class NTFS_STATISTICS : IDisposable
         set => ((__Internal*)__Instance)->LogFileWriteBytes = value;
     }
 
-    public global::LibuvSharp.NTFS_STATISTICS.Allocate allocate
+    public Allocate allocate
     {
-        get => global::LibuvSharp.NTFS_STATISTICS.Allocate.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Allocate));
+        get => Allocate.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Allocate));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Allocate = *(global::LibuvSharp.NTFS_STATISTICS.Allocate.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Allocate = *(Allocate.__Internal*) value.__Instance;
         }
     }
 

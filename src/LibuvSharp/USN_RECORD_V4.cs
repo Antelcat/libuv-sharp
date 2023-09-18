@@ -1,35 +1,36 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class USN_RECORD_V4 : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 80)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LibuvSharp.USN_RECORD_COMMON_HEADER.__Internal Header;
-        internal       global::FILE_ID_128.__Internal                         FileReferenceNumber;
-        internal       global::FILE_ID_128.__Internal                         ParentFileReferenceNumber;
-        internal       long                                                   Usn;
-        internal       uint                                                   Reason;
-        internal       uint                                                   SourceInfo;
-        internal       uint                                                   RemainingExtents;
-        internal       ushort                                                 NumberOfExtents;
-        internal       ushort                                                 ExtentSize;
-        internal fixed byte                                                   Extents[16];
+        internal       USN_RECORD_COMMON_HEADER.__Internal Header;
+        internal       FILE_ID_128.__Internal              FileReferenceNumber;
+        internal       FILE_ID_128.__Internal              ParentFileReferenceNumber;
+        internal       long                                Usn;
+        internal       uint                                Reason;
+        internal       uint                                SourceInfo;
+        internal       uint                                RemainingExtents;
+        internal       ushort                              NumberOfExtents;
+        internal       ushort                              ExtentSize;
+        internal fixed byte                                Extents[16];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_V4> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_V4>();
+    internal static readonly ConcurrentDictionary<IntPtr, USN_RECORD_V4> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, USN_RECORD_V4>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.USN_RECORD_V4 managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, USN_RECORD_V4 managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.USN_RECORD_V4 managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out USN_RECORD_V4 managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -100,15 +101,15 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.USN_RECORD_COMMON_HEADER Header
+    public USN_RECORD_COMMON_HEADER Header
     {
-        get => global::LibuvSharp.USN_RECORD_COMMON_HEADER.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Header));
+        get => USN_RECORD_COMMON_HEADER.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Header));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Header = *(global::LibuvSharp.USN_RECORD_COMMON_HEADER.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Header = *(USN_RECORD_COMMON_HEADER.__Internal*) value.__Instance;
         }
     }
 
@@ -154,16 +155,16 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
         set => ((__Internal*)__Instance)->ExtentSize = value;
     }
 
-    public global::LibuvSharp.USN_RECORD_EXTENT[] Extents
+    public USN_RECORD_EXTENT[] Extents
     {
         get
         {
-            global::LibuvSharp.USN_RECORD_EXTENT[] __value = null;
+            USN_RECORD_EXTENT[] __value = null;
             if (((__Internal*)__Instance)->Extents != null)
             {
-                __value = new global::LibuvSharp.USN_RECORD_EXTENT[1];
+                __value = new USN_RECORD_EXTENT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.USN_RECORD_EXTENT.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.USN_RECORD_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.USN_RECORD_EXTENT.__Internal)])), true, true);
+                    __value[i] = USN_RECORD_EXTENT.__GetOrCreateInstance((IntPtr)((USN_RECORD_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(USN_RECORD_EXTENT.__Internal)])), true, true);
             }
             return __value;
         }
@@ -175,7 +176,7 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.USN_RECORD_EXTENT.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(global::LibuvSharp.USN_RECORD_EXTENT.__Internal)] = *(global::LibuvSharp.USN_RECORD_EXTENT.__Internal*)value[i].__Instance;
+                    *(USN_RECORD_EXTENT.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(USN_RECORD_EXTENT.__Internal)] = *(USN_RECORD_EXTENT.__Internal*)value[i].__Instance;
             }
         }
     }

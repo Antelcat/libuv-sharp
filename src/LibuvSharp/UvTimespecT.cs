@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,7 +7,7 @@ namespace LibuvSharp;
 public unsafe partial class UvTimespecT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal int tv_sec;
         internal int tv_nsec;
@@ -17,15 +18,15 @@ public unsafe partial class UvTimespecT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTimespecT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTimespecT>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvTimespecT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvTimespecT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvTimespecT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvTimespecT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvTimespecT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvTimespecT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -80,17 +81,17 @@ public unsafe partial class UvTimespecT : IDisposable
 
     public UvTimespecT()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTimespecT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvTimespecT(global::LibuvSharp.UvTimespecT __0)
+    public UvTimespecT(UvTimespecT __0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTimespecT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvTimespecT.__Internal*) __Instance) = *((global::LibuvSharp.UvTimespecT.__Internal*) __0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
     }
 
     public void Dispose()

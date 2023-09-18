@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class PATHNAME_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint PathNameLength;
         internal fixed char Name[1];
@@ -13,15 +15,15 @@ public unsafe partial class PATHNAME_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PATHNAME_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PATHNAME_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, PATHNAME_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PATHNAME_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PATHNAME_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PATHNAME_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PATHNAME_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PATHNAME_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -101,7 +103,7 @@ public unsafe partial class PATHNAME_BUFFER : IDisposable
 
     public char[] Name
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Name, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Name, 1);
 
         set
         {

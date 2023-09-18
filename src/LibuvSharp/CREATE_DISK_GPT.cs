@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class CREATE_DISK_GPT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 20)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::GUID.__Internal DiskId;
-        internal uint                    MaxPartitionCount;
+        internal GUID.__Internal DiskId;
+        internal uint            MaxPartitionCount;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CREATE_DISK_GPT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CREATE_DISK_GPT>();
+    internal static readonly ConcurrentDictionary<IntPtr, CREATE_DISK_GPT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CREATE_DISK_GPT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CREATE_DISK_GPT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CREATE_DISK_GPT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CREATE_DISK_GPT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CREATE_DISK_GPT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

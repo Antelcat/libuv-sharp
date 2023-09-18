@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class CHANGER_ELEMENT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.ELEMENT_TYPE ElementType;
+        internal ELEMENT_TYPE ElementType;
         internal uint                            ElementAddress;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_ELEMENT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_ELEMENT>();
+    internal static readonly ConcurrentDictionary<IntPtr, CHANGER_ELEMENT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CHANGER_ELEMENT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CHANGER_ELEMENT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CHANGER_ELEMENT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CHANGER_ELEMENT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CHANGER_ELEMENT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -92,7 +93,7 @@ public unsafe partial class CHANGER_ELEMENT : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.ELEMENT_TYPE ElementType
+    public ELEMENT_TYPE ElementType
     {
         get => ((__Internal*)__Instance)->ElementType;
 

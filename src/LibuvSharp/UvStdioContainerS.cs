@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,19 +7,19 @@ namespace LibuvSharp;
 public unsafe partial class UvStdioContainerS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.UvStdioFlags                      flags;
-        internal global::LibuvSharp.UvStdioContainerS.Data.__Internal data;
+        internal UvStdioFlags    flags;
+        internal Data.__Internal data;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_stdio_container_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct Data
+    public partial struct Data
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
             internal IntPtr stream;
@@ -30,8 +31,8 @@ public unsafe partial class UvStdioContainerS : IDisposable
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        private  Data.__Internal __instance;
-        internal Data.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static Data __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -51,10 +52,10 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
         private Data(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvStdioContainerS.Data.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public Data(global::LibuvSharp.UvStdioContainerS.Data __0)
+        public Data(Data __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -65,11 +66,11 @@ public unsafe partial class UvStdioContainerS : IDisposable
             }
         }
 
-        public global::LibuvSharp.UvStreamS Stream
+        public UvStreamS Stream
         {
             get
             {
-                var __result0 = global::LibuvSharp.UvStreamS.__GetOrCreateInstance(__instance.stream, false);
+                var __result0 = UvStreamS.__GetOrCreateInstance(__instance.stream);
                 return __result0;
             }
 
@@ -86,15 +87,15 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvStdioContainerS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvStdioContainerS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvStdioContainerS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvStdioContainerS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvStdioContainerS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvStdioContainerS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvStdioContainerS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvStdioContainerS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -149,17 +150,17 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
     public UvStdioContainerS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvStdioContainerS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvStdioContainerS(global::LibuvSharp.UvStdioContainerS _0)
+    public UvStdioContainerS(UvStdioContainerS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvStdioContainerS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvStdioContainerS.__Internal*) __Instance) = *((global::LibuvSharp.UvStdioContainerS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -180,16 +181,16 @@ public unsafe partial class UvStdioContainerS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.UvStdioFlags Flags
+    public UvStdioFlags Flags
     {
         get => ((__Internal*)__Instance)->flags;
 
         set => ((__Internal*)__Instance)->flags = value;
     }
 
-    public global::LibuvSharp.UvStdioContainerS.Data data
+    public Data data
     {
-        get => global::LibuvSharp.UvStdioContainerS.Data.__CreateInstance(((__Internal*)__Instance)->data);
+        get => Data.__CreateInstance(((__Internal*)__Instance)->data);
 
         set => ((__Internal*)__Instance)->data = value.__Instance;
     }

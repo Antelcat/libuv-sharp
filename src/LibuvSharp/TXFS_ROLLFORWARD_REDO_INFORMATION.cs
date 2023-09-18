@@ -1,29 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_ROLLFORWARD_REDO_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal LastVirtualClock;
-        internal ulong                            LastRedoLsn;
-        internal ulong                            HighestRecoveryLsn;
-        internal uint                             Flags;
+        internal LARGE_INTEGER.__Internal LastVirtualClock;
+        internal ulong                    LastRedoLsn;
+        internal ulong                    HighestRecoveryLsn;
+        internal uint                     Flags;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_ROLLFORWARD_REDO_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_ROLLFORWARD_REDO_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_ROLLFORWARD_REDO_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_ROLLFORWARD_REDO_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_ROLLFORWARD_REDO_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_ROLLFORWARD_REDO_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_ROLLFORWARD_REDO_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_ROLLFORWARD_REDO_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

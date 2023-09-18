@@ -1,28 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class CHANGER_SEND_VOLUME_TAG_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 52)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LibuvSharp.CHANGER_ELEMENT.__Internal StartingElement;
-        internal       uint                                          ActionCode;
-        internal fixed byte                                          VolumeIDTemplate[40];
+        internal       CHANGER_ELEMENT.__Internal StartingElement;
+        internal       uint                       ActionCode;
+        internal fixed byte                       VolumeIDTemplate[40];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_SEND_VOLUME_TAG_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_SEND_VOLUME_TAG_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, CHANGER_SEND_VOLUME_TAG_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CHANGER_SEND_VOLUME_TAG_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CHANGER_SEND_VOLUME_TAG_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CHANGER_SEND_VOLUME_TAG_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CHANGER_SEND_VOLUME_TAG_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CHANGER_SEND_VOLUME_TAG_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -93,15 +95,15 @@ public unsafe partial class CHANGER_SEND_VOLUME_TAG_INFORMATION : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.CHANGER_ELEMENT StartingElement
+    public CHANGER_ELEMENT StartingElement
     {
-        get => global::LibuvSharp.CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->StartingElement));
+        get => CHANGER_ELEMENT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->StartingElement));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->StartingElement = *(global::LibuvSharp.CHANGER_ELEMENT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->StartingElement = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }
 
@@ -114,7 +116,7 @@ public unsafe partial class CHANGER_SEND_VOLUME_TAG_INFORMATION : IDisposable
 
     public byte[] VolumeIDTemplate
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VolumeIDTemplate, 40);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VolumeIDTemplate, 40);
 
         set
         {

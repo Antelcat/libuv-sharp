@@ -1,11 +1,14 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
+using CppSharp.Runtime;
+using LibuvSharp.Delegates;
 
 namespace LibuvSharp;
 
 public unsafe partial class uv
 {
-    public partial struct __Internal
+    public struct __Internal
     {
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_version", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint UvVersion();
@@ -41,13 +44,13 @@ public unsafe partial class uv
         internal static extern int UvLoopAlive(IntPtr loop);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_configure", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvLoopConfigure(IntPtr loop, global::LibuvSharp.UvLoopOption option);
+        internal static extern int UvLoopConfigure(IntPtr loop, UvLoopOption option);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_loop_fork", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvLoopFork(IntPtr loop);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_run", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvRun(IntPtr _0, global::LibuvSharp.UvRunMode mode);
+        internal static extern int UvRun(IntPtr _0, UvRunMode mode);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvStop(IntPtr _0);
@@ -92,13 +95,13 @@ public unsafe partial class uv
         internal static extern int UvShutdown(IntPtr req, IntPtr handle, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_size", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern ulong UvHandleSize(global::LibuvSharp.UvHandleType type);
+        internal static extern ulong UvHandleSize(UvHandleType type);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_get_type", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern global::LibuvSharp.UvHandleType UvHandleGetType(IntPtr handle);
+        internal static extern UvHandleType UvHandleGetType(IntPtr handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_type_name", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr UvHandleTypeName(global::LibuvSharp.UvHandleType type);
+        internal static extern IntPtr UvHandleTypeName(UvHandleType type);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_get_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvHandleGetData(IntPtr handle);
@@ -110,7 +113,7 @@ public unsafe partial class uv
         internal static extern void UvHandleSetData(IntPtr handle, IntPtr data);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_size", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern ulong UvReqSize(global::LibuvSharp.UvReqType type);
+        internal static extern ulong UvReqSize(UvReqType type);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_get_data", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvReqGetData(IntPtr req);
@@ -119,10 +122,10 @@ public unsafe partial class uv
         internal static extern void UvReqSetData(IntPtr req, IntPtr data);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_get_type", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern global::LibuvSharp.UvReqType UvReqGetType(IntPtr req);
+        internal static extern UvReqType UvReqGetType(IntPtr req);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_req_type_name", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr UvReqTypeName(global::LibuvSharp.UvReqType type);
+        internal static extern IntPtr UvReqTypeName(UvReqType type);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_active", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsActive(IntPtr handle);
@@ -173,16 +176,16 @@ public unsafe partial class uv
         internal static extern int UvReadStop(IntPtr _0);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvWrite(IntPtr req, IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr cb);
+        internal static extern int UvWrite(IntPtr req, IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvWrite2(IntPtr req, IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle, IntPtr cb);
+        internal static extern int UvWrite2(IntPtr req, IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTryWrite(IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs);
+        internal static extern int UvTryWrite(IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTryWrite2(IntPtr handle, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle);
+        internal static extern int UvTryWrite2(IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_readable", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsReadable(IntPtr handle);
@@ -227,10 +230,10 @@ public unsafe partial class uv
         internal static extern int UvUdpOpen(IntPtr handle, ulong sock);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_membership", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvUdpSetMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr, global::LibuvSharp.UvMembership membership);
+        internal static extern int UvUdpSetMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string interface_addr, UvMembership membership);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_source_membership", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvUdpSetSourceMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string source_addr, global::LibuvSharp.UvMembership membership);
+        internal static extern int UvUdpSetSourceMembership(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string multicast_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string interface_addr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string source_addr, UvMembership membership);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_multicast_loop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetMulticastLoop(IntPtr handle, int on);
@@ -239,7 +242,7 @@ public unsafe partial class uv
         internal static extern int UvUdpSetMulticastTtl(IntPtr handle, int ttl);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_multicast_interface", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvUdpSetMulticastInterface(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string interface_addr);
+        internal static extern int UvUdpSetMulticastInterface(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string interface_addr);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_udp_set_broadcast", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvUdpSetBroadcast(IntPtr handle, int on);
@@ -263,7 +266,7 @@ public unsafe partial class uv
         internal static extern int UvTtyInit(IntPtr _0, IntPtr _1, int fd, int readable);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_set_mode", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTtySetMode(IntPtr _0, global::LibuvSharp.UvTtyModeT mode);
+        internal static extern int UvTtySetMode(IntPtr _0, UvTtyModeT mode);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_reset_mode", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtyResetMode();
@@ -272,16 +275,16 @@ public unsafe partial class uv
         internal static extern int UvTtyGetWinsize(IntPtr _0, int* width, int* height);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_set_vterm_state", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void UvTtySetVtermState(global::LibuvSharp.UvTtyVtermstateT state);
+        internal static extern void UvTtySetVtermState(UvTtyVtermstateT state);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_tty_get_vterm_state", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTtyGetVtermState(global::LibuvSharp.UvTtyVtermstateT* state);
+        internal static extern int UvTtyGetVtermState(UvTtyVtermstateT* state);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "?uv_tty_set_mode@@YAHPEAUuv_tty_s@@H@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvTtySetMode_1(IntPtr handle, int mode);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_guess_handle", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern global::LibuvSharp.UvHandleType UvGuessHandle(int file);
+        internal static extern UvHandleType UvGuessHandle(int file);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeInit(IntPtr _0, IntPtr handle, int ipc);
@@ -290,16 +293,16 @@ public unsafe partial class uv
         internal static extern int UvPipeOpen(IntPtr _0, int file);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_bind", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvPipeBind(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name);
+        internal static extern int UvPipeBind(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_bind2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvPipeBind2(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, ulong namelen, uint flags);
+        internal static extern int UvPipeBind2(IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, ulong namelen, uint flags);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_connect", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void UvPipeConnect(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, IntPtr cb);
+        internal static extern void UvPipeConnect(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_connect2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvPipeConnect2(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, ulong namelen, uint flags, IntPtr cb);
+        internal static extern int UvPipeConnect2(IntPtr req, IntPtr handle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, ulong namelen, uint flags, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_getsockname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeGetsockname(IntPtr handle, sbyte* buffer, ulong* size);
@@ -314,7 +317,7 @@ public unsafe partial class uv
         internal static extern int UvPipePendingCount(IntPtr handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_pending_type", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern global::LibuvSharp.UvHandleType UvPipePendingType(IntPtr handle);
+        internal static extern UvHandleType UvPipePendingType(IntPtr handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe_chmod", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvPipeChmod(IntPtr handle, int flags);
@@ -410,7 +413,7 @@ public unsafe partial class uv
         internal static extern int UvGetProcessTitle(sbyte* buffer, ulong size);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_set_process_title", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvSetProcessTitle([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string title);
+        internal static extern int UvSetProcessTitle([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string title);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_resident_set_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvResidentSetMemory(ulong* rss);
@@ -485,13 +488,13 @@ public unsafe partial class uv
         internal static extern void UvOsFreeEnviron(IntPtr envitems, int count);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_getenv", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvOsGetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, sbyte* buffer, ulong* size);
+        internal static extern int UvOsGetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, sbyte* buffer, ulong* size);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_setenv", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvOsSetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string value);
+        internal static extern int UvOsSetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string value);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_unsetenv", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvOsUnsetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name);
+        internal static extern int UvOsUnsetenv([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_os_gethostname", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvOsGethostname(sbyte* buffer, ulong* size);
@@ -506,7 +509,7 @@ public unsafe partial class uv
         internal static extern ulong UvMetricsIdleTime(IntPtr loop);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_type", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern global::LibuvSharp.UvFsType UvFsGetType(IntPtr _0);
+        internal static extern UvFsType UvFsGetType(IntPtr _0);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_get_result", CallingConvention = CallingConvention.Cdecl)]
         internal static extern long UvFsGetResult(IntPtr _0);
@@ -530,40 +533,40 @@ public unsafe partial class uv
         internal static extern int UvFsClose(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_open", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsOpen(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int flags, int mode, IntPtr cb);
+        internal static extern int UvFsOpen(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int flags, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_read", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsRead(IntPtr loop, IntPtr req, int file, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
+        internal static extern int UvFsRead(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_unlink", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsUnlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsUnlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsWrite(IntPtr loop, IntPtr req, int file, global::LibuvSharp.UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
+        internal static extern int UvFsWrite(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_copyfile", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsCopyfile(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, int flags, IntPtr cb);
+        internal static extern int UvFsCopyfile(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string new_path, int flags, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkdir", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsMkdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
+        internal static extern int UvFsMkdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkdtemp", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsMkdtemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string tpl, IntPtr cb);
+        internal static extern int UvFsMkdtemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string tpl, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_mkstemp", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsMkstemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string tpl, IntPtr cb);
+        internal static extern int UvFsMkstemp(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string tpl, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_rmdir", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsRmdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsRmdir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_scandir", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsScandir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int flags, IntPtr cb);
+        internal static extern int UvFsScandir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int flags, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_scandir_next", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsScandirNext(IntPtr req, IntPtr ent);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_opendir", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsOpendir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsOpendir(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_readdir", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsReaddir(IntPtr loop, IntPtr req, IntPtr dir, IntPtr cb);
@@ -572,13 +575,13 @@ public unsafe partial class uv
         internal static extern int UvFsClosedir(IntPtr loop, IntPtr req, IntPtr dir, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_stat", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsStat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsStat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fstat", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFstat(IntPtr loop, IntPtr req, int file, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_rename", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsRename(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, IntPtr cb);
+        internal static extern int UvFsRename(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string new_path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fsync", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFsync(IntPtr loop, IntPtr req, int file, IntPtr cb);
@@ -593,55 +596,55 @@ public unsafe partial class uv
         internal static extern int UvFsSendfile(IntPtr loop, IntPtr req, int out_fd, int in_fd, long in_offset, ulong length, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_access", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsAccess(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
+        internal static extern int UvFsAccess(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_chmod", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsChmod(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, int mode, IntPtr cb);
+        internal static extern int UvFsChmod(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_utime", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsUtime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
+        internal static extern int UvFsUtime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_futime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFutime(IntPtr loop, IntPtr req, int file, double atime, double mtime, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lutime", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsLutime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
+        internal static extern int UvFsLutime(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, double atime, double mtime, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lstat", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsLstat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsLstat(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_link", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsLink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, IntPtr cb);
+        internal static extern int UvFsLink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string new_path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_symlink", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsSymlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string new_path, int flags, IntPtr cb);
+        internal static extern int UvFsSymlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string new_path, int flags, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_readlink", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsReadlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsReadlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_realpath", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsRealpath(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsRealpath(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fchmod", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFchmod(IntPtr loop, IntPtr req, int file, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_chown", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsChown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
+        internal static extern int UvFsChown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_fchown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsFchown(IntPtr loop, IntPtr req, int file, byte uid, byte gid, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_lchown", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsLchown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
+        internal static extern int UvFsLchown(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, byte uid, byte gid, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_statfs", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsStatfs(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, IntPtr cb);
+        internal static extern int UvFsStatfs(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollInit(IntPtr loop, IntPtr handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_start", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsPollStart(IntPtr handle, IntPtr poll_cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, uint interval);
+        internal static extern int UvFsPollStart(IntPtr handle, IntPtr poll_cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, uint interval);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_poll_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsPollStop(IntPtr handle);
@@ -668,7 +671,7 @@ public unsafe partial class uv
         internal static extern int UvFsEventInit(IntPtr loop, IntPtr handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_start", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsEventStart(IntPtr handle, IntPtr cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string path, uint flags);
+        internal static extern int UvFsEventStart(IntPtr handle, IntPtr cb, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, uint flags);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_event_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsEventStop(IntPtr handle);
@@ -680,7 +683,7 @@ public unsafe partial class uv
         internal static extern int UvInetNtop(int af, IntPtr src, sbyte* dst, ulong size);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_inet_pton", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvInetPton(int af, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string src, IntPtr dst);
+        internal static extern int UvInetPton(int af, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string src, IntPtr dst);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_random", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvRandom(IntPtr loop, IntPtr req, IntPtr buf, ulong buflen, uint flags, IntPtr cb);
@@ -698,7 +701,7 @@ public unsafe partial class uv
         internal static extern int UvCwd(sbyte* buffer, ulong* size);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_chdir", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvChdir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string dir);
+        internal static extern int UvChdir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string dir);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_get_free_memory", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvGetFreeMemory();
@@ -713,7 +716,7 @@ public unsafe partial class uv
         internal static extern ulong UvGetAvailableMemory();
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_clock_gettime", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvClockGettime(global::LibuvSharp.UvClockId clock_id, IntPtr ts);
+        internal static extern int UvClockGettime(UvClockId clock_id, IntPtr ts);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_hrtime", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvHrtime();
@@ -725,13 +728,13 @@ public unsafe partial class uv
         internal static extern void UvDisableStdioInheritance();
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlopen", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvDlopen([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string filename, IntPtr lib);
+        internal static extern int UvDlopen([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string filename, IntPtr lib);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlclose", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvDlclose(IntPtr lib);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlsym", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvDlsym(IntPtr lib, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string name, IntPtr* ptr);
+        internal static extern int UvDlsym(IntPtr lib, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string name, IntPtr* ptr);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_dlerror", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr UvDlerror(IntPtr lib);
@@ -854,7 +857,7 @@ public unsafe partial class uv
     public static string UvVersionString()
     {
         var ___ret = __Internal.UvVersionString();
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
     public static void UvLibraryShutdown()
@@ -862,45 +865,45 @@ public unsafe partial class uv
         __Internal.UvLibraryShutdown();
     }
 
-    public static int UvReplaceAllocator(global::LibuvSharp.UvMallocFunc malloc_func, global::LibuvSharp.UvReallocFunc realloc_func, global::LibuvSharp.UvCallocFunc calloc_func, global::LibuvSharp.UvFreeFunc free_func)
+    public static int UvReplaceAllocator(UvMallocFunc malloc_func, UvReallocFunc realloc_func, UvCallocFunc calloc_func, UvFreeFunc free_func)
     {
-        var __arg0 = malloc_func == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(malloc_func);
-        var __arg1 = realloc_func == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(realloc_func);
-        var __arg2 = calloc_func == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(calloc_func);
-        var __arg3 = free_func == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(free_func);
+        var __arg0 = malloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(malloc_func);
+        var __arg1 = realloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(realloc_func);
+        var __arg2 = calloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(calloc_func);
+        var __arg3 = free_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(free_func);
         var ___ret = __Internal.UvReplaceAllocator(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvLoopS UvDefaultLoop()
+    public static UvLoopS UvDefaultLoop()
     {
         var ___ret    = __Internal.UvDefaultLoop();
-        var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(___ret, false);
+        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static int UvLoopInit(global::LibuvSharp.UvLoopS loop)
+    public static int UvLoopInit(UvLoopS loop)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvLoopInit(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopClose(global::LibuvSharp.UvLoopS loop)
+    public static int UvLoopClose(UvLoopS loop)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvLoopClose(__arg0);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvLoopS UvLoopNew()
+    public static UvLoopS UvLoopNew()
     {
         var ___ret    = __Internal.UvLoopNew();
-        var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(___ret, false);
+        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvLoopDelete(global::LibuvSharp.UvLoopS _0)
+    public static void UvLoopDelete(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvLoopDelete(__arg0);
@@ -912,80 +915,80 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvLoopAlive(global::LibuvSharp.UvLoopS loop)
+    public static int UvLoopAlive(UvLoopS loop)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvLoopAlive(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopConfigure(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvLoopOption option)
+    public static int UvLoopConfigure(UvLoopS loop, UvLoopOption option)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvLoopConfigure(__arg0, option);
         return ___ret;
     }
 
-    public static int UvLoopFork(global::LibuvSharp.UvLoopS loop)
+    public static int UvLoopFork(UvLoopS loop)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvLoopFork(__arg0);
         return ___ret;
     }
 
-    public static int UvRun(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvRunMode mode)
+    public static int UvRun(UvLoopS _0, UvRunMode mode)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvRun(__arg0, mode);
         return ___ret;
     }
 
-    public static void UvStop(global::LibuvSharp.UvLoopS _0)
+    public static void UvStop(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvStop(__arg0);
     }
 
-    public static void UvRef(global::LibuvSharp.UvHandleS _0)
+    public static void UvRef(UvHandleS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvRef(__arg0);
     }
 
-    public static void UvUnref(global::LibuvSharp.UvHandleS _0)
+    public static void UvUnref(UvHandleS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvUnref(__arg0);
     }
 
-    public static int UvHasRef(global::LibuvSharp.UvHandleS _0)
+    public static int UvHasRef(UvHandleS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvHasRef(__arg0);
         return ___ret;
     }
 
-    public static void UvUpdateTime(global::LibuvSharp.UvLoopS _0)
+    public static void UvUpdateTime(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvUpdateTime(__arg0);
     }
 
-    public static ulong UvNow(global::LibuvSharp.UvLoopS _0)
+    public static ulong UvNow(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvNow(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendFd(global::LibuvSharp.UvLoopS _0)
+    public static int UvBackendFd(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvBackendFd(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendTimeout(global::LibuvSharp.UvLoopS _0)
+    public static int UvBackendTimeout(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvBackendTimeout(__arg0);
@@ -1001,7 +1004,7 @@ public unsafe partial class uv
     public static string UvStrerror(int err)
     {
         var ___ret = __Internal.UvStrerror(err);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
     public static sbyte* UvStrerrorR(int err, sbyte* buf, ulong buflen)
@@ -1013,7 +1016,7 @@ public unsafe partial class uv
     public static string UvErrName(int err)
     {
         var ___ret = __Internal.UvErrName(err);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
     public static sbyte* UvErrNameR(int err, sbyte* buf, ulong buflen)
@@ -1022,121 +1025,121 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvShutdown(global::LibuvSharp.UvShutdownS req, global::LibuvSharp.UvStreamS handle, global::LibuvSharp.UvShutdownCb cb)
+    public static int UvShutdown(UvShutdownS req, UvStreamS handle, UvShutdownCb cb)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg2 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvShutdown(__arg0, __arg1, __arg2);
         return ___ret;
     }
 
-    public static ulong UvHandleSize(global::LibuvSharp.UvHandleType type)
+    public static ulong UvHandleSize(UvHandleType type)
     {
         var ___ret = __Internal.UvHandleSize(type);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvHandleType UvHandleGetType(global::LibuvSharp.UvHandleS handle)
+    public static UvHandleType UvHandleGetType(UvHandleS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvHandleGetType(__arg0);
         return ___ret;
     }
 
-    public static string UvHandleTypeName(global::LibuvSharp.UvHandleType type)
+    public static string UvHandleTypeName(UvHandleType type)
     {
         var ___ret = __Internal.UvHandleTypeName(type);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static IntPtr UvHandleGetData(global::LibuvSharp.UvHandleS handle)
+    public static IntPtr UvHandleGetData(UvHandleS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvHandleGetData(__arg0);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvLoopS UvHandleGetLoop(global::LibuvSharp.UvHandleS handle)
+    public static UvLoopS UvHandleGetLoop(UvHandleS handle)
     {
         var __arg0    = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret    = __Internal.UvHandleGetLoop(__arg0);
-        var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(___ret, false);
+        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvHandleSetData(global::LibuvSharp.UvHandleS handle, IntPtr data)
+    public static void UvHandleSetData(UvHandleS handle, IntPtr data)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         __Internal.UvHandleSetData(__arg0, data);
     }
 
-    public static ulong UvReqSize(global::LibuvSharp.UvReqType type)
+    public static ulong UvReqSize(UvReqType type)
     {
         var ___ret = __Internal.UvReqSize(type);
         return ___ret;
     }
 
-    public static IntPtr UvReqGetData(global::LibuvSharp.UvReqS req)
+    public static IntPtr UvReqGetData(UvReqS req)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var ___ret = __Internal.UvReqGetData(__arg0);
         return ___ret;
     }
 
-    public static void UvReqSetData(global::LibuvSharp.UvReqS req, IntPtr data)
+    public static void UvReqSetData(UvReqS req, IntPtr data)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         __Internal.UvReqSetData(__arg0, data);
     }
 
-    public static global::LibuvSharp.UvReqType UvReqGetType(global::LibuvSharp.UvReqS req)
+    public static UvReqType UvReqGetType(UvReqS req)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var ___ret = __Internal.UvReqGetType(__arg0);
         return ___ret;
     }
 
-    public static string UvReqTypeName(global::LibuvSharp.UvReqType type)
+    public static string UvReqTypeName(UvReqType type)
     {
         var ___ret = __Internal.UvReqTypeName(type);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static int UvIsActive(global::LibuvSharp.UvHandleS handle)
+    public static int UvIsActive(UvHandleS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvIsActive(__arg0);
         return ___ret;
     }
 
-    public static void UvWalk(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvWalkCb walk_cb, IntPtr arg)
+    public static void UvWalk(UvLoopS loop, UvWalkCb walk_cb, IntPtr arg)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = walk_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(walk_cb);
+        var __arg1 = walk_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(walk_cb);
         __Internal.UvWalk(__arg0, __arg1, arg);
     }
 
-    public static void UvPrintAllHandles(global::LibuvSharp.UvLoopS loop, global::System.IntPtr stream)
+    public static void UvPrintAllHandles(UvLoopS loop, IntPtr stream)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         __Internal.UvPrintAllHandles(__arg0, stream);
     }
 
-    public static void UvPrintActiveHandles(global::LibuvSharp.UvLoopS loop, global::System.IntPtr stream)
+    public static void UvPrintActiveHandles(UvLoopS loop, IntPtr stream)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         __Internal.UvPrintActiveHandles(__arg0, stream);
     }
 
-    public static void UvClose(global::LibuvSharp.UvHandleS handle, global::LibuvSharp.UvCloseCb close_cb)
+    public static void UvClose(UvHandleS handle, UvCloseCb close_cb)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = close_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
+        var __arg1 = close_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
         __Internal.UvClose(__arg0, __arg1);
     }
 
-    public static int UvSendBufferSize(global::LibuvSharp.UvHandleS handle, ref int value)
+    public static int UvSendBufferSize(UvHandleS handle, ref int value)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (int* __value1 = &value)
@@ -1147,7 +1150,7 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvRecvBufferSize(global::LibuvSharp.UvHandleS handle, ref int value)
+    public static int UvRecvBufferSize(UvHandleS handle, ref int value)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (int* __value1 = &value)
@@ -1158,18 +1161,18 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvFileno(global::LibuvSharp.UvHandleS handle, IntPtr* fd)
+    public static int UvFileno(UvHandleS handle, IntPtr* fd)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvFileno(__arg0, fd);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvBufT UvBufInit(sbyte* @base, uint len)
+    public static UvBufT UvBufInit(sbyte* @base, uint len)
     {
-        var ___ret = new global::LibuvSharp.UvBufT.__Internal();
+        var ___ret = new UvBufT.__Internal();
         __Internal.UvBufInit(new IntPtr(&___ret), @base, len);
-        return global::LibuvSharp.UvBufT.__CreateInstance(___ret);
+        return UvBufT.__CreateInstance(___ret);
     }
 
     public static int UvPipe(int[] fds, int read_flags, int write_flags)
@@ -1188,22 +1191,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static ulong UvStreamGetWriteQueueSize(global::LibuvSharp.UvStreamS stream)
+    public static ulong UvStreamGetWriteQueueSize(UvStreamS stream)
     {
         var __arg0 = stream is null ? IntPtr.Zero : stream.__Instance;
         var ___ret = __Internal.UvStreamGetWriteQueueSize(__arg0);
         return ___ret;
     }
 
-    public static int UvListen(global::LibuvSharp.UvStreamS stream, int backlog, global::LibuvSharp.UvConnectionCb cb)
+    public static int UvListen(UvStreamS stream, int backlog, UvConnectionCb cb)
     {
         var __arg0 = stream is null ? IntPtr.Zero : stream.__Instance;
-        var __arg2 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvListen(__arg0, backlog, __arg2);
         return ___ret;
     }
 
-    public static int UvAccept(global::LibuvSharp.UvStreamS server, global::LibuvSharp.UvStreamS client)
+    public static int UvAccept(UvStreamS server, UvStreamS client)
     {
         var __arg0 = server is null ? IntPtr.Zero : server.__Instance;
         var __arg1 = client is null ? IntPtr.Zero : client.__Instance;
@@ -1211,80 +1214,80 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvReadStart(global::LibuvSharp.UvStreamS _0, global::LibuvSharp.UvAllocCb alloc_cb, global::LibuvSharp.UvReadCb read_cb)
+    public static int UvReadStart(UvStreamS _0, UvAllocCb alloc_cb, UvReadCb read_cb)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = alloc_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(alloc_cb);
-        var __arg2 = read_cb  == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(read_cb);
+        var __arg1 = alloc_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(alloc_cb);
+        var __arg2 = read_cb  == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(read_cb);
         var ___ret = __Internal.UvReadStart(__arg0, __arg1, __arg2);
         return ___ret;
     }
 
-    public static int UvReadStop(global::LibuvSharp.UvStreamS _0)
+    public static int UvReadStop(UvStreamS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvReadStop(__arg0);
         return ___ret;
     }
 
-    public static int UvWrite(global::LibuvSharp.UvWriteS req, global::LibuvSharp.UvStreamS handle, global::LibuvSharp.UvBufT[] bufs, uint nbufs, global::LibuvSharp.UvWriteCb cb)
+    public static int UvWrite(UvWriteS req, UvStreamS handle, UvBufT[] bufs, uint nbufs, UvWriteCb cb)
     {
-        var                                    __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var                                    __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var                 __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg2 = __bufs;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvWrite(__arg0, __arg1, __arg2, nbufs, __arg4);
         return ___ret;
     }
 
-    public static int UvWrite2(global::LibuvSharp.UvWriteS req, global::LibuvSharp.UvStreamS handle, global::LibuvSharp.UvBufT[] bufs, uint nbufs, global::LibuvSharp.UvStreamS send_handle, global::LibuvSharp.UvWriteCb cb)
+    public static int UvWrite2(UvWriteS req, UvStreamS handle, UvBufT[] bufs, uint nbufs, UvStreamS send_handle, UvWriteCb cb)
     {
-        var                                    __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var                                    __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var                 __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg2 = __bufs;
         var __arg4 = send_handle is null ? IntPtr.Zero : send_handle.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvWrite2(__arg0, __arg1, __arg2, nbufs, __arg4, __arg5);
         return ___ret;
     }
 
-    public static int UvTryWrite(global::LibuvSharp.UvStreamS handle, global::LibuvSharp.UvBufT[] bufs, uint nbufs)
+    public static int UvTryWrite(UvStreamS handle, UvBufT[] bufs, uint nbufs)
     {
-        var                                    __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg1 = __bufs;
@@ -1292,19 +1295,19 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTryWrite2(global::LibuvSharp.UvStreamS handle, global::LibuvSharp.UvBufT[] bufs, uint nbufs, global::LibuvSharp.UvStreamS send_handle)
+    public static int UvTryWrite2(UvStreamS handle, UvBufT[] bufs, uint nbufs, UvStreamS send_handle)
     {
-        var                                    __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg1 = __bufs;
@@ -1313,35 +1316,35 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvIsReadable(global::LibuvSharp.UvStreamS handle)
+    public static int UvIsReadable(UvStreamS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvIsReadable(__arg0);
         return ___ret;
     }
 
-    public static int UvIsWritable(global::LibuvSharp.UvStreamS handle)
+    public static int UvIsWritable(UvStreamS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvIsWritable(__arg0);
         return ___ret;
     }
 
-    public static int UvStreamSetBlocking(global::LibuvSharp.UvStreamS handle, int blocking)
+    public static int UvStreamSetBlocking(UvStreamS handle, int blocking)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvStreamSetBlocking(__arg0, blocking);
         return ___ret;
     }
 
-    public static int UvIsClosing(global::LibuvSharp.UvHandleS handle)
+    public static int UvIsClosing(UvHandleS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvIsClosing(__arg0);
         return ___ret;
     }
 
-    public static int UvTcpInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvTcpS handle)
+    public static int UvTcpInit(UvLoopS _0, UvTcpS handle)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1349,7 +1352,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTcpInitEx(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvTcpS handle, uint flags)
+    public static int UvTcpInitEx(UvLoopS _0, UvTcpS handle, uint flags)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1357,43 +1360,43 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTcpOpen(global::LibuvSharp.UvTcpS handle, ulong sock)
+    public static int UvTcpOpen(UvTcpS handle, ulong sock)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTcpOpen(__arg0, sock);
         return ___ret;
     }
 
-    public static int UvTcpNodelay(global::LibuvSharp.UvTcpS handle, int enable)
+    public static int UvTcpNodelay(UvTcpS handle, int enable)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTcpNodelay(__arg0, enable);
         return ___ret;
     }
 
-    public static int UvTcpKeepalive(global::LibuvSharp.UvTcpS handle, int enable, uint delay)
+    public static int UvTcpKeepalive(UvTcpS handle, int enable, uint delay)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTcpKeepalive(__arg0, enable, delay);
         return ___ret;
     }
 
-    public static int UvTcpSimultaneousAccepts(global::LibuvSharp.UvTcpS handle, int enable)
+    public static int UvTcpSimultaneousAccepts(UvTcpS handle, int enable)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTcpSimultaneousAccepts(__arg0, enable);
         return ___ret;
     }
 
-    public static int UvTcpCloseReset(global::LibuvSharp.UvTcpS handle, global::LibuvSharp.UvCloseCb close_cb)
+    public static int UvTcpCloseReset(UvTcpS handle, UvCloseCb close_cb)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = close_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
+        var __arg1 = close_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
         var ___ret = __Internal.UvTcpCloseReset(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvUdpInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvUdpS handle)
+    public static int UvUdpInit(UvLoopS _0, UvUdpS handle)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1401,7 +1404,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvUdpInitEx(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvUdpS handle, uint flags)
+    public static int UvUdpInitEx(UvLoopS _0, UvUdpS handle, uint flags)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1409,91 +1412,91 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvUdpOpen(global::LibuvSharp.UvUdpS handle, ulong sock)
+    public static int UvUdpOpen(UvUdpS handle, ulong sock)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpOpen(__arg0, sock);
         return ___ret;
     }
 
-    public static int UvUdpSetMembership(global::LibuvSharp.UvUdpS handle, string multicast_addr, string interface_addr, global::LibuvSharp.UvMembership membership)
+    public static int UvUdpSetMembership(UvUdpS handle, string multicast_addr, string interface_addr, UvMembership membership)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetMembership(__arg0, multicast_addr, interface_addr, membership);
         return ___ret;
     }
 
-    public static int UvUdpSetSourceMembership(global::LibuvSharp.UvUdpS handle, string multicast_addr, string interface_addr, string source_addr, global::LibuvSharp.UvMembership membership)
+    public static int UvUdpSetSourceMembership(UvUdpS handle, string multicast_addr, string interface_addr, string source_addr, UvMembership membership)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetSourceMembership(__arg0, multicast_addr, interface_addr, source_addr, membership);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastLoop(global::LibuvSharp.UvUdpS handle, int on)
+    public static int UvUdpSetMulticastLoop(UvUdpS handle, int on)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetMulticastLoop(__arg0, on);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastTtl(global::LibuvSharp.UvUdpS handle, int ttl)
+    public static int UvUdpSetMulticastTtl(UvUdpS handle, int ttl)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetMulticastTtl(__arg0, ttl);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastInterface(global::LibuvSharp.UvUdpS handle, string interface_addr)
+    public static int UvUdpSetMulticastInterface(UvUdpS handle, string interface_addr)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetMulticastInterface(__arg0, interface_addr);
         return ___ret;
     }
 
-    public static int UvUdpSetBroadcast(global::LibuvSharp.UvUdpS handle, int on)
+    public static int UvUdpSetBroadcast(UvUdpS handle, int on)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetBroadcast(__arg0, on);
         return ___ret;
     }
 
-    public static int UvUdpSetTtl(global::LibuvSharp.UvUdpS handle, int ttl)
+    public static int UvUdpSetTtl(UvUdpS handle, int ttl)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpSetTtl(__arg0, ttl);
         return ___ret;
     }
 
-    public static int UvUdpUsingRecvmmsg(global::LibuvSharp.UvUdpS handle)
+    public static int UvUdpUsingRecvmmsg(UvUdpS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpUsingRecvmmsg(__arg0);
         return ___ret;
     }
 
-    public static int UvUdpRecvStop(global::LibuvSharp.UvUdpS handle)
+    public static int UvUdpRecvStop(UvUdpS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpRecvStop(__arg0);
         return ___ret;
     }
 
-    public static ulong UvUdpGetSendQueueSize(global::LibuvSharp.UvUdpS handle)
+    public static ulong UvUdpGetSendQueueSize(UvUdpS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpGetSendQueueSize(__arg0);
         return ___ret;
     }
 
-    public static ulong UvUdpGetSendQueueCount(global::LibuvSharp.UvUdpS handle)
+    public static ulong UvUdpGetSendQueueCount(UvUdpS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvUdpGetSendQueueCount(__arg0);
         return ___ret;
     }
 
-    public static int UvTtyInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvTtyS _1, int fd, int readable)
+    public static int UvTtyInit(UvLoopS _0, UvTtyS _1, int fd, int readable)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = _1 is null ? IntPtr.Zero : _1.__Instance;
@@ -1501,7 +1504,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTtySetMode(global::LibuvSharp.UvTtyS _0, global::LibuvSharp.UvTtyModeT mode)
+    public static int UvTtySetMode(UvTtyS _0, UvTtyModeT mode)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvTtySetMode(__arg0, mode);
@@ -1514,7 +1517,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTtyGetWinsize(global::LibuvSharp.UvTtyS _0, ref int width, ref int height)
+    public static int UvTtyGetWinsize(UvTtyS _0, ref int width, ref int height)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         fixed (int* __width1 = &width)
@@ -1529,14 +1532,14 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvTtySetVtermState(global::LibuvSharp.UvTtyVtermstateT state)
+    public static void UvTtySetVtermState(UvTtyVtermstateT state)
     {
         __Internal.UvTtySetVtermState(state);
     }
 
-    public static int UvTtyGetVtermState(ref global::LibuvSharp.UvTtyVtermstateT state)
+    public static int UvTtyGetVtermState(ref UvTtyVtermstateT state)
     {
-        fixed (global::LibuvSharp.UvTtyVtermstateT* __state0 = &state)
+        fixed (UvTtyVtermstateT* __state0 = &state)
         {
             var __arg0 = __state0;
             var ___ret = __Internal.UvTtyGetVtermState(__arg0);
@@ -1544,20 +1547,20 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvTtySetMode(global::LibuvSharp.UvTtyS handle, int mode)
+    public static int UvTtySetMode(UvTtyS handle, int mode)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTtySetMode_1(__arg0, mode);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvHandleType UvGuessHandle(int file)
+    public static UvHandleType UvGuessHandle(int file)
     {
         var ___ret = __Internal.UvGuessHandle(file);
         return ___ret;
     }
 
-    public static int UvPipeInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvPipeS handle, int ipc)
+    public static int UvPipeInit(UvLoopS _0, UvPipeS handle, int ipc)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1565,45 +1568,45 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvPipeOpen(global::LibuvSharp.UvPipeS _0, int file)
+    public static int UvPipeOpen(UvPipeS _0, int file)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvPipeOpen(__arg0, file);
         return ___ret;
     }
 
-    public static int UvPipeBind(global::LibuvSharp.UvPipeS handle, string name)
+    public static int UvPipeBind(UvPipeS handle, string name)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPipeBind(__arg0, name);
         return ___ret;
     }
 
-    public static int UvPipeBind2(global::LibuvSharp.UvPipeS handle, string name, ulong namelen, uint flags)
+    public static int UvPipeBind2(UvPipeS handle, string name, ulong namelen, uint flags)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPipeBind2(__arg0, name, namelen, flags);
         return ___ret;
     }
 
-    public static void UvPipeConnect(global::LibuvSharp.UvConnectS req, global::LibuvSharp.UvPipeS handle, string name, global::LibuvSharp.UvConnectCb cb)
+    public static void UvPipeConnect(UvConnectS req, UvPipeS handle, string name, UvConnectCb cb)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         __Internal.UvPipeConnect(__arg0, __arg1, name, __arg3);
     }
 
-    public static int UvPipeConnect2(global::LibuvSharp.UvConnectS req, global::LibuvSharp.UvPipeS handle, string name, ulong namelen, uint flags, global::LibuvSharp.UvConnectCb cb)
+    public static int UvPipeConnect2(UvConnectS req, UvPipeS handle, string name, ulong namelen, uint flags, UvConnectCb cb)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPipeConnect2(__arg0, __arg1, name, namelen, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvPipeGetsockname(global::LibuvSharp.UvPipeS handle, sbyte* buffer, ref ulong size)
+    public static int UvPipeGetsockname(UvPipeS handle, sbyte* buffer, ref ulong size)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (ulong* __size2 = &size)
@@ -1614,7 +1617,7 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvPipeGetpeername(global::LibuvSharp.UvPipeS handle, sbyte* buffer, ref ulong size)
+    public static int UvPipeGetpeername(UvPipeS handle, sbyte* buffer, ref ulong size)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (ulong* __size2 = &size)
@@ -1625,34 +1628,34 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvPipePendingInstances(global::LibuvSharp.UvPipeS handle, int count)
+    public static void UvPipePendingInstances(UvPipeS handle, int count)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         __Internal.UvPipePendingInstances(__arg0, count);
     }
 
-    public static int UvPipePendingCount(global::LibuvSharp.UvPipeS handle)
+    public static int UvPipePendingCount(UvPipeS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPipePendingCount(__arg0);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvHandleType UvPipePendingType(global::LibuvSharp.UvPipeS handle)
+    public static UvHandleType UvPipePendingType(UvPipeS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPipePendingType(__arg0);
         return ___ret;
     }
 
-    public static int UvPipeChmod(global::LibuvSharp.UvPipeS handle, int flags)
+    public static int UvPipeChmod(UvPipeS handle, int flags)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPipeChmod(__arg0, flags);
         return ___ret;
     }
 
-    public static int UvPollInit(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvPollS handle, int fd)
+    public static int UvPollInit(UvLoopS loop, UvPollS handle, int fd)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1660,7 +1663,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvPollInitSocket(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvPollS handle, ulong socket)
+    public static int UvPollInitSocket(UvLoopS loop, UvPollS handle, ulong socket)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1668,22 +1671,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvPollStart(global::LibuvSharp.UvPollS handle, int events, global::LibuvSharp.UvPollCb cb)
+    public static int UvPollStart(UvPollS handle, int events, UvPollCb cb)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg2 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPollStart(__arg0, events, __arg2);
         return ___ret;
     }
 
-    public static int UvPollStop(global::LibuvSharp.UvPollS handle)
+    public static int UvPollStop(UvPollS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvPollStop(__arg0);
         return ___ret;
     }
 
-    public static int UvPrepareInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvPrepareS prepare)
+    public static int UvPrepareInit(UvLoopS _0, UvPrepareS prepare)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = prepare is null ? IntPtr.Zero : prepare.__Instance;
@@ -1691,22 +1694,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvPrepareStart(global::LibuvSharp.UvPrepareS prepare, global::LibuvSharp.UvPrepareCb cb)
+    public static int UvPrepareStart(UvPrepareS prepare, UvPrepareCb cb)
     {
         var __arg0 = prepare is null ? IntPtr.Zero : prepare.__Instance;
-        var __arg1 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPrepareStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvPrepareStop(global::LibuvSharp.UvPrepareS prepare)
+    public static int UvPrepareStop(UvPrepareS prepare)
     {
         var __arg0 = prepare is null ? IntPtr.Zero : prepare.__Instance;
         var ___ret = __Internal.UvPrepareStop(__arg0);
         return ___ret;
     }
 
-    public static int UvCheckInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvCheckS check)
+    public static int UvCheckInit(UvLoopS _0, UvCheckS check)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = check is null ? IntPtr.Zero : check.__Instance;
@@ -1714,22 +1717,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvCheckStart(global::LibuvSharp.UvCheckS check, global::LibuvSharp.UvCheckCb cb)
+    public static int UvCheckStart(UvCheckS check, UvCheckCb cb)
     {
         var __arg0 = check is null ? IntPtr.Zero : check.__Instance;
-        var __arg1 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvCheckStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvCheckStop(global::LibuvSharp.UvCheckS check)
+    public static int UvCheckStop(UvCheckS check)
     {
         var __arg0 = check is null ? IntPtr.Zero : check.__Instance;
         var ___ret = __Internal.UvCheckStop(__arg0);
         return ___ret;
     }
 
-    public static int UvIdleInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvIdleS idle)
+    public static int UvIdleInit(UvLoopS _0, UvIdleS idle)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = idle is null ? IntPtr.Zero : idle.__Instance;
@@ -1737,38 +1740,38 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvIdleStart(global::LibuvSharp.UvIdleS idle, global::LibuvSharp.UvIdleCb cb)
+    public static int UvIdleStart(UvIdleS idle, UvIdleCb cb)
     {
         var __arg0 = idle is null ? IntPtr.Zero : idle.__Instance;
-        var __arg1 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvIdleStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvIdleStop(global::LibuvSharp.UvIdleS idle)
+    public static int UvIdleStop(UvIdleS idle)
     {
         var __arg0 = idle is null ? IntPtr.Zero : idle.__Instance;
         var ___ret = __Internal.UvIdleStop(__arg0);
         return ___ret;
     }
 
-    public static int UvAsyncInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvAsyncS async, global::LibuvSharp.UvAsyncCb async_cb)
+    public static int UvAsyncInit(UvLoopS _0, UvAsyncS async, UvAsyncCb async_cb)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = async is null ? IntPtr.Zero : async.__Instance;
-        var __arg2 = async_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(async_cb);
+        var __arg2 = async_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(async_cb);
         var ___ret = __Internal.UvAsyncInit(__arg0, __arg1, __arg2);
         return ___ret;
     }
 
-    public static int UvAsyncSend(global::LibuvSharp.UvAsyncS async)
+    public static int UvAsyncSend(UvAsyncS async)
     {
         var __arg0 = async is null ? IntPtr.Zero : async.__Instance;
         var ___ret = __Internal.UvAsyncSend(__arg0);
         return ___ret;
     }
 
-    public static int UvTimerInit(global::LibuvSharp.UvLoopS _0, global::LibuvSharp.UvTimerS handle)
+    public static int UvTimerInit(UvLoopS _0, UvTimerS handle)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1776,49 +1779,49 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTimerStart(global::LibuvSharp.UvTimerS handle, global::LibuvSharp.UvTimerCb cb, ulong timeout, ulong repeat)
+    public static int UvTimerStart(UvTimerS handle, UvTimerCb cb, ulong timeout, ulong repeat)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvTimerStart(__arg0, __arg1, timeout, repeat);
         return ___ret;
     }
 
-    public static int UvTimerStop(global::LibuvSharp.UvTimerS handle)
+    public static int UvTimerStop(UvTimerS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTimerStop(__arg0);
         return ___ret;
     }
 
-    public static int UvTimerAgain(global::LibuvSharp.UvTimerS handle)
+    public static int UvTimerAgain(UvTimerS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTimerAgain(__arg0);
         return ___ret;
     }
 
-    public static void UvTimerSetRepeat(global::LibuvSharp.UvTimerS handle, ulong repeat)
+    public static void UvTimerSetRepeat(UvTimerS handle, ulong repeat)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         __Internal.UvTimerSetRepeat(__arg0, repeat);
     }
 
-    public static ulong UvTimerGetRepeat(global::LibuvSharp.UvTimerS handle)
+    public static ulong UvTimerGetRepeat(UvTimerS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTimerGetRepeat(__arg0);
         return ___ret;
     }
 
-    public static ulong UvTimerGetDueIn(global::LibuvSharp.UvTimerS handle)
+    public static ulong UvTimerGetDueIn(UvTimerS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvTimerGetDueIn(__arg0);
         return ___ret;
     }
 
-    public static UvErrnoT UvSpawn(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvProcessS handle, global::LibuvSharp.UvProcessOptionsS options)
+    public static UvErrnoT UvSpawn(UvLoopS loop, UvProcessS handle, UvProcessOptionsS options)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -1827,7 +1830,7 @@ public unsafe partial class uv
         return (UvErrnoT)___ret;
     }
 
-    public static int UvProcessKill(global::LibuvSharp.UvProcessS _0, int signum)
+    public static int UvProcessKill(UvProcessS _0, int signum)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvProcessKill(__arg0, signum);
@@ -1840,24 +1843,24 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvProcessGetPid(global::LibuvSharp.UvProcessS _0)
+    public static int UvProcessGetPid(UvProcessS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvProcessGetPid(__arg0);
         return ___ret;
     }
 
-    public static int UvQueueWork(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvWorkS req, global::LibuvSharp.UvWorkCb work_cb, global::LibuvSharp.UvAfterWorkCb after_work_cb)
+    public static int UvQueueWork(UvLoopS loop, UvWorkS req, UvWorkCb work_cb, UvAfterWorkCb after_work_cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg2 = work_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(work_cb);
-        var __arg3 = after_work_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(after_work_cb);
+        var __arg2 = work_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(work_cb);
+        var __arg3 = after_work_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(after_work_cb);
         var ___ret = __Internal.UvQueueWork(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvCancel(global::LibuvSharp.UvReqS req)
+    public static int UvCancel(UvReqS req)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var ___ret = __Internal.UvCancel(__arg0);
@@ -1914,7 +1917,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvGetrusage(global::LibuvSharp.UvRusageT rusage)
+    public static int UvGetrusage(UvRusageT rusage)
     {
         var __arg0 = rusage is null ? IntPtr.Zero : rusage.__Instance;
         var ___ret = __Internal.UvGetrusage(__arg0);
@@ -1941,34 +1944,34 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvOsGetPasswd(global::LibuvSharp.UvPasswdS pwd)
+    public static int UvOsGetPasswd(UvPasswdS pwd)
     {
         var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
         var ___ret = __Internal.UvOsGetPasswd(__arg0);
         return ___ret;
     }
 
-    public static void UvOsFreePasswd(global::LibuvSharp.UvPasswdS pwd)
+    public static void UvOsFreePasswd(UvPasswdS pwd)
     {
         var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
         __Internal.UvOsFreePasswd(__arg0);
     }
 
-    public static int UvOsGetPasswd2(global::LibuvSharp.UvPasswdS pwd, byte uid)
+    public static int UvOsGetPasswd2(UvPasswdS pwd, byte uid)
     {
         var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
         var ___ret = __Internal.UvOsGetPasswd2(__arg0, uid);
         return ___ret;
     }
 
-    public static int UvOsGetGroup(global::LibuvSharp.UvGroupS grp, byte gid)
+    public static int UvOsGetGroup(UvGroupS grp, byte gid)
     {
         var __arg0 = grp is null ? IntPtr.Zero : grp.__Instance;
         var ___ret = __Internal.UvOsGetGroup(__arg0, gid);
         return ___ret;
     }
 
-    public static void UvOsFreeGroup(global::LibuvSharp.UvGroupS grp)
+    public static void UvOsFreeGroup(UvGroupS grp)
     {
         var __arg0 = grp is null ? IntPtr.Zero : grp.__Instance;
         __Internal.UvOsFreeGroup(__arg0);
@@ -2008,7 +2011,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvCpuInfo(global::LibuvSharp.UvCpuInfoS cpu_infos, ref int count)
+    public static int UvCpuInfo(UvCpuInfoS cpu_infos, ref int count)
     {
         var ____arg0 = cpu_infos is null ? IntPtr.Zero : cpu_infos.__Instance;
         var __arg0   = new IntPtr(&____arg0);
@@ -2020,7 +2023,7 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvFreeCpuInfo(global::LibuvSharp.UvCpuInfoS cpu_infos, int count)
+    public static void UvFreeCpuInfo(UvCpuInfoS cpu_infos, int count)
     {
         var __arg0 = cpu_infos is null ? IntPtr.Zero : cpu_infos.__Instance;
         __Internal.UvFreeCpuInfo(__arg0, count);
@@ -2032,7 +2035,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvInterfaceAddresses(global::LibuvSharp.UvInterfaceAddressS addresses, ref int count)
+    public static int UvInterfaceAddresses(UvInterfaceAddressS addresses, ref int count)
     {
         var ____arg0 = addresses is null ? IntPtr.Zero : addresses.__Instance;
         var __arg0   = new IntPtr(&____arg0);
@@ -2044,13 +2047,13 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvFreeInterfaceAddresses(global::LibuvSharp.UvInterfaceAddressS addresses, int count)
+    public static void UvFreeInterfaceAddresses(UvInterfaceAddressS addresses, int count)
     {
         var __arg0 = addresses is null ? IntPtr.Zero : addresses.__Instance;
         __Internal.UvFreeInterfaceAddresses(__arg0, count);
     }
 
-    public static int UvOsEnviron(global::LibuvSharp.UvEnvItemS envitems, ref int count)
+    public static int UvOsEnviron(UvEnvItemS envitems, ref int count)
     {
         var ____arg0 = envitems is null ? IntPtr.Zero : envitems.__Instance;
         var __arg0   = new IntPtr(&____arg0);
@@ -2062,7 +2065,7 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvOsFreeEnviron(global::LibuvSharp.UvEnvItemS envitems, int count)
+    public static void UvOsFreeEnviron(UvEnvItemS envitems, int count)
     {
         var __arg0 = envitems is null ? IntPtr.Zero : envitems.__Instance;
         __Internal.UvOsFreeEnviron(__arg0, count);
@@ -2100,14 +2103,14 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvOsUname(global::LibuvSharp.UvUtsnameS buffer)
+    public static int UvOsUname(UvUtsnameS buffer)
     {
         var __arg0 = buffer is null ? IntPtr.Zero : buffer.__Instance;
         var ___ret = __Internal.UvOsUname(__arg0);
         return ___ret;
     }
 
-    public static int UvMetricsInfo(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvMetricsS metrics)
+    public static int UvMetricsInfo(UvLoopS loop, UvMetricsS metrics)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = metrics is null ? IntPtr.Zero : metrics.__Instance;
@@ -2115,188 +2118,188 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static ulong UvMetricsIdleTime(global::LibuvSharp.UvLoopS loop)
+    public static ulong UvMetricsIdleTime(UvLoopS loop)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var ___ret = __Internal.UvMetricsIdleTime(__arg0);
         return ___ret;
     }
 
-    public static global::LibuvSharp.UvFsType UvFsGetType(global::LibuvSharp.UvFsS _0)
+    public static UvFsType UvFsGetType(UvFsS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvFsGetType(__arg0);
         return ___ret;
     }
 
-    public static long UvFsGetResult(global::LibuvSharp.UvFsS _0)
+    public static long UvFsGetResult(UvFsS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvFsGetResult(__arg0);
         return ___ret;
     }
 
-    public static int UvFsGetSystemError(global::LibuvSharp.UvFsS _0)
+    public static int UvFsGetSystemError(UvFsS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvFsGetSystemError(__arg0);
         return ___ret;
     }
 
-    public static IntPtr UvFsGetPtr(global::LibuvSharp.UvFsS _0)
+    public static IntPtr UvFsGetPtr(UvFsS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvFsGetPtr(__arg0);
         return ___ret;
     }
 
-    public static string UvFsGetPath(global::LibuvSharp.UvFsS _0)
+    public static string UvFsGetPath(UvFsS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvFsGetPath(__arg0);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static global::LibuvSharp.UvStatT UvFsGetStatbuf(global::LibuvSharp.UvFsS _0)
+    public static UvStatT UvFsGetStatbuf(UvFsS _0)
     {
         var __arg0    = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret    = __Internal.UvFsGetStatbuf(__arg0);
-        var __result0 = global::LibuvSharp.UvStatT.__GetOrCreateInstance(___ret, false);
+        var __result0 = UvStatT.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvFsReqCleanup(global::LibuvSharp.UvFsS req)
+    public static void UvFsReqCleanup(UvFsS req)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         __Internal.UvFsReqCleanup(__arg0);
     }
 
-    public static int UvFsClose(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsClose(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsClose(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsOpen(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, int flags, int mode, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsOpen(UvLoopS loop, UvFsS req, string path, int flags, int mode, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsOpen(__arg0, __arg1, path, flags, mode, __arg5);
         return ___ret;
     }
 
-    public static int UvFsRead(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvBufT[] bufs, uint nbufs, long offset, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsRead(UvLoopS loop, UvFsS req, int file, UvBufT[] bufs, uint nbufs, long offset, UvFsCb cb)
     {
-        var                                    __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var                                    __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var                 __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg3 = __bufs;
-        var __arg6 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg6 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRead(__arg0, __arg1, file, __arg3, nbufs, offset, __arg6);
         return ___ret;
     }
 
-    public static int UvFsUnlink(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsUnlink(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsUnlink(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsWrite(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvBufT[] bufs, uint nbufs, long offset, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsWrite(UvLoopS loop, UvFsS req, int file, UvBufT[] bufs, uint nbufs, long offset, UvFsCb cb)
     {
-        var                                    __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var                                    __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        global::LibuvSharp.UvBufT.__Internal[] __bufs;
+        var                 __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var                 __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        UvBufT.__Internal[] __bufs;
         if (bufs == null)
             __bufs = null;
         else
         {
-            __bufs = new global::LibuvSharp.UvBufT.__Internal[bufs.Length];
+            __bufs = new UvBufT.__Internal[bufs.Length];
             for (var i = 0; i < __bufs.Length; i++)
             {
                 var __element = bufs[i];
-                __bufs[i] = __element is null ? new global::LibuvSharp.UvBufT.__Internal() : *(global::LibuvSharp.UvBufT.__Internal*) __element.__Instance;
+                __bufs[i] = __element is null ? new UvBufT.__Internal() : *(UvBufT.__Internal*) __element.__Instance;
             }
         }
         var __arg3 = __bufs;
-        var __arg6 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg6 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsWrite(__arg0, __arg1, file, __arg3, nbufs, offset, __arg6);
         return ___ret;
     }
 
-    public static int UvFsCopyfile(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, string new_path, int flags, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsCopyfile(UvLoopS loop, UvFsS req, string path, string new_path, int flags, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsCopyfile(__arg0, __arg1, path, new_path, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvFsMkdir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, int mode, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsMkdir(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkdir(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsMkdtemp(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string tpl, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsMkdtemp(UvLoopS loop, UvFsS req, string tpl, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkdtemp(__arg0, __arg1, tpl, __arg3);
         return ___ret;
     }
 
-    public static int UvFsMkstemp(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string tpl, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsMkstemp(UvLoopS loop, UvFsS req, string tpl, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkstemp(__arg0, __arg1, tpl, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRmdir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsRmdir(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRmdir(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsScandir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, int flags, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsScandir(UvLoopS loop, UvFsS req, string path, int flags, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsScandir(__arg0, __arg1, path, flags, __arg4);
         return ___ret;
     }
 
-    public static int UvFsScandirNext(global::LibuvSharp.UvFsS req, global::LibuvSharp.uv_dirent_s ent)
+    public static int UvFsScandirNext(UvFsS req, uv_dirent_s ent)
     {
         var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg1 = ent is null ? IntPtr.Zero : ent.__Instance;
@@ -2304,234 +2307,234 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvFsOpendir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsOpendir(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsOpendir(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsReaddir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, global::LibuvSharp.UvDirS dir, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsReaddir(UvLoopS loop, UvFsS req, UvDirS dir, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg2 = dir is null ? IntPtr.Zero : dir.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsReaddir(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvFsClosedir(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, global::LibuvSharp.UvDirS dir, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsClosedir(UvLoopS loop, UvFsS req, UvDirS dir, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
         var __arg2 = dir is null ? IntPtr.Zero : dir.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsClosedir(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvFsStat(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsStat(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsStat(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFstat(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFstat(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFstat(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRename(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, string new_path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsRename(UvLoopS loop, UvFsS req, string path, string new_path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRename(__arg0, __arg1, path, new_path, __arg4);
         return ___ret;
     }
 
-    public static int UvFsFsync(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFsync(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFsync(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFdatasync(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFdatasync(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFdatasync(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFtruncate(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, long offset, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFtruncate(UvLoopS loop, UvFsS req, int file, long offset, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFtruncate(__arg0, __arg1, file, offset, __arg4);
         return ___ret;
     }
 
-    public static int UvFsSendfile(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int out_fd, int in_fd, long in_offset, ulong length, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsSendfile(UvLoopS loop, UvFsS req, int out_fd, int in_fd, long in_offset, ulong length, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg6 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg6 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsSendfile(__arg0, __arg1, out_fd, in_fd, in_offset, length, __arg6);
         return ___ret;
     }
 
-    public static int UvFsAccess(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, int mode, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsAccess(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsAccess(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsChmod(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, int mode, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsChmod(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsChmod(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsUtime(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, double atime, double mtime, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsUtime(UvLoopS loop, UvFsS req, string path, double atime, double mtime, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsUtime(__arg0, __arg1, path, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsFutime(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, double atime, double mtime, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFutime(UvLoopS loop, UvFsS req, int file, double atime, double mtime, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFutime(__arg0, __arg1, file, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLutime(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, double atime, double mtime, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsLutime(UvLoopS loop, UvFsS req, string path, double atime, double mtime, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLutime(__arg0, __arg1, path, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLstat(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsLstat(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLstat(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsLink(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, string new_path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsLink(UvLoopS loop, UvFsS req, string path, string new_path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLink(__arg0, __arg1, path, new_path, __arg4);
         return ___ret;
     }
 
-    public static int UvFsSymlink(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, string new_path, int flags, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsSymlink(UvLoopS loop, UvFsS req, string path, string new_path, int flags, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsSymlink(__arg0, __arg1, path, new_path, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvFsReadlink(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsReadlink(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsReadlink(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRealpath(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsRealpath(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRealpath(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFchmod(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, int mode, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFchmod(UvLoopS loop, UvFsS req, int file, int mode, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg4 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFchmod(__arg0, __arg1, file, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsChown(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, byte uid, byte gid, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsChown(UvLoopS loop, UvFsS req, string path, byte uid, byte gid, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsChown(__arg0, __arg1, path, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsFchown(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, int file, byte uid, byte gid, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsFchown(UvLoopS loop, UvFsS req, int file, byte uid, byte gid, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFchown(__arg0, __arg1, file, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLchown(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, byte uid, byte gid, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsLchown(UvLoopS loop, UvFsS req, string path, byte uid, byte gid, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLchown(__arg0, __arg1, path, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsStatfs(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsS req, string path, global::LibuvSharp.UvFsCb cb)
+    public static int UvFsStatfs(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg3 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsStatfs(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsPollInit(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsPollS handle)
+    public static int UvFsPollInit(UvLoopS loop, UvFsPollS handle)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -2539,22 +2542,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvFsPollStart(global::LibuvSharp.UvFsPollS handle, global::LibuvSharp.UvFsPollCb poll_cb, string path, uint interval)
+    public static int UvFsPollStart(UvFsPollS handle, UvFsPollCb poll_cb, string path, uint interval)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = poll_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(poll_cb);
+        var __arg1 = poll_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(poll_cb);
         var ___ret = __Internal.UvFsPollStart(__arg0, __arg1, path, interval);
         return ___ret;
     }
 
-    public static int UvFsPollStop(global::LibuvSharp.UvFsPollS handle)
+    public static int UvFsPollStop(UvFsPollS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvFsPollStop(__arg0);
         return ___ret;
     }
 
-    public static int UvFsPollGetpath(global::LibuvSharp.UvFsPollS handle, sbyte* buffer, ref ulong size)
+    public static int UvFsPollGetpath(UvFsPollS handle, sbyte* buffer, ref ulong size)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (ulong* __size2 = &size)
@@ -2565,7 +2568,7 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvSignalInit(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvSignalS handle)
+    public static int UvSignalInit(UvLoopS loop, UvSignalS handle)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -2573,23 +2576,23 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvSignalStart(global::LibuvSharp.UvSignalS handle, global::LibuvSharp.UvSignalCb signal_cb, int signum)
+    public static int UvSignalStart(UvSignalS handle, UvSignalCb signal_cb, int signum)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = signal_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
+        var __arg1 = signal_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
         var ___ret = __Internal.UvSignalStart(__arg0, __arg1, signum);
         return ___ret;
     }
 
-    public static int UvSignalStartOneshot(global::LibuvSharp.UvSignalS handle, global::LibuvSharp.UvSignalCb signal_cb, int signum)
+    public static int UvSignalStartOneshot(UvSignalS handle, UvSignalCb signal_cb, int signum)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = signal_cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
+        var __arg1 = signal_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
         var ___ret = __Internal.UvSignalStartOneshot(__arg0, __arg1, signum);
         return ___ret;
     }
 
-    public static int UvSignalStop(global::LibuvSharp.UvSignalS handle)
+    public static int UvSignalStop(UvSignalS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvSignalStop(__arg0);
@@ -2603,7 +2606,7 @@ public unsafe partial class uv
         __Internal.UvLoadavg(avg);
     }
 
-    public static int UvFsEventInit(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvFsEventS handle)
+    public static int UvFsEventInit(UvLoopS loop, UvFsEventS handle)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
@@ -2611,22 +2614,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvFsEventStart(global::LibuvSharp.UvFsEventS handle, global::LibuvSharp.UvFsEventCb cb, string path, uint flags)
+    public static int UvFsEventStart(UvFsEventS handle, UvFsEventCb cb, string path, uint flags)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        var __arg1 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsEventStart(__arg0, __arg1, path, flags);
         return ___ret;
     }
 
-    public static int UvFsEventStop(global::LibuvSharp.UvFsEventS handle)
+    public static int UvFsEventStop(UvFsEventS handle)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         var ___ret = __Internal.UvFsEventStop(__arg0);
         return ___ret;
     }
 
-    public static int UvFsEventGetpath(global::LibuvSharp.UvFsEventS handle, sbyte* buffer, ref ulong size)
+    public static int UvFsEventGetpath(UvFsEventS handle, sbyte* buffer, ref ulong size)
     {
         var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
         fixed (ulong* __size2 = &size)
@@ -2649,11 +2652,11 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvRandom(global::LibuvSharp.UvLoopS loop, global::LibuvSharp.UvRandomS req, IntPtr buf, ulong buflen, uint flags, global::LibuvSharp.UvRandomCb cb)
+    public static int UvRandom(UvLoopS loop, UvRandomS req, IntPtr buf, ulong buflen, uint flags, UvRandomCb cb)
     {
         var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
         var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg5 = cb == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvRandom(__arg0, __arg1, buf, buflen, flags, __arg5);
         return ___ret;
     }
@@ -2728,7 +2731,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvClockGettime(global::LibuvSharp.UvClockId clock_id, global::LibuvSharp.UvTimespec64T ts)
+    public static int UvClockGettime(UvClockId clock_id, UvTimespec64T ts)
     {
         var __arg1 = ts is null ? IntPtr.Zero : ts.__Instance;
         var ___ret = __Internal.UvClockGettime(clock_id, __arg1);
@@ -2751,79 +2754,79 @@ public unsafe partial class uv
         __Internal.UvDisableStdioInheritance();
     }
 
-    public static int UvDlopen(string filename, global::LibuvSharp.UvLibT lib)
+    public static int UvDlopen(string filename, UvLibT lib)
     {
         var __arg1 = lib is null ? IntPtr.Zero : lib.__Instance;
         var ___ret = __Internal.UvDlopen(filename, __arg1);
         return ___ret;
     }
 
-    public static void UvDlclose(global::LibuvSharp.UvLibT lib)
+    public static void UvDlclose(UvLibT lib)
     {
         var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
         __Internal.UvDlclose(__arg0);
     }
 
-    public static int UvDlsym(global::LibuvSharp.UvLibT lib, string name, IntPtr* ptr)
+    public static int UvDlsym(UvLibT lib, string name, IntPtr* ptr)
     {
         var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
         var ___ret = __Internal.UvDlsym(__arg0, name, ptr);
         return ___ret;
     }
 
-    public static string UvDlerror(global::LibuvSharp.UvLibT lib)
+    public static string UvDlerror(UvLibT lib)
     {
         var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
         var ___ret = __Internal.UvDlerror(__arg0);
-        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static int UvRwlockInit(global::LibuvSharp.UvRwlockT rwlock)
+    public static int UvRwlockInit(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         var ___ret = __Internal.UvRwlockInit(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockDestroy(global::LibuvSharp.UvRwlockT rwlock)
+    public static void UvRwlockDestroy(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         __Internal.UvRwlockDestroy(__arg0);
     }
 
-    public static void UvRwlockRdlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static void UvRwlockRdlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         __Internal.UvRwlockRdlock(__arg0);
     }
 
-    public static int UvRwlockTryrdlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static int UvRwlockTryrdlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         var ___ret = __Internal.UvRwlockTryrdlock(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockRdunlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static void UvRwlockRdunlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         __Internal.UvRwlockRdunlock(__arg0);
     }
 
-    public static void UvRwlockWrlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static void UvRwlockWrlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         __Internal.UvRwlockWrlock(__arg0);
     }
 
-    public static int UvRwlockTrywrlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static int UvRwlockTrywrlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         var ___ret = __Internal.UvRwlockTrywrlock(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockWrunlock(global::LibuvSharp.UvRwlockT rwlock)
+    public static void UvRwlockWrunlock(UvRwlockT rwlock)
     {
         var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
         __Internal.UvRwlockWrunlock(__arg0);
@@ -2856,7 +2859,7 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvCondInit(global::LibuvSharp.UvCondT cond)
+    public static int UvCondInit(UvCondT cond)
     {
         var ____arg0 = cond.__Instance;
         var __arg0   = new IntPtr(&____arg0);
@@ -2864,98 +2867,98 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static void UvCondDestroy(global::LibuvSharp.UvCondT cond)
+    public static void UvCondDestroy(UvCondT cond)
     {
         var ____arg0 = cond.__Instance;
         var __arg0   = new IntPtr(&____arg0);
         __Internal.UvCondDestroy(__arg0);
     }
 
-    public static void UvCondSignal(global::LibuvSharp.UvCondT cond)
+    public static void UvCondSignal(UvCondT cond)
     {
         var ____arg0 = cond.__Instance;
         var __arg0   = new IntPtr(&____arg0);
         __Internal.UvCondSignal(__arg0);
     }
 
-    public static void UvCondBroadcast(global::LibuvSharp.UvCondT cond)
+    public static void UvCondBroadcast(UvCondT cond)
     {
         var ____arg0 = cond.__Instance;
         var __arg0   = new IntPtr(&____arg0);
         __Internal.UvCondBroadcast(__arg0);
     }
 
-    public static int UvBarrierInit(global::LibuvSharp.UvBarrierT barrier, uint count)
+    public static int UvBarrierInit(UvBarrierT barrier, uint count)
     {
         var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
         var ___ret = __Internal.UvBarrierInit(__arg0, count);
         return ___ret;
     }
 
-    public static void UvBarrierDestroy(global::LibuvSharp.UvBarrierT barrier)
+    public static void UvBarrierDestroy(UvBarrierT barrier)
     {
         var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
         __Internal.UvBarrierDestroy(__arg0);
     }
 
-    public static int UvBarrierWait(global::LibuvSharp.UvBarrierT barrier)
+    public static int UvBarrierWait(UvBarrierT barrier)
     {
         var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
         var ___ret = __Internal.UvBarrierWait(__arg0);
         return ___ret;
     }
 
-    public static void UvOnce(global::LibuvSharp.UvOnceS guard, global::LibuvSharp.Delegates.Action_ callback)
+    public static void UvOnce(UvOnceS guard, Action_ callback)
     {
         var __arg0 = guard is null ? IntPtr.Zero : guard.__Instance;
-        var __arg1 = callback == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback);
+        var __arg1 = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback);
         __Internal.UvOnce(__arg0, __arg1);
     }
 
-    public static int UvKeyCreate(global::LibuvSharp.UvKeyT key)
+    public static int UvKeyCreate(UvKeyT key)
     {
         var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
         var ___ret = __Internal.UvKeyCreate(__arg0);
         return ___ret;
     }
 
-    public static void UvKeyDelete(global::LibuvSharp.UvKeyT key)
+    public static void UvKeyDelete(UvKeyT key)
     {
         var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
         __Internal.UvKeyDelete(__arg0);
     }
 
-    public static IntPtr UvKeyGet(global::LibuvSharp.UvKeyT key)
+    public static IntPtr UvKeyGet(UvKeyT key)
     {
         var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
         var ___ret = __Internal.UvKeyGet(__arg0);
         return ___ret;
     }
 
-    public static void UvKeySet(global::LibuvSharp.UvKeyT key, IntPtr value)
+    public static void UvKeySet(UvKeyT key, IntPtr value)
     {
         var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
         __Internal.UvKeySet(__arg0, value);
     }
 
-    public static int UvGettimeofday(global::LibuvSharp.UvTimeval64T tv)
+    public static int UvGettimeofday(UvTimeval64T tv)
     {
         var __arg0 = tv is null ? IntPtr.Zero : tv.__Instance;
         var ___ret = __Internal.UvGettimeofday(__arg0);
         return ___ret;
     }
 
-    public static int UvThreadCreate(IntPtr* tid, global::LibuvSharp.UvThreadCb entry, IntPtr arg)
+    public static int UvThreadCreate(IntPtr* tid, UvThreadCb entry, IntPtr arg)
     {
-        var __arg1 = entry == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
+        var __arg1 = entry == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
         var ___ret = __Internal.UvThreadCreate(tid, __arg1, arg);
         return ___ret;
     }
 
-    public static int UvThreadCreateEx(IntPtr* tid, global::LibuvSharp.UvThreadOptionsS @params, global::LibuvSharp.UvThreadCb entry, IntPtr arg)
+    public static int UvThreadCreateEx(IntPtr* tid, UvThreadOptionsS @params, UvThreadCb entry, IntPtr arg)
     {
         var __arg1 = @params is null ? IntPtr.Zero : @params.__Instance;
-        var __arg2 = entry == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
+        var __arg2 = entry == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
         var ___ret = __Internal.UvThreadCreateEx(tid, __arg1, __arg2, arg);
         return ___ret;
     }
@@ -2996,14 +2999,14 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static IntPtr UvLoopGetData(global::LibuvSharp.UvLoopS _0)
+    public static IntPtr UvLoopGetData(UvLoopS _0)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         var ___ret = __Internal.UvLoopGetData(__arg0);
         return ___ret;
     }
 
-    public static void UvLoopSetData(global::LibuvSharp.UvLoopS _0, IntPtr data)
+    public static void UvLoopSetData(UvLoopS _0, IntPtr data)
     {
         var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
         __Internal.UvLoopSetData(__arg0, data);

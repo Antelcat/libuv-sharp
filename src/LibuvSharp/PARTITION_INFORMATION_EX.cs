@@ -1,20 +1,21 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 144)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
-        internal global::LibuvSharp.PARTITION_STYLE PartitionStyle;
+        internal PARTITION_STYLE PartitionStyle;
 
         [FieldOffset(8)]
-        internal global::LARGE_INTEGER.__Internal StartingOffset;
+        internal LARGE_INTEGER.__Internal StartingOffset;
 
         [FieldOffset(16)]
-        internal global::LARGE_INTEGER.__Internal PartitionLength;
+        internal LARGE_INTEGER.__Internal PartitionLength;
 
         [FieldOffset(24)]
         internal uint PartitionNumber;
@@ -23,23 +24,23 @@ public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
         internal byte RewritePartition;
 
         [FieldOffset(32)]
-        internal global::LibuvSharp.PARTITION_INFORMATION_MBR.__Internal Mbr;
+        internal PARTITION_INFORMATION_MBR.__Internal Mbr;
 
         [FieldOffset(32)]
-        internal global::LibuvSharp.PARTITION_INFORMATION_GPT.__Internal Gpt;
+        internal PARTITION_INFORMATION_GPT.__Internal Gpt;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, PARTITION_INFORMATION_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PARTITION_INFORMATION_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PARTITION_INFORMATION_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PARTITION_INFORMATION_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PARTITION_INFORMATION_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PARTITION_INFORMATION_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -110,7 +111,7 @@ public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.PARTITION_STYLE PartitionStyle
+    public PARTITION_STYLE PartitionStyle
     {
         get => ((__Internal*)__Instance)->PartitionStyle;
 
@@ -131,27 +132,27 @@ public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
         set => ((__Internal*)__Instance)->RewritePartition = value;
     }
 
-    public global::LibuvSharp.PARTITION_INFORMATION_MBR Mbr
+    public PARTITION_INFORMATION_MBR Mbr
     {
-        get => global::LibuvSharp.PARTITION_INFORMATION_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
+        get => PARTITION_INFORMATION_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Mbr = *(global::LibuvSharp.PARTITION_INFORMATION_MBR.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Mbr = *(PARTITION_INFORMATION_MBR.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.PARTITION_INFORMATION_GPT Gpt
+    public PARTITION_INFORMATION_GPT Gpt
     {
-        get => global::LibuvSharp.PARTITION_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
+        get => PARTITION_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Gpt = *(global::LibuvSharp.PARTITION_INFORMATION_GPT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Gpt = *(PARTITION_INFORMATION_GPT.__Internal*) value.__Instance;
         }
     }
 }

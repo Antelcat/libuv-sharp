@@ -1,15 +1,17 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class UvRwlockT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 80)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::RTL_SRWLOCK.__Internal read_write_lock_;
-        internal fixed byte                           padding_[72];
+        internal       RTL_SRWLOCK.__Internal read_write_lock_;
+        internal fixed byte                   padding_[72];
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_rwlock_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -17,15 +19,15 @@ public unsafe partial class UvRwlockT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvRwlockT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvRwlockT>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvRwlockT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvRwlockT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvRwlockT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvRwlockT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvRwlockT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvRwlockT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -80,17 +82,17 @@ public unsafe partial class UvRwlockT : IDisposable
 
     public UvRwlockT()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvRwlockT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvRwlockT(global::LibuvSharp.UvRwlockT __0)
+    public UvRwlockT(UvRwlockT __0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvRwlockT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvRwlockT.__Internal*) __Instance) = *((global::LibuvSharp.UvRwlockT.__Internal*) __0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
     }
 
     public void Dispose()
@@ -113,7 +115,7 @@ public unsafe partial class UvRwlockT : IDisposable
 
     public byte[] Padding
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->padding_, 72);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->padding_, 72);
 
         set
         {

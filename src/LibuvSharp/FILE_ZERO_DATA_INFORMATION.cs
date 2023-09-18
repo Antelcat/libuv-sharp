@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_ZERO_DATA_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal FileOffset;
-        internal global::LARGE_INTEGER.__Internal BeyondFinalZero;
+        internal LARGE_INTEGER.__Internal FileOffset;
+        internal LARGE_INTEGER.__Internal BeyondFinalZero;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_ZERO_DATA_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_ZERO_DATA_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_ZERO_DATA_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_ZERO_DATA_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_ZERO_DATA_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_ZERO_DATA_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_ZERO_DATA_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_ZERO_DATA_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

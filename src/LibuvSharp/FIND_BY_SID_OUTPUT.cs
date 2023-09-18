@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FIND_BY_SID_OUTPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint NextEntryOffset;
         internal       uint FileIndex;
@@ -15,15 +17,15 @@ public unsafe partial class FIND_BY_SID_OUTPUT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FIND_BY_SID_OUTPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FIND_BY_SID_OUTPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, FIND_BY_SID_OUTPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FIND_BY_SID_OUTPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FIND_BY_SID_OUTPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FIND_BY_SID_OUTPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FIND_BY_SID_OUTPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FIND_BY_SID_OUTPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -117,7 +119,7 @@ public unsafe partial class FIND_BY_SID_OUTPUT : IDisposable
 
     public char[] FileName
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
 
         set
         {

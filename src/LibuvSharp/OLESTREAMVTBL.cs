@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using LibuvSharp.Delegates;
 
 namespace LibuvSharp;
 
 public unsafe partial class OLESTREAMVTBL : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr Get;
         internal IntPtr Put;
@@ -13,15 +15,15 @@ public unsafe partial class OLESTREAMVTBL : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.OLESTREAMVTBL> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.OLESTREAMVTBL>();
+    internal static readonly ConcurrentDictionary<IntPtr, OLESTREAMVTBL> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, OLESTREAMVTBL>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.OLESTREAMVTBL managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, OLESTREAMVTBL managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.OLESTREAMVTBL managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out OLESTREAMVTBL managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -92,25 +94,25 @@ public unsafe partial class OLESTREAMVTBL : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint Get
+    public Func_uint___IntPtr___IntPtr_uint Get
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->Get;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint));
+            return __ptr0 == IntPtr.Zero? null : (Func_uint___IntPtr___IntPtr_uint) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(Func_uint___IntPtr___IntPtr_uint));
         }
 
-        set => ((__Internal*)__Instance)->Get = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->Get = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint Put
+    public Func_uint___IntPtr___IntPtr_uint Put
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->Put;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.Delegates.Func_uint___IntPtr___IntPtr_uint));
+            return __ptr0 == IntPtr.Zero? null : (Func_uint___IntPtr___IntPtr_uint) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(Func_uint___IntPtr___IntPtr_uint));
         }
 
-        set => ((__Internal*)__Instance)->Put = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->Put = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 }

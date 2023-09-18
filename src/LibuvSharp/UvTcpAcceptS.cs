@@ -1,50 +1,52 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class UvTcpAcceptS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 432)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       IntPtr                                     data;
-        internal       global::LibuvSharp.UvReqType                 type;
-        internal       void*                                        reserved;
-        internal       global::LibuvSharp.UvTcpAcceptS.U.__Internal u;
-        internal       IntPtr                                     next_req;
-        internal       ulong                                        accept_socket;
-        internal fixed sbyte                                        accept_buffer[288];
-        internal       IntPtr                                     event_handle;
-        internal       IntPtr                                     wait_handle;
-        internal       IntPtr                                     next_pending;
+        internal       IntPtr       data;
+        internal       UvReqType    type;
+        internal       void*        reserved;
+        internal       U.__Internal u;
+        internal       IntPtr       next_req;
+        internal       ulong        accept_socket;
+        internal fixed sbyte        accept_buffer[288];
+        internal       IntPtr       event_handle;
+        internal       IntPtr       wait_handle;
+        internal       IntPtr       next_pending;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_tcp_accept_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct U
+    public partial struct U
     {
         [StructLayout(LayoutKind.Explicit, Size = 40)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
-            internal global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal io;
+            internal Connect.__Internal io;
 
             [FieldOffset(0)]
-            internal global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal connect;
+            internal Connect.__Internal connect;
 
             [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_tcp_accept_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        public unsafe partial class Connect : IDisposable
+        public partial class Connect : IDisposable
         {
             [StructLayout(LayoutKind.Sequential, Size = 40)]
-            public partial struct __Internal
+            public struct __Internal
             {
-                internal global::OVERLAPPED.__Internal overlapped;
-                internal ulong                         queued_bytes;
+                internal OVERLAPPED.__Internal overlapped;
+                internal ulong                 queued_bytes;
 
                 [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_tcp_accept_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -52,15 +54,15 @@ public unsafe partial class UvTcpAcceptS : IDisposable
 
             public IntPtr __Instance { get; protected set; }
 
-            internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTcpAcceptS.U.Connect> NativeToManagedMap =
-                new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTcpAcceptS.U.Connect>();
+            internal static readonly ConcurrentDictionary<IntPtr, Connect> NativeToManagedMap =
+                new ConcurrentDictionary<IntPtr, Connect>();
 
-            internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvTcpAcceptS.U.Connect managed)
+            internal static void __RecordNativeToManagedMapping(IntPtr native, Connect managed)
             {
                 NativeToManagedMap[native] = managed;
             }
 
-            internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvTcpAcceptS.U.Connect managed)
+            internal static bool __TryGetNativeToManagedMapping(IntPtr native, out Connect managed)
             {
     
                 return NativeToManagedMap.TryGetValue(native, out managed);
@@ -115,17 +117,17 @@ public unsafe partial class UvTcpAcceptS : IDisposable
 
             public Connect()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
             }
 
-            public Connect(global::LibuvSharp.UvTcpAcceptS.U.Connect __0)
+            public Connect(Connect __0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
-                *((global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal*) __Instance) = *((global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal*) __0.__Instance);
+                *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
             }
 
             public void Dispose()
@@ -154,8 +156,8 @@ public unsafe partial class UvTcpAcceptS : IDisposable
             }
         }
 
-        private  U.__Internal __instance;
-        internal U.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static U __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -175,10 +177,10 @@ public unsafe partial class UvTcpAcceptS : IDisposable
 
         private U(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvTcpAcceptS.U.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public U(global::LibuvSharp.UvTcpAcceptS.U __0)
+        public U(U __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -189,42 +191,42 @@ public unsafe partial class UvTcpAcceptS : IDisposable
             }
         }
 
-        public global::LibuvSharp.UvTcpAcceptS.U.Connect Io
+        public Connect Io
         {
-            get => global::LibuvSharp.UvTcpAcceptS.U.Connect.__CreateInstance(__instance.io);
+            get => Connect.__CreateInstance(__instance.io);
 
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                __instance.io = *(global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal*) value.__Instance;
+                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                __instance.io = *(Connect.__Internal*) value.__Instance;
             }
         }
 
-        public global::LibuvSharp.UvTcpAcceptS.U.Connect connect
+        public Connect connect
         {
-            get => global::LibuvSharp.UvTcpAcceptS.U.Connect.__CreateInstance(__instance.connect);
+            get => Connect.__CreateInstance(__instance.connect);
 
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                __instance.connect = *(global::LibuvSharp.UvTcpAcceptS.U.Connect.__Internal*) value.__Instance;
+                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                __instance.connect = *(Connect.__Internal*) value.__Instance;
             }
         }
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTcpAcceptS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvTcpAcceptS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvTcpAcceptS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvTcpAcceptS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvTcpAcceptS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvTcpAcceptS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvTcpAcceptS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvTcpAcceptS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -279,17 +281,17 @@ public unsafe partial class UvTcpAcceptS : IDisposable
 
     public UvTcpAcceptS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTcpAcceptS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvTcpAcceptS(global::LibuvSharp.UvTcpAcceptS _0)
+    public UvTcpAcceptS(UvTcpAcceptS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvTcpAcceptS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvTcpAcceptS.__Internal*) __Instance) = *((global::LibuvSharp.UvTcpAcceptS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -314,10 +316,10 @@ public unsafe partial class UvTcpAcceptS : IDisposable
     {
         get => ((__Internal*)__Instance)->data;
 
-        set => ((__Internal*)__Instance)->data = (IntPtr) value;
+        set => ((__Internal*)__Instance)->data = value;
     }
 
-    public global::LibuvSharp.UvReqType Type
+    public UvReqType Type
     {
         get => ((__Internal*)__Instance)->type;
 
@@ -349,18 +351,18 @@ public unsafe partial class UvTcpAcceptS : IDisposable
         }
     }
 
-    public global::LibuvSharp.UvTcpAcceptS.U u
+    public U u
     {
-        get => global::LibuvSharp.UvTcpAcceptS.U.__CreateInstance(((__Internal*)__Instance)->u);
+        get => U.__CreateInstance(((__Internal*)__Instance)->u);
 
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public global::LibuvSharp.UvReqS NextReq
+    public UvReqS NextReq
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->next_req, false);
+            var __result0 = UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->next_req);
             return __result0;
         }
 
@@ -376,7 +378,7 @@ public unsafe partial class UvTcpAcceptS : IDisposable
 
     public sbyte[] AcceptBuffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->accept_buffer, 288);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->accept_buffer, 288);
 
         set
         {
@@ -392,21 +394,21 @@ public unsafe partial class UvTcpAcceptS : IDisposable
     {
         get => ((__Internal*)__Instance)->event_handle;
 
-        set => ((__Internal*)__Instance)->event_handle = (IntPtr) value;
+        set => ((__Internal*)__Instance)->event_handle = value;
     }
 
     public IntPtr WaitHandle
     {
         get => ((__Internal*)__Instance)->wait_handle;
 
-        set => ((__Internal*)__Instance)->wait_handle = (IntPtr) value;
+        set => ((__Internal*)__Instance)->wait_handle = value;
     }
 
-    public global::LibuvSharp.UvTcpAcceptS NextPending
+    public UvTcpAcceptS NextPending
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvTcpAcceptS.__GetOrCreateInstance(((__Internal*)__Instance)->next_pending, false);
+            var __result0 = __GetOrCreateInstance(((__Internal*)__Instance)->next_pending);
             return __result0;
         }
 

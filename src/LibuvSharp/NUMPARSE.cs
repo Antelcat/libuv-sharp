@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class NUMPARSE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal int  cDig;
         internal uint dwInFlags;
@@ -17,15 +18,15 @@ public unsafe partial class NUMPARSE : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NUMPARSE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NUMPARSE>();
+    internal static readonly ConcurrentDictionary<IntPtr, NUMPARSE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, NUMPARSE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NUMPARSE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, NUMPARSE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NUMPARSE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out NUMPARSE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

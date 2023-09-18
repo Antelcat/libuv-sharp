@@ -1,39 +1,40 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PERF_OBJECT_TYPE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 64, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint                             TotalByteLength;
-        internal uint                             DefinitionLength;
-        internal uint                             HeaderLength;
-        internal uint                             ObjectNameTitleIndex;
-        internal uint                             ObjectNameTitle;
-        internal uint                             ObjectHelpTitleIndex;
-        internal uint                             ObjectHelpTitle;
-        internal uint                             DetailLevel;
-        internal uint                             NumCounters;
-        internal int                              DefaultCounter;
-        internal int                              NumInstances;
-        internal uint                             CodePage;
-        internal global::LARGE_INTEGER.__Internal PerfTime;
-        internal global::LARGE_INTEGER.__Internal PerfFreq;
+        internal uint                     TotalByteLength;
+        internal uint                     DefinitionLength;
+        internal uint                     HeaderLength;
+        internal uint                     ObjectNameTitleIndex;
+        internal uint                     ObjectNameTitle;
+        internal uint                     ObjectHelpTitleIndex;
+        internal uint                     ObjectHelpTitle;
+        internal uint                     DetailLevel;
+        internal uint                     NumCounters;
+        internal int                      DefaultCounter;
+        internal int                      NumInstances;
+        internal uint                     CodePage;
+        internal LARGE_INTEGER.__Internal PerfTime;
+        internal LARGE_INTEGER.__Internal PerfFreq;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_OBJECT_TYPE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_OBJECT_TYPE>();
+    internal static readonly ConcurrentDictionary<IntPtr, PERF_OBJECT_TYPE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PERF_OBJECT_TYPE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PERF_OBJECT_TYPE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PERF_OBJECT_TYPE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PERF_OBJECT_TYPE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PERF_OBJECT_TYPE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

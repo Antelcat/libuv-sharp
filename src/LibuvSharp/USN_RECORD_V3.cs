@@ -1,39 +1,41 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class USN_RECORD_V3 : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 80)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       uint                             RecordLength;
-        internal       ushort                           MajorVersion;
-        internal       ushort                           MinorVersion;
-        internal       global::FILE_ID_128.__Internal   FileReferenceNumber;
-        internal       global::FILE_ID_128.__Internal   ParentFileReferenceNumber;
-        internal       long                             Usn;
-        internal       global::LARGE_INTEGER.__Internal TimeStamp;
-        internal       uint                             Reason;
-        internal       uint                             SourceInfo;
-        internal       uint                             SecurityId;
-        internal       uint                             FileAttributes;
-        internal       ushort                           FileNameLength;
-        internal       ushort                           FileNameOffset;
-        internal fixed char                             FileName[1];
+        internal       uint                     RecordLength;
+        internal       ushort                   MajorVersion;
+        internal       ushort                   MinorVersion;
+        internal       FILE_ID_128.__Internal   FileReferenceNumber;
+        internal       FILE_ID_128.__Internal   ParentFileReferenceNumber;
+        internal       long                     Usn;
+        internal       LARGE_INTEGER.__Internal TimeStamp;
+        internal       uint                     Reason;
+        internal       uint                     SourceInfo;
+        internal       uint                     SecurityId;
+        internal       uint                     FileAttributes;
+        internal       ushort                   FileNameLength;
+        internal       ushort                   FileNameOffset;
+        internal fixed char                     FileName[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_V3> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_V3>();
+    internal static readonly ConcurrentDictionary<IntPtr, USN_RECORD_V3> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, USN_RECORD_V3>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.USN_RECORD_V3 managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, USN_RECORD_V3 managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.USN_RECORD_V3 managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out USN_RECORD_V3 managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -176,7 +178,7 @@ public unsafe partial class USN_RECORD_V3 : IDisposable
 
     public char[] FileName
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
 
         set
         {

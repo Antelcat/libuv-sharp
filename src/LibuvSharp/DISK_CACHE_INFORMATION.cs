@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
         internal byte ParametersSavable;
@@ -17,10 +18,10 @@ public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
         internal byte WriteCacheEnabled;
 
         [FieldOffset(4)]
-        internal global::LibuvSharp.DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority;
+        internal DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority;
+        internal DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority;
 
         [FieldOffset(12)]
         internal ushort DisablePrefetchTransferLength;
@@ -29,28 +30,28 @@ public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
         internal byte PrefetchScalar;
 
         [FieldOffset(16)]
-        internal global::LibuvSharp.DISK_CACHE_INFORMATION._0.ScalarPrefetch.__Internal ScalarPrefetch;
+        internal _0.ScalarPrefetch.__Internal ScalarPrefetch;
 
         [FieldOffset(16)]
-        internal global::LibuvSharp.DISK_CACHE_INFORMATION._0.BlockPrefetch.__Internal BlockPrefetch;
+        internal _0.BlockPrefetch.__Internal BlockPrefetch;
     }
 
-    public unsafe partial struct _0
+    public partial struct _0
     {
         [StructLayout(LayoutKind.Explicit, Size = 6)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
-            internal global::LibuvSharp.DISK_CACHE_INFORMATION._0.ScalarPrefetch.__Internal ScalarPrefetch;
+            internal ScalarPrefetch.__Internal ScalarPrefetch;
 
             [FieldOffset(0)]
-            internal global::LibuvSharp.DISK_CACHE_INFORMATION._0.BlockPrefetch.__Internal BlockPrefetch;
+            internal BlockPrefetch.__Internal BlockPrefetch;
         }
 
-        public unsafe partial class ScalarPrefetch
+        public partial class ScalarPrefetch
         {
             [StructLayout(LayoutKind.Sequential, Size = 6)]
-            public partial struct __Internal
+            public struct __Internal
             {
                 internal ushort Minimum;
                 internal ushort Maximum;
@@ -58,10 +59,10 @@ public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
             }
         }
 
-        public unsafe partial class BlockPrefetch
+        public partial class BlockPrefetch
         {
             [StructLayout(LayoutKind.Sequential, Size = 4)]
-            public partial struct __Internal
+            public struct __Internal
             {
                 internal ushort Minimum;
                 internal ushort Maximum;
@@ -71,15 +72,15 @@ public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_CACHE_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_CACHE_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_CACHE_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_CACHE_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_CACHE_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_CACHE_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_CACHE_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_CACHE_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -171,14 +172,14 @@ public unsafe partial class DISK_CACHE_INFORMATION : IDisposable
         set => ((__Internal*)__Instance)->WriteCacheEnabled = value;
     }
 
-    public global::LibuvSharp.DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority
+    public DISK_CACHE_RETENTION_PRIORITY ReadRetentionPriority
     {
         get => ((__Internal*)__Instance)->ReadRetentionPriority;
 
         set => ((__Internal*)__Instance)->ReadRetentionPriority = value;
     }
 
-    public global::LibuvSharp.DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority
+    public DISK_CACHE_RETENTION_PRIORITY WriteRetentionPriority
     {
         get => ((__Internal*)__Instance)->WriteRetentionPriority;
 

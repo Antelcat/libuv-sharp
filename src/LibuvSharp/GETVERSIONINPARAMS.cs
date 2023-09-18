@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class GETVERSIONINPARAMS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       byte bVersion;
         internal       byte bRevision;
@@ -17,15 +19,15 @@ public unsafe partial class GETVERSIONINPARAMS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GETVERSIONINPARAMS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GETVERSIONINPARAMS>();
+    internal static readonly ConcurrentDictionary<IntPtr, GETVERSIONINPARAMS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, GETVERSIONINPARAMS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.GETVERSIONINPARAMS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, GETVERSIONINPARAMS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.GETVERSIONINPARAMS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out GETVERSIONINPARAMS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -133,7 +135,7 @@ public unsafe partial class GETVERSIONINPARAMS : IDisposable
 
     public uint[] DwReserved
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 4);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 4);
 
         set
         {

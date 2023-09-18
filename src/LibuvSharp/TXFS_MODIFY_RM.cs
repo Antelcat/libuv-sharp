@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_MODIFY_RM : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint   Flags;
         internal uint   LogContainerCountMax;
@@ -19,15 +20,15 @@ public unsafe partial class TXFS_MODIFY_RM : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_MODIFY_RM> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_MODIFY_RM>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_MODIFY_RM> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_MODIFY_RM>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_MODIFY_RM managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_MODIFY_RM managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_MODIFY_RM managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_MODIFY_RM managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

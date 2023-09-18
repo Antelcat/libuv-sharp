@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_LIST_TRANSACTIONS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ulong NumberOfTransactions;
         internal ulong BufferSizeRequired;
@@ -13,15 +14,15 @@ public unsafe partial class TXFS_LIST_TRANSACTIONS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTIONS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTIONS>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTIONS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTIONS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_LIST_TRANSACTIONS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_LIST_TRANSACTIONS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_LIST_TRANSACTIONS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_LIST_TRANSACTIONS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

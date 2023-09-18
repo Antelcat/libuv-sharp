@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_PREFETCH_EX : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint     Type;
         internal       uint     Count;
@@ -15,15 +17,15 @@ public unsafe partial class FILE_PREFETCH_EX : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_PREFETCH_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_PREFETCH_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_PREFETCH_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_PREFETCH_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_PREFETCH_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_PREFETCH_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_PREFETCH_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_PREFETCH_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -112,12 +114,12 @@ public unsafe partial class FILE_PREFETCH_EX : IDisposable
     {
         get => ((__Internal*)__Instance)->Context;
 
-        set => ((__Internal*)__Instance)->Context = (IntPtr) value;
+        set => ((__Internal*)__Instance)->Context = value;
     }
 
     public ulong[] Prefetch
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Prefetch, 1);
+        get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Prefetch, 1);
 
         set
         {

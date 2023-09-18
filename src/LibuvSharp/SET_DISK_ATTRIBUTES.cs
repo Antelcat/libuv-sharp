@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class SET_DISK_ATTRIBUTES : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint  Version;
         internal       byte  Persist;
@@ -17,15 +19,15 @@ public unsafe partial class SET_DISK_ATTRIBUTES : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SET_DISK_ATTRIBUTES> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SET_DISK_ATTRIBUTES>();
+    internal static readonly ConcurrentDictionary<IntPtr, SET_DISK_ATTRIBUTES> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SET_DISK_ATTRIBUTES>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SET_DISK_ATTRIBUTES managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SET_DISK_ATTRIBUTES managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SET_DISK_ATTRIBUTES managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SET_DISK_ATTRIBUTES managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -112,7 +114,7 @@ public unsafe partial class SET_DISK_ATTRIBUTES : IDisposable
 
     public byte[] Reserved1
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Reserved1, 3);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Reserved1, 3);
 
         set
         {
@@ -140,7 +142,7 @@ public unsafe partial class SET_DISK_ATTRIBUTES : IDisposable
 
     public uint[] Reserved2
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->Reserved2, 4);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->Reserved2, 4);
 
         set
         {

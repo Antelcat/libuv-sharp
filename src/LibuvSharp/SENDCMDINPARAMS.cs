@@ -1,31 +1,33 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class SENDCMDINPARAMS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 33, Pack = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       uint                                  cBufferSize;
-        internal       global::LibuvSharp.IDEREGS.__Internal irDriveRegs;
-        internal       byte                                  bDriveNumber;
-        internal fixed byte                                  bReserved[3];
-        internal fixed uint                                  dwReserved[4];
-        internal fixed byte                                  bBuffer[1];
+        internal       uint               cBufferSize;
+        internal       IDEREGS.__Internal irDriveRegs;
+        internal       byte               bDriveNumber;
+        internal fixed byte               bReserved[3];
+        internal fixed uint               dwReserved[4];
+        internal fixed byte               bBuffer[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SENDCMDINPARAMS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SENDCMDINPARAMS>();
+    internal static readonly ConcurrentDictionary<IntPtr, SENDCMDINPARAMS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SENDCMDINPARAMS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SENDCMDINPARAMS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SENDCMDINPARAMS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SENDCMDINPARAMS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SENDCMDINPARAMS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -103,15 +105,15 @@ public unsafe partial class SENDCMDINPARAMS : IDisposable
         set => ((__Internal*)__Instance)->cBufferSize = value;
     }
 
-    public global::LibuvSharp.IDEREGS IrDriveRegs
+    public IDEREGS IrDriveRegs
     {
-        get => global::LibuvSharp.IDEREGS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->irDriveRegs));
+        get => IDEREGS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->irDriveRegs));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->irDriveRegs = *(global::LibuvSharp.IDEREGS.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->irDriveRegs = *(IDEREGS.__Internal*) value.__Instance;
         }
     }
 
@@ -124,7 +126,7 @@ public unsafe partial class SENDCMDINPARAMS : IDisposable
 
     public byte[] BReserved
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bReserved, 3);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bReserved, 3);
 
         set
         {
@@ -138,7 +140,7 @@ public unsafe partial class SENDCMDINPARAMS : IDisposable
 
     public uint[] DwReserved
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 4);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->dwReserved, 4);
 
         set
         {
@@ -152,7 +154,7 @@ public unsafe partial class SENDCMDINPARAMS : IDisposable
 
     public byte[] BBuffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bBuffer, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bBuffer, 1);
 
         set
         {

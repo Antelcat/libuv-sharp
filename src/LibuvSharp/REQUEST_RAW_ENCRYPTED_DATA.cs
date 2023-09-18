@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class REQUEST_RAW_ENCRYPTED_DATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal long FileOffset;
         internal uint Length;
@@ -13,15 +14,15 @@ public unsafe partial class REQUEST_RAW_ENCRYPTED_DATA : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REQUEST_RAW_ENCRYPTED_DATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REQUEST_RAW_ENCRYPTED_DATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, REQUEST_RAW_ENCRYPTED_DATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, REQUEST_RAW_ENCRYPTED_DATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.REQUEST_RAW_ENCRYPTED_DATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, REQUEST_RAW_ENCRYPTED_DATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.REQUEST_RAW_ENCRYPTED_DATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out REQUEST_RAW_ENCRYPTED_DATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

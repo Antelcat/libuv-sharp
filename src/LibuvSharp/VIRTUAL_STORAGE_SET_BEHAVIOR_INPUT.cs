@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint                                             Size;
-        internal global::LibuvSharp.VIRTUAL_STORAGE_BEHAVIOR_CODE BehaviorCode;
+        internal VIRTUAL_STORAGE_BEHAVIOR_CODE BehaviorCode;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -99,7 +100,7 @@ public unsafe partial class VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT : IDisposable
         set => ((__Internal*)__Instance)->Size = value;
     }
 
-    public global::LibuvSharp.VIRTUAL_STORAGE_BEHAVIOR_CODE BehaviorCode
+    public VIRTUAL_STORAGE_BEHAVIOR_CODE BehaviorCode
     {
         get => ((__Internal*)__Instance)->BehaviorCode;
 

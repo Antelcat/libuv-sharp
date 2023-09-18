@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,13 +7,13 @@ namespace LibuvSharp;
 public unsafe partial class UvBarrierT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 64)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint                                      threshold;
-        internal uint                                      @in;
-        internal global::RTL_CRITICAL_SECTION.__Internal   mutex;
-        internal global::RTL_CONDITION_VARIABLE.__Internal cond;
-        internal uint                                      @out;
+        internal uint                              threshold;
+        internal uint                              @in;
+        internal RTL_CRITICAL_SECTION.__Internal   mutex;
+        internal RTL_CONDITION_VARIABLE.__Internal cond;
+        internal uint                              @out;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_barrier_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -20,15 +21,15 @@ public unsafe partial class UvBarrierT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvBarrierT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvBarrierT>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvBarrierT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvBarrierT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvBarrierT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvBarrierT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvBarrierT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvBarrierT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -83,17 +84,17 @@ public unsafe partial class UvBarrierT : IDisposable
 
     public UvBarrierT()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvBarrierT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvBarrierT(global::LibuvSharp.UvBarrierT __0)
+    public UvBarrierT(UvBarrierT __0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvBarrierT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvBarrierT.__Internal*) __Instance) = *((global::LibuvSharp.UvBarrierT.__Internal*) __0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
     }
 
     public void Dispose()

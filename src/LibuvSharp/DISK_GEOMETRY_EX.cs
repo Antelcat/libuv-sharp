@@ -1,28 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_GEOMETRY_EX : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LibuvSharp.DISK_GEOMETRY.__Internal Geometry;
-        internal       global::LARGE_INTEGER.__Internal            DiskSize;
-        internal fixed byte                                        Data[1];
+        internal       DISK_GEOMETRY.__Internal Geometry;
+        internal       LARGE_INTEGER.__Internal DiskSize;
+        internal fixed byte                     Data[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GEOMETRY_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GEOMETRY_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_GEOMETRY_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_GEOMETRY_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_GEOMETRY_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_GEOMETRY_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_GEOMETRY_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_GEOMETRY_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -93,21 +95,21 @@ public unsafe partial class DISK_GEOMETRY_EX : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.DISK_GEOMETRY Geometry
+    public DISK_GEOMETRY Geometry
     {
-        get => global::LibuvSharp.DISK_GEOMETRY.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Geometry));
+        get => DISK_GEOMETRY.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Geometry));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Geometry = *(global::LibuvSharp.DISK_GEOMETRY.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Geometry = *(DISK_GEOMETRY.__Internal*) value.__Instance;
         }
     }
 
     public byte[] Data
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Data, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Data, 1);
 
         set
         {

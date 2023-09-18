@@ -1,33 +1,34 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class SET_PARTITION_INFORMATION_EX : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 120)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
-        internal global::LibuvSharp.PARTITION_STYLE PartitionStyle;
+        internal PARTITION_STYLE PartitionStyle;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.SET_PARTITION_INFORMATION.__Internal Mbr;
+        internal SET_PARTITION_INFORMATION.__Internal Mbr;
 
         [FieldOffset(8)]
-        internal global::LibuvSharp.PARTITION_INFORMATION_GPT.__Internal Gpt;
+        internal PARTITION_INFORMATION_GPT.__Internal Gpt;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SET_PARTITION_INFORMATION_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SET_PARTITION_INFORMATION_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, SET_PARTITION_INFORMATION_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SET_PARTITION_INFORMATION_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SET_PARTITION_INFORMATION_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SET_PARTITION_INFORMATION_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SET_PARTITION_INFORMATION_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SET_PARTITION_INFORMATION_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -98,34 +99,34 @@ public unsafe partial class SET_PARTITION_INFORMATION_EX : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.PARTITION_STYLE PartitionStyle
+    public PARTITION_STYLE PartitionStyle
     {
         get => ((__Internal*)__Instance)->PartitionStyle;
 
         set => ((__Internal*)__Instance)->PartitionStyle = value;
     }
 
-    public global::LibuvSharp.SET_PARTITION_INFORMATION Mbr
+    public SET_PARTITION_INFORMATION Mbr
     {
-        get => global::LibuvSharp.SET_PARTITION_INFORMATION.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
+        get => SET_PARTITION_INFORMATION.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Mbr = *(global::LibuvSharp.SET_PARTITION_INFORMATION.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Mbr = *(SET_PARTITION_INFORMATION.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.PARTITION_INFORMATION_GPT Gpt
+    public PARTITION_INFORMATION_GPT Gpt
     {
-        get => global::LibuvSharp.PARTITION_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
+        get => PARTITION_INFORMATION_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Gpt = *(global::LibuvSharp.PARTITION_INFORMATION_GPT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Gpt = *(PARTITION_INFORMATION_GPT.__Internal*) value.__Instance;
         }
     }
 }

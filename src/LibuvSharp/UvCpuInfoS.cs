@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,11 +7,11 @@ namespace LibuvSharp;
 public unsafe partial class UvCpuInfoS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 56)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal IntPtr                                  model;
-        internal int                                       speed;
-        internal global::LibuvSharp.UvCpuTimesS.__Internal cpu_times;
+        internal IntPtr                 model;
+        internal int                    speed;
+        internal UvCpuTimesS.__Internal cpu_times;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_cpu_info_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
@@ -18,15 +19,15 @@ public unsafe partial class UvCpuInfoS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvCpuInfoS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvCpuInfoS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvCpuInfoS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvCpuInfoS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvCpuInfoS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvCpuInfoS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvCpuInfoS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvCpuInfoS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -81,17 +82,17 @@ public unsafe partial class UvCpuInfoS : IDisposable
 
     public UvCpuInfoS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvCpuInfoS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvCpuInfoS(global::LibuvSharp.UvCpuInfoS _0)
+    public UvCpuInfoS(UvCpuInfoS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvCpuInfoS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvCpuInfoS.__Internal*) __Instance) = *((global::LibuvSharp.UvCpuInfoS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -126,15 +127,15 @@ public unsafe partial class UvCpuInfoS : IDisposable
         set => ((__Internal*)__Instance)->speed = value;
     }
 
-    public global::LibuvSharp.UvCpuTimesS CpuTimes
+    public UvCpuTimesS CpuTimes
     {
-        get => global::LibuvSharp.UvCpuTimesS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->cpu_times));
+        get => UvCpuTimesS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->cpu_times));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->cpu_times = *(global::LibuvSharp.UvCpuTimesS.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->cpu_times = *(UvCpuTimesS.__Internal*) value.__Instance;
         }
     }
 }

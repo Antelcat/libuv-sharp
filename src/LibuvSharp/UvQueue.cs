@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,7 +7,7 @@ namespace LibuvSharp;
 public unsafe partial class UvQueue : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr next;
         internal IntPtr prev;
@@ -17,15 +18,15 @@ public unsafe partial class UvQueue : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvQueue> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvQueue>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvQueue> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvQueue>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvQueue managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvQueue managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvQueue managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvQueue managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -80,17 +81,17 @@ public unsafe partial class UvQueue : IDisposable
 
     public UvQueue()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvQueue.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvQueue(global::LibuvSharp.UvQueue _0)
+    public UvQueue(UvQueue _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvQueue.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvQueue.__Internal*) __Instance) = *((global::LibuvSharp.UvQueue.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -111,22 +112,22 @@ public unsafe partial class UvQueue : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.UvQueue Next
+    public UvQueue Next
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvQueue.__GetOrCreateInstance(((__Internal*)__Instance)->next, false);
+            var __result0 = __GetOrCreateInstance(((__Internal*)__Instance)->next);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->next = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvQueue Prev
+    public UvQueue Prev
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvQueue.__GetOrCreateInstance(((__Internal*)__Instance)->prev, false);
+            var __result0 = __GetOrCreateInstance(((__Internal*)__Instance)->prev);
             return __result0;
         }
 

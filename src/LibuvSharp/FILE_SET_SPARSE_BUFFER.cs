@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_SET_SPARSE_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte SetSparse;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_SET_SPARSE_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_SET_SPARSE_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_SET_SPARSE_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_SET_SPARSE_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_SET_SPARSE_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_SET_SPARSE_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_SET_SPARSE_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_SET_SPARSE_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

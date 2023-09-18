@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_CONTROLLER_NUMBER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint ControllerNumber;
         internal uint DiskNumber;
@@ -13,15 +14,15 @@ public unsafe partial class DISK_CONTROLLER_NUMBER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_CONTROLLER_NUMBER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_CONTROLLER_NUMBER>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_CONTROLLER_NUMBER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_CONTROLLER_NUMBER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_CONTROLLER_NUMBER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_CONTROLLER_NUMBER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_CONTROLLER_NUMBER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_CONTROLLER_NUMBER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

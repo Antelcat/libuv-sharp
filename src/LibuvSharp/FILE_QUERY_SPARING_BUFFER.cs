@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_QUERY_SPARING_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint SparingUnitBytes;
         internal byte SoftwareSparing;
@@ -15,15 +16,15 @@ public unsafe partial class FILE_QUERY_SPARING_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_QUERY_SPARING_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_QUERY_SPARING_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_QUERY_SPARING_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_QUERY_SPARING_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_QUERY_SPARING_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_QUERY_SPARING_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_QUERY_SPARING_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_QUERY_SPARING_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

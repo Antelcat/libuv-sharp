@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class CHANGER_INITIALIZE_ELEMENT_STATUS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.CHANGER_ELEMENT_LIST.__Internal ElementList;
-        internal byte                                               BarCodeScan;
+        internal CHANGER_ELEMENT_LIST.__Internal ElementList;
+        internal byte                            BarCodeScan;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_INITIALIZE_ELEMENT_STATUS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_INITIALIZE_ELEMENT_STATUS>();
+    internal static readonly ConcurrentDictionary<IntPtr, CHANGER_INITIALIZE_ELEMENT_STATUS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CHANGER_INITIALIZE_ELEMENT_STATUS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CHANGER_INITIALIZE_ELEMENT_STATUS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CHANGER_INITIALIZE_ELEMENT_STATUS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CHANGER_INITIALIZE_ELEMENT_STATUS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CHANGER_INITIALIZE_ELEMENT_STATUS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -92,15 +93,15 @@ public unsafe partial class CHANGER_INITIALIZE_ELEMENT_STATUS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.CHANGER_ELEMENT_LIST ElementList
+    public CHANGER_ELEMENT_LIST ElementList
     {
-        get => global::LibuvSharp.CHANGER_ELEMENT_LIST.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->ElementList));
+        get => CHANGER_ELEMENT_LIST.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->ElementList));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->ElementList = *(global::LibuvSharp.CHANGER_ELEMENT_LIST.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->ElementList = *(CHANGER_ELEMENT_LIST.__Internal*) value.__Instance;
         }
     }
 

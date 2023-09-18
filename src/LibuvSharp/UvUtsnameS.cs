@@ -1,12 +1,14 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class UvUtsnameS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1024)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal fixed sbyte sysname[256];
         internal fixed sbyte release[256];
@@ -19,15 +21,15 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvUtsnameS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvUtsnameS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvUtsnameS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvUtsnameS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvUtsnameS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvUtsnameS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvUtsnameS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvUtsnameS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -82,17 +84,17 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public UvUtsnameS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvUtsnameS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvUtsnameS(global::LibuvSharp.UvUtsnameS _0)
+    public UvUtsnameS(UvUtsnameS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvUtsnameS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvUtsnameS.__Internal*) __Instance) = *((global::LibuvSharp.UvUtsnameS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -115,7 +117,7 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public sbyte[] Sysname
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->sysname, 256);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->sysname, 256);
 
         set
         {
@@ -129,7 +131,7 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public sbyte[] Release
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->release, 256);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->release, 256);
 
         set
         {
@@ -143,7 +145,7 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public sbyte[] Version
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->version, 256);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->version, 256);
 
         set
         {
@@ -157,7 +159,7 @@ public unsafe partial class UvUtsnameS : IDisposable
 
     public sbyte[] Machine
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->machine, 256);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->machine, 256);
 
         set
         {

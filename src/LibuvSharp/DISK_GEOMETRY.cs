@@ -1,30 +1,31 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_GEOMETRY : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal Cylinders;
-        internal global::LibuvSharp.MEDIA_TYPE    MediaType;
-        internal uint                             TracksPerCylinder;
-        internal uint                             SectorsPerTrack;
-        internal uint                             BytesPerSector;
+        internal LARGE_INTEGER.__Internal Cylinders;
+        internal MEDIA_TYPE               MediaType;
+        internal uint                     TracksPerCylinder;
+        internal uint                     SectorsPerTrack;
+        internal uint                     BytesPerSector;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GEOMETRY> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GEOMETRY>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_GEOMETRY> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_GEOMETRY>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_GEOMETRY managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_GEOMETRY managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_GEOMETRY managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_GEOMETRY managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -95,7 +96,7 @@ public unsafe partial class DISK_GEOMETRY : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.MEDIA_TYPE MediaType
+    public MEDIA_TYPE MediaType
     {
         get => ((__Internal*)__Instance)->MediaType;
 

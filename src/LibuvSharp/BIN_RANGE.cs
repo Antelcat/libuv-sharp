@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class BIN_RANGE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal StartValue;
-        internal global::LARGE_INTEGER.__Internal Length;
+        internal LARGE_INTEGER.__Internal StartValue;
+        internal LARGE_INTEGER.__Internal Length;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BIN_RANGE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BIN_RANGE>();
+    internal static readonly ConcurrentDictionary<IntPtr, BIN_RANGE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, BIN_RANGE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.BIN_RANGE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, BIN_RANGE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.BIN_RANGE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out BIN_RANGE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

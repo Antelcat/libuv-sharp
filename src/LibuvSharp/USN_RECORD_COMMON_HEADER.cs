@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class USN_RECORD_COMMON_HEADER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint   RecordLength;
         internal ushort MajorVersion;
@@ -14,15 +15,15 @@ public unsafe partial class USN_RECORD_COMMON_HEADER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_COMMON_HEADER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.USN_RECORD_COMMON_HEADER>();
+    internal static readonly ConcurrentDictionary<IntPtr, USN_RECORD_COMMON_HEADER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, USN_RECORD_COMMON_HEADER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.USN_RECORD_COMMON_HEADER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, USN_RECORD_COMMON_HEADER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.USN_RECORD_COMMON_HEADER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out USN_RECORD_COMMON_HEADER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

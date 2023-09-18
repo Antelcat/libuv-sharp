@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PERF_INSTANCE_DEFINITION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint ByteLength;
         internal uint ParentObjectTitleIndex;
@@ -17,15 +18,15 @@ public unsafe partial class PERF_INSTANCE_DEFINITION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_INSTANCE_DEFINITION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_INSTANCE_DEFINITION>();
+    internal static readonly ConcurrentDictionary<IntPtr, PERF_INSTANCE_DEFINITION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PERF_INSTANCE_DEFINITION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PERF_INSTANCE_DEFINITION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PERF_INSTANCE_DEFINITION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PERF_INSTANCE_DEFINITION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PERF_INSTANCE_DEFINITION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

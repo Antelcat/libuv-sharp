@@ -1,39 +1,41 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class PERF_DATA_BLOCK : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 88, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal fixed char                             Signature[4];
-        internal       uint                             LittleEndian;
-        internal       uint                             Version;
-        internal       uint                             Revision;
-        internal       uint                             TotalByteLength;
-        internal       uint                             HeaderLength;
-        internal       uint                             NumObjectTypes;
-        internal       int                              DefaultObject;
-        internal       global::SYSTEMTIME.__Internal    SystemTime;
-        internal       global::LARGE_INTEGER.__Internal PerfTime;
-        internal       global::LARGE_INTEGER.__Internal PerfFreq;
-        internal       global::LARGE_INTEGER.__Internal PerfTime100nSec;
-        internal       uint                             SystemNameLength;
-        internal       uint                             SystemNameOffset;
+        internal fixed char                     Signature[4];
+        internal       uint                     LittleEndian;
+        internal       uint                     Version;
+        internal       uint                     Revision;
+        internal       uint                     TotalByteLength;
+        internal       uint                     HeaderLength;
+        internal       uint                     NumObjectTypes;
+        internal       int                      DefaultObject;
+        internal       SYSTEMTIME.__Internal    SystemTime;
+        internal       LARGE_INTEGER.__Internal PerfTime;
+        internal       LARGE_INTEGER.__Internal PerfFreq;
+        internal       LARGE_INTEGER.__Internal PerfTime100nSec;
+        internal       uint                     SystemNameLength;
+        internal       uint                     SystemNameOffset;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_DATA_BLOCK> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_DATA_BLOCK>();
+    internal static readonly ConcurrentDictionary<IntPtr, PERF_DATA_BLOCK> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PERF_DATA_BLOCK>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PERF_DATA_BLOCK managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PERF_DATA_BLOCK managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PERF_DATA_BLOCK managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PERF_DATA_BLOCK managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -106,7 +108,7 @@ public unsafe partial class PERF_DATA_BLOCK : IDisposable
 
     public char[] Signature
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Signature, 4);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Signature, 4);
 
         set
         {

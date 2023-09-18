@@ -1,28 +1,29 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class MOVE_FILE_RECORD_DATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal IntPtr                         FileHandle;
-        internal global::LARGE_INTEGER.__Internal SourceFileRecord;
-        internal global::LARGE_INTEGER.__Internal TargetFileRecord;
+        internal IntPtr                   FileHandle;
+        internal LARGE_INTEGER.__Internal SourceFileRecord;
+        internal LARGE_INTEGER.__Internal TargetFileRecord;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MOVE_FILE_RECORD_DATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MOVE_FILE_RECORD_DATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, MOVE_FILE_RECORD_DATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, MOVE_FILE_RECORD_DATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.MOVE_FILE_RECORD_DATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, MOVE_FILE_RECORD_DATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.MOVE_FILE_RECORD_DATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MOVE_FILE_RECORD_DATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -97,6 +98,6 @@ public unsafe partial class MOVE_FILE_RECORD_DATA : IDisposable
     {
         get => ((__Internal*)__Instance)->FileHandle;
 
-        set => ((__Internal*)__Instance)->FileHandle = (IntPtr) value;
+        set => ((__Internal*)__Instance)->FileHandle = value;
     }
 }

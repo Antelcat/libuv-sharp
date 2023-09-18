@@ -1,28 +1,29 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class SHRINK_VOLUME_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.SHRINK_VOLUME_REQUEST_TYPES ShrinkRequestType;
+        internal SHRINK_VOLUME_REQUEST_TYPES ShrinkRequestType;
         internal ulong                                          Flags;
         internal long                                           NewNumberOfSectors;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SHRINK_VOLUME_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SHRINK_VOLUME_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, SHRINK_VOLUME_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SHRINK_VOLUME_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SHRINK_VOLUME_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SHRINK_VOLUME_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SHRINK_VOLUME_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SHRINK_VOLUME_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -93,7 +94,7 @@ public unsafe partial class SHRINK_VOLUME_INFORMATION : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.SHRINK_VOLUME_REQUEST_TYPES ShrinkRequestType
+    public SHRINK_VOLUME_REQUEST_TYPES ShrinkRequestType
     {
         get => ((__Internal*)__Instance)->ShrinkRequestType;
 

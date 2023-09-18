@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,24 +7,24 @@ namespace LibuvSharp;
 public unsafe partial class UvStatT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 128)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal ulong                                     st_dev;
-        internal ulong                                     st_mode;
-        internal ulong                                     st_nlink;
-        internal ulong                                     st_uid;
-        internal ulong                                     st_gid;
-        internal ulong                                     st_rdev;
-        internal ulong                                     st_ino;
-        internal ulong                                     st_size;
-        internal ulong                                     st_blksize;
-        internal ulong                                     st_blocks;
-        internal ulong                                     st_flags;
-        internal ulong                                     st_gen;
-        internal global::LibuvSharp.UvTimespecT.__Internal st_atim;
-        internal global::LibuvSharp.UvTimespecT.__Internal st_mtim;
-        internal global::LibuvSharp.UvTimespecT.__Internal st_ctim;
-        internal global::LibuvSharp.UvTimespecT.__Internal st_birthtim;
+        internal ulong                  st_dev;
+        internal ulong                  st_mode;
+        internal ulong                  st_nlink;
+        internal ulong                  st_uid;
+        internal ulong                  st_gid;
+        internal ulong                  st_rdev;
+        internal ulong                  st_ino;
+        internal ulong                  st_size;
+        internal ulong                  st_blksize;
+        internal ulong                  st_blocks;
+        internal ulong                  st_flags;
+        internal ulong                  st_gen;
+        internal UvTimespecT.__Internal st_atim;
+        internal UvTimespecT.__Internal st_mtim;
+        internal UvTimespecT.__Internal st_ctim;
+        internal UvTimespecT.__Internal st_birthtim;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_stat_t@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -31,15 +32,15 @@ public unsafe partial class UvStatT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvStatT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvStatT>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvStatT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvStatT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvStatT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvStatT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvStatT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvStatT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -94,17 +95,17 @@ public unsafe partial class UvStatT : IDisposable
 
     public UvStatT()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvStatT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvStatT(global::LibuvSharp.UvStatT __0)
+    public UvStatT(UvStatT __0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvStatT.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvStatT.__Internal*) __Instance) = *((global::LibuvSharp.UvStatT.__Internal*) __0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
     }
 
     public void Dispose()
@@ -209,51 +210,51 @@ public unsafe partial class UvStatT : IDisposable
         set => ((__Internal*)__Instance)->st_gen = value;
     }
 
-    public global::LibuvSharp.UvTimespecT StAtim
+    public UvTimespecT StAtim
     {
-        get => global::LibuvSharp.UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_atim));
+        get => UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_atim));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->st_atim = *(global::LibuvSharp.UvTimespecT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->st_atim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvTimespecT StMtim
+    public UvTimespecT StMtim
     {
-        get => global::LibuvSharp.UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_mtim));
+        get => UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_mtim));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->st_mtim = *(global::LibuvSharp.UvTimespecT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->st_mtim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvTimespecT StCtim
+    public UvTimespecT StCtim
     {
-        get => global::LibuvSharp.UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_ctim));
+        get => UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_ctim));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->st_ctim = *(global::LibuvSharp.UvTimespecT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->st_ctim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvTimespecT StBirthtim
+    public UvTimespecT StBirthtim
     {
-        get => global::LibuvSharp.UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_birthtim));
+        get => UvTimespecT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->st_birthtim));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->st_birthtim = *(global::LibuvSharp.UvTimespecT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->st_birthtim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
 }

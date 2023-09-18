@@ -1,26 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FSCTL_QUERY_FAT_BPB_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 36)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal fixed byte First0x24BytesOfBootSector[36];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FSCTL_QUERY_FAT_BPB_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FSCTL_QUERY_FAT_BPB_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FSCTL_QUERY_FAT_BPB_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FSCTL_QUERY_FAT_BPB_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FSCTL_QUERY_FAT_BPB_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FSCTL_QUERY_FAT_BPB_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FSCTL_QUERY_FAT_BPB_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FSCTL_QUERY_FAT_BPB_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -93,7 +95,7 @@ public unsafe partial class FSCTL_QUERY_FAT_BPB_BUFFER : IDisposable
 
     public byte[] First0x24BytesOfBootSector
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->First0x24BytesOfBootSector, 36);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->First0x24BytesOfBootSector, 36);
 
         set
         {

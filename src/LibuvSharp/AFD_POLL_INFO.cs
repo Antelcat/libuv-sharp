@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,12 +7,12 @@ namespace LibuvSharp;
 public unsafe partial class AFD_POLL_INFO : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LARGE_INTEGER.__Internal Timeout;
-        internal       uint                             NumberOfHandles;
-        internal       uint                             Exclusive;
-        internal fixed byte                             Handles[16];
+        internal       LARGE_INTEGER.__Internal Timeout;
+        internal       uint                     NumberOfHandles;
+        internal       uint                     Exclusive;
+        internal fixed byte                     Handles[16];
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0_AFD_POLL_INFO@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
@@ -19,15 +20,15 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.AFD_POLL_INFO> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.AFD_POLL_INFO>();
+    internal static readonly ConcurrentDictionary<IntPtr, AFD_POLL_INFO> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, AFD_POLL_INFO>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.AFD_POLL_INFO managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, AFD_POLL_INFO managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.AFD_POLL_INFO managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out AFD_POLL_INFO managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -82,17 +83,17 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
 
     public AFD_POLL_INFO()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.AFD_POLL_INFO.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public AFD_POLL_INFO(global::LibuvSharp.AFD_POLL_INFO _0)
+    public AFD_POLL_INFO(AFD_POLL_INFO _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.AFD_POLL_INFO.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.AFD_POLL_INFO.__Internal*) __Instance) = *((global::LibuvSharp.AFD_POLL_INFO.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -127,16 +128,16 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
         set => ((__Internal*)__Instance)->Exclusive = value;
     }
 
-    public global::LibuvSharp.AFD_POLL_HANDLE_INFO[] Handles
+    public AFD_POLL_HANDLE_INFO[] Handles
     {
         get
         {
-            global::LibuvSharp.AFD_POLL_HANDLE_INFO[] __value = null;
+            AFD_POLL_HANDLE_INFO[] __value = null;
             if (((__Internal*)__Instance)->Handles != null)
             {
-                __value = new global::LibuvSharp.AFD_POLL_HANDLE_INFO[1];
+                __value = new AFD_POLL_HANDLE_INFO[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.AFD_POLL_HANDLE_INFO.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.AFD_POLL_HANDLE_INFO.__Internal*)&(((__Internal*)__Instance)->Handles[i * sizeof(global::LibuvSharp.AFD_POLL_HANDLE_INFO.__Internal)])), true, true);
+                    __value[i] = AFD_POLL_HANDLE_INFO.__GetOrCreateInstance((IntPtr)((AFD_POLL_HANDLE_INFO.__Internal*)&(((__Internal*)__Instance)->Handles[i * sizeof(AFD_POLL_HANDLE_INFO.__Internal)])), true, true);
             }
             return __value;
         }
@@ -148,7 +149,7 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.AFD_POLL_HANDLE_INFO.__Internal*) &((__Internal*)__Instance)->Handles[i * sizeof(global::LibuvSharp.AFD_POLL_HANDLE_INFO.__Internal)] = *(global::LibuvSharp.AFD_POLL_HANDLE_INFO.__Internal*)value[i].__Instance;
+                    *(AFD_POLL_HANDLE_INFO.__Internal*) &((__Internal*)__Instance)->Handles[i * sizeof(AFD_POLL_HANDLE_INFO.__Internal)] = *(AFD_POLL_HANDLE_INFO.__Internal*)value[i].__Instance;
             }
         }
     }

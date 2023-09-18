@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class GET_CHANGER_PARAMETERS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 60)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint   Size;
         internal       ushort NumberTransportElements;
@@ -39,15 +41,15 @@ public unsafe partial class GET_CHANGER_PARAMETERS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GET_CHANGER_PARAMETERS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.GET_CHANGER_PARAMETERS>();
+    internal static readonly ConcurrentDictionary<IntPtr, GET_CHANGER_PARAMETERS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, GET_CHANGER_PARAMETERS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.GET_CHANGER_PARAMETERS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, GET_CHANGER_PARAMETERS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.GET_CHANGER_PARAMETERS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out GET_CHANGER_PARAMETERS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -302,7 +304,7 @@ public unsafe partial class GET_CHANGER_PARAMETERS : IDisposable
 
     public byte[] Reserved1
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Reserved1, 2);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Reserved1, 2);
 
         set
         {
@@ -316,7 +318,7 @@ public unsafe partial class GET_CHANGER_PARAMETERS : IDisposable
 
     public uint[] Reserved2
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->Reserved2, 2);
+        get => MarshalUtil.GetArray<uint>(((__Internal*)__Instance)->Reserved2, 2);
 
         set
         {

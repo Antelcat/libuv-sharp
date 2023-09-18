@@ -1,28 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class SENDCMDOUTPARAMS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 17, Pack = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       uint                                       cBufferSize;
-        internal       global::LibuvSharp.DRIVERSTATUS.__Internal DriverStatus;
-        internal fixed byte                                       bBuffer[1];
+        internal       uint                    cBufferSize;
+        internal       DRIVERSTATUS.__Internal DriverStatus;
+        internal fixed byte                    bBuffer[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SENDCMDOUTPARAMS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.SENDCMDOUTPARAMS>();
+    internal static readonly ConcurrentDictionary<IntPtr, SENDCMDOUTPARAMS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, SENDCMDOUTPARAMS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.SENDCMDOUTPARAMS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, SENDCMDOUTPARAMS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.SENDCMDOUTPARAMS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out SENDCMDOUTPARAMS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -100,21 +102,21 @@ public unsafe partial class SENDCMDOUTPARAMS : IDisposable
         set => ((__Internal*)__Instance)->cBufferSize = value;
     }
 
-    public global::LibuvSharp.DRIVERSTATUS DriverStatus
+    public DRIVERSTATUS DriverStatus
     {
-        get => global::LibuvSharp.DRIVERSTATUS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->DriverStatus));
+        get => DRIVERSTATUS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->DriverStatus));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->DriverStatus = *(global::LibuvSharp.DRIVERSTATUS.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->DriverStatus = *(DRIVERSTATUS.__Internal*) value.__Instance;
         }
     }
 
     public byte[] BBuffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bBuffer, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->bBuffer, 1);
 
         set
         {

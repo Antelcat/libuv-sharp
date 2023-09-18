@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_ALLOCATED_RANGE_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal FileOffset;
-        internal global::LARGE_INTEGER.__Internal Length;
+        internal LARGE_INTEGER.__Internal FileOffset;
+        internal LARGE_INTEGER.__Internal Length;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_ALLOCATED_RANGE_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_ALLOCATED_RANGE_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_ALLOCATED_RANGE_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_ALLOCATED_RANGE_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_ALLOCATED_RANGE_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_ALLOCATED_RANGE_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_ALLOCATED_RANGE_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_ALLOCATED_RANGE_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

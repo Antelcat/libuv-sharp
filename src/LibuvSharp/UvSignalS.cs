@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,30 +7,30 @@ namespace LibuvSharp;
 public unsafe partial class UvSignalS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 264)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal IntPtr                                          data;
-        internal IntPtr                                          loop;
-        internal global::LibuvSharp.UvHandleType                   type;
-        internal IntPtr                                          close_cb;
-        internal global::LibuvSharp.UvQueue.__Internal             handle_queue;
-        internal global::LibuvSharp.UvSignalS.U.__Internal         u;
-        internal IntPtr                                          endgame_next;
-        internal uint                                              flags;
-        internal IntPtr                                          signal_cb;
-        internal int                                               signum;
-        internal global::LibuvSharp.UvSignalS.TreeEntry.__Internal tree_entry;
-        internal global::LibuvSharp.UvReqS.__Internal              signal_req;
-        internal uint                                              pending_signum;
+        internal IntPtr               data;
+        internal IntPtr               loop;
+        internal UvHandleType         type;
+        internal IntPtr               close_cb;
+        internal UvQueue.__Internal   handle_queue;
+        internal U.__Internal         u;
+        internal IntPtr               endgame_next;
+        internal uint                 flags;
+        internal IntPtr               signal_cb;
+        internal int                  signum;
+        internal TreeEntry.__Internal tree_entry;
+        internal UvReqS.__Internal    signal_req;
+        internal uint                 pending_signum;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_signal_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct U
+    public partial struct U
     {
         [StructLayout(LayoutKind.Explicit, Size = 32)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
             internal int fd;
@@ -41,8 +42,8 @@ public unsafe partial class UvSignalS : IDisposable
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        private  U.__Internal __instance;
-        internal U.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static U __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -62,10 +63,10 @@ public unsafe partial class UvSignalS : IDisposable
 
         private U(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvSignalS.U.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public U(global::LibuvSharp.UvSignalS.U __0)
+        public U(U __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -109,10 +110,10 @@ public unsafe partial class UvSignalS : IDisposable
         }
     }
 
-    public unsafe partial class TreeEntry : IDisposable
+    public partial class TreeEntry : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 32)]
-        public partial struct __Internal
+        public struct __Internal
         {
             internal IntPtr rbe_left;
             internal IntPtr rbe_right;
@@ -125,15 +126,15 @@ public unsafe partial class UvSignalS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvSignalS.TreeEntry> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvSignalS.TreeEntry>();
+        internal static readonly ConcurrentDictionary<IntPtr, TreeEntry> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, TreeEntry>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvSignalS.TreeEntry managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, TreeEntry managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvSignalS.TreeEntry managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TreeEntry managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -188,17 +189,17 @@ public unsafe partial class UvSignalS : IDisposable
 
         public TreeEntry()
         {
-            __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvSignalS.TreeEntry.__Internal));
+            __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
         }
 
-        public TreeEntry(global::LibuvSharp.UvSignalS.TreeEntry __0)
+        public TreeEntry(TreeEntry __0)
         {
-            __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvSignalS.TreeEntry.__Internal));
+            __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
-            *((global::LibuvSharp.UvSignalS.TreeEntry.__Internal*) __Instance) = *((global::LibuvSharp.UvSignalS.TreeEntry.__Internal*) __0.__Instance);
+            *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
         }
 
         public void Dispose()
@@ -219,33 +220,33 @@ public unsafe partial class UvSignalS : IDisposable
             __Instance = IntPtr.Zero;
         }
 
-        public global::LibuvSharp.UvSignalS RbeLeft
+        public UvSignalS RbeLeft
         {
             get
             {
-                var __result0 = global::LibuvSharp.UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_left, false);
+                var __result0 = UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_left);
                 return __result0;
             }
 
             set => ((__Internal*)__Instance)->rbe_left = value is null ? IntPtr.Zero : value.__Instance;
         }
 
-        public global::LibuvSharp.UvSignalS RbeRight
+        public UvSignalS RbeRight
         {
             get
             {
-                var __result0 = global::LibuvSharp.UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_right, false);
+                var __result0 = UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_right);
                 return __result0;
             }
 
             set => ((__Internal*)__Instance)->rbe_right = value is null ? IntPtr.Zero : value.__Instance;
         }
 
-        public global::LibuvSharp.UvSignalS RbeParent
+        public UvSignalS RbeParent
         {
             get
             {
-                var __result0 = global::LibuvSharp.UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_parent, false);
+                var __result0 = UvSignalS.__GetOrCreateInstance(((__Internal*)__Instance)->rbe_parent);
                 return __result0;
             }
 
@@ -262,15 +263,15 @@ public unsafe partial class UvSignalS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvSignalS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvSignalS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvSignalS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvSignalS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvSignalS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvSignalS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvSignalS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvSignalS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -325,17 +326,17 @@ public unsafe partial class UvSignalS : IDisposable
 
     public UvSignalS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvSignalS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvSignalS(global::LibuvSharp.UvSignalS _0)
+    public UvSignalS(UvSignalS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvSignalS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvSignalS.__Internal*) __Instance) = *((global::LibuvSharp.UvSignalS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -360,62 +361,62 @@ public unsafe partial class UvSignalS : IDisposable
     {
         get => ((__Internal*)__Instance)->data;
 
-        set => ((__Internal*)__Instance)->data = (IntPtr) value;
+        set => ((__Internal*)__Instance)->data = value;
     }
 
-    public global::LibuvSharp.UvLoopS Loop
+    public UvLoopS Loop
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop, false);
+            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->loop = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvHandleType Type
+    public UvHandleType Type
     {
         get => ((__Internal*)__Instance)->type;
 
         set => ((__Internal*)__Instance)->type = value;
     }
 
-    public global::LibuvSharp.UvCloseCb CloseCb
+    public UvCloseCb CloseCb
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->close_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvCloseCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvCloseCb));
+            return __ptr0 == IntPtr.Zero? null : (UvCloseCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvCloseCb));
         }
 
-        set => ((__Internal*)__Instance)->close_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->close_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public global::LibuvSharp.UvQueue HandleQueue
+    public UvQueue HandleQueue
     {
-        get => global::LibuvSharp.UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
+        get => UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->handle_queue = *(global::LibuvSharp.UvQueue.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvSignalS.U u
+    public U u
     {
-        get => global::LibuvSharp.UvSignalS.U.__CreateInstance(((__Internal*)__Instance)->u);
+        get => U.__CreateInstance(((__Internal*)__Instance)->u);
 
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public global::LibuvSharp.UvHandleS EndgameNext
+    public UvHandleS EndgameNext
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next, false);
+            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
             return __result0;
         }
 
@@ -429,15 +430,15 @@ public unsafe partial class UvSignalS : IDisposable
         set => ((__Internal*)__Instance)->flags = value;
     }
 
-    public global::LibuvSharp.UvSignalCb SignalCb
+    public UvSignalCb SignalCb
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->signal_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvSignalCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvSignalCb));
+            return __ptr0 == IntPtr.Zero? null : (UvSignalCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvSignalCb));
         }
 
-        set => ((__Internal*)__Instance)->signal_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->signal_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
     public int Signum
@@ -447,27 +448,27 @@ public unsafe partial class UvSignalS : IDisposable
         set => ((__Internal*)__Instance)->signum = value;
     }
 
-    public global::LibuvSharp.UvSignalS.TreeEntry tree_entry
+    public TreeEntry tree_entry
     {
-        get => global::LibuvSharp.UvSignalS.TreeEntry.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->tree_entry));
+        get => TreeEntry.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->tree_entry));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->tree_entry = *(global::LibuvSharp.UvSignalS.TreeEntry.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->tree_entry = *(TreeEntry.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvReqS SignalReq
+    public UvReqS SignalReq
     {
-        get => global::LibuvSharp.UvReqS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->signal_req));
+        get => UvReqS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->signal_req));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->signal_req = *(global::LibuvSharp.UvReqS.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->signal_req = *(UvReqS.__Internal*) value.__Instance;
         }
     }
 

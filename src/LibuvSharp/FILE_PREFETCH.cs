@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_PREFETCH : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint  Type;
         internal       uint  Count;
@@ -14,15 +16,15 @@ public unsafe partial class FILE_PREFETCH : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_PREFETCH> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_PREFETCH>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_PREFETCH> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_PREFETCH>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_PREFETCH managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_PREFETCH managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_PREFETCH managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_PREFETCH managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -109,7 +111,7 @@ public unsafe partial class FILE_PREFETCH : IDisposable
 
     public ulong[] Prefetch
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Prefetch, 1);
+        get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Prefetch, 1);
 
         set
         {

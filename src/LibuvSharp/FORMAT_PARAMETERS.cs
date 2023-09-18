@@ -1,13 +1,14 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FORMAT_PARAMETERS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 20)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LibuvSharp.MEDIA_TYPE MediaType;
+        internal MEDIA_TYPE MediaType;
         internal uint                          StartCylinderNumber;
         internal uint                          EndCylinderNumber;
         internal uint                          StartHeadNumber;
@@ -16,15 +17,15 @@ public unsafe partial class FORMAT_PARAMETERS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FORMAT_PARAMETERS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FORMAT_PARAMETERS>();
+    internal static readonly ConcurrentDictionary<IntPtr, FORMAT_PARAMETERS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FORMAT_PARAMETERS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FORMAT_PARAMETERS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FORMAT_PARAMETERS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FORMAT_PARAMETERS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FORMAT_PARAMETERS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -95,7 +96,7 @@ public unsafe partial class FORMAT_PARAMETERS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.MEDIA_TYPE MediaType
+    public MEDIA_TYPE MediaType
     {
         get => ((__Internal*)__Instance)->MediaType;
 

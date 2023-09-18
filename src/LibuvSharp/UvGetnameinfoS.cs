@@ -1,53 +1,55 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class UvGetnameinfoS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1368)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       IntPtr                                       data;
-        internal       global::LibuvSharp.UvReqType                   type;
-        internal       void*                                          reserved;
-        internal       global::LibuvSharp.UvGetnameinfoS.U.__Internal u;
-        internal       IntPtr                                       next_req;
-        internal       IntPtr                                       loop;
-        internal       global::LibuvSharp.UvWork.__Internal           work_req;
-        internal       IntPtr                                       getnameinfo_cb;
-        internal       global::SockaddrStorage.__Internal             storage;
-        internal       int                                            flags;
-        internal fixed sbyte                                          host[1025];
-        internal fixed sbyte                                          service[32];
-        internal       int                                            retcode;
+        internal       IntPtr                     data;
+        internal       UvReqType                  type;
+        internal       void*                      reserved;
+        internal       U.__Internal               u;
+        internal       IntPtr                     next_req;
+        internal       IntPtr                     loop;
+        internal       UvWork.__Internal          work_req;
+        internal       IntPtr                     getnameinfo_cb;
+        internal       SockaddrStorage.__Internal storage;
+        internal       int                        flags;
+        internal fixed sbyte                      host[1025];
+        internal fixed sbyte                      service[32];
+        internal       int                        retcode;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_getnameinfo_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct U
+    public partial struct U
     {
         [StructLayout(LayoutKind.Explicit, Size = 40)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
-            internal global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal io;
+            internal Connect.__Internal io;
 
             [FieldOffset(0)]
-            internal global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal connect;
+            internal Connect.__Internal connect;
 
             [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-u>@uv_getnameinfo_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        public unsafe partial class Connect : IDisposable
+        public partial class Connect : IDisposable
         {
             [StructLayout(LayoutKind.Sequential, Size = 40)]
-            public partial struct __Internal
+            public struct __Internal
             {
-                internal global::OVERLAPPED.__Internal overlapped;
-                internal ulong                         queued_bytes;
+                internal OVERLAPPED.__Internal overlapped;
+                internal ulong                 queued_bytes;
 
                 [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-io>@<unnamed-type-u>@uv_getnameinfo_s@@QEAA@AEBU012@@Z", CallingConvention = CallingConvention.Cdecl)]
                 internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
@@ -55,15 +57,15 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
             public IntPtr __Instance { get; protected set; }
 
-            internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvGetnameinfoS.U.Connect> NativeToManagedMap =
-                new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvGetnameinfoS.U.Connect>();
+            internal static readonly ConcurrentDictionary<IntPtr, Connect> NativeToManagedMap =
+                new ConcurrentDictionary<IntPtr, Connect>();
 
-            internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvGetnameinfoS.U.Connect managed)
+            internal static void __RecordNativeToManagedMapping(IntPtr native, Connect managed)
             {
                 NativeToManagedMap[native] = managed;
             }
 
-            internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvGetnameinfoS.U.Connect managed)
+            internal static bool __TryGetNativeToManagedMapping(IntPtr native, out Connect managed)
             {
     
                 return NativeToManagedMap.TryGetValue(native, out managed);
@@ -118,17 +120,17 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
             public Connect()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
             }
 
-            public Connect(global::LibuvSharp.UvGetnameinfoS.U.Connect __0)
+            public Connect(Connect __0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
-                *((global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal*) __Instance) = *((global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal*) __0.__Instance);
+                *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
             }
 
             public void Dispose()
@@ -157,8 +159,8 @@ public unsafe partial class UvGetnameinfoS : IDisposable
             }
         }
 
-        private  U.__Internal __instance;
-        internal U.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static U __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -178,10 +180,10 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
         private U(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvGetnameinfoS.U.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public U(global::LibuvSharp.UvGetnameinfoS.U __0)
+        public U(U __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -192,42 +194,42 @@ public unsafe partial class UvGetnameinfoS : IDisposable
             }
         }
 
-        public global::LibuvSharp.UvGetnameinfoS.U.Connect Io
+        public Connect Io
         {
-            get => global::LibuvSharp.UvGetnameinfoS.U.Connect.__CreateInstance(__instance.io);
+            get => Connect.__CreateInstance(__instance.io);
 
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                __instance.io = *(global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal*) value.__Instance;
+                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                __instance.io = *(Connect.__Internal*) value.__Instance;
             }
         }
 
-        public global::LibuvSharp.UvGetnameinfoS.U.Connect connect
+        public Connect connect
         {
-            get => global::LibuvSharp.UvGetnameinfoS.U.Connect.__CreateInstance(__instance.connect);
+            get => Connect.__CreateInstance(__instance.connect);
 
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                __instance.connect = *(global::LibuvSharp.UvGetnameinfoS.U.Connect.__Internal*) value.__Instance;
+                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                __instance.connect = *(Connect.__Internal*) value.__Instance;
             }
         }
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvGetnameinfoS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvGetnameinfoS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvGetnameinfoS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvGetnameinfoS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvGetnameinfoS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvGetnameinfoS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvGetnameinfoS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvGetnameinfoS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -282,17 +284,17 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
     public UvGetnameinfoS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvGetnameinfoS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvGetnameinfoS(global::LibuvSharp.UvGetnameinfoS _0)
+    public UvGetnameinfoS(UvGetnameinfoS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvGetnameinfoS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvGetnameinfoS.__Internal*) __Instance) = *((global::LibuvSharp.UvGetnameinfoS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -317,10 +319,10 @@ public unsafe partial class UvGetnameinfoS : IDisposable
     {
         get => ((__Internal*)__Instance)->data;
 
-        set => ((__Internal*)__Instance)->data = (IntPtr) value;
+        set => ((__Internal*)__Instance)->data = value;
     }
 
-    public global::LibuvSharp.UvReqType Type
+    public UvReqType Type
     {
         get => ((__Internal*)__Instance)->type;
 
@@ -352,56 +354,56 @@ public unsafe partial class UvGetnameinfoS : IDisposable
         }
     }
 
-    public global::LibuvSharp.UvGetnameinfoS.U u
+    public U u
     {
-        get => global::LibuvSharp.UvGetnameinfoS.U.__CreateInstance(((__Internal*)__Instance)->u);
+        get => U.__CreateInstance(((__Internal*)__Instance)->u);
 
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public global::LibuvSharp.UvReqS NextReq
+    public UvReqS NextReq
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->next_req, false);
+            var __result0 = UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->next_req);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->next_req = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvLoopS Loop
+    public UvLoopS Loop
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop, false);
+            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->loop = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvWork WorkReq
+    public UvWork WorkReq
     {
-        get => global::LibuvSharp.UvWork.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->work_req));
+        get => UvWork.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->work_req));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->work_req = *(global::LibuvSharp.UvWork.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->work_req = *(UvWork.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvGetnameinfoCb GetnameinfoCb
+    public UvGetnameinfoCb GetnameinfoCb
     {
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->getnameinfo_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvGetnameinfoCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvGetnameinfoCb));
+            return __ptr0 == IntPtr.Zero? null : (UvGetnameinfoCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvGetnameinfoCb));
         }
 
-        set => ((__Internal*)__Instance)->getnameinfo_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->getnameinfo_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
     public int Flags
@@ -413,7 +415,7 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
     public sbyte[] Host
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->host, 1025);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->host, 1025);
 
         set
         {
@@ -427,7 +429,7 @@ public unsafe partial class UvGetnameinfoS : IDisposable
 
     public sbyte[] Service
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->service, 32);
+        get => MarshalUtil.GetArray<sbyte>(((__Internal*)__Instance)->service, 32);
 
         set
         {

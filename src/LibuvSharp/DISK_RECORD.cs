@@ -1,32 +1,33 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_RECORD : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal ByteOffset;
-        internal global::LARGE_INTEGER.__Internal StartTime;
-        internal global::LARGE_INTEGER.__Internal EndTime;
-        internal IntPtr                         VirtualAddress;
-        internal uint                             NumberOfBytes;
-        internal byte                             DeviceNumber;
-        internal byte                             ReadRequest;
+        internal LARGE_INTEGER.__Internal ByteOffset;
+        internal LARGE_INTEGER.__Internal StartTime;
+        internal LARGE_INTEGER.__Internal EndTime;
+        internal IntPtr                   VirtualAddress;
+        internal uint                     NumberOfBytes;
+        internal byte                     DeviceNumber;
+        internal byte                     ReadRequest;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_RECORD> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_RECORD>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_RECORD> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_RECORD>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_RECORD managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_RECORD managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_RECORD managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_RECORD managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -101,7 +102,7 @@ public unsafe partial class DISK_RECORD : IDisposable
     {
         get => ((__Internal*)__Instance)->VirtualAddress;
 
-        set => ((__Internal*)__Instance)->VirtualAddress = (IntPtr) value;
+        set => ((__Internal*)__Instance)->VirtualAddress = value;
     }
 
     public uint NumberOfBytes

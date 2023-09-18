@@ -1,11 +1,14 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using System.Text;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class TagSTGOPTIONS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ushort   usVersion;
         internal ushort   reserved;
@@ -15,21 +18,21 @@ public unsafe partial class TagSTGOPTIONS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagSTGOPTIONS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagSTGOPTIONS>();
+    internal static readonly ConcurrentDictionary<IntPtr, TagSTGOPTIONS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TagSTGOPTIONS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TagSTGOPTIONS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TagSTGOPTIONS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TagSTGOPTIONS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TagSTGOPTIONS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
     }
 
-    private   bool __pwcsTemplateFile_OwnsNativeMemory = false;
+    private   bool __pwcsTemplateFile_OwnsNativeMemory;
     protected bool __ownsNativeInstance;
 
     internal static TagSTGOPTIONS __CreateInstance(IntPtr native, bool skipVTables = false)
@@ -120,7 +123,7 @@ public unsafe partial class TagSTGOPTIONS : IDisposable
 
     public string PwcsTemplateFile
     {
-        get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.Unicode, ((__Internal*)__Instance)->pwcsTemplateFile);
+        get => MarshalUtil.GetString(Encoding.Unicode, ((__Internal*)__Instance)->pwcsTemplateFile);
 
         set
         {
@@ -129,11 +132,11 @@ public unsafe partial class TagSTGOPTIONS : IDisposable
             __pwcsTemplateFile_OwnsNativeMemory = true;
             if (value == null)
             {
-                ((__Internal*)__Instance)->pwcsTemplateFile = global::System.IntPtr.Zero;
+                ((__Internal*)__Instance)->pwcsTemplateFile = IntPtr.Zero;
                 return;
             }
             var __bytePtr0 = Marshal.StringToHGlobalUni(value);
-            ((__Internal*)__Instance)->pwcsTemplateFile = (IntPtr) __bytePtr0;
+            ((__Internal*)__Instance)->pwcsTemplateFile = __bytePtr0;
         }
     }
 }

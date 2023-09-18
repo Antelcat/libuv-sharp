@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_SAVEPOINT_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr KtmTransaction;
         internal uint     ActionCode;
@@ -14,15 +15,15 @@ public unsafe partial class TXFS_SAVEPOINT_INFORMATION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_SAVEPOINT_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_SAVEPOINT_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_SAVEPOINT_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_SAVEPOINT_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_SAVEPOINT_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_SAVEPOINT_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_SAVEPOINT_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_SAVEPOINT_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -97,7 +98,7 @@ public unsafe partial class TXFS_SAVEPOINT_INFORMATION : IDisposable
     {
         get => ((__Internal*)__Instance)->KtmTransaction;
 
-        set => ((__Internal*)__Instance)->KtmTransaction = (IntPtr) value;
+        set => ((__Internal*)__Instance)->KtmTransaction = value;
     }
 
     public uint ActionCode

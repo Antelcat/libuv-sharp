@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 48)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       ulong Offset;
         internal       uint  NameFlags;
@@ -18,15 +20,15 @@ public unsafe partial class TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY : IDisposab
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -141,7 +143,7 @@ public unsafe partial class TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY : IDisposab
 
     public char[] FileName
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FileName, 1);
 
         set
         {

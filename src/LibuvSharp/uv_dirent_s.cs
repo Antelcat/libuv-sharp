@@ -1,15 +1,18 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class uv_dirent_s : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr                         name;
-        internal global::LibuvSharp.UvDirentTypeT type;
+        internal UvDirentTypeT type;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_dirent_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
@@ -17,21 +20,21 @@ public unsafe partial class uv_dirent_s : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.uv_dirent_s> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.uv_dirent_s>();
+    internal static readonly ConcurrentDictionary<IntPtr, uv_dirent_s> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, uv_dirent_s>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.uv_dirent_s managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, uv_dirent_s managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.uv_dirent_s managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out uv_dirent_s managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
     }
 
-    private   bool __name_OwnsNativeMemory = false;
+    private   bool __name_OwnsNativeMemory;
     protected bool __ownsNativeInstance;
 
     internal static uv_dirent_s __CreateInstance(IntPtr native, bool skipVTables = false)
@@ -81,19 +84,19 @@ public unsafe partial class uv_dirent_s : IDisposable
 
     public uv_dirent_s()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.uv_dirent_s.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public uv_dirent_s(global::LibuvSharp.uv_dirent_s _0)
+    public uv_dirent_s(uv_dirent_s _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.uv_dirent_s.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.uv_dirent_s.__Internal*) __Instance) = *((global::LibuvSharp.uv_dirent_s.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
         if (_0.__name_OwnsNativeMemory)
-            this.Name = _0.Name;
+            Name = _0.Name;
     }
 
     public void Dispose()
@@ -118,7 +121,7 @@ public unsafe partial class uv_dirent_s : IDisposable
 
     public string Name
     {
-        get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->name);
+        get => MarshalUtil.GetString(Encoding.UTF8, ((__Internal*)__Instance)->name);
 
         set
         {
@@ -127,18 +130,18 @@ public unsafe partial class uv_dirent_s : IDisposable
             __name_OwnsNativeMemory = true;
             if (value == null)
             {
-                ((__Internal*)__Instance)->name = global::System.IntPtr.Zero;
+                ((__Internal*)__Instance)->name = IntPtr.Zero;
                 return;
             }
-            var __bytes0   = global::System.Text.Encoding.UTF8.GetBytes(value);
+            var __bytes0   = Encoding.UTF8.GetBytes(value);
             var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
             Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
             Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
-            ((__Internal*)__Instance)->name = (IntPtr) __bytePtr0;
+            ((__Internal*)__Instance)->name = __bytePtr0;
         }
     }
 
-    public global::LibuvSharp.UvDirentTypeT Type
+    public UvDirentTypeT Type
     {
         get => ((__Internal*)__Instance)->type;
 

@@ -1,33 +1,33 @@
 ﻿using System.Runtime.InteropServices;
 
-public unsafe partial class INPUT_RECORD
+public partial class INPUT_RECORD
 {
     [StructLayout(LayoutKind.Sequential, Size = 20)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal ushort                                EventType;
-        internal global::INPUT_RECORD.Event.__Internal Event;
+        internal ushort           EventType;
+        internal Event.__Internal Event;
     }
 
-    public unsafe partial struct Event
+    public partial struct Event
     {
         [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
-            internal global::KEY_EVENT_RECORD.__Internal KeyEvent;
+            internal KEY_EVENT_RECORD.__Internal KeyEvent;
 
             [FieldOffset(0)]
-            internal global::MOUSE_EVENT_RECORD.__Internal MouseEvent;
+            internal MOUSE_EVENT_RECORD.__Internal MouseEvent;
 
             [FieldOffset(0)]
-            internal global::WINDOW_BUFFER_SIZE_RECORD.__Internal WindowBufferSizeEvent;
+            internal WINDOW_BUFFER_SIZE_RECORD.__Internal WindowBufferSizeEvent;
 
             [FieldOffset(0)]
-            internal global::MENU_EVENT_RECORD.__Internal MenuEvent;
+            internal MENU_EVENT_RECORD.__Internal MenuEvent;
 
             [FieldOffset(0)]
-            internal global::FOCUS_EVENT_RECORD.__Internal FocusEvent;
+            internal FOCUS_EVENT_RECORD.__Internal FocusEvent;
         }
     }
 }

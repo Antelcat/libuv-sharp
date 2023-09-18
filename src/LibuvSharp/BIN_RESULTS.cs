@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class BIN_RESULTS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint NumberOfBins;
         internal fixed byte BinCountsPadding[4];
@@ -14,15 +15,15 @@ public unsafe partial class BIN_RESULTS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BIN_RESULTS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.BIN_RESULTS>();
+    internal static readonly ConcurrentDictionary<IntPtr, BIN_RESULTS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, BIN_RESULTS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.BIN_RESULTS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, BIN_RESULTS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.BIN_RESULTS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out BIN_RESULTS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -100,16 +101,16 @@ public unsafe partial class BIN_RESULTS : IDisposable
         set => ((__Internal*)__Instance)->NumberOfBins = value;
     }
 
-    public global::LibuvSharp.BIN_COUNT[] BinCounts
+    public BIN_COUNT[] BinCounts
     {
         get
         {
-            global::LibuvSharp.BIN_COUNT[] __value = null;
+            BIN_COUNT[] __value = null;
             if (((__Internal*)__Instance)->BinCounts != null)
             {
-                __value = new global::LibuvSharp.BIN_COUNT[1];
+                __value = new BIN_COUNT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.BIN_COUNT.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.BIN_COUNT.__Internal*)&(((__Internal*)__Instance)->BinCounts[i * sizeof(global::LibuvSharp.BIN_COUNT.__Internal)])), true, true);
+                    __value[i] = BIN_COUNT.__GetOrCreateInstance((IntPtr)((BIN_COUNT.__Internal*)&(((__Internal*)__Instance)->BinCounts[i * sizeof(BIN_COUNT.__Internal)])), true, true);
             }
             return __value;
         }
@@ -121,7 +122,7 @@ public unsafe partial class BIN_RESULTS : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.BIN_COUNT.__Internal*) &((__Internal*)__Instance)->BinCounts[i * sizeof(global::LibuvSharp.BIN_COUNT.__Internal)] = *(global::LibuvSharp.BIN_COUNT.__Internal*)value[i].__Instance;
+                    *(BIN_COUNT.__Internal*) &((__Internal*)__Instance)->BinCounts[i * sizeof(BIN_COUNT.__Internal)] = *(BIN_COUNT.__Internal*)value[i].__Instance;
             }
         }
     }

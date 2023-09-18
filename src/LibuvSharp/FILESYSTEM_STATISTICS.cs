@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILESYSTEM_STATISTICS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 56)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ushort FileSystemType;
         internal ushort Version;
@@ -26,15 +27,15 @@ public unsafe partial class FILESYSTEM_STATISTICS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILESYSTEM_STATISTICS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILESYSTEM_STATISTICS>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILESYSTEM_STATISTICS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILESYSTEM_STATISTICS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILESYSTEM_STATISTICS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILESYSTEM_STATISTICS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILESYSTEM_STATISTICS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILESYSTEM_STATISTICS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

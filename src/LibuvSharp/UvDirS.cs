@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,14 +7,14 @@ namespace LibuvSharp;
 public unsafe partial class UvDirS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 656)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal IntPtr                           dirents;
-        internal ulong                              nentries;
-        internal void*                              reserved;
-        internal IntPtr                           dir_handle;
-        internal global::WIN32FIND_DATAW.__Internal find_data;
-        internal int                                need_find_call;
+        internal IntPtr                     dirents;
+        internal ulong                      nentries;
+        internal void*                      reserved;
+        internal IntPtr                     dir_handle;
+        internal WIN32FIND_DATAW.__Internal find_data;
+        internal int                        need_find_call;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_dir_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
@@ -21,15 +22,15 @@ public unsafe partial class UvDirS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvDirS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvDirS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvDirS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvDirS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvDirS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvDirS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvDirS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvDirS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -84,17 +85,17 @@ public unsafe partial class UvDirS : IDisposable
 
     public UvDirS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvDirS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvDirS(global::LibuvSharp.UvDirS _0)
+    public UvDirS(UvDirS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvDirS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvDirS.__Internal*) __Instance) = *((global::LibuvSharp.UvDirS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -115,11 +116,11 @@ public unsafe partial class UvDirS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.uv_dirent_s Dirents
+    public uv_dirent_s Dirents
     {
         get
         {
-            var __result0 = global::LibuvSharp.uv_dirent_s.__GetOrCreateInstance(((__Internal*)__Instance)->dirents, false);
+            var __result0 = uv_dirent_s.__GetOrCreateInstance(((__Internal*)__Instance)->dirents);
             return __result0;
         }
 
@@ -162,7 +163,7 @@ public unsafe partial class UvDirS : IDisposable
     {
         get => ((__Internal*)__Instance)->dir_handle;
 
-        set => ((__Internal*)__Instance)->dir_handle = (IntPtr) value;
+        set => ((__Internal*)__Instance)->dir_handle = value;
     }
 
     public int NeedFindCall

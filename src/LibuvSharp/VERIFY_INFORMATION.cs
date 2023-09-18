@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class VERIFY_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal StartingOffset;
-        internal uint                             Length;
+        internal LARGE_INTEGER.__Internal StartingOffset;
+        internal uint                     Length;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VERIFY_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VERIFY_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, VERIFY_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, VERIFY_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.VERIFY_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, VERIFY_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.VERIFY_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out VERIFY_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

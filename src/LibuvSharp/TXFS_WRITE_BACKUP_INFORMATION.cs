@@ -1,26 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_WRITE_BACKUP_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal fixed byte Buffer[1];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_WRITE_BACKUP_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_WRITE_BACKUP_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_WRITE_BACKUP_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_WRITE_BACKUP_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_WRITE_BACKUP_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_WRITE_BACKUP_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_WRITE_BACKUP_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_WRITE_BACKUP_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -93,7 +95,7 @@ public unsafe partial class TXFS_WRITE_BACKUP_INFORMATION : IDisposable
 
     public byte[] Buffer
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Buffer, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Buffer, 1);
 
         set
         {

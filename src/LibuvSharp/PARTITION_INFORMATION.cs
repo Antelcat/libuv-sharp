@@ -1,33 +1,34 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PARTITION_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal StartingOffset;
-        internal global::LARGE_INTEGER.__Internal PartitionLength;
-        internal uint                             HiddenSectors;
-        internal uint                             PartitionNumber;
-        internal byte                             PartitionType;
-        internal byte                             BootIndicator;
-        internal byte                             RecognizedPartition;
-        internal byte                             RewritePartition;
+        internal LARGE_INTEGER.__Internal StartingOffset;
+        internal LARGE_INTEGER.__Internal PartitionLength;
+        internal uint                     HiddenSectors;
+        internal uint                     PartitionNumber;
+        internal byte                     PartitionType;
+        internal byte                     BootIndicator;
+        internal byte                     RecognizedPartition;
+        internal byte                     RewritePartition;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, PARTITION_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PARTITION_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PARTITION_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PARTITION_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PARTITION_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PARTITION_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

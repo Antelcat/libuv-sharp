@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class UDATE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 18, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::SYSTEMTIME.__Internal st;
-        internal ushort                        wDayOfYear;
+        internal SYSTEMTIME.__Internal st;
+        internal ushort                wDayOfYear;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UDATE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UDATE>();
+    internal static readonly ConcurrentDictionary<IntPtr, UDATE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UDATE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UDATE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UDATE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UDATE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UDATE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

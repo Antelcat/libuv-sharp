@@ -1,33 +1,34 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class CREATE_DISK : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
-        internal global::LibuvSharp.PARTITION_STYLE PartitionStyle;
+        internal PARTITION_STYLE PartitionStyle;
 
         [FieldOffset(4)]
-        internal global::LibuvSharp.CREATE_DISK_MBR.__Internal Mbr;
+        internal CREATE_DISK_MBR.__Internal Mbr;
 
         [FieldOffset(4)]
-        internal global::LibuvSharp.CREATE_DISK_GPT.__Internal Gpt;
+        internal CREATE_DISK_GPT.__Internal Gpt;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CREATE_DISK> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CREATE_DISK>();
+    internal static readonly ConcurrentDictionary<IntPtr, CREATE_DISK> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CREATE_DISK>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CREATE_DISK managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CREATE_DISK managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CREATE_DISK managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CREATE_DISK managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -98,34 +99,34 @@ public unsafe partial class CREATE_DISK : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.PARTITION_STYLE PartitionStyle
+    public PARTITION_STYLE PartitionStyle
     {
         get => ((__Internal*)__Instance)->PartitionStyle;
 
         set => ((__Internal*)__Instance)->PartitionStyle = value;
     }
 
-    public global::LibuvSharp.CREATE_DISK_MBR Mbr
+    public CREATE_DISK_MBR Mbr
     {
-        get => global::LibuvSharp.CREATE_DISK_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
+        get => CREATE_DISK_MBR.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Mbr));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Mbr = *(global::LibuvSharp.CREATE_DISK_MBR.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Mbr = *(CREATE_DISK_MBR.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.CREATE_DISK_GPT Gpt
+    public CREATE_DISK_GPT Gpt
     {
-        get => global::LibuvSharp.CREATE_DISK_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
+        get => CREATE_DISK_GPT.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->Gpt));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->Gpt = *(global::LibuvSharp.CREATE_DISK_GPT.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->Gpt = *(CREATE_DISK_GPT.__Internal*) value.__Instance;
         }
     }
 }

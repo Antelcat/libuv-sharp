@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class HISTOGRAM_BUCKET : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint Reads;
         internal uint Writes;
@@ -13,15 +14,15 @@ public unsafe partial class HISTOGRAM_BUCKET : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.HISTOGRAM_BUCKET> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.HISTOGRAM_BUCKET>();
+    internal static readonly ConcurrentDictionary<IntPtr, HISTOGRAM_BUCKET> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, HISTOGRAM_BUCKET>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.HISTOGRAM_BUCKET managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, HISTOGRAM_BUCKET managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.HISTOGRAM_BUCKET managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out HISTOGRAM_BUCKET managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

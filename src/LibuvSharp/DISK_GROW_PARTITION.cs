@@ -1,27 +1,28 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_GROW_PARTITION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint                             PartitionNumber;
-        internal global::LARGE_INTEGER.__Internal BytesToGrow;
+        internal uint                     PartitionNumber;
+        internal LARGE_INTEGER.__Internal BytesToGrow;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GROW_PARTITION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_GROW_PARTITION>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_GROW_PARTITION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_GROW_PARTITION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_GROW_PARTITION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_GROW_PARTITION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_GROW_PARTITION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_GROW_PARTITION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

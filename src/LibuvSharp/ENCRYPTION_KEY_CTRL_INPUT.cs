@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class ENCRYPTION_KEY_CTRL_INPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint   HeaderSize;
         internal uint   StructureSize;
@@ -18,15 +19,15 @@ public unsafe partial class ENCRYPTION_KEY_CTRL_INPUT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTION_KEY_CTRL_INPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.ENCRYPTION_KEY_CTRL_INPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, ENCRYPTION_KEY_CTRL_INPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, ENCRYPTION_KEY_CTRL_INPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.ENCRYPTION_KEY_CTRL_INPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, ENCRYPTION_KEY_CTRL_INPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.ENCRYPTION_KEY_CTRL_INPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out ENCRYPTION_KEY_CTRL_INPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DISK_LOGGING : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte     Function;
         internal IntPtr BufferAddress;
@@ -14,15 +15,15 @@ public unsafe partial class DISK_LOGGING : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_LOGGING> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DISK_LOGGING>();
+    internal static readonly ConcurrentDictionary<IntPtr, DISK_LOGGING> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DISK_LOGGING>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DISK_LOGGING managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DISK_LOGGING managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DISK_LOGGING managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DISK_LOGGING managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -104,7 +105,7 @@ public unsafe partial class DISK_LOGGING : IDisposable
     {
         get => ((__Internal*)__Instance)->BufferAddress;
 
-        set => ((__Internal*)__Instance)->BufferAddress = (IntPtr) value;
+        set => ((__Internal*)__Instance)->BufferAddress = value;
     }
 
     public uint BufferSize

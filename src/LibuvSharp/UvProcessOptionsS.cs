@@ -1,5 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
+using CppSharp.Runtime;
 using LibuvSharp.Extensions;
 
 namespace LibuvSharp;
@@ -7,7 +10,7 @@ namespace LibuvSharp;
 public unsafe partial class UvProcessOptionsS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 64)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr exit_cb;
         internal IntPtr file;
@@ -26,22 +29,22 @@ public unsafe partial class UvProcessOptionsS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvProcessOptionsS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvProcessOptionsS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvProcessOptionsS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvProcessOptionsS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvProcessOptionsS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcessOptionsS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvProcessOptionsS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvProcessOptionsS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
     }
 
-    private   bool __file_OwnsNativeMemory = false;
-    private   bool __cwd_OwnsNativeMemory  = false;
+    private   bool __file_OwnsNativeMemory;
+    private   bool __cwd_OwnsNativeMemory;
     protected bool __ownsNativeInstance;
 
     internal static UvProcessOptionsS __CreateInstance(IntPtr native, bool skipVTables = false)
@@ -91,21 +94,21 @@ public unsafe partial class UvProcessOptionsS : IDisposable
 
     public UvProcessOptionsS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvProcessOptionsS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvProcessOptionsS(global::LibuvSharp.UvProcessOptionsS _0)
+    public UvProcessOptionsS(UvProcessOptionsS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvProcessOptionsS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvProcessOptionsS.__Internal*) __Instance) = *((global::LibuvSharp.UvProcessOptionsS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
         if (_0.__file_OwnsNativeMemory)
-            this.File = _0.File;
+            File = _0.File;
         if (_0.__cwd_OwnsNativeMemory)
-            this.Cwd = _0.Cwd;
+            Cwd = _0.Cwd;
     }
 
     public void Dispose()
@@ -135,15 +138,15 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         get
         {
             var __ptr0 = ((__Internal*)__Instance)->exit_cb;
-            return __ptr0 == IntPtr.Zero? null : (global::LibuvSharp.UvExitCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(global::LibuvSharp.UvExitCb));
+            return __ptr0 == IntPtr.Zero? null : (UvExitCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvExitCb));
         }
 
-        set => ((__Internal*)__Instance)->exit_cb = value == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => ((__Internal*)__Instance)->exit_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
     public string File
     {
-        get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->file);
+        get => MarshalUtil.GetString(Encoding.UTF8, ((__Internal*)__Instance)->file);
 
         set
         {
@@ -178,7 +181,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
 
     public string Cwd
     {
-        get => CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ((__Internal*)__Instance)->cwd);
+        get => MarshalUtil.GetString(Encoding.UTF8, ((__Internal*)__Instance)->cwd);
 
         set
         {
@@ -187,14 +190,14 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             __cwd_OwnsNativeMemory = true;
             if (value == null)
             {
-                ((__Internal*)__Instance)->cwd = global::System.IntPtr.Zero;
+                ((__Internal*)__Instance)->cwd = IntPtr.Zero;
                 return;
             }
-            var __bytes0   = global::System.Text.Encoding.UTF8.GetBytes(value);
+            var __bytes0   = Encoding.UTF8.GetBytes(value);
             var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
             Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
             Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
-            ((__Internal*)__Instance)->cwd = (IntPtr) __bytePtr0;
+            ((__Internal*)__Instance)->cwd = __bytePtr0;
         }
     }
 
@@ -209,10 +212,10 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => ((__Internal*)__Instance)->stdio_count;
 
-        set => ((__Internal*)__Instance)->stdio_count = value;
+        private set => ((__Internal*)__Instance)->stdio_count = value;
     }
 
-    public global::LibuvSharp.UvStdioContainerS[]? Stdio
+    public UvStdioContainerS?[]? Stdio
     {
         get
         {
@@ -220,7 +223,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             var pointer = (UvStdioContainerS.__Internal*)((__Internal*)__Instance)->stdio;
             for (var i = 0; i < StdioCount; i++)
             {
-                ret[StdioCount] = global::LibuvSharp.UvStdioContainerS.__GetOrCreateInstance((nint)pointer, false);
+                ret[StdioCount] = UvStdioContainerS.__GetOrCreateInstance((nint)pointer);
                 pointer++;
             }
         
@@ -234,7 +237,10 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             var handle = start;
             foreach (var containerS in value)
             {
-                Marshal.WriteIntPtr(handle, containerS == null ? IntPtr.Zero : containerS.__Instance);
+                Marshal.WriteIntPtr(handle, containerS?.__Instance ?? new UvStdioContainerS
+                {
+                    Flags = UvStdioFlags.UV_IGNORE
+                }.__Instance);
                 handle = IntPtr.Add(handle, 1);
             }
             ((__Internal*)__Instance)->stdio = start;

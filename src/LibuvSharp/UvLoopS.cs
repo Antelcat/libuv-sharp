@@ -1,46 +1,48 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class UvLoopS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 472)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       IntPtr                                         data;
-        internal       uint                                             active_handles;
-        internal       global::LibuvSharp.UvQueue.__Internal            handle_queue;
-        internal       global::LibuvSharp.UvLoopS.ActiveReqs.__Internal active_reqs;
-        internal       IntPtr                                         internal_fields;
-        internal       uint                                             stop_flag;
-        internal       IntPtr                                         iocp;
-        internal       ulong                                            time;
-        internal       IntPtr                                         pending_reqs_tail;
-        internal       IntPtr                                         endgame_handles;
-        internal       IntPtr                                         timer_heap;
-        internal       IntPtr                                         prepare_handles;
-        internal       IntPtr                                         check_handles;
-        internal       IntPtr                                         idle_handles;
-        internal       IntPtr                                         next_prepare_handle;
-        internal       IntPtr                                         next_check_handle;
-        internal       IntPtr                                         next_idle_handle;
-        internal fixed ulong                                            poll_peer_sockets[4];
-        internal       uint                                             active_tcp_streams;
-        internal       uint                                             active_udp_streams;
-        internal       ulong                                            timer_counter;
-        internal       global::LibuvSharp.UvQueue.__Internal            wq;
-        internal       global::RTL_CRITICAL_SECTION.__Internal          wq_mutex;
-        internal       global::LibuvSharp.UvAsyncS.__Internal           wq_async;
+        internal       IntPtr                          data;
+        internal       uint                            active_handles;
+        internal       UvQueue.__Internal              handle_queue;
+        internal       ActiveReqs.__Internal           active_reqs;
+        internal       IntPtr                          internal_fields;
+        internal       uint                            stop_flag;
+        internal       IntPtr                          iocp;
+        internal       ulong                           time;
+        internal       IntPtr                          pending_reqs_tail;
+        internal       IntPtr                          endgame_handles;
+        internal       IntPtr                          timer_heap;
+        internal       IntPtr                          prepare_handles;
+        internal       IntPtr                          check_handles;
+        internal       IntPtr                          idle_handles;
+        internal       IntPtr                          next_prepare_handle;
+        internal       IntPtr                          next_check_handle;
+        internal       IntPtr                          next_idle_handle;
+        internal fixed ulong                           poll_peer_sockets[4];
+        internal       uint                            active_tcp_streams;
+        internal       uint                            active_udp_streams;
+        internal       ulong                           timer_counter;
+        internal       UvQueue.__Internal              wq;
+        internal       RTL_CRITICAL_SECTION.__Internal wq_mutex;
+        internal       UvAsyncS.__Internal             wq_async;
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_loop_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public unsafe partial struct ActiveReqs
+    public partial struct ActiveReqs
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public partial struct __Internal
+        public struct __Internal
         {
             [FieldOffset(0)]
             internal IntPtr unused;
@@ -52,8 +54,8 @@ public unsafe partial class UvLoopS : IDisposable
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
-        private  ActiveReqs.__Internal __instance;
-        internal ActiveReqs.__Internal __Instance => __instance;
+        private  __Internal __instance;
+        internal __Internal __Instance => __instance;
 
         internal static ActiveReqs __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -73,10 +75,10 @@ public unsafe partial class UvLoopS : IDisposable
 
         private ActiveReqs(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(global::LibuvSharp.UvLoopS.ActiveReqs.__Internal*) native;
+            __instance = *(__Internal*) native;
         }
 
-        public ActiveReqs(global::LibuvSharp.UvLoopS.ActiveReqs __0)
+        public ActiveReqs(ActiveReqs __0)
             : this()
         {
             var ____arg0 = __0.__Instance;
@@ -91,7 +93,7 @@ public unsafe partial class UvLoopS : IDisposable
         {
             get => __instance.unused;
 
-            set => __instance.unused = (IntPtr) value;
+            set => __instance.unused = value;
         }
 
         public uint Count
@@ -104,15 +106,15 @@ public unsafe partial class UvLoopS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvLoopS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvLoopS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvLoopS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvLoopS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvLoopS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvLoopS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvLoopS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvLoopS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -167,17 +169,17 @@ public unsafe partial class UvLoopS : IDisposable
 
     public UvLoopS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvLoopS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvLoopS(global::LibuvSharp.UvLoopS _0)
+    public UvLoopS(UvLoopS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvLoopS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvLoopS.__Internal*) __Instance) = *((global::LibuvSharp.UvLoopS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -202,7 +204,7 @@ public unsafe partial class UvLoopS : IDisposable
     {
         get => ((__Internal*)__Instance)->data;
 
-        set => ((__Internal*)__Instance)->data = (IntPtr) value;
+        set => ((__Internal*)__Instance)->data = value;
     }
 
     public uint ActiveHandles
@@ -212,21 +214,21 @@ public unsafe partial class UvLoopS : IDisposable
         set => ((__Internal*)__Instance)->active_handles = value;
     }
 
-    public global::LibuvSharp.UvQueue HandleQueue
+    public UvQueue HandleQueue
     {
-        get => global::LibuvSharp.UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
+        get => UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->handle_queue));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->handle_queue = *(global::LibuvSharp.UvQueue.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvLoopS.ActiveReqs active_reqs
+    public ActiveReqs active_reqs
     {
-        get => global::LibuvSharp.UvLoopS.ActiveReqs.__CreateInstance(((__Internal*)__Instance)->active_reqs);
+        get => ActiveReqs.__CreateInstance(((__Internal*)__Instance)->active_reqs);
 
         set => ((__Internal*)__Instance)->active_reqs = value.__Instance;
     }
@@ -235,7 +237,7 @@ public unsafe partial class UvLoopS : IDisposable
     {
         get => ((__Internal*)__Instance)->internal_fields;
 
-        set => ((__Internal*)__Instance)->internal_fields = (IntPtr) value;
+        set => ((__Internal*)__Instance)->internal_fields = value;
     }
 
     public uint StopFlag
@@ -249,7 +251,7 @@ public unsafe partial class UvLoopS : IDisposable
     {
         get => ((__Internal*)__Instance)->iocp;
 
-        set => ((__Internal*)__Instance)->iocp = (IntPtr) value;
+        set => ((__Internal*)__Instance)->iocp = value;
     }
 
     public ulong Time
@@ -259,22 +261,22 @@ public unsafe partial class UvLoopS : IDisposable
         set => ((__Internal*)__Instance)->time = value;
     }
 
-    public global::LibuvSharp.UvReqS PendingReqsTail
+    public UvReqS PendingReqsTail
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->pending_reqs_tail, false);
+            var __result0 = UvReqS.__GetOrCreateInstance(((__Internal*)__Instance)->pending_reqs_tail);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->pending_reqs_tail = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvHandleS EndgameHandles
+    public UvHandleS EndgameHandles
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_handles, false);
+            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_handles);
             return __result0;
         }
 
@@ -285,69 +287,69 @@ public unsafe partial class UvLoopS : IDisposable
     {
         get => ((__Internal*)__Instance)->timer_heap;
 
-        set => ((__Internal*)__Instance)->timer_heap = (IntPtr) value;
+        set => ((__Internal*)__Instance)->timer_heap = value;
     }
 
-    public global::LibuvSharp.UvPrepareS PrepareHandles
+    public UvPrepareS PrepareHandles
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvPrepareS.__GetOrCreateInstance(((__Internal*)__Instance)->prepare_handles, false);
+            var __result0 = UvPrepareS.__GetOrCreateInstance(((__Internal*)__Instance)->prepare_handles);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->prepare_handles = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvCheckS CheckHandles
+    public UvCheckS CheckHandles
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvCheckS.__GetOrCreateInstance(((__Internal*)__Instance)->check_handles, false);
+            var __result0 = UvCheckS.__GetOrCreateInstance(((__Internal*)__Instance)->check_handles);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->check_handles = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvIdleS IdleHandles
+    public UvIdleS IdleHandles
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvIdleS.__GetOrCreateInstance(((__Internal*)__Instance)->idle_handles, false);
+            var __result0 = UvIdleS.__GetOrCreateInstance(((__Internal*)__Instance)->idle_handles);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->idle_handles = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvPrepareS NextPrepareHandle
+    public UvPrepareS NextPrepareHandle
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvPrepareS.__GetOrCreateInstance(((__Internal*)__Instance)->next_prepare_handle, false);
+            var __result0 = UvPrepareS.__GetOrCreateInstance(((__Internal*)__Instance)->next_prepare_handle);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->next_prepare_handle = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvCheckS NextCheckHandle
+    public UvCheckS NextCheckHandle
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvCheckS.__GetOrCreateInstance(((__Internal*)__Instance)->next_check_handle, false);
+            var __result0 = UvCheckS.__GetOrCreateInstance(((__Internal*)__Instance)->next_check_handle);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->next_check_handle = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public global::LibuvSharp.UvIdleS NextIdleHandle
+    public UvIdleS NextIdleHandle
     {
         get
         {
-            var __result0 = global::LibuvSharp.UvIdleS.__GetOrCreateInstance(((__Internal*)__Instance)->next_idle_handle, false);
+            var __result0 = UvIdleS.__GetOrCreateInstance(((__Internal*)__Instance)->next_idle_handle);
             return __result0;
         }
 
@@ -356,7 +358,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     public ulong[] PollPeerSockets
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->poll_peer_sockets, 4);
+        get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->poll_peer_sockets, 4);
 
         set
         {
@@ -389,27 +391,27 @@ public unsafe partial class UvLoopS : IDisposable
         set => ((__Internal*)__Instance)->timer_counter = value;
     }
 
-    public global::LibuvSharp.UvQueue Wq
+    public UvQueue Wq
     {
-        get => global::LibuvSharp.UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->wq));
+        get => UvQueue.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->wq));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->wq = *(global::LibuvSharp.UvQueue.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->wq = *(UvQueue.__Internal*) value.__Instance;
         }
     }
 
-    public global::LibuvSharp.UvAsyncS WqAsync
+    public UvAsyncS WqAsync
     {
-        get => global::LibuvSharp.UvAsyncS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->wq_async));
+        get => UvAsyncS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->wq_async));
 
         set
         {
             if (ReferenceEquals(value, null))
-                throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->wq_async = *(global::LibuvSharp.UvAsyncS.__Internal*) value.__Instance;
+                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+            ((__Internal*)__Instance)->wq_async = *(UvAsyncS.__Internal*) value.__Instance;
         }
     }
 }

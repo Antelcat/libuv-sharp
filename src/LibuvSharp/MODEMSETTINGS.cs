@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class MODEMSETTINGS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 48)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint dwActualSize;
         internal       uint dwRequiredSize;
@@ -23,15 +25,15 @@ public unsafe partial class MODEMSETTINGS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MODEMSETTINGS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MODEMSETTINGS>();
+    internal static readonly ConcurrentDictionary<IntPtr, MODEMSETTINGS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, MODEMSETTINGS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.MODEMSETTINGS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, MODEMSETTINGS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.MODEMSETTINGS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MODEMSETTINGS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -181,7 +183,7 @@ public unsafe partial class MODEMSETTINGS : IDisposable
 
     public byte[] AbVariablePortion
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->abVariablePortion, 1);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->abVariablePortion, 1);
 
         set
         {

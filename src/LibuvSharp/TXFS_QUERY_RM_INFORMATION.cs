@@ -1,51 +1,52 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TXFS_QUERY_RM_INFORMATION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 176)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint                             BytesRequired;
-        internal ulong                            TailLsn;
-        internal ulong                            CurrentLsn;
-        internal ulong                            ArchiveTailLsn;
-        internal ulong                            LogContainerSize;
-        internal global::LARGE_INTEGER.__Internal HighestVirtualClock;
-        internal uint                             LogContainerCount;
-        internal uint                             LogContainerCountMax;
-        internal uint                             LogContainerCountMin;
-        internal uint                             LogGrowthIncrement;
-        internal uint                             LogAutoShrinkPercentage;
-        internal uint                             Flags;
-        internal ushort                           LoggingMode;
-        internal ushort                           Reserved;
-        internal uint                             RmState;
-        internal ulong                            LogCapacity;
-        internal ulong                            LogFree;
-        internal ulong                            TopsSize;
-        internal ulong                            TopsUsed;
-        internal ulong                            TransactionCount;
-        internal ulong                            OnePCCount;
-        internal ulong                            TwoPCCount;
-        internal ulong                            NumberLogFileFull;
-        internal ulong                            OldestTransactionAge;
-        internal global::GUID.__Internal          RMName;
-        internal uint                             TmLogPathOffset;
+        internal uint                     BytesRequired;
+        internal ulong                    TailLsn;
+        internal ulong                    CurrentLsn;
+        internal ulong                    ArchiveTailLsn;
+        internal ulong                    LogContainerSize;
+        internal LARGE_INTEGER.__Internal HighestVirtualClock;
+        internal uint                     LogContainerCount;
+        internal uint                     LogContainerCountMax;
+        internal uint                     LogContainerCountMin;
+        internal uint                     LogGrowthIncrement;
+        internal uint                     LogAutoShrinkPercentage;
+        internal uint                     Flags;
+        internal ushort                   LoggingMode;
+        internal ushort                   Reserved;
+        internal uint                     RmState;
+        internal ulong                    LogCapacity;
+        internal ulong                    LogFree;
+        internal ulong                    TopsSize;
+        internal ulong                    TopsUsed;
+        internal ulong                    TransactionCount;
+        internal ulong                    OnePCCount;
+        internal ulong                    TwoPCCount;
+        internal ulong                    NumberLogFileFull;
+        internal ulong                    OldestTransactionAge;
+        internal GUID.__Internal          RMName;
+        internal uint                     TmLogPathOffset;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_QUERY_RM_INFORMATION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TXFS_QUERY_RM_INFORMATION>();
+    internal static readonly ConcurrentDictionary<IntPtr, TXFS_QUERY_RM_INFORMATION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TXFS_QUERY_RM_INFORMATION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TXFS_QUERY_RM_INFORMATION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TXFS_QUERY_RM_INFORMATION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TXFS_QUERY_RM_INFORMATION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TXFS_QUERY_RM_INFORMATION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

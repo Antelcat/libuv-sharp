@@ -1,17 +1,18 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TagMETHODDATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr            szName;
         internal IntPtr            ppdata;
         internal int                 dispid;
         internal uint                iMeth;
-        internal global::TagCALLCONV cc;
+        internal TagCALLCONV cc;
         internal uint                cArgs;
         internal ushort              wFlags;
         internal ushort              vtReturn;
@@ -19,15 +20,15 @@ public unsafe partial class TagMETHODDATA : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagMETHODDATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagMETHODDATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, TagMETHODDATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TagMETHODDATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TagMETHODDATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TagMETHODDATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TagMETHODDATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TagMETHODDATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -105,11 +106,11 @@ public unsafe partial class TagMETHODDATA : IDisposable
         set => ((__Internal*)__Instance)->szName = (IntPtr) value;
     }
 
-    public global::LibuvSharp.TagPARAMDATA Ppdata
+    public TagPARAMDATA Ppdata
     {
         get
         {
-            var __result0 = global::LibuvSharp.TagPARAMDATA.__GetOrCreateInstance(((__Internal*)__Instance)->ppdata, false);
+            var __result0 = TagPARAMDATA.__GetOrCreateInstance(((__Internal*)__Instance)->ppdata);
             return __result0;
         }
 

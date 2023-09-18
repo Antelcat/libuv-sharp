@@ -3,7 +3,7 @@
 public unsafe partial class GUID
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint   Data1;
         internal       ushort Data2;

@@ -1,26 +1,27 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class DECRYPTION_STATUS_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte NoEncryptedStreams;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DECRYPTION_STATUS_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.DECRYPTION_STATUS_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, DECRYPTION_STATUS_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, DECRYPTION_STATUS_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.DECRYPTION_STATUS_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, DECRYPTION_STATUS_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.DECRYPTION_STATUS_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out DECRYPTION_STATUS_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

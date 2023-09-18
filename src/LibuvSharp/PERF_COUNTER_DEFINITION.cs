@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class PERF_COUNTER_DEFINITION : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal uint ByteLength;
         internal uint CounterNameTitleIndex;
@@ -21,15 +22,15 @@ public unsafe partial class PERF_COUNTER_DEFINITION : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_COUNTER_DEFINITION> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PERF_COUNTER_DEFINITION>();
+    internal static readonly ConcurrentDictionary<IntPtr, PERF_COUNTER_DEFINITION> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PERF_COUNTER_DEFINITION>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PERF_COUNTER_DEFINITION managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PERF_COUNTER_DEFINITION managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PERF_COUNTER_DEFINITION managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PERF_COUNTER_DEFINITION managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

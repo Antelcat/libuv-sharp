@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Security;
 
 namespace LibuvSharp;
@@ -6,7 +7,7 @@ namespace LibuvSharp;
 public unsafe partial class UvOnceS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte     ran;
         internal IntPtr @event;
@@ -17,15 +18,15 @@ public unsafe partial class UvOnceS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvOnceS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.UvOnceS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvOnceS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvOnceS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.UvOnceS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvOnceS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.UvOnceS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvOnceS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -80,17 +81,17 @@ public unsafe partial class UvOnceS : IDisposable
 
     public UvOnceS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvOnceS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvOnceS(global::LibuvSharp.UvOnceS _0)
+    public UvOnceS(UvOnceS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(global::LibuvSharp.UvOnceS.__Internal));
+        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((global::LibuvSharp.UvOnceS.__Internal*) __Instance) = *((global::LibuvSharp.UvOnceS.__Internal*) _0.__Instance);
+        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
     }
 
     public void Dispose()
@@ -122,6 +123,6 @@ public unsafe partial class UvOnceS : IDisposable
     {
         get => ((__Internal*)__Instance)->@event;
 
-        set => ((__Internal*)__Instance)->@event = (IntPtr) value;
+        set => ((__Internal*)__Instance)->@event = value;
     }
 }

@@ -1,29 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class MOVE_FILE_DATA32 : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 32)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal uint                             FileHandle;
-        internal global::LARGE_INTEGER.__Internal StartingVcn;
-        internal global::LARGE_INTEGER.__Internal StartingLcn;
-        internal uint                             ClusterCount;
+        internal uint                     FileHandle;
+        internal LARGE_INTEGER.__Internal StartingVcn;
+        internal LARGE_INTEGER.__Internal StartingLcn;
+        internal uint                     ClusterCount;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MOVE_FILE_DATA32> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.MOVE_FILE_DATA32>();
+    internal static readonly ConcurrentDictionary<IntPtr, MOVE_FILE_DATA32> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, MOVE_FILE_DATA32>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.MOVE_FILE_DATA32 managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, MOVE_FILE_DATA32 managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.MOVE_FILE_DATA32 managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out MOVE_FILE_DATA32 managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

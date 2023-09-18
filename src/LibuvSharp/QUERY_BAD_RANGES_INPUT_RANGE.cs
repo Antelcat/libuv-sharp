@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class QUERY_BAD_RANGES_INPUT_RANGE : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ulong StartOffset;
         internal ulong LengthInBytes;
@@ -13,15 +14,15 @@ public unsafe partial class QUERY_BAD_RANGES_INPUT_RANGE : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE>();
+    internal static readonly ConcurrentDictionary<IntPtr, QUERY_BAD_RANGES_INPUT_RANGE> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, QUERY_BAD_RANGES_INPUT_RANGE>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, QUERY_BAD_RANGES_INPUT_RANGE managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out QUERY_BAD_RANGES_INPUT_RANGE managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

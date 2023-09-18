@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TagCRGB : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 4)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte bRed;
         internal byte bGreen;
@@ -15,15 +16,15 @@ public unsafe partial class TagCRGB : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagCRGB> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagCRGB>();
+    internal static readonly ConcurrentDictionary<IntPtr, TagCRGB> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TagCRGB>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TagCRGB managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TagCRGB managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TagCRGB managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TagCRGB managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

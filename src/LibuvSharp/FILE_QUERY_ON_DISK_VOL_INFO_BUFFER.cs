@@ -1,36 +1,38 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 336)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::LARGE_INTEGER.__Internal DirectoryCount;
-        internal       global::LARGE_INTEGER.__Internal FileCount;
-        internal       ushort                           FsFormatMajVersion;
-        internal       ushort                           FsFormatMinVersion;
-        internal fixed char                             FsFormatName[12];
-        internal       global::LARGE_INTEGER.__Internal FormatTime;
-        internal       global::LARGE_INTEGER.__Internal LastUpdateTime;
-        internal fixed char                             CopyrightInfo[34];
-        internal fixed char                             AbstractInfo[34];
-        internal fixed char                             FormattingImplementationInfo[34];
-        internal fixed char                             LastModifyingImplementationInfo[34];
+        internal       LARGE_INTEGER.__Internal DirectoryCount;
+        internal       LARGE_INTEGER.__Internal FileCount;
+        internal       ushort                   FsFormatMajVersion;
+        internal       ushort                   FsFormatMinVersion;
+        internal fixed char                     FsFormatName[12];
+        internal       LARGE_INTEGER.__Internal FormatTime;
+        internal       LARGE_INTEGER.__Internal LastUpdateTime;
+        internal fixed char                     CopyrightInfo[34];
+        internal fixed char                     AbstractInfo[34];
+        internal fixed char                     FormattingImplementationInfo[34];
+        internal fixed char                     LastModifyingImplementationInfo[34];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_QUERY_ON_DISK_VOL_INFO_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_QUERY_ON_DISK_VOL_INFO_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_QUERY_ON_DISK_VOL_INFO_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_QUERY_ON_DISK_VOL_INFO_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_QUERY_ON_DISK_VOL_INFO_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_QUERY_ON_DISK_VOL_INFO_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_QUERY_ON_DISK_VOL_INFO_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_QUERY_ON_DISK_VOL_INFO_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -117,7 +119,7 @@ public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 
     public char[] FsFormatName
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FsFormatName, 12);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FsFormatName, 12);
 
         set
         {
@@ -131,7 +133,7 @@ public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 
     public char[] CopyrightInfo
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->CopyrightInfo, 34);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->CopyrightInfo, 34);
 
         set
         {
@@ -145,7 +147,7 @@ public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 
     public char[] AbstractInfo
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->AbstractInfo, 34);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->AbstractInfo, 34);
 
         set
         {
@@ -159,7 +161,7 @@ public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 
     public char[] FormattingImplementationInfo
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FormattingImplementationInfo, 34);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->FormattingImplementationInfo, 34);
 
         set
         {
@@ -173,7 +175,7 @@ public unsafe partial class FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : IDisposable
 
     public char[] LastModifyingImplementationInfo
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->LastModifyingImplementationInfo, 34);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->LastModifyingImplementationInfo, 34);
 
         set
         {

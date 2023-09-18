@@ -4,4 +4,4 @@ using System.Security;
 namespace LibuvSharp;
 
 [SuppressUnmanagedCodeSecurity, UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void UvPollCb(IntPtr handle, int status, int events);
+public delegate void UvPollCb(IntPtr handle, int status, int events);

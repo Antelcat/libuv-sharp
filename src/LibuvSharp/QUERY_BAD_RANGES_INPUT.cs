@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class QUERY_BAD_RANGES_INPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 24)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal       uint Flags;
         internal       uint NumRanges;
@@ -14,15 +15,15 @@ public unsafe partial class QUERY_BAD_RANGES_INPUT : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.QUERY_BAD_RANGES_INPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.QUERY_BAD_RANGES_INPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, QUERY_BAD_RANGES_INPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, QUERY_BAD_RANGES_INPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.QUERY_BAD_RANGES_INPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, QUERY_BAD_RANGES_INPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.QUERY_BAD_RANGES_INPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out QUERY_BAD_RANGES_INPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -107,16 +108,16 @@ public unsafe partial class QUERY_BAD_RANGES_INPUT : IDisposable
         set => ((__Internal*)__Instance)->NumRanges = value;
     }
 
-    public global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE[] Ranges
+    public QUERY_BAD_RANGES_INPUT_RANGE[] Ranges
     {
         get
         {
-            global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE[] __value = null;
+            QUERY_BAD_RANGES_INPUT_RANGE[] __value = null;
             if (((__Internal*)__Instance)->Ranges != null)
             {
-                __value = new global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE[1];
+                __value = new QUERY_BAD_RANGES_INPUT_RANGE[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__GetOrCreateInstance((IntPtr)((global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)&(((__Internal*)__Instance)->Ranges[i * sizeof(global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__Internal)])), true, true);
+                    __value[i] = QUERY_BAD_RANGES_INPUT_RANGE.__GetOrCreateInstance((IntPtr)((QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)&(((__Internal*)__Instance)->Ranges[i * sizeof(QUERY_BAD_RANGES_INPUT_RANGE.__Internal)])), true, true);
             }
             return __value;
         }
@@ -128,7 +129,7 @@ public unsafe partial class QUERY_BAD_RANGES_INPUT : IDisposable
                 if (value.Length != 1)
                     throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
-                    *(global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__Internal*) &((__Internal*)__Instance)->Ranges[i * sizeof(global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__Internal)] = *(global::LibuvSharp.QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)value[i].__Instance;
+                    *(QUERY_BAD_RANGES_INPUT_RANGE.__Internal*) &((__Internal*)__Instance)->Ranges[i * sizeof(QUERY_BAD_RANGES_INPUT_RANGE.__Internal)] = *(QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)value[i].__Instance;
             }
         }
     }

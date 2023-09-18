@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 61)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal fixed byte VendorId[8];
         internal fixed byte ProductId[16];
@@ -16,15 +18,15 @@ public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_PRODUCT_DATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.CHANGER_PRODUCT_DATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, CHANGER_PRODUCT_DATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, CHANGER_PRODUCT_DATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.CHANGER_PRODUCT_DATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, CHANGER_PRODUCT_DATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.CHANGER_PRODUCT_DATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out CHANGER_PRODUCT_DATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -97,7 +99,7 @@ public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 
     public byte[] VendorId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VendorId, 8);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->VendorId, 8);
 
         set
         {
@@ -111,7 +113,7 @@ public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 
     public byte[] ProductId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ProductId, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ProductId, 16);
 
         set
         {
@@ -125,7 +127,7 @@ public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 
     public byte[] Revision
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Revision, 4);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->Revision, 4);
 
         set
         {
@@ -139,7 +141,7 @@ public unsafe partial class CHANGER_PRODUCT_DATA : IDisposable
 
     public byte[] SerialNumber
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->SerialNumber, 32);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->SerialNumber, 32);
 
         set
         {

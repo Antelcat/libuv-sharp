@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class VIRTUALIZATION_INSTANCE_INFO_INPUT_EX : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal ushort HeaderSize;
         internal uint   Flags;
@@ -16,15 +17,15 @@ public unsafe partial class VIRTUALIZATION_INSTANCE_INFO_INPUT_EX : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VIRTUALIZATION_INSTANCE_INFO_INPUT_EX> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.VIRTUALIZATION_INSTANCE_INFO_INPUT_EX>();
+    internal static readonly ConcurrentDictionary<IntPtr, VIRTUALIZATION_INSTANCE_INFO_INPUT_EX> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, VIRTUALIZATION_INSTANCE_INFO_INPUT_EX>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.VIRTUALIZATION_INSTANCE_INFO_INPUT_EX managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, VIRTUALIZATION_INSTANCE_INFO_INPUT_EX managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.VIRTUALIZATION_INSTANCE_INFO_INPUT_EX managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out VIRTUALIZATION_INSTANCE_INFO_INPUT_EX managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

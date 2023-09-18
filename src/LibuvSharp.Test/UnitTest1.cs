@@ -33,6 +33,7 @@ public class Tests
                         select $"{arg.Key}={arg.Value}")
                     .Append("MEDIASOUP_VERSION=3.11.12")
                     .ToArray(),
+                Stdio = null
             });
 
         await Task.Delay(10000);

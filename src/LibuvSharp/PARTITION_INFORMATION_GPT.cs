@@ -1,29 +1,31 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class PARTITION_INFORMATION_GPT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 112)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       global::GUID.__Internal PartitionType;
-        internal       global::GUID.__Internal PartitionId;
-        internal       ulong                   Attributes;
-        internal fixed char                    Name[36];
+        internal       GUID.__Internal PartitionType;
+        internal       GUID.__Internal PartitionId;
+        internal       ulong           Attributes;
+        internal fixed char            Name[36];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION_GPT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.PARTITION_INFORMATION_GPT>();
+    internal static readonly ConcurrentDictionary<IntPtr, PARTITION_INFORMATION_GPT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, PARTITION_INFORMATION_GPT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.PARTITION_INFORMATION_GPT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, PARTITION_INFORMATION_GPT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.PARTITION_INFORMATION_GPT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out PARTITION_INFORMATION_GPT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -103,7 +105,7 @@ public unsafe partial class PARTITION_INFORMATION_GPT : IDisposable
 
     public char[] Name
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Name, 36);
+        get => MarshalUtil.GetArray<char>(((__Internal*)__Instance)->Name, 36);
 
         set
         {

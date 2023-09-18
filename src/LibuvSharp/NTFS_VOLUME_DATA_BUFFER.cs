@@ -1,39 +1,40 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class NTFS_VOLUME_DATA_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 96)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal global::LARGE_INTEGER.__Internal VolumeSerialNumber;
-        internal global::LARGE_INTEGER.__Internal NumberSectors;
-        internal global::LARGE_INTEGER.__Internal TotalClusters;
-        internal global::LARGE_INTEGER.__Internal FreeClusters;
-        internal global::LARGE_INTEGER.__Internal TotalReserved;
-        internal uint                             BytesPerSector;
-        internal uint                             BytesPerCluster;
-        internal uint                             BytesPerFileRecordSegment;
-        internal uint                             ClustersPerFileRecordSegment;
-        internal global::LARGE_INTEGER.__Internal MftValidDataLength;
-        internal global::LARGE_INTEGER.__Internal MftStartLcn;
-        internal global::LARGE_INTEGER.__Internal Mft2StartLcn;
-        internal global::LARGE_INTEGER.__Internal MftZoneStart;
-        internal global::LARGE_INTEGER.__Internal MftZoneEnd;
+        internal LARGE_INTEGER.__Internal VolumeSerialNumber;
+        internal LARGE_INTEGER.__Internal NumberSectors;
+        internal LARGE_INTEGER.__Internal TotalClusters;
+        internal LARGE_INTEGER.__Internal FreeClusters;
+        internal LARGE_INTEGER.__Internal TotalReserved;
+        internal uint                     BytesPerSector;
+        internal uint                     BytesPerCluster;
+        internal uint                     BytesPerFileRecordSegment;
+        internal uint                     ClustersPerFileRecordSegment;
+        internal LARGE_INTEGER.__Internal MftValidDataLength;
+        internal LARGE_INTEGER.__Internal MftStartLcn;
+        internal LARGE_INTEGER.__Internal Mft2StartLcn;
+        internal LARGE_INTEGER.__Internal MftZoneStart;
+        internal LARGE_INTEGER.__Internal MftZoneEnd;
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_VOLUME_DATA_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.NTFS_VOLUME_DATA_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, NTFS_VOLUME_DATA_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, NTFS_VOLUME_DATA_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.NTFS_VOLUME_DATA_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, NTFS_VOLUME_DATA_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.NTFS_VOLUME_DATA_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out NTFS_VOLUME_DATA_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);

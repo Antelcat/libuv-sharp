@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 {
     [StructLayout(LayoutKind.Explicit, Size = 64)]
-    public partial struct __Internal
+    public struct __Internal
     {
         [FieldOffset(0)]
         internal fixed byte ObjectId[16];
@@ -25,15 +27,15 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_OBJECTID_BUFFER> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.FILE_OBJECTID_BUFFER>();
+    internal static readonly ConcurrentDictionary<IntPtr, FILE_OBJECTID_BUFFER> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, FILE_OBJECTID_BUFFER>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.FILE_OBJECTID_BUFFER managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, FILE_OBJECTID_BUFFER managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.FILE_OBJECTID_BUFFER managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out FILE_OBJECTID_BUFFER managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -106,7 +108,7 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public byte[] ObjectId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ObjectId, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ObjectId, 16);
 
         set
         {
@@ -120,7 +122,7 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public byte[] BirthVolumeId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->BirthVolumeId, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->BirthVolumeId, 16);
 
         set
         {
@@ -134,7 +136,7 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public byte[] BirthObjectId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->BirthObjectId, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->BirthObjectId, 16);
 
         set
         {
@@ -148,7 +150,7 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public byte[] DomainId
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->DomainId, 16);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->DomainId, 16);
 
         set
         {
@@ -162,7 +164,7 @@ public unsafe partial class FILE_OBJECTID_BUFFER : IDisposable
 
     public byte[] ExtendedInfo
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ExtendedInfo, 48);
+        get => MarshalUtil.GetArray<byte>(((__Internal*)__Instance)->ExtendedInfo, 48);
 
         set
         {

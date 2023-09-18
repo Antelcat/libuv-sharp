@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class TagINTERFACEDATA : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal IntPtr pmethdata;
         internal uint     cMembers;
@@ -13,15 +14,15 @@ public unsafe partial class TagINTERFACEDATA : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagINTERFACEDATA> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.TagINTERFACEDATA>();
+    internal static readonly ConcurrentDictionary<IntPtr, TagINTERFACEDATA> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, TagINTERFACEDATA>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.TagINTERFACEDATA managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, TagINTERFACEDATA managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.TagINTERFACEDATA managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out TagINTERFACEDATA managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -92,11 +93,11 @@ public unsafe partial class TagINTERFACEDATA : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public global::LibuvSharp.TagMETHODDATA Pmethdata
+    public TagMETHODDATA Pmethdata
     {
         get
         {
-            var __result0 = global::LibuvSharp.TagMETHODDATA.__GetOrCreateInstance(((__Internal*)__Instance)->pmethdata, false);
+            var __result0 = TagMETHODDATA.__GetOrCreateInstance(((__Internal*)__Instance)->pmethdata);
             return __result0;
         }
 

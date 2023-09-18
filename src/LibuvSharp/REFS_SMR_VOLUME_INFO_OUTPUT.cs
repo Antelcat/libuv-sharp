@@ -1,36 +1,38 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
 public unsafe partial class REFS_SMR_VOLUME_INFO_OUTPUT : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 112)]
-    public partial struct __Internal
+    public struct __Internal
     {
-        internal       uint                                        Version;
-        internal       uint                                        Flags;
-        internal       global::LARGE_INTEGER.__Internal            SizeOfRandomlyWritableTier;
-        internal       global::LARGE_INTEGER.__Internal            FreeSpaceInRandomlyWritableTier;
-        internal       global::LARGE_INTEGER.__Internal            SizeofSMRTier;
-        internal       global::LARGE_INTEGER.__Internal            FreeSpaceInSMRTier;
-        internal       global::LARGE_INTEGER.__Internal            UsableFreeSpaceInSMRTier;
-        internal       global::LibuvSharp.REFS_SMR_VOLUME_GC_STATE VolumeGcState;
-        internal       uint                                        VolumeGcLastStatus;
-        internal       uint                                        CurrentGcBandFillPercentage;
-        internal fixed ulong                                       Unused[6];
+        internal       uint                     Version;
+        internal       uint                     Flags;
+        internal       LARGE_INTEGER.__Internal SizeOfRandomlyWritableTier;
+        internal       LARGE_INTEGER.__Internal FreeSpaceInRandomlyWritableTier;
+        internal       LARGE_INTEGER.__Internal SizeofSMRTier;
+        internal       LARGE_INTEGER.__Internal FreeSpaceInSMRTier;
+        internal       LARGE_INTEGER.__Internal UsableFreeSpaceInSMRTier;
+        internal       REFS_SMR_VOLUME_GC_STATE VolumeGcState;
+        internal       uint                     VolumeGcLastStatus;
+        internal       uint                     CurrentGcBandFillPercentage;
+        internal fixed ulong                    Unused[6];
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REFS_SMR_VOLUME_INFO_OUTPUT> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.REFS_SMR_VOLUME_INFO_OUTPUT>();
+    internal static readonly ConcurrentDictionary<IntPtr, REFS_SMR_VOLUME_INFO_OUTPUT> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, REFS_SMR_VOLUME_INFO_OUTPUT>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.REFS_SMR_VOLUME_INFO_OUTPUT managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, REFS_SMR_VOLUME_INFO_OUTPUT managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.REFS_SMR_VOLUME_INFO_OUTPUT managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out REFS_SMR_VOLUME_INFO_OUTPUT managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -115,7 +117,7 @@ public unsafe partial class REFS_SMR_VOLUME_INFO_OUTPUT : IDisposable
         set => ((__Internal*)__Instance)->Flags = value;
     }
 
-    public global::LibuvSharp.REFS_SMR_VOLUME_GC_STATE VolumeGcState
+    public REFS_SMR_VOLUME_GC_STATE VolumeGcState
     {
         get => ((__Internal*)__Instance)->VolumeGcState;
 
@@ -138,7 +140,7 @@ public unsafe partial class REFS_SMR_VOLUME_INFO_OUTPUT : IDisposable
 
     public ulong[] Unused
     {
-        get => CppSharp.Runtime.MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Unused, 6);
+        get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->Unused, 6);
 
         set
         {

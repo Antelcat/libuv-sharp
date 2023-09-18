@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
 public unsafe partial class IDEREGS : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 8, Pack = 1)]
-    public partial struct __Internal
+    public struct __Internal
     {
         internal byte bFeaturesReg;
         internal byte bSectorCountReg;
@@ -19,15 +20,15 @@ public unsafe partial class IDEREGS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal new static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.IDEREGS> NativeToManagedMap =
-        new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::LibuvSharp.IDEREGS>();
+    internal static readonly ConcurrentDictionary<IntPtr, IDEREGS> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, IDEREGS>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, global::LibuvSharp.IDEREGS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, IDEREGS managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::LibuvSharp.IDEREGS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out IDEREGS managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
