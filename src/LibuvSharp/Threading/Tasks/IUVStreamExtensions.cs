@@ -13,8 +13,8 @@ public static class IUVStreamExtensions
 
 		Action<Exception, TData?> finish = null;
 
-		Action<Exception> error = (e) => finish?.Invoke(e, null);
-		Action<TData> data = (val) => finish?.Invoke(null, val);
+		Action<Exception> error = e => finish?.Invoke(e, null);
+		Action<TData> data = val => finish?.Invoke(null, val);
 		var end = () => finish?.Invoke(null, null);
 
 		finish = HelperFunctions.Finish(tcs, () => {
@@ -55,12 +55,12 @@ public static class IUVStreamExtensions
 
 	public static Task<int> WriteAsync(this IUVStream<ArraySegment<byte>> stream, Encoding encoding, string text)
 	{
-		return HelperFunctions.Wrap<Encoding, string, int>(encoding, text, stream.Write);
+		return HelperFunctions.Wrap(encoding, text, stream.Write);
 	}
 
 	public static Task<int> WriteAsync(this IUVStream<ArraySegment<byte>> stream, string text)
 	{
-		return HelperFunctions.Wrap<string, int>(text, stream.Write);
+		return HelperFunctions.Wrap(text, stream.Write);
 	}
 
 	#endregion

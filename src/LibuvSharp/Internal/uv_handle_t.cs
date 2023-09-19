@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace LibuvSharp;
 
 [StructLayout(LayoutKind.Sequential)]
-struct uv_handle_t
+internal struct uv_handle_t
 {
 	// public
 	public IntPtr data;

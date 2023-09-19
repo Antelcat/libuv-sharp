@@ -3,16 +3,16 @@ using System.Runtime.InteropServices;
 namespace LibuvSharp;
 
 [Flags]
-enum uv_process_flags : uint
+internal enum uv_process_flags : uint
 {
     UV_PROCESS_SETUID = (1 << 0),
     UV_PROCESS_SETGID = (1 << 1),
     UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS = (1 << 2),
     UV_PROCESS_DETACHED = (1 << 3)
-};
+}
 
 [Flags]
-enum uv_stdio_flags : int
+internal enum uv_stdio_flags
 {
     UV_IGNORE = 0x00,
     UV_CREATE_PIPE = 0x01,
@@ -23,14 +23,14 @@ enum uv_stdio_flags : int
 }
 
 [StructLayout(LayoutKind.Sequential)]
-struct uv_stdio_container_stream_t
+internal struct uv_stdio_container_stream_t
 {
     public uv_stdio_flags flags;
     public IntPtr stream;
 }
 
 [StructLayout(LayoutKind.Sequential)]
-unsafe struct uv_process_options_t : IDisposable
+internal unsafe struct uv_process_options_t : IDisposable
 {
     // fields
 
@@ -42,8 +42,8 @@ unsafe struct uv_process_options_t : IDisposable
 
     public uint flags;
 
-    public int stdio_count;
-    uv_stdio_container_stream_t* stdio;
+    public  int                          stdio_count;
+    private uv_stdio_container_stream_t* stdio;
 
     public int uid;
     public int gid;
@@ -54,10 +54,8 @@ unsafe struct uv_process_options_t : IDisposable
         {
             throw new ArgumentException("file of processoptions can't be null");
         }
-        else
-        {
-            file = Marshal.StringToHGlobalAnsi(options.File);
-        }
+
+        file = Marshal.StringToHGlobalAnsi(options.File);
 
         args = alloc(options.Arguments);
         env = alloc(options.Environment);
@@ -162,7 +160,7 @@ unsafe struct uv_process_options_t : IDisposable
         }
     }
 
-    static IntPtr alloc(IReadOnlyList<string>? args)
+    private static IntPtr alloc(IReadOnlyList<string>? args)
     {
         if (args == null)
         {
@@ -179,7 +177,7 @@ unsafe struct uv_process_options_t : IDisposable
         return arr;
     }
 
-    static void free(ref IntPtr ptr)
+    private static void free(ref IntPtr ptr)
     {
         if (ptr == IntPtr.Zero)
         {

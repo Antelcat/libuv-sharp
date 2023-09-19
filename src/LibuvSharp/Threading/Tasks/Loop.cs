@@ -4,8 +4,8 @@ namespace LibuvSharp;
 
 public partial class Loop
 {
-	TaskFactory? taskfactory = null;
-	public TaskFactory TaskFactory => taskfactory ??= new TaskFactory(Scheduler);
+	private TaskFactory? taskfactory;
+	public  TaskFactory  TaskFactory => taskfactory ??= new TaskFactory(Scheduler);
 
 	public TaskScheduler Scheduler => LoopTaskScheduler.Instance;
 
@@ -19,7 +19,7 @@ public partial class Loop
 #if TASK_STATUS
 				HelperFunctions.SetStatus(task, TaskStatus.Running);
 #endif
-			task.ContinueWith((t) => {
+			task.ContinueWith(t => {
 				loop.Unref();
 				loop.Sync(() =>
 				{

@@ -1,5 +1,5 @@
 using System.Net;
-using System.Runtime.InteropServices;
+using System.Net.Sockets;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
@@ -16,7 +16,7 @@ public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, IL
     {
     }
 
-    void Bind(IPAddress ipAddress, int port, bool dualstack)
+    private void Bind(IPAddress ipAddress, int port, bool dualstack)
     {
         CheckDisposed();
 
@@ -30,7 +30,7 @@ public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, IL
 
     public void Bind(IPEndPoint endPoint)
     {
-        Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
+        endPoint.NotNull(nameof(endPoint));
         Bind(endPoint.Address, endPoint.Port, false);
     }
 
@@ -69,15 +69,15 @@ public class Tcp
     {
         CheckDisposed();
 
-        Ensure.ArgumentNotNull(ipEndPoint, nameof(ipEndPoint));
-        Ensure.ArgumentNotNull(callback, nameof(callback));
+        ipEndPoint.NotNull(nameof(ipEndPoint));
+        callback.NotNull(nameof(callback));
         Ensure.AddressFamily(ipEndPoint.Address);
 
         var cpr = new ConnectRequest();
-        cpr.Callback = (status, cpr2) => Ensure.Success(status, callback);
+        cpr.Callback = (status, cpr2) => status.Success(callback);
 
         int r;
-        if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+        if (ipEndPoint.Address.AddressFamily == AddressFamily.InterNetwork)
         {
             var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
             r = uv_tcp_connect(cpr.Handle, NativeHandle, ref address, CallbackPermaRequest.CallbackDelegate);
@@ -88,7 +88,7 @@ public class Tcp
             r = uv_tcp_connect(cpr.Handle, NativeHandle, ref address, CallbackPermaRequest.CallbackDelegate);
         }
 
-        Ensure.Success(r);
+        r.Success();
     }
 
     public bool NoDelay

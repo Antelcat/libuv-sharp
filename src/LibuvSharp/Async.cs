@@ -13,7 +13,7 @@ public class Async : CallbackHandle
 		: base(loop, HandleType.UV_ASYNC)
 	{
 		var r = uv_async_init(loop.NativeHandle, NativeHandle, uv_callback);
-		Ensure.Success(r);
+		r.Success();
 	}
 
 

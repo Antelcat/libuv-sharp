@@ -7,11 +7,11 @@ public abstract unsafe class Handle : IHandle, IDisposable
 {
 	public Loop Loop { get; protected set; }
 
-	public IntPtr NativeHandle { get; protected set; }
+	public IntPtr NativeHandle { get; private set; }
 
 	internal GCHandle GCHandle { get; set; }
 
-	uv_handle_t *handle {
+	private uv_handle_t * handle {
 		get {
 			CheckDisposed();
 			return (uv_handle_t *)NativeHandle;
@@ -23,16 +23,14 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		set => handle->data = value;
 	}
 
-	internal static T FromIntPtr<T>(IntPtr ptr)
-	{
-		return (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
-	}
+	internal static T FromIntPtr<T>(IntPtr ptr) => 
+		(T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
 
 	public HandleType HandleType => handle->type;
 
 	internal Handle(Loop loop, IntPtr handle)
 	{
-		Ensure.ArgumentNotNull(loop, "loop");
+		loop.NotNull(nameof(loop));
 
 		NativeHandle = handle;
 		GCHandle = GCHandle.Alloc(this);
@@ -44,56 +42,40 @@ public abstract unsafe class Handle : IHandle, IDisposable
 	}
 
 	internal Handle(Loop loop, int size)
-		: this(loop, UV.Alloc(size))
-	{
-	}
+		: this(loop, UV.Alloc(size)) { }
 
 	internal Handle(Loop loop, HandleType handleType)
-		: this(loop, Size(handleType))
-	{
-	}
+		: this(loop, Size(handleType)) { }
 
 	internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int> constructor)
-		: this(loop, handleType)
-	{
-		Construct(constructor);
-	}
+		: this(loop, handleType) => Construct(constructor);
 
 	internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int, int> constructor, int arg1)
-		: this(loop, handleType)
-	{
-		Construct(constructor, arg1);
-	}
+		: this(loop, handleType) => Construct(constructor, arg1);
 
 	internal void Construct(Func<IntPtr, IntPtr, int> constructor)
 	{
-		var r = constructor(Loop.NativeHandle, NativeHandle);
-		Ensure.Success(r);
+		constructor(Loop.NativeHandle, NativeHandle).Success();
 	}
 
 	internal void Construct(Func<IntPtr, IntPtr, int, int> constructor, int arg1)
 	{
-		var r = constructor(Loop.NativeHandle, NativeHandle, arg1);
-		Ensure.Success(r);
+		constructor(Loop.NativeHandle, NativeHandle, arg1).Success();
 	}
 
 	internal void Construct(Func<IntPtr, IntPtr, int, int, int> constructor, int arg1, int arg2)
 	{
-		var r = constructor(Loop.NativeHandle, NativeHandle, arg1, arg2);
-		Ensure.Success(r);
+		constructor(Loop.NativeHandle, NativeHandle, arg1, arg2).Success();
 	}
 
 	public event Action? Closed;
 
+	private Action? closeCallback;
 
-	Action? closeCallback;
-
-	static close_callback close_cb = CloseCallback;
-
-	static void CloseCallback(IntPtr handlePointer)
+	private static void CloseCallback(IntPtr handlePointer)
 	{
-		var handle = FromIntPtr<Handle>(handlePointer);
-		handle.Cleanup(handlePointer, handle.closeCallback);
+		var pointer = FromIntPtr<Handle>(handlePointer);
+		pointer.Cleanup(handlePointer, pointer.closeCallback);
 	}
 
 	public void Cleanup(IntPtr nativeHandle, Action? callback)
@@ -107,16 +89,14 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		Closed?.Invoke();
 		callback?.Invoke();
 
-		if (GCHandle.IsAllocated) {
-			GCHandle.Free();
-		}
+		if (GCHandle.IsAllocated) GCHandle.Free();
 	}
 
 	public void Close(Action? callback)
 	{
 		if (IsClosing || IsClosed) return;
 		closeCallback = callback;
-		uv_close(NativeHandle, close_cb);
+		uv_close(NativeHandle, CloseCallback);
 	}
 
 	public void Close()
@@ -201,7 +181,8 @@ public abstract unsafe class Handle : IHandle, IDisposable
 
 	protected void CheckDisposed()
 	{
-		if (NativeHandle == IntPtr.Zero) {
+		if (NativeHandle == IntPtr.Zero)
+		{
 			throw new ObjectDisposedException(GetType().ToString(), "handle was closed");
 		}
 	}
@@ -210,31 +191,27 @@ public abstract unsafe class Handle : IHandle, IDisposable
 	{
 		CheckDisposed();
 
-		var r = function(NativeHandle);
-		Ensure.Success(r);
+		function(NativeHandle).Success();
 	}
 
 	protected void Invoke<T1>(Func<IntPtr, T1, int> function, T1 arg1)
 	{
 		CheckDisposed();
 
-		var r = function(NativeHandle, arg1);
-		Ensure.Success(r);
+		function(NativeHandle, arg1).Success();
 	}
 
 	protected void Invoke<T1, T2>(Func<IntPtr, T1, T2, int> function, T1 arg1, T2 arg2)
 	{
 		CheckDisposed();
 
-		var r = function(NativeHandle, arg1, arg2);
-		Ensure.Success(r);
+		function(NativeHandle, arg1, arg2).Success();
 	}
 
 	protected void Invoke<T1, T2, T3>(Func<IntPtr, T1, T2, T3, int> function, T1 arg1, T2 arg2, T3 arg3)
 	{
 		CheckDisposed();
 
-		var r = function(NativeHandle, arg1, arg2, arg3);
-		Ensure.Success(r);
+		function(NativeHandle, arg1, arg2, arg3).Success();
 	}
 }

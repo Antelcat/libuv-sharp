@@ -1,6 +1,6 @@
 namespace LibuvSharp;
 
-public enum HandleType : int
+public enum HandleType
 {
 	UV_UNKNOWN_HANDLE = 0,
 	UV_ASYNC,

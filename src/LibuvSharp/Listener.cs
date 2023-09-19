@@ -24,9 +24,9 @@ public abstract class Listener<TStream> : Handle, IListener<TStream> where TStre
 
 	public int DefaultBacklog { get; set; }
 
-	static callback listen_cb = listen_callback;
+	private static callback listen_cb = listen_callback;
 
-	static void listen_callback(IntPtr handlePointer, int status)
+	private static void listen_callback(IntPtr handlePointer, int status)
 	{
 		FromIntPtr<Listener<TStream>>(handlePointer).OnConnection();
 	}
@@ -55,7 +55,7 @@ public abstract class Listener<TStream> : Handle, IListener<TStream> where TStre
 		return stream as TStream;
 	}
 
-	void OnConnection()
+	private void OnConnection()
 	{
 		Connection?.Invoke();
 	}

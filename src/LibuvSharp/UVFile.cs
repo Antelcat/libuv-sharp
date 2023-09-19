@@ -1,5 +1,5 @@
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
@@ -35,7 +35,7 @@ public class UVFile
 	public static void Open(Loop loop, string path, UVFileAccess access, Action<Exception, UVFile>? callback)
 	{
 		var fsr = new FileSystemRequest(path);
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			UVFile file = null;
 			if (fsr.Result != IntPtr.Zero) {
 				file = new UVFile(loop, fsr.Result.ToInt32());
@@ -43,7 +43,7 @@ public class UVFile
 			Ensure.Success(ex, callback, file);
 		};
 		var r = uv_fs_open(loop.NativeHandle, fsr.Handle, path, (int)access, 0, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Open(string path, UVFileAccess access, Action<Exception, UVFile>? callback)
 	{
@@ -56,7 +56,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_close(loop.NativeHandle, fsr.Handle, FileDescriptor, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	
 	public void Close(Loop loop)
@@ -77,14 +77,14 @@ public class UVFile
 	{
 		var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
 		var fsr = new FileSystemRequest();
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			Ensure.Success(ex, callback, fsr.Result.ToInt32());
 			datagchandle.Free();
 		};
 		var ptr = new IntPtr(datagchandle.AddrOfPinnedObject().ToInt64() + segment.Offset);
-		var buf = new uv_buf_t[] { new uv_buf_t(ptr, segment.Count) };
-		var r = uv_fs_read(loop.NativeHandle, fsr.Handle, FileDescriptor, buf, 1, offset, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		var buf = new[] { new uv_buf_t(ptr, segment.Count) };
+		var r   = uv_fs_read(loop.NativeHandle, fsr.Handle, FileDescriptor, buf, 1, offset, FileSystemRequest.CallbackDelegate);
+		r.Success();
 	}
 
 	public void Read(Loop loop, int offset, byte[] data, int index, int count, Action<Exception, int>? callback)
@@ -97,7 +97,7 @@ public class UVFile
 	}
 	public void Read(Loop loop, int offset, byte[] data, Action<Exception, int>? callback)
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		Read(loop, offset, data, 0, data.Length, callback);
 	}
 	public void Read(Loop loop, byte[] data, Action<Exception, int>? callback)
@@ -114,7 +114,7 @@ public class UVFile
 	}
 	public void Read(Loop loop, byte[] data)
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		Read(loop, data, 0, data.Length);
 	}
 
@@ -217,14 +217,14 @@ public class UVFile
 	{
 		var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
 		var fsr = new FileSystemRequest();
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			Ensure.Success(ex, callback, fsr.Result.ToInt32());
 			datagchandle.Free();
 		};
 		var ptr = new IntPtr(datagchandle.AddrOfPinnedObject().ToInt64() + segment.Offset);
-		var buf = new uv_buf_t[] { new uv_buf_t(ptr, segment.Count) };
-		var r = uv_fs_write(loop.NativeHandle, fsr.Handle, FileDescriptor, buf, segment.Count, offset, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		var buf = new[] { new uv_buf_t(ptr, segment.Count) };
+		var r   = uv_fs_write(loop.NativeHandle, fsr.Handle, FileDescriptor, buf, segment.Count, offset, FileSystemRequest.CallbackDelegate);
+		r.Success();
 	}
 	public void Write(Loop loop, int offset, byte[] data, int index, int count, Action<Exception, int>? callback)
 	{
@@ -252,7 +252,7 @@ public class UVFile
 	}
 	public void Write(Loop loop, byte[] data)
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		Write(loop, data, 0, data.Length);
 	}
 
@@ -282,7 +282,7 @@ public class UVFile
 	}
 	public void Write(byte[] data)
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		Write(data, 0, data.Length);
 	}
 
@@ -387,13 +387,13 @@ public class UVFile
 	public static void Stat(Loop loop, string path, Action<Exception, UVFileStat>? callback)
 	{
 		var fsr = new FileSystemRequest();
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			if (callback != null) {
 				Ensure.Success(ex, callback, new UVFileStat(fsr.stat));
 			}
 		};
 		var r = uv_fs_stat(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Stat(string path, Action<Exception, UVFileStat> callback)
 	{
@@ -403,13 +403,13 @@ public class UVFile
 	public void Stat(Loop loop, Action<Exception, UVFileStat>? callback)
 	{
 		var fsr = new FileSystemRequest();
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			if (callback != null) {
 				Ensure.Success(ex, callback, new UVFileStat(fsr.stat));
 			}
 		};
 		var r = uv_fs_fstat(loop.NativeHandle, fsr.Handle, FileDescriptor, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 
 	public void Sync(Loop loop, Action<Exception>? callback)
@@ -417,7 +417,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_fsync(loop.NativeHandle, fsr.Handle, FileDescriptor, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public void Sync(Loop loop)
 	{
@@ -437,7 +437,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_fdatasync(loop.NativeHandle, fsr.Handle, FileDescriptor, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public void DataSync(Loop loop)
 	{
@@ -457,7 +457,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_ftruncate(loop.NativeHandle, fsr.Handle, FileDescriptor, offset, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public void Truncate(Loop loop, int offset)
 	{
@@ -477,7 +477,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_fchmod(loop.NativeHandle, fsr.Handle, FileDescriptor, mode, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public void Chmod(Loop loop, int mode)
 	{
@@ -497,7 +497,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_chmod(loop.NativeHandle, fsr.Handle, path, mode, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Chmod(Loop loop, string path, int mode)
 	{
@@ -518,7 +518,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_chown(loop.NativeHandle, fsr.Handle, path, uid, gid, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Chown(Loop loop, string path, int uid, int gid)
 	{
@@ -538,7 +538,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_fchown(loop.NativeHandle, fsr.Handle, FileDescriptor, uid, gid, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public void Chown(Loop loop, int uid, int gid)
 	{
@@ -558,7 +558,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_unlink(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Unlink(Loop loop, string path)
 	{
@@ -578,7 +578,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_link(loop.NativeHandle, fsr.Handle, path, newPath, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Link(Loop loop, string path, string newPath)
 	{
@@ -599,7 +599,7 @@ public class UVFile
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_symlink(loop.NativeHandle, fsr.Handle, path, newPath, 0, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Symlink(Loop loop, string path, string newPath)
 	{
@@ -618,7 +618,7 @@ public class UVFile
 	public static void Readlink(Loop loop, string path, Action<Exception, string> callback)
 	{
 		var fsr = new FileSystemRequest(path);
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			string? res = null;
 			if (ex == null) {
 				res = Marshal.PtrToStringAuto(fsr.Pointer);
@@ -626,7 +626,7 @@ public class UVFile
 			Ensure.Success(ex, callback, res);
 		};
 		var r = uv_fs_readlink(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Readlink(string path, Action<Exception, string> callback)
 	{

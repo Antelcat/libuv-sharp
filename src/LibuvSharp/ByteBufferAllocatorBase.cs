@@ -20,7 +20,7 @@ public abstract class ByteBufferAllocatorBase : IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	void Alloc(IntPtr data, int size, out uv_buf_t buf)
+	private void Alloc(IntPtr data, int size, out uv_buf_t buf)
 	{
 		IntPtr ptr;
 		size = Alloc(size, out ptr);

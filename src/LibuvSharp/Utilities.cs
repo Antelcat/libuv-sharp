@@ -15,7 +15,7 @@ public static partial class UtilitiesExtensions
 		Action<Exception>? call = null;
 		void Complete() => call?.Invoke(null);
 
-		call = (ex) => {
+		call = ex => {
 			if (done) {
 				return;
 			}
@@ -24,9 +24,7 @@ public static partial class UtilitiesExtensions
 			readStream.Complete -= Complete;
 
 			done = true;
-			if (callback != null) {
-				callback(ex);
-			}
+			callback?.Invoke(ex);
 		};
 
 		readStream.Data += (data => {

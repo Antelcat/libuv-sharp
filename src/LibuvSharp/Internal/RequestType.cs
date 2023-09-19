@@ -1,6 +1,6 @@
 namespace LibuvSharp;
 
-enum RequestType : int
+internal enum RequestType
 {
 	UV_UNKNOWN_REQ = 0,
 	UV_REQ,

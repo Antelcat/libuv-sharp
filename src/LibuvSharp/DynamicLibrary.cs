@@ -15,18 +15,18 @@ public abstract class DynamicLibrary
 	{
 		if (UV.isUnix) {
 			return new LibuvDynamicLibrary(name);
-		} else {
-			return new WindowsDynamicLibrary(name);
 		}
+
+		return new WindowsDynamicLibrary(name);
 	}
 
 	public static DynamicLibrary Open()
 	{
 		if (UV.isUnix) {
 			return new LibuvDynamicLibrary();
-		} else {
-			return new WindowsDynamicLibrary();
 		}
+
+		return new WindowsDynamicLibrary();
 	}
 
 	public abstract bool Closed { get; }
@@ -35,13 +35,13 @@ public abstract class DynamicLibrary
 	public abstract IntPtr GetSymbol(string name);
 }
 
-class LibuvDynamicLibrary : DynamicLibrary
+internal class LibuvDynamicLibrary : DynamicLibrary
 {
 	private IntPtr handle = IntPtr.Zero;
 
 	public override bool Closed => handle == IntPtr.Zero;
 
-	void Check(int ret)
+	private void Check(int ret)
 	{
 		if (ret < 0) {
 			throw new Exception(Marshal.PtrToStringAnsi(uv_dlerror(handle)));
@@ -56,7 +56,7 @@ class LibuvDynamicLibrary : DynamicLibrary
 
 	public LibuvDynamicLibrary(string library)
 	{
-		Ensure.ArgumentNotNull(library, "library");
+		library.NotNull("library");
 
 		handle = Marshal.AllocHGlobal(28);
 		Check(uv_dlopen(library, handle));
@@ -86,9 +86,9 @@ class LibuvDynamicLibrary : DynamicLibrary
 	}
 }
 
-class WindowsDynamicLibrary : DynamicLibrary
+internal class WindowsDynamicLibrary : DynamicLibrary
 {
-	IntPtr handle = IntPtr.Zero;
+	private IntPtr handle = IntPtr.Zero;
 
 	public void Check(IntPtr ptr)
 	{
@@ -106,7 +106,7 @@ class WindowsDynamicLibrary : DynamicLibrary
 
 	public WindowsDynamicLibrary(string name)
 	{
-		Ensure.ArgumentNotNull(name, "name");
+		name.NotNull("name");
 
 		Check(LoadLibraryEx(name, IntPtr.Zero, LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH));
 	}

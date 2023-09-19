@@ -14,13 +14,13 @@ public static class IMessageSenderExtensions
 	public static Task SendAsync<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		return HelperFunctions.Wrap(ipAddress, port, data, sender.Send<TMessage>);
+		return HelperFunctions.Wrap(ipAddress, port, data, sender.Send);
 	}
 
 	public static Task SendAsync<TMessage>(this IMessageSender<TMessage> sender, string ipAddress, int port, byte[] data, int index, int count)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		return HelperFunctions.Wrap(ipAddress, port, data, index, count, sender.Send<TMessage>);
+		return HelperFunctions.Wrap(ipAddress, port, data, index, count, sender.Send);
 	}
 
 	#endregion
@@ -30,13 +30,13 @@ public static class IMessageSenderExtensions
 	public static Task SendAsync<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		return HelperFunctions.Wrap(ipAddress, port, data, sender.Send<TMessage>);
+		return HelperFunctions.Wrap(ipAddress, port, data, sender.Send);
 	}
 
 	public static Task SendAsync<TMessage>(this IMessageSender<TMessage> sender, IPAddress ipAddress, int port, byte[] data, int index, int count)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		return HelperFunctions.Wrap(ipAddress, port, data, index, count, sender.Send<TMessage>);
+		return HelperFunctions.Wrap(ipAddress, port, data, index, count, sender.Send);
 	}
 
 	#endregion

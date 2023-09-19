@@ -10,7 +10,7 @@ public class UVDirectory
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_mkdir(loop.NativeHandle, fsr.Handle, path, mode, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Create(Loop loop, string path, int mode)
 	{
@@ -46,7 +46,7 @@ public class UVDirectory
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_rmdir(loop.NativeHandle, fsr.Handle, path, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Delete(Loop loop, string path)
 	{
@@ -66,7 +66,7 @@ public class UVDirectory
 		var fsr = new FileSystemRequest();
 		fsr.Callback = callback;
 		var r = uv_fs_rename(loop.NativeHandle, fsr.Handle, path, newPath, fsr.End);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Rename(Loop loop, string path, string newPath)
 	{
@@ -84,7 +84,7 @@ public class UVDirectory
 	public static void Read(Loop loop, string path, Action<Exception, UVDirectoryEntity[]> callback)
 	{
 		var fsr = new FileSystemRequest();
-		fsr.Callback = (ex) => {
+		fsr.Callback = ex => {
 			if (ex != null) {
 				callback(ex, null);
 				return;
@@ -99,7 +99,7 @@ public class UVDirectory
 			Ensure.Success(ex, callback, list.ToArray());
 		};
 		var r = uv_fs_scandir(loop.NativeHandle, fsr.Handle, path, 0, FileSystemRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 	public static void Read(string path, Action<Exception, UVDirectoryEntity[]> callback)
 	{

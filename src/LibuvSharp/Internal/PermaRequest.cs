@@ -54,7 +54,7 @@ internal unsafe class PermaRequest : IDisposable
 		Handle = IntPtr.Zero;
 	}
 
-	public static unsafe T? GetObject<T>(IntPtr ptr) where T : class
+	public static T? GetObject<T>(IntPtr ptr) where T : class
 	{
 		var req = (uv_req_t *)ptr.ToPointer();
 		return GCHandle.FromIntPtr(req->data).Target as T;

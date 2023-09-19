@@ -1,11 +1,10 @@
-using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
 public class LoopBackend
 {
-	IntPtr nativeHandle;
+	private readonly IntPtr nativeHandle;
 
 	internal LoopBackend(Loop loop)
 	{

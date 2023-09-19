@@ -1,6 +1,6 @@
 namespace LibuvSharp;
 
-class HelperFunctions
+internal class HelperFunctions
 {
 #if TASK_STATUS
 		static System.Reflection.FieldInfo monoStatusField;
@@ -33,7 +33,7 @@ class HelperFunctions
 	{
 		var finished = false;
 
-		return (Exception? exception, T value) => {
+		return (exception, value) => {
 			if (finished) {
 				return;
 			}
@@ -52,7 +52,7 @@ class HelperFunctions
 
 	public static Action<Exception?> Exception(TaskCompletionSource<object> tcs)
 	{
-		return (Exception? exception) => {
+		return exception => {
 			if (exception != null) {
 				tcs.SetException(exception);
 			} else {
@@ -63,7 +63,7 @@ class HelperFunctions
 
 	public static Action<Exception?, TResult> Exception<TResult>(TaskCompletionSource<TResult> tcs)
 	{
-		return (Exception? exception, TResult result) => {
+		return (exception, result) => {
 			if (exception != null) {
 				tcs.SetException(exception);
 			} else {
@@ -171,7 +171,7 @@ class HelperFunctions
 		var tcs = new TaskCompletionSource<TResult>();
 		try {
 			var res = default(TResult);
-			res = func(arg1, (ex) => {
+			res = func(arg1, ex => {
 				if (ex == null) {
 					tcs.SetResult(res);
 				} else {
@@ -191,7 +191,7 @@ class HelperFunctions
 		var tcs = new TaskCompletionSource<TResult>();
 		try {
 			var res = default(TResult);
-			res = func(arg1, arg2, (ex) => {
+			res = func(arg1, arg2, ex => {
 				if (ex == null) {
 					tcs.SetResult(res);
 				} else {
@@ -212,7 +212,7 @@ class HelperFunctions
 		var tcs = new TaskCompletionSource<TResult>();
 		try {
 			var res = default(TResult);
-			res = func(arg1, arg2, arg3, (ex) => {
+			res = func(arg1, arg2, arg3, ex => {
 				if (ex == null) {
 					tcs.SetResult(res);
 				} else {

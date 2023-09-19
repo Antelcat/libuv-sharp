@@ -2,17 +2,16 @@ using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 namespace LibuvSharp;
 
-enum uv_run_mode : int
+internal enum uv_run_mode
 {
 	UV_RUN_DEFAULT = 0,
 	UV_RUN_ONCE,
 	UV_RUN_NOWAIT
-};
+}
 
 public partial class Loop : IDisposable
 {
-	
-	static Loop? @default;
+	private static Loop? @default;
 
 	public static Loop Default => @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
 
@@ -23,8 +22,8 @@ public partial class Loop : IDisposable
 
 	public ByteBufferAllocatorBase? ByteBufferAllocator { get; protected set; }
 
-	Async async;
-	AsyncCallback callback;
+	private readonly Async         async;
+	private readonly AsyncCallback callback;
 
 	internal Loop(IntPtr handle, ByteBufferAllocatorBase allocator)
 	{
@@ -55,15 +54,14 @@ public partial class Loop : IDisposable
 	{
 	}
 
-	static IntPtr CreateLoop()
+	private static IntPtr CreateLoop()
 	{
 		var ptr = UV.Alloc(uv_loop_size().ToInt32());
-		var r = uv_loop_init(ptr);
-		Ensure.Success(r);
+		uv_loop_init(ptr).Success();
 		return ptr;
 	}
 
-	unsafe uv_loop_t* loop_t => (uv_loop_t*)NativeHandle;
+	private unsafe uv_loop_t* loop_t => (uv_loop_t*)NativeHandle;
 
 	public unsafe uint ActiveHandlesCount => loop_t->active_handles;
 
@@ -178,51 +176,47 @@ public partial class Loop : IDisposable
 		}
 
 		var r = uv_loop_close(NativeHandle);
-		Ensure.Success(r);
+		r.Success();
 	}
 
-	static walk_cb walk_callback = WalkCallback;
-	static void WalkCallback(IntPtr handle, IntPtr arg)
+	private static walk_cb walk_callback = WalkCallback;
+
+	private static void WalkCallback(IntPtr handle, IntPtr arg)
 	{
 		var gchandle = GCHandle.FromIntPtr(arg);
 		(gchandle.Target as Action<IntPtr>)?.Invoke(handle);
 	}
 
-	public void Walk(Action<IntPtr> callback)
+	public void Walk(Action<IntPtr> cb)
 	{
-		var gchandle = GCHandle.Alloc(callback, GCHandleType.Normal);
-		uv_walk(NativeHandle, walk_callback, GCHandle.ToIntPtr(gchandle));
-		gchandle.Free();
+		var gcHandle = GCHandle.Alloc(cb, GCHandleType.Normal);
+		uv_walk(NativeHandle, walk_callback, GCHandle.ToIntPtr(gcHandle));
+		gcHandle.Free();
 	}
 
 	public IntPtr[] Handles {
 		get {
 			var list = new List<IntPtr>();
-			Walk((handle) => list.Add(handle));
+			Walk(handle => list.Add(handle));
 			return list.ToArray();
 		}
 	}
 
-	internal Dictionary<IntPtr, Handle> handles = new Dictionary<IntPtr, Handle>();
+	internal readonly Dictionary<IntPtr, Handle> handles = new();
 
-	public Handle GetHandle(IntPtr ptr)
+	public Handle? GetHandle(IntPtr ptr)
 	{
-		Handle handle;
-		if (handles.TryGetValue(ptr, out handle)) {
-			return handle;
-		} else {
-			return null;
-		}
+		return handles.TryGetValue(ptr, out var handle) ? handle : null;
 	}
 
-	public Handle[] ActiveHandles {
+	public Handle?[] ActiveHandles {
 		get {
 			var tmp = Handles;
-			Handle[] handles = new Handle[tmp.Length];
+			var ret = new Handle?[tmp.Length];
 			for (var i = 0; i < tmp.Length; i++) {
-				handles[i] = GetHandle(tmp[i]);
+				ret[i] = GetHandle(tmp[i]);
 			}
-			return handles;
+			return ret;
 		}
 	}
 
@@ -245,8 +239,8 @@ public partial class Loop : IDisposable
 		RefCount--;
 	}
 
-	LoopBackend? loopBackend;
-	public LoopBackend Backend => loopBackend ??= new LoopBackend(this);
+	private LoopBackend? loopBackend;
+	public  LoopBackend  Backend => loopBackend ??= new LoopBackend(this);
 
 	public void Stop()
 	{

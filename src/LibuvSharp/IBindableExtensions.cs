@@ -8,7 +8,7 @@ public static class IBindableExtensions
 		IPAddress ipAddress, 
 		int port)
 	{
-		Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+		ipAddress.NotNull("ipAddress");
 		bindable.Bind(new IPEndPoint(ipAddress, port));
 	}
 
@@ -16,7 +16,7 @@ public static class IBindableExtensions
 		string ipAddress, 
 		int port)
 	{
-		Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+		ipAddress.NotNull("ipAddress");
 		bindable.Bind(IPAddress.Parse(ipAddress), port);
 	}
 }

@@ -1,5 +1,7 @@
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Text;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
@@ -36,7 +38,7 @@ public static class UV
     {
         sockaddr_in address;
         var r = uv_ip4_addr(ip, port, out address);
-        Ensure.Success(r);
+        r.Success();
         return address;
     }
 
@@ -44,7 +46,7 @@ public static class UV
     {
         sockaddr_in6 address;
         var r = uv_ip6_addr(ip, port, out address);
-        Ensure.Success(r);
+        r.Success();
         return address;
     }
 
@@ -55,7 +57,7 @@ public static class UV
     }
 
 
-    static bool IsMapping(byte[] data)
+    private static bool IsMapping(byte[] data)
     {
         if (data.Length != 16)
         {
@@ -73,7 +75,7 @@ public static class UV
         return data[10] == data[11] && data[11] == 0xff;
     }
 
-    static IPAddress GetMapping(byte[] data)
+    private static IPAddress GetMapping(byte[] data)
     {
         var ip = new byte[4];
         for (var i = 0; i < 4; i++)
@@ -92,12 +94,12 @@ public static class UV
         r = sa->sin_family == 2
             ? uv_ip4_name(sockaddr, addr, (IntPtr)addr.Length)
             : uv_ip6_name(sockaddr, addr, (IntPtr)addr.Length);
-        Ensure.Success(r);
+        r.Success();
 
-        var ip = IPAddress.Parse(System.Text.Encoding.ASCII.GetString(addr, 0, strlen(addr)));
+        var ip = IPAddress.Parse(Encoding.ASCII.GetString(addr, 0, strlen(addr)));
 
         var bytes = ip.GetAddressBytes();
-        if (map && ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 && IsMapping(bytes))
+        if (map && ip.AddressFamily == AddressFamily.InterNetworkV6 && IsMapping(bytes))
         {
             ip = GetMapping(bytes);
         }
@@ -105,7 +107,7 @@ public static class UV
         return new IPEndPoint(ip, ntohs(sa->sin_port));
     }
 
-    static int strlen(byte[] bytes)
+    private static int strlen(byte[] bytes)
     {
         var i = 0;
         while (i < bytes.Length && bytes[i] != 0)
@@ -123,7 +125,7 @@ public static class UV
     }
 
 #if DEBUG
-    static HashSet<IntPtr> pointers = new HashSet<IntPtr>();
+    private static HashSet<IntPtr> pointers = new HashSet<IntPtr>();
 #endif
 
     internal static IntPtr Alloc(RequestType type)
@@ -213,7 +215,7 @@ public static class UV
         var ptr = new IntPtr(&addr);
         var length = sizeof(sockaddr_in6);
         var r = getsockname(handle.NativeHandle, ptr, ref length);
-        Ensure.Success(r);
+        r.Success();
         return GetIPEndPoint(ptr, true);
     }
 
@@ -226,7 +228,7 @@ public static class UV
         Ensure.AddressFamily(ipAddress);
 
         int r;
-        if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+        if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
         {
             var address = ToStruct(ipAddress.ToString(), port);
             r = bind(handle.NativeHandle, ref address, 0);
@@ -237,7 +239,7 @@ public static class UV
             r = bind6(handle.NativeHandle, ref address, (uint)(dualstack ? 0 : 1));
         }
 
-        Ensure.Success(r);
+        r.Success();
     }
 
     internal delegate int callback(IntPtr handle, ref IntPtr size);
@@ -250,7 +252,7 @@ public static class UV
             ptr = Marshal.AllocHGlobal(size);
             var sizePointer = (IntPtr)size;
             var r = func(ptr, ref sizePointer);
-            Ensure.Success(r);
+            r.Success();
             return Marshal.PtrToStringAuto(ptr, sizePointer.ToInt32());
         }
         finally
@@ -269,7 +271,7 @@ public static class UV
         {
             ptr = Marshal.AllocHGlobal(size);
             var r = func(ptr, (IntPtr)size);
-            Ensure.Success(r);
+            r.Success();
             return Marshal.PtrToStringAuto(ptr);
         }
         finally

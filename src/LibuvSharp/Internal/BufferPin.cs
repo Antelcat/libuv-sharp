@@ -2,9 +2,9 @@ using System.Runtime.InteropServices;
 
 namespace LibuvSharp;
 
-class BufferPin : IDisposable
+internal class BufferPin : IDisposable
 {
-	public byte[] Buffer { get; protected set; }
+	public byte[]   Buffer   { get; protected set; }
 	public GCHandle GCHandle { get; protected set; }
 
 	public BufferPin(int count)
@@ -30,15 +30,15 @@ class BufferPin : IDisposable
 	public BufferPin(byte[] buffer, IntPtr offset, IntPtr count)
 	{
 		Buffer = buffer;
-		Offset = (IntPtr)offset;
-		Count = (IntPtr)count;
+		Offset = offset;
+		Count  = count;
 		Alloc();
 	}
 
 	public void Alloc()
 	{
 		GCHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-		Pointer = GCHandle.AddrOfPinnedObject();
+		Pointer  = GCHandle.AddrOfPinnedObject();
 	}
 
 	~BufferPin()
@@ -54,16 +54,18 @@ class BufferPin : IDisposable
 
 	protected virtual void Dispose(bool disposing)
 	{
-		if (GCHandle.IsAllocated) {
+		if (GCHandle.IsAllocated)
+		{
 			GCHandle.Free();
 		}
+
 		Pointer = IntPtr.Zero;
 	}
 
 	public IntPtr Pointer { get; protected set; }
 
 	public IntPtr Offset { get; protected set; }
-	public IntPtr Count { get; protected set; }
+	public IntPtr Count  { get; protected set; }
 
 	public IntPtr Start => At(Offset);
 
@@ -73,10 +75,12 @@ class BufferPin : IDisposable
 	{
 		return At((IntPtr)offset);
 	}
+
 	public IntPtr At(long offset)
 	{
 		return At((IntPtr)offset);
 	}
+
 	public IntPtr At(IntPtr offset)
 	{
 		return (IntPtr)(Pointer.ToInt64() + offset.ToInt64());

@@ -37,7 +37,7 @@ public class UVFileStream
 		Loop = loop;
 	}
 
-	UVFile? uvfile;
+	private UVFile? uvfile;
 
 	public void OpenRead(string path, Action<Exception> callback)
 	{
@@ -51,7 +51,7 @@ public class UVFileStream
 
 	public void Open(string path, UVFileAccess access, Action<Exception>? callback)
 	{
-		Ensure.ArgumentNotNull(callback, "path");
+		callback.NotNull("path");
 
 		switch (access) {
 			case UVFileAccess.Read:
@@ -70,9 +70,7 @@ public class UVFileStream
 
 		UVFile.Open(Loop, path, access, (ex, file) => {
 			uvfile = file;
-			if (callback != null) {
-				callback(ex);
-			}
+			callback?.Invoke(ex);
 		});
 	}
 
@@ -92,11 +90,11 @@ public class UVFileStream
 
 	public bool Readable { get; private set; }
 
-	byte[] buffer = new byte[0x1000];
-	bool reading = false;
-	int readposition = 0;
+	private byte[] buffer = new byte[0x1000];
+	private bool   reading;
+	private int    readposition;
 
-	void HandleRead(Exception? ex, int size)
+	private void HandleRead(Exception? ex, int size)
 	{
 		if (!reading) {
 			return;
@@ -108,7 +106,7 @@ public class UVFileStream
 		}
 
 		if (size == 0) {
-			uvfile.Close((ex2) => {
+			uvfile.Close(ex2 => {
 				OnComplete();
 			});
 			return;
@@ -122,7 +120,7 @@ public class UVFileStream
 		}
 	}
 
-	void WorkRead()
+	private void WorkRead()
 	{
 		uvfile.Read(Loop, readposition, new ArraySegment<byte>(buffer, 0, buffer.Length), HandleRead);
 	}
@@ -138,33 +136,29 @@ public class UVFileStream
 		reading = false;
 	}
 
-	void OnData(ArraySegment<byte> data)
+	private void OnData(ArraySegment<byte> data)
 	{
-		if (Data != null) {
-			Data(data);
-		}
+		Data?.Invoke(data);
 	}
 	public event Action<ArraySegment<byte>> Data;
 
-	int writeoffset = 0;
-	Queue<Tuple<ArraySegment<byte>, Action<Exception>>> queue = new Queue<Tuple<ArraySegment<byte>, Action<Exception>>>();
+	private int                                                 writeoffset;
+	private Queue<Tuple<ArraySegment<byte>, Action<Exception>>> queue = new Queue<Tuple<ArraySegment<byte>, Action<Exception>>>();
 
-	void HandleWrite(Exception ex, int size)
+	private void HandleWrite(Exception ex, int size)
 	{
 		var tuple = queue.Dequeue();
 
 		WriteQueueSize -= tuple.Item1.Count;
 
 		var cb = tuple.Item2;
-		if (cb != null) {
-			cb(ex);
-		}
+		cb?.Invoke(ex);
 
 		writeoffset += size;
 		WorkWrite();
 	}
 
-	void WorkWrite()
+	private void WorkWrite()
 	{
 		if (queue.Count == 0) {
 			if (shutdown) {
@@ -179,18 +173,16 @@ public class UVFileStream
 		}
 	}
 
-	void Finish(Exception ex)
+	private void Finish(Exception ex)
 	{
-		uvfile.Close((ex2) => {
+		uvfile.Close(ex2 => {
 			uvfile = null;
 			IsClosing = false;
-			if (shutdownCallback != null) {
-				shutdownCallback(ex ?? ex2);
-			}
+			shutdownCallback?.Invoke(ex ?? ex2);
 		});
 	}
 
-	void OnDrain()
+	private void OnDrain()
 	{
 		Drain?.Invoke();
 	}
@@ -210,8 +202,8 @@ public class UVFileStream
 		}
 	}
 
-	bool shutdown = false;
-	Action<Exception>? shutdownCallback;
+	private bool               shutdown;
+	private Action<Exception>? shutdownCallback;
 	public void Shutdown(Action<Exception> callback)
 	{
 		shutdown = true;
@@ -221,16 +213,16 @@ public class UVFileStream
 		}
 	}
 
-	void Close(Action<Exception> callback)
+	private void Close(Action<Exception> callback)
 	{
 		if (IsClosed || IsClosing) return;
 		IsClosing = true;
 		uvfile.Close(callback);
 	}
 
-	void Close()
+	private void Close()
 	{
-		Close((ex) => { });
+		Close(ex => { });
 	}
 
 	public void Dispose()

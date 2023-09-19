@@ -27,8 +27,8 @@ internal class CallbackPermaRequest : PermaRequest
 		var obj = GetObject<CallbackPermaRequest>(ptr);
 		if (obj == null) {
 			throw new Exception("Target is null");
-		} else {
-			obj.End(ptr, status);
 		}
+
+		obj.End(ptr, status);
 	}
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace LibuvSharp;
 
 [StructLayout(LayoutKind.Sequential)]
-unsafe struct uv_fs_t
+internal unsafe struct uv_fs_t
 {
 	public int fs_type;
 	public IntPtr loop;

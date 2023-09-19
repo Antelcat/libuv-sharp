@@ -11,7 +11,7 @@ public static class IConnectableExtensions
 		int port, 
 		Action<Exception> callback)
 	{
-		Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
+		ipAddress.NotNull(nameof(ipAddress));
 
 		client.Connect(new IPEndPoint(ipAddress, port), callback);
 	}

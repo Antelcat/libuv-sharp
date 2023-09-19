@@ -1,5 +1,4 @@
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;

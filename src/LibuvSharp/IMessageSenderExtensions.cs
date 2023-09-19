@@ -13,8 +13,8 @@ public static class IMessageSenderExtensions
 		Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(ipAddress, "ipAddress");
-		Ensure.ArgumentNotNull(data, "data");
+		ipAddress.NotNull("ipAddress");
+		data.NotNull("data");
 		sender.Send(IPAddress.Parse(ipAddress), port, data, 0, data.Length, callback);
 	}
 
@@ -28,7 +28,7 @@ public static class IMessageSenderExtensions
 		int index, int count, Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+		ipAddress.NotNull("ipAddress");
 		sender.Send(IPAddress.Parse(ipAddress), port, new ArraySegment<byte>(data, index, count), callback);
 	}
 
@@ -49,7 +49,7 @@ public static class IMessageSenderExtensions
 		Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		sender.Send(ipAddress, port, data, 0, data.Length, callback);
 	}
 
@@ -64,8 +64,8 @@ public static class IMessageSenderExtensions
 		byte[] data, int index, int count, Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(data, "data");
-		Ensure.ArgumentNotNull(ipAddress, "ipAddress");
+		data.NotNull("data");
+		ipAddress.NotNull("ipAddress");
 		sender.Send(new IPEndPoint(ipAddress, port), new ArraySegment<byte>(data, index, count), callback);
 	}
 
@@ -86,7 +86,7 @@ public static class IMessageSenderExtensions
 		Action<Exception> callback)
 		where TMessage : IMessage<TEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		sender.Send(endPoint, data, 0, data.Length, callback);
 	}
 
@@ -101,7 +101,7 @@ public static class IMessageSenderExtensions
 		byte[] data, int index, int count, Action<Exception> callback)
 		where TMessage : IMessage<TEndPoint, ArraySegment<byte>>, new()
 	{
-		Ensure.ArgumentNotNull(data, "data");
+		data.NotNull("data");
 		sender.Send(endPoint, new ArraySegment<byte>(data, index, count), callback);
 	}
 
@@ -123,7 +123,7 @@ public static class IMessageSenderExtensions
 		Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, TPayload>, new()
 	{
-		Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
+		ipAddress.NotNull(nameof(ipAddress));
 		sender.Send(IPAddress.Parse(ipAddress), port, payload, callback);
 	}
 
@@ -133,7 +133,7 @@ public static class IMessageSenderExtensions
 		TPayload payload)
 		where TMessage : IMessage<IPEndPoint, TPayload>, new()
 	{
-		Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
+		ipAddress.NotNull(nameof(ipAddress));
 		sender.Send(ipAddress, port, payload, null);
 	}
 
@@ -144,7 +144,7 @@ public static class IMessageSenderExtensions
 		Action<Exception> callback)
 		where TMessage : IMessage<IPEndPoint, TPayload>, new()
 	{
-		Ensure.ArgumentNotNull(ipAddress, nameof(ipAddress));
+		ipAddress.NotNull(nameof(ipAddress));
 		sender.Send(new IPEndPoint(ipAddress, port), payload, callback);
 	}
 
@@ -173,6 +173,6 @@ public static class IMessageSenderExtensions
 		TPayload payload)
 		where TMessage : IMessage<TEndPoint, TPayload>, new()
 	{
-		sender.Send<TMessage, TEndPoint, TPayload>(endPoint, payload, null);
+		sender.Send(endPoint, payload, null);
 	}
 }

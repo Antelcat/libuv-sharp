@@ -21,7 +21,7 @@ internal struct uv_connect_t
 
 internal unsafe class ConnectRequest : CallbackPermaRequest
 {
-	uv_connect_t *connect;
+	private uv_connect_t * connect;
 
 	public ConnectRequest()
 		: base(RequestType.UV_CONNECT)

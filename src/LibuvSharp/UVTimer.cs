@@ -1,13 +1,10 @@
-using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
 public class UVTimer : Handle
 {
-
-
-	Action onehit;
+	private Action? oneHit;
 
 	public UVTimer()
 		: this(Loop.Constructor)
@@ -19,8 +16,10 @@ public class UVTimer : Handle
 	{
 	}
 
-	public ulong LongRepeat {
-		get {
+	public ulong LongRepeat
+	{
+		get
+		{
 			CheckDisposed();
 
 			return uv_timer_get_repeat(NativeHandle);
@@ -28,7 +27,8 @@ public class UVTimer : Handle
 		set => uv_timer_set_repeat(NativeHandle, value);
 	}
 
-	public TimeSpan Repeat {
+	public TimeSpan Repeat
+	{
 		get => TimeSpan.FromMilliseconds(LongRepeat);
 		set => LongRepeat = (ulong)value.TotalMilliseconds;
 	}
@@ -39,47 +39,50 @@ public class UVTimer : Handle
 	{
 		CheckDisposed();
 
-		if (Running) {
+		if (Running)
+		{
 			Stop();
 		}
-		Running = true;
+
+		Running    = true;
 		LongRepeat = repeat;
 
 		var r = uv_timer_start(NativeHandle, cb, timeout, repeat);
-		Ensure.Success(r);
+		r.Success();
 	}
 
-	static uv_timer_cb cb = OnTick;
+	private uv_timer_cb cb = OnTick;
 
-	static void OnTick(IntPtr handle)
+	private static void OnTick(IntPtr handle)
 	{
 		FromIntPtr<UVTimer>(handle).OnTick();
 	}
 
-	void OnTick()
+	private void OnTick()
 	{
-		var cb = onehit;
-		if (cb != null) {
+		var action = oneHit;
+		if (action != null)
+		{
 			// ensure onehit is null when invoking
-			onehit = null;
-			cb();
+			oneHit = null;
+			action();
 		}
 
-		if (Tick != null) {
-			Tick();
-		}
+		Tick?.Invoke();
 	}
 
-	public event Action Tick;
+	public event Action? Tick;
 
 	public void Start(ulong repeat)
 	{
 		Start(0, repeat);
 	}
+
 	public void Start(TimeSpan timeout, TimeSpan repeat)
 	{
 		Start((ulong)timeout.TotalMilliseconds, (ulong)repeat.TotalMilliseconds);
 	}
+
 	public void Start(TimeSpan repeat)
 	{
 		Start(TimeSpan.Zero, repeat);
@@ -87,9 +90,10 @@ public class UVTimer : Handle
 
 	public void Start(ulong timeout, Action callback)
 	{
-		onehit = callback;
+		oneHit = callback;
 		Start(timeout, 0);
 	}
+
 	public void Start(TimeSpan timeout, Action callback)
 	{
 		Start((ulong)timeout.TotalMilliseconds, callback);
@@ -99,10 +103,11 @@ public class UVTimer : Handle
 	{
 		CheckDisposed();
 
-		if (Running) {
-			var r = uv_timer_stop(NativeHandle);
-			Ensure.Success(r);
+		if (Running)
+		{
+			uv_timer_stop(NativeHandle).Success();
 		}
+
 		Running = false;
 	}
 
@@ -114,10 +119,9 @@ public class UVTimer : Handle
 	public static UVTimer Once(Loop loop, TimeSpan timeout, Action? callback)
 	{
 		var timer = new UVTimer(loop);
-		timer.Tick += () => {
-			if (callback != null) {
-				callback();
-			}
+		timer.Tick += () =>
+		{
+			callback?.Invoke();
 			timer.Close();
 		};
 		timer.Start(timeout, TimeSpan.Zero);
@@ -132,13 +136,13 @@ public class UVTimer : Handle
 	public static UVTimer Times(Loop loop, int times, TimeSpan repeat, Action<int>? callback)
 	{
 		var timer = new UVTimer(loop);
-		var i = 0;
-		timer.Tick += () => {
+		var i     = 0;
+		timer.Tick += () =>
+		{
 			i++;
-			if (callback != null) {
-				callback(i);
-			}
-			if (i >= times) {
+			callback?.Invoke(i);
+			if (i >= times)
+			{
 				timer.Close();
 			}
 		};

@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace LibuvSharp;
+﻿namespace LibuvSharp;
 
 public abstract class CallbackHandle : Handle
 {
@@ -16,7 +14,7 @@ public abstract class CallbackHandle : Handle
 	{
 	}
 
-	static void uv_handle(IntPtr handle)
+	private static void uv_handle(IntPtr handle)
 	{
 		FromIntPtr<CallbackHandle>(handle).OnCallback();
 	}
@@ -43,6 +41,6 @@ public abstract class StartableCallbackHandle : CallbackHandle
 	{
 		CheckDisposed();
 		var r = function(NativeHandle, uv_callback);
-		Ensure.Success(r);
+		r.Success();
 	}
 }

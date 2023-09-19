@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
@@ -19,7 +18,7 @@ public enum FileSystemEvent
 
 public class FileSystemWatcher : Handle
 {
-	static uv_fs_event_cb fs_event_callback;
+	private static uv_fs_event_cb fs_event_callback;
 	static FileSystemWatcher()
 	{
 		fs_event_callback = fs_event;
@@ -35,18 +34,13 @@ public class FileSystemWatcher : Handle
 	{
 	}
 
-	public void Start(string path)
-	{
-		Start(path, FileSystemEventFlags.Default);
-	}
 
-	
-	public void Start(string path, FileSystemEventFlags flags)
+	public void Start(string path, FileSystemEventFlags flags = FileSystemEventFlags.Default)
 	{
 		Invoke(uv_fs_event_start, fs_event_callback, path, (int)flags);
 	}
 
-	static void fs_event(IntPtr handlePointer, string filename, int events, int status)
+	private static void fs_event(IntPtr handlePointer, string filename, int events, int status)
 	{
 		var handle = FromIntPtr<FileSystemWatcher>(handlePointer);
 		if (status != 0) {
@@ -59,7 +53,7 @@ public class FileSystemWatcher : Handle
 
 	public event Action<string, FileSystemEvent>? Change;
 
-	void OnChange(string filename, FileSystemEvent @event)
+	private void OnChange(string filename, FileSystemEvent @event)
 	{
 		Change?.Invoke(filename, @event);
 	}

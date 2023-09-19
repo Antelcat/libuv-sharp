@@ -15,17 +15,6 @@ public class Tests
     [Test]
     public async Task Test1()
     {
-        //SetPath();
-        var str = LibuvSharp.Libuv.Lib;
-        
-        TaskCompletionSource source = new();
-        var pipe = () =>
-        {
-            var ret = new Pipe { Writeable = true, Readable = true };
-            ret.Error += _ => Debugger.Break();
-            ret.Data  += _ => Debugger.Break();
-            return ret;
-        };
         var dic = new Dictionary<string, string>
         {
             { "MEDIASOUP_VERSION", "3.12.4" },
@@ -53,7 +42,7 @@ public class Tests
                 CurrentWorkingDirectory = @".",
                 File =
                     @"D:\Shared\WorkSpace\Git\mediasoup-sharp\src\MediasoupSharp.Test\runtimes\win-x64\native\mediasoup-worker.exe",
-                Streams = new List<UVStream> { pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), pipe(), }
+                Streams = new List<UVStream> { Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), }
             }, Console.WriteLine);
         }
         catch (Exception e)
@@ -62,6 +51,15 @@ public class Tests
         }
 
         await Task.Delay(10000);
+        return;
+
+        Pipe Pipe()
+        {
+            var ret = new Pipe { Writeable = true, Readable = true };
+            ret.Error += _ => Debugger.Break();
+            ret.Data  += _ => Debugger.Break();
+            return ret;
+        }
     }
 
 }

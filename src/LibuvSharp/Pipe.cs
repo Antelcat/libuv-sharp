@@ -15,7 +15,7 @@ public abstract class BasePipeListener<TListener, TStream>
 
     public void Bind(string name)
     {
-        Ensure.ArgumentNotNull(name, null);
+        name.NotNull(null);
         Invoke(uv_pipe_bind, name);
     }
 
@@ -42,27 +42,28 @@ public class PipeListener : BasePipeListener<PipeListener, Pipe>
     }
 }
 
-public class IPCPipeListener : BasePipeListener<IPCPipeListener, IPCPipe>
+public class IpcPipeListener : BasePipeListener<IpcPipeListener, IpcPipe>
 {
-    public IPCPipeListener()
+    public IpcPipeListener()
         : this(Loop.Constructor)
     {
+        
     }
 
-    public IPCPipeListener(Loop loop)
+    public IpcPipeListener(Loop loop)
         : base(loop, true)
     {
     }
 
     protected override UVStream Create()
     {
-        return new IPCPipe(Loop);
+        return new IpcPipe(Loop);
     }
 }
 
 public class Pipe : UVStream, IConnectable<Pipe, string>, IRemoteAddress<string>
 {
-    unsafe uv_pipe_t* pipe_t;
+    private readonly unsafe uv_pipe_t* pipeT;
 
     public Pipe()
         : this(Loop.Constructor)
@@ -77,23 +78,23 @@ public class Pipe : UVStream, IConnectable<Pipe, string>, IRemoteAddress<string>
     internal unsafe Pipe(Loop loop, bool interProcessCommunication)
         : base(loop, HandleType.UV_NAMED_PIPE, uv_pipe_init, interProcessCommunication ? 1 : 0)
     {
-        pipe_t = (uv_pipe_t*)(NativeHandle.ToInt64() + Size(HandleType.UV_STREAM));
+        pipeT = (uv_pipe_t*)(NativeHandle.ToInt64() + Size(HandleType.UV_STREAM));
     }
 
-    public unsafe bool InterProcessCommunication => pipe_t->rpc >= 1;
+    public unsafe bool InterProcessCommunication => pipeT->rpc >= 1;
 
 
     public void Connect(string name, Action<Exception> callback)
     {
         CheckDisposed();
 
-        Ensure.ArgumentNotNull(name, nameof(name));
-        Ensure.ArgumentNotNull(callback, nameof(callback));
+        name.NotNull(nameof(name));
+        callback.NotNull(nameof(callback));
 
-        var cpr = new ConnectRequest();
+        var cpr  = new ConnectRequest();
         var pipe = this;
 
-        cpr.Callback = (status, cpr2) => Ensure.Success(status, callback, name);
+        cpr.Callback = (status, cpr2) => status.Success(callback, name);
 
         uv_pipe_connect(cpr.Handle, pipe.NativeHandle, name, CallbackPermaRequest.CallbackDelegate);
     }
@@ -109,42 +110,42 @@ public class Pipe : UVStream, IConnectable<Pipe, string>, IRemoteAddress<string>
     }
 }
 
-public class IPCPipe : Pipe
+public class IpcPipe : Pipe
 {
-    public IPCPipe()
+    public IpcPipe()
         : this(Loop.Constructor)
     {
     }
 
-    public IPCPipe(Loop loop)
+    public IpcPipe(Loop loop)
         : base(loop, true)
     {
     }
 
-    public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception> callback)
+    public void Write(Handle handle, ArraySegment<byte> segment, Action<Exception>? callback)
     {
         CheckDisposed();
 
-        var datagchandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
+        var gcHandle = GCHandle.Alloc(segment.Array, GCHandleType.Pinned);
         var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
         cpr.Callback = (status, cpr2) =>
         {
-            datagchandle.Free();
-            Ensure.Success(status, callback);
+            gcHandle.Free();
+            status.Success(callback);
         };
 
-        var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + segment.Offset);
+        var ptr = (IntPtr)(gcHandle.AddrOfPinnedObject().ToInt64() + segment.Offset);
 
-        var buf = new uv_buf_t[] { new uv_buf_t(ptr, segment.Count) };
-        var r = uv_write2(cpr.Handle, NativeHandle, buf, 1, handle.NativeHandle, CallbackPermaRequest.CallbackDelegate);
-        Ensure.Success(r);
+        var buf = new[] { new uv_buf_t(ptr, segment.Count) };
+        var r   = uv_write2(cpr.Handle, NativeHandle, buf, 1, handle.NativeHandle, CallbackPermaRequest.CallbackDelegate);
+        r.Success();
     }
 
 
     protected override void OnData(ArraySegment<byte> data)
     {
         var count = uv_pipe_pending_count(NativeHandle);
-        if (count-- > 0)
+        if (count > 0)
         {
             var type = uv_pipe_pending_type(NativeHandle);
             Handle? handle = type switch

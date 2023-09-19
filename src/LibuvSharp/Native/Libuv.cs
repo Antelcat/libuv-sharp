@@ -475,10 +475,10 @@ public static class Libuv
     public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 }
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-delegate void uv_exit_cb(IntPtr handle, long exit_status, int term_signal);
+internal delegate void uv_exit_cb(IntPtr handle, long exit_status, int term_signal);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-delegate void uv_timer_cb(IntPtr loop);
+internal delegate void uv_timer_cb(IntPtr loop);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 internal delegate void read_callback(IntPtr stream, IntPtr size, uv_buf_t buf);
@@ -487,7 +487,7 @@ internal delegate void read_callback(IntPtr stream, IntPtr size, uv_buf_t buf);
 internal delegate void uv_fs_cb(IntPtr intPtr);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
+internal delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 internal delegate void callback(IntPtr req, int status);

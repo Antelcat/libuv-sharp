@@ -5,7 +5,7 @@ using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
-internal unsafe struct uv_cpu_times_t
+internal struct uv_cpu_times_t
 {
 	public ulong user;
 	public ulong nice;
@@ -14,7 +14,7 @@ internal unsafe struct uv_cpu_times_t
 	public ulong irq;
 }
 
-internal unsafe struct uv_cpu_info_t
+internal struct uv_cpu_info_t
 {
 	public IntPtr model;
 	public int speed;
@@ -57,7 +57,7 @@ public unsafe class CpuInformation
 		IntPtr info;
 		int count;
 		var r = uv_cpu_info(out info, out count);
-		Ensure.Success(r);
+		r.Success();
 
 		CpuInformation[] ret = new CpuInformation[count];
 
@@ -108,7 +108,7 @@ public unsafe class NetworkInterface
 		IntPtr interfaces;
 		int count;
 		var r = uv_interface_addresses(out interfaces, out count);
-		Ensure.Success(r);
+		r.Success();
 
 		NetworkInterface[] ret = new NetworkInterface[count];
 
@@ -163,7 +163,7 @@ public static class Computer
 	public static double Uptime {
 		get {
 			double uptime;
-			Ensure.Success(uv_uptime(out uptime));
+			uv_uptime(out uptime).Success();
 			return uptime;
 		}
 	}

@@ -14,6 +14,6 @@ public interface IUVStream<TData>
 	bool Writeable { get; }
 	event Action Drain;
 	long WriteQueueSize { get; }
-	void Write(TData data, Action<Exception> callback);
-	void Shutdown(Action<Exception> callback);
+	void Write(TData data, Action<Exception>? callback);
+	void Shutdown(Action<Exception>? callback);
 }

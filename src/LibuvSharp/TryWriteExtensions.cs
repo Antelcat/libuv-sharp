@@ -2,7 +2,7 @@
 
 namespace LibuvSharp;
 
-public static class ITryWriteExtensions
+public static class TryWriteExtensions
 {
 	public static int TryWrite(this ITryWrite<ArraySegment<byte>> handle, byte[] data, int index, int count)
 	{
@@ -11,7 +11,7 @@ public static class ITryWriteExtensions
 
 	public static int TryWrite(this ITryWrite<ArraySegment<byte>> handle, byte[] data)
 	{
-		Ensure.ArgumentNotNull(data, nameof(data));
+		data.NotNull(nameof(data));
 		return handle.TryWrite(data, 0, data.Length);
 	}
 

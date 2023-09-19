@@ -1,6 +1,6 @@
 namespace LibuvSharp.Threading.Tasks;
 
-class LoopTaskScheduler : TaskScheduler
+internal class LoopTaskScheduler : TaskScheduler
 {
 	static LoopTaskScheduler()
 	{

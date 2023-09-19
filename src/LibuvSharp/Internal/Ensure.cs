@@ -2,7 +2,7 @@ using System.Net;
 
 namespace LibuvSharp;
 
-internal class Ensure
+internal static class Ensure
 {
 	internal static Exception? Map(int systemErrorCode, string? name = null)
 	{
@@ -21,25 +21,22 @@ internal class Ensure
 				return new FileNotFoundException($"Could not find file '{path}'.", path);
 			case UVErrorCode.ENOTSUP:
 				return new NotSupportedException();
-			default:
-				break;
 		}
 
 		// everything else is a UVException
 		return new UVException(systemErrorCode);
 	}
 
-	public static void Success(int errorCode)
+	public static void Success(this int errorCode)
 	{
-		if (errorCode < 0) {
-			var e = Map(errorCode);
-			if (e != null) {
-				throw e;
-			}
+		if (errorCode >= 0) return;
+		var e = Map(errorCode);
+		if (e != null) {
+			throw e;
 		}
 	}
 
-	internal static void Success(int errorCode, Action<Exception?>? callback, string? name = null)
+	internal static void Success(this int errorCode, Action<Exception?>? callback, string? name = null)
 	{
 		callback?.Invoke(Map(errorCode));
 	}
@@ -49,7 +46,7 @@ internal class Ensure
 		callback?.Invoke(ex, arg);
 	}
 
-	public static void ArgumentNotNull(object argumentValue, string argumentName)
+	public static void NotNull(this object argumentValue, string? argumentName)
 	{
 		if (argumentValue == null) {
 			throw new ArgumentNullException(argumentName);
@@ -58,9 +55,9 @@ internal class Ensure
 
 	public static void AddressFamily(IPAddress ipAddress)
 	{
-		if ((ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) &&
-		    (ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetworkV6)) {
-			throw new ArgumentException("ipAddress has to be of AddressFamily InterNetwork or InterNetworkV6");
+		if (ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork &&
+		    ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetworkV6) {
+			throw new ArgumentException("IpAddress has to be of AddressFamily InterNetwork or InterNetworkV6");
 		}
 	}
 }

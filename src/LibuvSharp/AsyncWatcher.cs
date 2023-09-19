@@ -61,7 +61,7 @@ public class AsyncWatcher<T> : IHandle, IDisposable
 
 	public void Send(IEnumerable<T> data)
 	{
-		Ensure.ArgumentNotNull(data, nameof(data));
+		data.NotNull(nameof(data));
 
 		lock (queue) {
 			foreach (var datafile in data) {

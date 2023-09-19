@@ -1,9 +1,9 @@
-using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
-public enum Signum : int {
+public enum Signum
+{
 	SIGHUP    =  1, // Hangup (POSIX).
 	SIGINT    =  2, // Interrupt (ANSI).
 	SIGQUIT   =  3, // Quit (POSIX).
@@ -68,8 +68,8 @@ public unsafe class Process : Handle
 
 	public static string ExecutablePath => UV.ToString(4096, uv_exepath);
 
-	uv_process_options_t process_options;
-	Action<Process>? exitCallback;
+	private uv_process_options_t process_options;
+	private Action<Process>?     exitCallback;
 
 	internal Process(Loop loop, ProcessOptions options, Action<Process> exitCallback)
 		: base(loop, HandleType.UV_PROCESS)
@@ -87,7 +87,7 @@ public unsafe class Process : Handle
 		Close();
 	}
 
-	uv_process_t* process {
+	private uv_process_t* process {
 		get {
 			CheckDisposed();
 
@@ -119,7 +119,7 @@ public unsafe class Process : Handle
 	{
 		var process = new Process(loop, options, exitCallback);
 		var r = uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options);
-		Ensure.Success(r);
+		r.Success();
 		return process;
 	}
 

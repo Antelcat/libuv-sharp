@@ -1,11 +1,12 @@
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using static LibuvSharp.Libuv;
 namespace LibuvSharp;
 
 public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpReceiveMessage>, ITrySend<UdpMessage>, IBindable<Udp, IPEndPoint>
 {
-	ByteBufferAllocatorBase? allocator;
+	private ByteBufferAllocatorBase? allocator;
 	public ByteBufferAllocatorBase? ByteBufferAllocator {
 		get => allocator ?? Loop.ByteBufferAllocator;
 		set => allocator = value;
@@ -21,7 +22,7 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 	{
 	}
 
-	void Bind(IPAddress ipAddress, int port, bool dualstack)
+	private void Bind(IPAddress ipAddress, int port, bool dualstack)
 	{
 		CheckDisposed();
 		UV.Bind(this, uv_udp_bind, uv_udp_bind, ipAddress, port, dualstack);
@@ -34,7 +35,7 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 
 	public void Bind(IPEndPoint endPoint)
 	{
-		Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
+		endPoint.NotNull(nameof(endPoint));
 		Bind(endPoint.Address, endPoint.Port, false);
 	}
 
@@ -43,7 +44,7 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 	{
 		CheckDisposed();
 
-		Ensure.ArgumentNotNull(message.EndPoint, "message EndPoint");
+		message.EndPoint.NotNull("message EndPoint");
 		Ensure.AddressFamily(message.EndPoint.Address);
 
 		var ipEndPoint = message.EndPoint;
@@ -53,32 +54,33 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 		var cpr = new CallbackPermaRequest(RequestType.UV_UDP_SEND);
 		cpr.Callback = (status, cpr2) => {
 			datagchandle.Free();
-			Ensure.Success(status, callback);
+			status.Success(callback);
 		};
 
 		var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + data.Offset);
 
 		int r;
-		var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
+		var buf = new[] { new uv_buf_t(ptr, data.Count) };
 
-		if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+		if (ipEndPoint.Address.AddressFamily == AddressFamily.InterNetwork) {
 			var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 			r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
 		} else {
 			var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 			r = uv_udp_send(cpr.Handle, NativeHandle, buf, 1, ref address, CallbackPermaRequest.CallbackDelegate);
 		}
-		Ensure.Success(r);
+		r.Success();
 	}
 
-	static recv_start_callback recv_start_cb = recv_callback;
-	static void recv_callback(IntPtr handlePointer, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags)
+	private static recv_start_callback recv_start_cb = recv_callback;
+
+	private static void recv_callback(IntPtr handlePointer, IntPtr nread, ref uv_buf_t buf, IntPtr sockaddr, ushort flags)
 	{
 		var handle = FromIntPtr<Udp>(handlePointer);
 		handle.recv_callback(handlePointer, nread, sockaddr, flags);
 	}
-	
-	void recv_callback(IntPtr handle, IntPtr nread, IntPtr sockaddr, ushort flags)
+
+	private void recv_callback(IntPtr handle, IntPtr nread, IntPtr sockaddr, ushort flags)
 	{
 		var n = (int)nread;
 
@@ -103,7 +105,7 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 		CheckDisposed();
 
 		var r = uv_udp_recv_start(NativeHandle, ByteBufferAllocator.AllocCallback, recv_start_cb);
-		Ensure.Success(r);
+		r.Success();
 	}
 
 	public void Pause()
@@ -139,7 +141,7 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 
 	public unsafe int TrySend(UdpMessage message)
 	{
-		Ensure.ArgumentNotNull(message, nameof(message));
+		message.NotNull(nameof(message));
 
 		var data = message.Payload;
 		var ipEndPoint = message.EndPoint;
@@ -147,9 +149,9 @@ public class Udp : HandleBase, IMessageSender<UdpMessage>, IMessageReceiver<UdpR
 		fixed (byte* bytePtr = data.Array) {
 			var ptr = (IntPtr)(bytePtr + message.Payload.Offset);
 			int r;
-			var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
+			var buf = new[] { new uv_buf_t(ptr, data.Count) };
 
-			if (ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+			if (ipEndPoint.Address.AddressFamily == AddressFamily.InterNetwork) {
 				var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 				r = uv_udp_try_send(NativeHandle, buf, 1, ref address);
 			} else {

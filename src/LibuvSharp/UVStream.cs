@@ -3,24 +3,27 @@ using static LibuvSharp.Libuv;
 
 namespace LibuvSharp;
 
-public abstract unsafe class UVStream 
+public abstract unsafe class UVStream
 	: HandleBase, IUVStream<ArraySegment<byte>>, ITryWrite<ArraySegment<byte>>
 {
-	
-	uv_stream_t *stream;
+	private uv_stream_t* stream;
 
 	private long PendingWrites { get; set; }
 
-	public long WriteQueueSize {
-		get {
+	public long WriteQueueSize
+	{
+		get
+		{
 			CheckDisposed();
 
 			return stream->write_queue_size.ToInt64();
 		}
 	}
 
-	ByteBufferAllocatorBase? allocator;
-	public ByteBufferAllocatorBase? ByteBufferAllocator {
+	private ByteBufferAllocatorBase? allocator;
+
+	public ByteBufferAllocatorBase? ByteBufferAllocator
+	{
 		get => allocator ?? Loop.ByteBufferAllocator;
 		set => allocator = value;
 	}
@@ -28,7 +31,7 @@ public abstract unsafe class UVStream
 	internal UVStream(Loop loop, IntPtr handle)
 		: base(loop, handle)
 	{
-		stream = (uv_stream_t *)(handle.ToInt64() + Size(HandleType.UV_HANDLE));
+		stream = (uv_stream_t*)(handle.ToInt64() + Size(HandleType.UV_HANDLE));
 	}
 
 	internal UVStream(Loop loop, int size)
@@ -53,7 +56,8 @@ public abstract unsafe class UVStream
 		Construct(constructor, arg1);
 	}
 
-	internal UVStream(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int, int, int> constructor, int arg1, int arg2)
+	internal UVStream(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int, int, int> constructor, int arg1,
+		int arg2)
 		: this(loop, handleType)
 	{
 		Construct(constructor, arg1, arg2);
@@ -66,11 +70,11 @@ public abstract unsafe class UVStream
 		void Cb(IntPtr ptr, IntPtr size, uv_buf_t buf)
 		{
 			var stream = FromIntPtr<UVStream>(ptr);
-			stream.rcallback(ptr, size);
+			stream.Rcallback(ptr, size);
 		}
 
 		var r = uv_read_start(NativeHandle, ByteBufferAllocator.AllocCallback, Cb);
-		Ensure.Success(r);
+		r.Success();
 	}
 
 	public void Pause()
@@ -79,7 +83,7 @@ public abstract unsafe class UVStream
 	}
 
 
-	void rcallback(IntPtr streamPointer, IntPtr size)
+	private void Rcallback(IntPtr _, IntPtr size)
 	{
 		var nread = size.ToInt64();
 		switch (nread)
@@ -120,7 +124,7 @@ public abstract unsafe class UVStream
 
 	public event Action<ArraySegment<byte>> Data;
 
-	void OnDrain()
+	private void OnDrain()
 	{
 		Drain?.Invoke();
 	}
@@ -137,23 +141,25 @@ public abstract unsafe class UVStream
 		PendingWrites++;
 
 		var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
-		var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
-		cpr.Callback = (status, cpr2) => {
+		var cpr          = new CallbackPermaRequest(RequestType.UV_WRITE);
+		cpr.Callback = (status, cpr2) =>
+		{
 			datagchandle.Free();
 			PendingWrites--;
 
-			Ensure.Success(status, callback);
+			status.Success(callback);
 
-			if (PendingWrites == 0) {
+			if (PendingWrites == 0)
+			{
 				OnDrain();
 			}
 		};
 
 		var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + index);
 
-		var buf = new uv_buf_t[] { new uv_buf_t(ptr, count) };
-		var r = uv_write(cpr.Handle, NativeHandle, buf, 1, CallbackPermaRequest.CallbackDelegate);
-		Ensure.Success(r);
+		var buf = new[] { new uv_buf_t(ptr, count) };
+		var r   = uv_write(cpr.Handle, NativeHandle, buf, 1, CallbackPermaRequest.CallbackDelegate);
+		r.Success();
 	}
 
 	public void Write(IList<ArraySegment<byte>> buffers, Action<Exception> callback)
@@ -163,33 +169,37 @@ public abstract unsafe class UVStream
 		PendingWrites++;
 
 		int i;
-		var n = buffers.Count;
+		var n             = buffers.Count;
 		var datagchandles = new GCHandle[n];
-		var cpr = new CallbackPermaRequest(RequestType.UV_WRITE);
-		cpr.Callback = (status, cpr2) => {
+		var cpr           = new CallbackPermaRequest(RequestType.UV_WRITE);
+		cpr.Callback = (status, cpr2) =>
+		{
 			for (i = 0; i < n; ++i)
 				datagchandles[i].Free();
 
 			PendingWrites--;
 
-			Ensure.Success(status, callback);
+			status.Success(callback);
 
-			if (PendingWrites == 0) {
+			if (PendingWrites == 0)
+			{
 				OnDrain();
 			}
 		};
 		var bufs = new uv_buf_t[n];
-		for (i = 0; i < n; ++i) {
-			var data = buffers[i];
-			var index = data.Offset;
-			var count = data.Count;
+		for (i = 0; i < n; ++i)
+		{
+			var data         = buffers[i];
+			var index        = data.Offset;
+			var count        = data.Count;
 			var datagchandle = GCHandle.Alloc(data.Array, GCHandleType.Pinned);
-			var ptr = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + index);
-			bufs[i] = new uv_buf_t(ptr, count);
+			var ptr          = (IntPtr)(datagchandle.AddrOfPinnedObject().ToInt64() + index);
+			bufs[i]          = new uv_buf_t(ptr, count);
 			datagchandles[i] = datagchandle;
 		}
+
 		var r = uv_write(cpr.Handle, NativeHandle, bufs, n, CallbackPermaRequest.CallbackDelegate);
-		Ensure.Success(r);
+		r.Success();
 	}
 
 	public void Shutdown(Action<Exception>? callback)
@@ -197,19 +207,22 @@ public abstract unsafe class UVStream
 		CheckDisposed();
 
 		var cbr = new CallbackPermaRequest(RequestType.UV_SHUTDOWN);
-		cbr.Callback = (status, _) => {
-			Ensure.Success(status, (ex) => Close(() => {
-				if (callback != null) {
-					callback(ex);
-				}
+		cbr.Callback = (status, _) =>
+		{
+			status.Success(ex => Close(() =>
+			{
+				callback?.Invoke(ex);
 			}));
 		};
 		uv_shutdown(cbr.Handle, NativeHandle, CallbackPermaRequest.CallbackDelegate);
 	}
 
 	internal bool readable;
-	public bool Readable {
-		get {
+
+	public bool Readable
+	{
+		get
+		{
 			CheckDisposed();
 
 			return uv_is_readable(NativeHandle) != 0;
@@ -218,8 +231,11 @@ public abstract unsafe class UVStream
 	}
 
 	internal bool writeable;
-	public bool Writeable {
-		get {
+
+	public bool Writeable
+	{
+		get
+		{
 			CheckDisposed();
 
 			return uv_is_writable(NativeHandle) != 0;
@@ -227,17 +243,18 @@ public abstract unsafe class UVStream
 		set => writeable = value;
 	}
 
-	public unsafe int TryWrite(ArraySegment<byte> data)
+	public int TryWrite(ArraySegment<byte> data)
 	{
 		CheckDisposed();
 
-		Ensure.ArgumentNotNull(data.Array, "data");
+		data.Array.NotNull("data");
 
-		fixed (byte* bytePtr = data.Array) {
+		fixed (byte* bytePtr = data.Array)
+		{
 			var ptr = (IntPtr)(bytePtr + data.Offset);
-			var buf = new uv_buf_t[] { new uv_buf_t(ptr, data.Count) };
-			var r = uv_try_write(NativeHandle, buf, 1);
-			Ensure.Success(r);
+			var buf = new[] { new uv_buf_t(ptr, data.Count) };
+			var r   = uv_try_write(NativeHandle, buf, 1);
+			r.Success();
 			return r;
 		}
 	}

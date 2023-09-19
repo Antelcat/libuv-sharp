@@ -2,7 +2,7 @@ namespace LibuvSharp;
 
 public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
 {
-	BufferPin? pin;
+	private BufferPin? pin;
 
 	public byte[]? Buffer => pin?.Buffer;
 
@@ -20,9 +20,7 @@ public class CopyingByteBufferAllocator : ByteBufferAllocatorBase
 
 	public override void Dispose(bool disposing)
 	{
-		if (pin != null) {
-			pin.Dispose();
-		}
+		pin?.Dispose();
 		pin = null;
 	}
 
