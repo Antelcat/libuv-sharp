@@ -86,14 +86,13 @@ public static class UV
         return new IPAddress(ip);
     }
 
-    internal static unsafe IPEndPoint GetIPEndPoint(IntPtr sockaddr, bool map)
+    internal static unsafe IPEndPoint GetIPEndPoint(IntPtr sockAddr, bool map)
     {
-        var sa = (sockaddr*)sockaddr;
+        var sa = (sockaddr*)sockAddr;
         var addr = new byte[64];
-        int r;
-        r = sa->sin_family == 2
-            ? uv_ip4_name(sockaddr, addr, (IntPtr)addr.Length)
-            : uv_ip6_name(sockaddr, addr, (IntPtr)addr.Length);
+        var r = sa->sin_family == 2
+            ? uv_ip4_name(sockAddr, addr, (IntPtr)addr.Length)
+            : uv_ip6_name(sockAddr, addr, (IntPtr)addr.Length);
         r.Success();
 
         var ip = IPAddress.Parse(Encoding.ASCII.GetString(addr, 0, strlen(addr)));
@@ -107,10 +106,10 @@ public static class UV
         return new IPEndPoint(ip, ntohs(sa->sin_port));
     }
 
-    private static int strlen(byte[] bytes)
+    private static int strlen(IReadOnlyList<byte> bytes)
     {
         var i = 0;
-        while (i < bytes.Length && bytes[i] != 0)
+        while (i < bytes.Count && bytes[i] != 0)
         {
             i++;
         }
@@ -125,7 +124,7 @@ public static class UV
     }
 
 #if DEBUG
-    private static HashSet<IntPtr> pointers = new HashSet<IntPtr>();
+    private static readonly HashSet<IntPtr> Pointers = new();
 #endif
 
     internal static IntPtr Alloc(RequestType type)
@@ -142,7 +141,7 @@ public static class UV
     {
         var ptr = Marshal.AllocHGlobal(size);
 #if DEBUG
-        pointers.Add(ptr);
+        Pointers.Add(ptr);
 #endif
         return ptr;
     }
@@ -150,9 +149,9 @@ public static class UV
     internal static void Free(IntPtr ptr)
     {
 #if DEBUG
-        if (pointers.Contains(ptr))
+        if (Pointers.Contains(ptr))
         {
-            pointers.Remove(ptr);
+            Pointers.Remove(ptr);
             Marshal.FreeHGlobal(ptr);
         }
         else
@@ -164,11 +163,11 @@ public static class UV
 #endif
     }
 #if DEBUG
-    public static int PointerCount => pointers.Count;
+    public static int PointerCount => Pointers.Count;
 
     public static void PrintPointers()
     {
-        var e = pointers.GetEnumerator();
+        var e = Pointers.GetEnumerator();
         Console.Write("[");
         if (e.MoveNext())
         {

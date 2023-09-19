@@ -23,7 +23,7 @@ public static class IpcPipeExtensions
 	{
 		pipe.Write(handle, data, index, null);
 	}
-	public static void Write(this IpcPipe pipe, Handle handle, byte[] data, Action<Exception> callback)
+	public static void Write(this IpcPipe pipe, Handle handle, byte[] data, Action<Exception>? callback)
 	{
 		pipe.Write(handle, data, 0, callback);
 	}

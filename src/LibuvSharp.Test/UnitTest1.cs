@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using LibuvSharp;
+using LibuvSharp.Threading.Tasks;
 using Process = LibuvSharp.Process;
 
 namespace Libuv.Test;
@@ -22,11 +23,11 @@ public class Tests
             { "INTERACTIVE", "'true'" },
             { "MEDIASOUP_LISTEN_IP", "0.0.0.0" },
             { "MEDIASOUP_ANNOUNCED_IP", "0.0.0.0" },
-        };
+        }; 
         Process? process;
         try
         {
-            Process.Spawn(new ProcessOptions
+            process = Process.Spawn(new ProcessOptions
             {
                 Detached = false,
                 Arguments = new[]
@@ -39,7 +40,7 @@ public class Tests
                     "--rtcMinPort=20000", "--rtcMaxPort=29999"
                 },
                 Environment             = dic.Select(x => $"{x.Key}={x.Value}").ToArray(),
-                CurrentWorkingDirectory = @".",
+                CurrentWorkingDirectory = ".",
                 File =
                     @"D:\Shared\WorkSpace\Git\mediasoup-sharp\src\MediasoupSharp.Test\runtimes\win-x64\native\mediasoup-worker.exe",
                 Streams = new List<UVStream> { Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), Pipe(), }
@@ -51,6 +52,7 @@ public class Tests
         }
 
         await Task.Delay(10000);
+        
         return;
 
         Pipe Pipe()

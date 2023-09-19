@@ -84,17 +84,17 @@ internal unsafe struct uv_interface_address_t
 
 public unsafe class NetworkInterface
 {
-	internal NetworkInterface(uv_interface_address_t *iface)
+	internal NetworkInterface(uv_interface_address_t *iFace)
 	{
-		Name = Marshal.PtrToStringAnsi(iface->name);
-		Internal = iface->is_internal != 0;
-		var phys_addr = new byte[6];
-		for (var i = 0; i < phys_addr.Length; i++) {
-			phys_addr[i] = iface->phys_addr[i];
+		Name = Marshal.PtrToStringAnsi(iFace->name)!;
+		Internal = iFace->is_internal != 0;
+		var physAddr = new byte[6];
+		for (var i = 0; i < physAddr.Length; i++) {
+			physAddr[i] = iFace->phys_addr[i];
 		}
-		PhysicalAddress = new PhysicalAddress(phys_addr);
-		Address = UV.GetIPEndPoint(new IntPtr(&iface->sockaddr), false).Address;
-		Netmask = UV.GetIPEndPoint(new IntPtr(&iface->netmask), false).Address;
+		PhysicalAddress = new PhysicalAddress(physAddr);
+		Address = UV.GetIPEndPoint(new IntPtr(&iFace->sockaddr), false).Address;
+		Netmask = UV.GetIPEndPoint(new IntPtr(&iFace->netmask), false).Address;
 	}
 
 	public string Name { get; protected set; }
@@ -105,16 +105,12 @@ public unsafe class NetworkInterface
 
 	internal static NetworkInterface[] GetInterfaces()
 	{
-		IntPtr interfaces;
-		int count;
-		var r = uv_interface_addresses(out interfaces, out count);
-		r.Success();
-
-		NetworkInterface[] ret = new NetworkInterface[count];
-
-		for (var i = 0; i < count; i++) {
-			var iface = (uv_interface_address_t *)(interfaces.ToInt64() + i * sizeof(uv_interface_address_t));
-			ret[i] = new NetworkInterface(iface);
+		uv_interface_addresses(out var interfaces, out var count).Success();
+		var ret = new NetworkInterface[count];
+		for (var i = 0; i < count; i++)
+		{
+			var iFace = (uv_interface_address_t*)(interfaces.ToInt64() + i * sizeof(uv_interface_address_t));
+			ret[i] = new NetworkInterface(iFace);
 		}
 
 		uv_free_interface_addresses(interfaces, count);
@@ -124,14 +120,14 @@ public unsafe class NetworkInterface
 
 public unsafe class LoadAverage
 {
-	
+
 	internal LoadAverage()
 	{
 		var ptr = Marshal.AllocHGlobal(sizeof(double) * 3);
 		uv_loadavg(ptr);
-		Last = *((double *)ptr);
-		Five = *((double *)(ptr.ToInt64() + sizeof(double)));
-		Fifteen = *((double *)(ptr.ToInt64() + sizeof(double) * 2));
+		Last    = *(double*)ptr;
+		Five    = *(double*)(ptr.ToInt64() + sizeof(double));
+		Fifteen = *(double*)(ptr.ToInt64() + sizeof(double) * 2);
 		Marshal.FreeHGlobal(ptr);
 	}
 
@@ -162,8 +158,7 @@ public static class Computer
 
 	public static double Uptime {
 		get {
-			double uptime;
-			uv_uptime(out uptime).Success();
+			uv_uptime(out var uptime).Success();
 			return uptime;
 		}
 	}
