@@ -27,8 +27,9 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public IntPtr __Instance { get; protected set; }
-
+    public IntPtr     __Instance { get; protected set; }
+    public __Internal* Instance   => (__Internal*)__Instance;
+    
     internal static readonly ConcurrentDictionary<IntPtr, UvProcessOptionsS> NativeToManagedMap =
         new ConcurrentDictionary<IntPtr, UvProcessOptionsS>();
 
@@ -97,13 +98,14 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
+        Flags      = 0;
+        Uid        = 0;
+        Gid        = 0;
+        StdioCount = 0;
     }
 
-    public UvProcessOptionsS(UvProcessOptionsS _0)
+    public UvProcessOptionsS(UvProcessOptionsS _0) : this()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
-        __ownsNativeInstance = true;
-        __RecordNativeToManagedMapping(__Instance, this);
         *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
         if (_0.__file_OwnsNativeMemory)
             File = _0.File;
@@ -125,9 +127,9 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         NativeToManagedMap.TryRemove(__Instance, out _);
         DisposePartial(disposing);
         if (__file_OwnsNativeMemory)
-            Marshal.FreeHGlobal(((__Internal*)__Instance)->file);
+            Marshal.FreeHGlobal(Instance->file);
         if (__cwd_OwnsNativeMemory)
-            Marshal.FreeHGlobal(((__Internal*)__Instance)->cwd);
+            Marshal.FreeHGlobal(Instance->cwd);
         if (__ownsNativeInstance)
             Marshal.FreeHGlobal(__Instance);
         __Instance = IntPtr.Zero;
@@ -137,131 +139,177 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get
         {
-            var __ptr0 = ((__Internal*)__Instance)->exit_cb;
-            return __ptr0 == IntPtr.Zero? null : (UvExitCb) Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvExitCb));
+            var __ptr0 = Instance->exit_cb;
+            return __ptr0 == IntPtr.Zero
+                ? null
+                : (UvExitCb)Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvExitCb));
         }
 
-        set => ((__Internal*)__Instance)->exit_cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
+        set => Instance->exit_cb = value == null 
+            ? IntPtr.Zero 
+            : Marshal.GetFunctionPointerForDelegate(value);
     }
 
     public string? File
     {
         get => __file_OwnsNativeMemory
-            ? Marshal.PtrToStringAnsi(((__Internal*)__Instance)->file)
+            ? Marshal.PtrToStringAnsi(Instance->file)
             : null;
 
         set
         {
             if (__file_OwnsNativeMemory)
-                Marshal.FreeHGlobal(((__Internal*)__Instance)->file);
+                Marshal.FreeHGlobal(Instance->file);
             __file_OwnsNativeMemory = true;
 
-            ((__Internal*)__Instance)->file = value != null ? Marshal.StringToHGlobalAnsi(value) : IntPtr.Zero;
+            Instance->file = value != null ? Marshal.StringToHGlobalAnsi(value) : IntPtr.Zero;
         }
     }
     
     public string[]? Args
     {
-        get => __internalArgs;
+        get => Instance->args.CopyToStrings();
 
-        set => ((__Internal*)__Instance)->args = value.CopyToPointer();
+        set => Instance->args = value.CopyToPointer();
     }
 
-    private string[]? __internalArgs;
         
     public string[]? Env
     {
-        get => __internalEnv;
+        get => Instance->env.CopyToStrings();
 
-        set
-        {
-            __internalEnv                  = value;
-            ((__Internal*)__Instance)->env = value.CopyToPointer();
-        }
+        set => Instance->env = value.CopyToPointer();
     }
 
-    private string[]? __internalEnv;
 
-    public string Cwd
+    public string? Cwd
     {
-        get => MarshalUtil.GetString(Encoding.UTF8, ((__Internal*)__Instance)->cwd);
+        get => __cwd_OwnsNativeMemory ? Marshal.PtrToStringAnsi(Instance->cwd) : null;
 
         set
         {
             if (__cwd_OwnsNativeMemory)
-                Marshal.FreeHGlobal(((__Internal*)__Instance)->cwd);
+                Marshal.FreeHGlobal(Instance->cwd);
             __cwd_OwnsNativeMemory = true;
-            if (value == null)
-            {
-                ((__Internal*)__Instance)->cwd = IntPtr.Zero;
-                return;
-            }
-            var __bytes0   = Encoding.UTF8.GetBytes(value);
-            var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
-            Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
-            Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
-            ((__Internal*)__Instance)->cwd = __bytePtr0;
+            Instance->cwd = value == null
+                ? IntPtr.Zero
+                : Marshal.StringToHGlobalAnsi(value);
         }
     }
 
     public uint Flags
     {
-        get => ((__Internal*)__Instance)->flags;
+        get => Instance->flags;
 
-        set => ((__Internal*)__Instance)->flags = value;
+        set => Instance->flags = value;
     }
 
     public int StdioCount
     {
-        get => ((__Internal*)__Instance)->stdio_count;
+        get => Instance->stdio_count;
 
-        private set => ((__Internal*)__Instance)->stdio_count = value;
+        private set => Instance->stdio_count = value;
     }
 
+    private bool __stdio_hasNativeMemory;
+    
+    
+    /// <summary>
+    /// 如果改动，需要重新set
+    /// </summary>
     public UvStdioContainerS?[]? Stdio
     {
         get
         {
+            if (!__stdio_hasNativeMemory) return null;
             var ret     = new UvStdioContainerS[StdioCount];
-            var pointer = (UvStdioContainerS.__Internal*)((__Internal*)__Instance)->stdio;
             for (var i = 0; i < StdioCount; i++)
             {
-                ret[StdioCount] = UvStdioContainerS.__GetOrCreateInstance((nint)pointer);
-                pointer++;
+                var native = &((UvStdioContainerS.__Internal*)Instance->stdio)[i];
+                ret[StdioCount] = UvStdioContainerS.__GetOrCreateInstance((IntPtr)native)!;
             }
-        
+
             return ret;
         }
-        
+
         set
         {
-            if (value is null || value.Length == 0) return;
-            var start  = Marshal.AllocHGlobal(value.Length * sizeof(IntPtr));
-            var handle = start;
-            foreach (var containerS in value)
+            if (__stdio_hasNativeMemory) Marshal.FreeHGlobal(__Instance);
+            if (value is null || value.Length == 0)
             {
-                Marshal.WriteIntPtr(handle, containerS?.__Instance ?? new UvStdioContainerS
-                {
-                    Flags = UvStdioFlags.UV_IGNORE
-                }.__Instance);
-                handle = IntPtr.Add(handle, 1);
+                __stdio_hasNativeMemory = false;
+                StdioCount              = 0;
+                return;
             }
-            ((__Internal*)__Instance)->stdio = start;
-            StdioCount                       = value.Length;
+
+            __stdio_hasNativeMemory = true;
+            StdioCount              = value.Length;
+            Instance->stdio         = Marshal.AllocHGlobal(StdioCount * sizeof(UvStdioContainerS.__Internal));
+            var stdio = (UvStdioContainerS.__Internal*)Instance->stdio;
+            for (var i = 0; i < value.Length; i++)
+            {
+                var curr = value[i];
+                if (curr == null)
+                {
+                    stdio[i].flags = UvStdioFlags.UV_IGNORE;
+                }
+                else
+                {
+                    var pointer = (UvStdioContainerS.__Internal*)curr.__Instance;
+                    stdio[i].flags = pointer->flags;
+                    stdio[i].data  = pointer->data;
+                }
+            }
         }
     }
 
     public byte Uid
     {
-        get => ((__Internal*)__Instance)->uid;
+        get => Instance->uid;
 
-        set => ((__Internal*)__Instance)->uid = value;
+        set
+        {
+            Instance->uid = value;
+            if (value != 0)
+            {
+                Flags |= (uint)UvProcessFlags.UV_PROCESS_SETGID;
+            }
+            else
+            {
+                Flags -= (uint)UvProcessFlags.UV_PROCESS_SETGID;
+            }
+        }
     }
 
     public byte Gid
     {
-        get => ((__Internal*)__Instance)->gid;
+        get => Instance->gid;
 
-        set => ((__Internal*)__Instance)->gid = value;
+        set
+        {
+            Instance->gid = value;
+            if (value != 0)
+            {
+                Flags |= (uint)UvProcessFlags.UV_PROCESS_SETUID;
+            }
+            else
+            {
+                Flags -= (uint)UvProcessFlags.UV_PROCESS_SETUID;
+            }
+        }
+    }
+
+    public bool Detached
+    {
+        get => (Flags & (uint)UvProcessFlags.UV_PROCESS_DETACHED) > 0;
+        
+        set => Flags |= (uint)UvProcessFlags.UV_PROCESS_DETACHED;
+    }
+
+    public bool WindowsVerbatimArguments
+    {
+        get => (Flags & (uint)UvProcessFlags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS) > 0;
+        
+        set => Flags |= (uint)UvProcessFlags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS;
     }
 }

@@ -461,7 +461,7 @@ public unsafe partial class UvProcessS : IDisposable
             set => ((__Internal*)__Instance)->u = value.__Instance;
         }
 
-        public UvReqS NextReq
+        public UvReqS? NextReq
         {
             get
             {
@@ -469,14 +469,13 @@ public unsafe partial class UvProcessS : IDisposable
                 return __result0;
             }
 
-            set => ((__Internal*)__Instance)->next_req = value is null ? IntPtr.Zero : value.__Instance;
+            set => ((__Internal*)__Instance)->next_req = value?.__Instance ?? IntPtr.Zero;
         }
     }
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvProcessS> NativeToManagedMap =
-        new ConcurrentDictionary<IntPtr, UvProcessS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvProcessS> NativeToManagedMap = new();
 
     internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcessS managed)
     {
@@ -491,14 +490,14 @@ public unsafe partial class UvProcessS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvProcessS __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvProcessS? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
-        if (native == IntPtr.Zero)
-            return null;
-        return new UvProcessS(native.ToPointer(), skipVTables);
+        return native == IntPtr.Zero 
+            ? null 
+            : new UvProcessS(native.ToPointer(), skipVTables);
     }
 
-    internal static UvProcessS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvProcessS? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
@@ -517,7 +516,7 @@ public unsafe partial class UvProcessS : IDisposable
 
     private static void* __CopyValue(__Internal native)
     {
-        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+        var ret = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
         *(__Internal*) ret = native;
         return ret.ToPointer();
     }
@@ -538,14 +537,14 @@ public unsafe partial class UvProcessS : IDisposable
 
     public UvProcessS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
+        __Instance           = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
     public UvProcessS(UvProcessS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
+        __Instance = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);

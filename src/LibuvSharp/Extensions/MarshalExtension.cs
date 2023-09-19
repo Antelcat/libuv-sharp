@@ -15,6 +15,22 @@ internal static class MarshalExtension
         return position.Value;
     }
 
+    public static string[] CopyToStrings(this IntPtr pointer)
+    {
+        var ret = new List<string>();
+        unsafe
+        {
+            var ps = (IntPtr*)pointer.ToPointer();
+            while (*ps != IntPtr.Zero)
+            {
+                ret.Add(Marshal.PtrToStringAnsi(*ps));
+                ps++;
+            }
+        }
+
+        return ret.ToArray();
+    }
+    
     public static nint CopyToPointer(this string[]? args)
     {
         if (args == null)
@@ -29,6 +45,7 @@ internal static class MarshalExtension
             {
                 Marshal.WriteIntPtr(arr, i * sizeof(IntPtr), Marshal.StringToHGlobalAnsi(args[i]));
             }
+
             Marshal.WriteIntPtr(arr, args.Length * sizeof(IntPtr), IntPtr.Zero);
             return arr;
         }

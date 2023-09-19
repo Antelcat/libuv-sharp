@@ -87,8 +87,7 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvStdioContainerS> NativeToManagedMap =
-        new ConcurrentDictionary<IntPtr, UvStdioContainerS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvStdioContainerS> NativeToManagedMap = new();
 
     internal static void __RecordNativeToManagedMapping(IntPtr native, UvStdioContainerS managed)
     {
@@ -103,14 +102,14 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvStdioContainerS __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvStdioContainerS? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
-        if (native == IntPtr.Zero)
-            return null;
-        return new UvStdioContainerS(native.ToPointer(), skipVTables);
+        return native == IntPtr.Zero 
+            ? null 
+            : new UvStdioContainerS(native.ToPointer(), skipVTables);
     }
 
-    internal static UvStdioContainerS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvStdioContainerS? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
@@ -170,7 +169,7 @@ public unsafe partial class UvStdioContainerS : IDisposable
 
     partial void DisposePartial(bool disposing);
 
-    protected internal virtual void Dispose(bool disposing, bool callNativeDtor )
+    protected internal virtual void Dispose(bool disposing, bool callNativeDtor)
     {
         if (__Instance == IntPtr.Zero)
             return;

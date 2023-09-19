@@ -1826,11 +1826,17 @@ public unsafe partial class uv
     
     public static UvProcessS UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
     {
-        var handle = (UvProcessS?)null;
-        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
-        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
-        var __arg2 = options is null ? IntPtr.Zero : options.__Instance;
-        __Internal.UvSpawn(__arg0, __arg1, __arg2).Check();
+        loop ??= new UvLoopS();
+        var handle = new UvProcessS()
+        {
+            Loop = loop,
+        };
+        handle.Data = GCHandle.ToIntPtr(GCHandle.Alloc(handle));
+        
+        var arg0   = loop.__Instance;
+        var arg1   = handle.__Instance;
+        var arg2   = options.__Instance;
+        __Internal.UvSpawn(arg0, arg1, arg2).Check();
         return handle!;
     }
 

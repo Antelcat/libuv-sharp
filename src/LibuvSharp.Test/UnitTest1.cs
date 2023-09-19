@@ -11,7 +11,15 @@ public class Tests
     public void Setup()
     {
     }
-    
+
+    [Test]
+    public void TestMarshal()
+    {
+        var ptr  = new[] { "123" , "12" , "1" }.CopyToPointer();
+        var strs = ptr.CopyToStrings();
+        
+    }
+
     [Test]
     public async Task Test1()
     {
