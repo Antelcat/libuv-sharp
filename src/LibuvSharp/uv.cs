@@ -1821,13 +1821,17 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static UvErrnoT UvSpawn(UvLoopS loop, UvProcessS handle, UvProcessOptionsS options)
+    public static UvProcessS UvSpawn(UvProcessOptionsS options)
+        => UvSpawn(null, options);
+    
+    public static UvProcessS UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var handle = (UvProcessS?)null;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var __arg2 = options is null ? IntPtr.Zero : options.__Instance;
-        var ___ret = __Internal.UvSpawn(__arg0, __arg1, __arg2);
-        return (UvErrnoT)___ret;
+        __Internal.UvSpawn(__arg0, __arg1, __arg2).Check();
+        return handle!;
     }
 
     public static int UvProcessKill(UvProcessS _0, int signum)

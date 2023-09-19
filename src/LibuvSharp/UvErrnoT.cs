@@ -1,4 +1,16 @@
-﻿namespace LibuvSharp;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace LibuvSharp;
+
+internal static class UvErrorExtension
+{
+    public static void Check(this int error,[CallerMemberName] string name = "")
+    {
+        if (error == 0) return;
+        throw new ExternalException($"Libuv method : [ {name} ] throw an exception : [ {(UvErrnoT)error} ]");
+    }
+}
 
 public enum UvErrnoT
 {
