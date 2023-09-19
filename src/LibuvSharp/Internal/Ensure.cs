@@ -46,7 +46,7 @@ internal static class Ensure
 		callback?.Invoke(ex, arg);
 	}
 
-	public static void NotNull(this object argumentValue, string? argumentName)
+	public static void NotNull(this object? argumentValue, string? argumentName)
 	{
 		if (argumentValue == null) {
 			throw new ArgumentNullException(argumentName);
