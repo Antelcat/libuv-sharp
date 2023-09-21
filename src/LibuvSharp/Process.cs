@@ -68,10 +68,10 @@ public unsafe class Process : Handle
 
 	public static string ExecutablePath => UV.ToString(4096, uv_exepath);
 
-	private uv_process_options_t process_options;
-	private Action<Process>?     exitCallback;
+	private          uv_process_options_t process_options;
+	private readonly Action<Process>?     exitCallback;
 
-	internal Process(Loop loop, ProcessOptions options, Action<Process> exitCallback)
+	internal Process(Loop loop, ProcessOptions options, Action<Process>? exitCallback)
 		: base(loop, HandleType.UV_PROCESS)
 	{
 		this.exitCallback = exitCallback;
@@ -100,12 +100,7 @@ public unsafe class Process : Handle
 
 	public int ID => process->pid;
 
-	public static Process Spawn(ProcessOptions options)
-	{
-		return Spawn(options, null);
-	}
-
-	public static Process Spawn(ProcessOptions options, Action<Process> exitCallback)
+	public static Process Spawn(ProcessOptions options, Action<Process>? exitCallback = null)
 	{
 		return Spawn(Loop.Constructor, options, exitCallback);
 	}
@@ -115,11 +110,10 @@ public unsafe class Process : Handle
 		return Spawn(loop, options, null);
 	}
 
-	public static Process Spawn(Loop loop, ProcessOptions options, Action<Process> exitCallback)
+	public static Process Spawn(Loop loop, ProcessOptions options, Action<Process>? exitCallback)
 	{
 		var process = new Process(loop, options, exitCallback);
-		var r = uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options);
-		r.Success();
+		uv_spawn(loop.NativeHandle, process.NativeHandle, ref process.process_options).Success();
 		return process;
 	}
 

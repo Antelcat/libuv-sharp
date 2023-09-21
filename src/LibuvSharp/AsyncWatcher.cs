@@ -3,7 +3,7 @@
 public class AsyncWatcher<T> : IHandle, IDisposable
 {
 	private readonly Async async;
-	private readonly Queue<T> queue = new Queue<T>(); 
+	private readonly Queue<T> queue = new(); 
 
 	public AsyncWatcher()
 		: this(Loop.Constructor)
@@ -27,29 +27,17 @@ public class AsyncWatcher<T> : IHandle, IDisposable
 		};
 	}
 
-	public void Ref()
-	{
-		async.Ref();
-	}
+	public void Ref() => async.Ref();
 
-	public void Unref()
-	{
-		async.Unref();
-	}
+	public void Unref() => async.Unref();
 
 	public bool HasRef => async.HasRef;
 
 	public bool IsClosed => async.IsClosed;
 
-	public void Close(Action callback)
-	{
-		async.Close(callback);
-	}
+	public void Close(Action? callback) => async.Close(callback);
 
-	public void Dispose()
-	{
-		this.Close();
-	}
+	public void Dispose() => this.Close();
 
 	public void Send(T item)
 	{
@@ -71,10 +59,7 @@ public class AsyncWatcher<T> : IHandle, IDisposable
 		async.Send();
 	}
 
-	public void OnCallback(T item)
-	{
-		Callback?.Invoke(item);
-	}
+	public void OnCallback(T item) => Callback?.Invoke(item);
 
 	public event Action<T>? Callback;
 }

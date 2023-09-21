@@ -23,8 +23,7 @@ public abstract unsafe class Handle : IHandle, IDisposable
 		set => handle->data = value;
 	}
 
-	internal static T FromIntPtr<T>(IntPtr ptr) => 
-		(T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
+	internal static T FromIntPtr<T>(IntPtr ptr) => (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
 
 	public HandleType HandleType => handle->type;
 

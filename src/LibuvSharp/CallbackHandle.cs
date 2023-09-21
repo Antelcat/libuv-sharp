@@ -2,7 +2,7 @@
 
 public abstract class CallbackHandle : Handle
 {
-	protected static uv_handle_cb uv_callback = uv_handle;
+	protected uv_handle_cb uv_callback = uv_handle;
 
 	public CallbackHandle(Loop loop, HandleType handleType)
 		: base(loop, handleType)

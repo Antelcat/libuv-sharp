@@ -15,8 +15,7 @@ public partial class Loop : IDisposable
 
 	public static Loop Default => @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
 
-	[ThreadStatic]
-	private static Loop? currentLoop;
+	[ThreadStatic] private static Loop? currentLoop;
 
 	public IntPtr NativeHandle { get; protected set; }
 
@@ -27,15 +26,15 @@ public partial class Loop : IDisposable
 
 	internal Loop(IntPtr handle, ByteBufferAllocatorBase allocator)
 	{
-		NativeHandle = handle;
+		NativeHandle        = handle;
 		ByteBufferAllocator = allocator;
 
 		callback = new AsyncCallback(this);
-		async = new Async(this);
+		async    = new Async(this);
 
 		// this fixes a strange bug, where you can't send async
 		// stuff from other threads
-		Sync(() => { });
+		Sync(() => {});
 		async.Send();
 		RunOnce();
 
@@ -65,7 +64,8 @@ public partial class Loop : IDisposable
 
 	public unsafe uint ActiveHandlesCount => loop_t->active_handles;
 
-	public unsafe IntPtr Data {
+	public unsafe IntPtr Data
+	{
 		get => loop_t->data;
 		set => loop_t->data = value;
 	}
@@ -74,19 +74,20 @@ public partial class Loop : IDisposable
 
 	private bool RunGuard(Action? action)
 	{
-		if (IsRunning) {
+		if (IsRunning)
+		{
 			return false;
 		}
 
 		// save the value, restore it aftwards
 		var tmp = currentLoop;
 
-		IsRunning = true;
+		IsRunning   = true;
 		currentLoop = this;
 
 		action?.Invoke();
 
-		IsRunning = false;
+		IsRunning   = false;
 		currentLoop = tmp;
 
 		return true;
@@ -158,9 +159,11 @@ public partial class Loop : IDisposable
 	protected virtual void Dispose(bool disposing)
 	{
 		// close all active handles
-		foreach (var kvp in handles) {
+		foreach (var kvp in handles)
+		{
 			var handle = kvp.Value;
-			if (!handle.IsClosing) {
+			if (!handle.IsClosing)
+			{
 				handle.Dispose();
 			}
 		}
@@ -168,8 +171,10 @@ public partial class Loop : IDisposable
 		// make sure the callbacks of close are called
 		RunOnce();
 
-		if (disposing) {
-			if (ByteBufferAllocator != null) {
+		if (disposing)
+		{
+			if (ByteBufferAllocator != null)
+			{
 				ByteBufferAllocator.Dispose();
 				ByteBufferAllocator = null;
 			}
@@ -194,8 +199,10 @@ public partial class Loop : IDisposable
 		gcHandle.Free();
 	}
 
-	public IntPtr[] Handles {
-		get {
+	public IntPtr[] Handles
+	{
+		get
+		{
 			var list = new List<IntPtr>();
 			Walk(handle => list.Add(handle));
 			return list.ToArray();
@@ -209,33 +216,44 @@ public partial class Loop : IDisposable
 		return handles.TryGetValue(ptr, out var handle) ? handle : null;
 	}
 
-	public Handle?[] ActiveHandles {
-		get {
+	public Handle?[] ActiveHandles
+	{
+		get
+		{
 			var tmp = Handles;
 			var ret = new Handle?[tmp.Length];
-			for (var i = 0; i < tmp.Length; i++) {
+			for (var i = 0; i < tmp.Length; i++)
+			{
 				ret[i] = GetHandle(tmp[i]);
 			}
+
 			return ret;
 		}
 	}
 
 	public int RefCount { get; private set; }
 
-	public void Ref() {
-		if (RefCount == 0) {
+	public void Ref()
+	{
+		if (RefCount == 0)
+		{
 			async.Ref();
 		}
+
 		RefCount++;
 	}
 
-	public void Unref() {
-		if (RefCount <= 0) {
-			return;
+	public void Unref()
+	{
+		switch (RefCount)
+		{
+			case <= 0:
+				return;
+			case 1:
+				async.Unref();
+				break;
 		}
-		if (RefCount == 1) {
-			async.Unref();
-		}
+
 		RefCount--;
 	}
 
@@ -246,6 +264,6 @@ public partial class Loop : IDisposable
 	{
 		uv_stop(NativeHandle);
 	}
-	
+
 	public bool IsAlive => uv_loop_alive(NativeHandle) != 0;
 }
