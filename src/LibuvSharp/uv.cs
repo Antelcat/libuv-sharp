@@ -865,12 +865,16 @@ public unsafe partial class uv
         __Internal.UvLibraryShutdown();
     }
 
-    public static int UvReplaceAllocator(UvMallocFunc malloc_func, UvReallocFunc realloc_func, UvCallocFunc calloc_func, UvFreeFunc free_func)
+    public static int UvReplaceAllocator(
+        UvMallocFunc? malloc_func,
+        UvReallocFunc? realloc_func,
+        UvCallocFunc? calloc_func,
+        UvFreeFunc? free_func)
     {
-        var __arg0 = malloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(malloc_func);
+        var __arg0 = malloc_func  == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(malloc_func);
         var __arg1 = realloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(realloc_func);
-        var __arg2 = calloc_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(calloc_func);
-        var __arg3 = free_func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(free_func);
+        var __arg2 = calloc_func  == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(calloc_func);
+        var __arg3 = free_func    == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(free_func);
         var ___ret = __Internal.UvReplaceAllocator(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
@@ -1827,17 +1831,18 @@ public unsafe partial class uv
     public static UvProcessS UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
     {
         loop ??= new UvLoopS();
-        var handle = new UvProcessS()
+        options.ExitCb ??= (_, _, _) => { };
+        var handle = new UvProcessS
         {
             Loop = loop,
         };
-        handle.Data = GCHandle.ToIntPtr(GCHandle.Alloc(handle));
+        handle.Data    =   GCHandle.ToIntPtr(GCHandle.Alloc(handle));
         
         var arg0   = loop.__Instance;
         var arg1   = handle.__Instance;
         var arg2   = options.__Instance;
         __Internal.UvSpawn(arg0, arg1, arg2).Check();
-        return handle!;
+        return handle;
     }
 
     public static int UvProcessKill(UvProcessS _0, int signum)

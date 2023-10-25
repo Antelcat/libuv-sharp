@@ -50,4 +50,12 @@ internal static class MarshalExtension
             return arr;
         }
     }
+
+    public static T FromIntPtr<T>(this IntPtr pointer)
+    {
+        unsafe
+        {
+            return (T)GCHandle.FromIntPtr(((UvHandleS.__Internal*)pointer)->data).Target;
+        }
+    }
 }

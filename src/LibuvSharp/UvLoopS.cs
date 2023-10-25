@@ -106,8 +106,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvLoopS> NativeToManagedMap =
-        new ConcurrentDictionary<IntPtr, UvLoopS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvLoopS> NativeToManagedMap = new();
 
     internal static void __RecordNativeToManagedMapping(IntPtr native, UvLoopS managed)
     {
@@ -122,19 +121,19 @@ public unsafe partial class UvLoopS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvLoopS __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvLoopS? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
-        if (native == IntPtr.Zero)
-            return null;
-        return new UvLoopS(native.ToPointer(), skipVTables);
+        return native == IntPtr.Zero 
+            ? null 
+            : new UvLoopS(native.ToPointer(), skipVTables);
     }
 
-    internal static UvLoopS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvLoopS? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
         if (__TryGetNativeToManagedMapping(native, out var managed))
-            return (UvLoopS)managed;
+            return managed;
         var result = __CreateInstance(native, skipVTables);
         if (saveInstance)
             __RecordNativeToManagedMapping(native, result);
@@ -148,7 +147,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     private static void* __CopyValue(__Internal native)
     {
-        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+        var ret = Marshal.AllocHGlobal((int)uv.UvLoopSize());
         *(__Internal*) ret = native;
         return ret.ToPointer();
     }
@@ -169,14 +168,15 @@ public unsafe partial class UvLoopS : IDisposable
 
     public UvLoopS()
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
+        __Instance           = uv.UvDefaultLoop().__Instance;
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
+        
     }
 
     public UvLoopS(UvLoopS _0)
     {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
+        __Instance           = Marshal.AllocHGlobal((int)uv.UvLoopSize());
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
@@ -221,7 +221,7 @@ public unsafe partial class UvLoopS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -261,7 +261,7 @@ public unsafe partial class UvLoopS : IDisposable
         set => ((__Internal*)__Instance)->time = value;
     }
 
-    public UvReqS PendingReqsTail
+    public UvReqS? PendingReqsTail
     {
         get
         {
@@ -269,10 +269,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->pending_reqs_tail = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->pending_reqs_tail = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvHandleS EndgameHandles
+    public UvHandleS? EndgameHandles
     {
         get
         {
@@ -280,7 +280,7 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->endgame_handles = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->endgame_handles = value?.__Instance ?? IntPtr.Zero;
     }
 
     public IntPtr TimerHeap
@@ -290,7 +290,7 @@ public unsafe partial class UvLoopS : IDisposable
         set => ((__Internal*)__Instance)->timer_heap = value;
     }
 
-    public UvPrepareS PrepareHandles
+    public UvPrepareS? PrepareHandles
     {
         get
         {
@@ -298,10 +298,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->prepare_handles = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->prepare_handles = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvCheckS CheckHandles
+    public UvCheckS? CheckHandles
     {
         get
         {
@@ -309,10 +309,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->check_handles = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->check_handles = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvIdleS IdleHandles
+    public UvIdleS? IdleHandles
     {
         get
         {
@@ -320,10 +320,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->idle_handles = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->idle_handles = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvPrepareS NextPrepareHandle
+    public UvPrepareS? NextPrepareHandle
     {
         get
         {
@@ -331,10 +331,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->next_prepare_handle = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->next_prepare_handle = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvCheckS NextCheckHandle
+    public UvCheckS? NextCheckHandle
     {
         get
         {
@@ -342,10 +342,10 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->next_check_handle = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->next_check_handle = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvIdleS NextIdleHandle
+    public UvIdleS? NextIdleHandle
     {
         get
         {
@@ -353,20 +353,18 @@ public unsafe partial class UvLoopS : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->next_idle_handle = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->next_idle_handle = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public ulong[] PollPeerSockets
+    public ulong[]? PollPeerSockets
     {
         get => MarshalUtil.GetArray<ulong>(((__Internal*)__Instance)->poll_peer_sockets, 4);
 
         set
         {
-            if (value != null)
-            {
-                for (var i = 0; i < 4; i++)
-                    ((__Internal*)__Instance)->poll_peer_sockets[i] = value[i];
-            }
+            if (value == null) return;
+            for (var i = 0; i < 4; i++)
+                ((__Internal*)__Instance)->poll_peer_sockets[i] = value[i];
         }
     }
 
@@ -398,7 +396,7 @@ public unsafe partial class UvLoopS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->wq = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -410,7 +408,7 @@ public unsafe partial class UvLoopS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->wq_async = *(UvAsyncS.__Internal*) value.__Instance;
         }
     }
