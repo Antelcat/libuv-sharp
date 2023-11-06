@@ -3,10 +3,13 @@ using System.Security;
 using System.Text;
 using CppSharp.Runtime;
 using LibuvSharp.Delegates;
+// ReSharper disable InconsistentNaming
+// ReSharper disable IdentifierTypo
+// ReSharper disable MemberHidesStaticFromOuterClass
 
 namespace LibuvSharp;
 
-public unsafe partial class uv
+public static unsafe partial class Uv
 {
     public struct __Internal
     {
@@ -176,16 +179,16 @@ public unsafe partial class uv
         internal static extern int UvReadStop(IntPtr _0);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvWrite(IntPtr req, IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr cb);
+        internal static extern int UvWrite(IntPtr req, IntPtr handle, UvBufT.__Internal[]? bufs, uint nbufs, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvWrite2(IntPtr req, IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle, IntPtr cb);
+        internal static extern int UvWrite2(IntPtr req, IntPtr handle, UvBufT.__Internal[]? bufs, uint nbufs, IntPtr send_handle, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTryWrite(IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs);
+        internal static extern int UvTryWrite(IntPtr handle, UvBufT.__Internal[]? bufs, uint nbufs);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_try_write2", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvTryWrite2(IntPtr handle, UvBufT.__Internal[] bufs, uint nbufs, IntPtr send_handle);
+        internal static extern int UvTryWrite2(IntPtr handle, UvBufT.__Internal[]? bufs, uint nbufs, IntPtr send_handle);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_is_readable", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvIsReadable(IntPtr handle);
@@ -536,13 +539,13 @@ public unsafe partial class uv
         internal static extern int UvFsOpen(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, int flags, int mode, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_read", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsRead(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
+        internal static extern int UvFsRead(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[]? bufs, uint nbufs, long offset, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_unlink", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsUnlink(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_write", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int UvFsWrite(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[] bufs, uint nbufs, long offset, IntPtr cb);
+        internal static extern int UvFsWrite(IntPtr loop, IntPtr req, int file, UvBufT.__Internal[]? bufs, uint nbufs, long offset, IntPtr cb);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_fs_copyfile", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvFsCopyfile(IntPtr loop, IntPtr req, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string path, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaller))] string new_path, int flags, IntPtr cb);
@@ -879,37 +882,38 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static UvLoopS UvDefaultLoop()
+    public static UvLoopS? UvDefaultLoop()
     {
         var ___ret    = __Internal.UvDefaultLoop();
         var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
+        UvLoopInit(__result0).Check();
         return __result0;
     }
 
-    public static int UvLoopInit(UvLoopS loop)
+    public static int UvLoopInit(UvLoopS? loop)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopInit(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopClose(UvLoopS loop)
+    public static int UvLoopClose(UvLoopS? loop)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopClose(__arg0);
         return ___ret;
     }
 
-    public static UvLoopS UvLoopNew()
+    public static UvLoopS? UvLoopNew()
     {
         var ___ret    = __Internal.UvLoopNew();
         var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvLoopDelete(UvLoopS _0)
+    public static void UvLoopDelete(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvLoopDelete(__arg0);
     }
 
@@ -919,82 +923,82 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvLoopAlive(UvLoopS loop)
+    public static int UvLoopAlive(UvLoopS? loop)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopAlive(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopConfigure(UvLoopS loop, UvLoopOption option)
+    public static int UvLoopConfigure(UvLoopS? loop, UvLoopOption option)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopConfigure(__arg0, option);
         return ___ret;
     }
 
-    public static int UvLoopFork(UvLoopS loop)
+    public static int UvLoopFork(UvLoopS? loop)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopFork(__arg0);
         return ___ret;
     }
 
-    public static int UvRun(UvLoopS _0, UvRunMode mode)
+    public static int UvRun(UvLoopS? _0, UvRunMode mode)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvRun(__arg0, mode);
         return ___ret;
     }
 
-    public static void UvStop(UvLoopS _0)
+    public static void UvStop(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvStop(__arg0);
     }
 
-    public static void UvRef(UvHandleS _0)
+    public static void UvRef(UvHandleS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvRef(__arg0);
     }
 
-    public static void UvUnref(UvHandleS _0)
+    public static void UvUnref(UvHandleS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvUnref(__arg0);
     }
 
-    public static int UvHasRef(UvHandleS _0)
+    public static int UvHasRef(UvHandleS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHasRef(__arg0);
         return ___ret;
     }
 
-    public static void UvUpdateTime(UvLoopS _0)
+    public static void UvUpdateTime(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvUpdateTime(__arg0);
     }
 
-    public static ulong UvNow(UvLoopS _0)
+    public static ulong UvNow(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvNow(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendFd(UvLoopS _0)
+    public static int UvBackendFd(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBackendFd(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendTimeout(UvLoopS _0)
+    public static int UvBackendTimeout(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBackendTimeout(__arg0);
         return ___ret;
     }
@@ -1029,10 +1033,10 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvShutdown(UvShutdownS req, UvStreamS handle, UvShutdownCb cb)
+    public static int UvShutdown(UvShutdownS? req, UvStreamS? handle, UvShutdownCb? cb)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvShutdown(__arg0, __arg1, __arg2);
         return ___ret;
@@ -1044,9 +1048,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static UvHandleType UvHandleGetType(UvHandleS handle)
+    public static UvHandleType UvHandleGetType(UvHandleS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHandleGetType(__arg0);
         return ___ret;
     }
@@ -1057,24 +1061,24 @@ public unsafe partial class uv
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static IntPtr UvHandleGetData(UvHandleS handle)
+    public static IntPtr UvHandleGetData(UvHandleS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHandleGetData(__arg0);
         return ___ret;
     }
 
-    public static UvLoopS UvHandleGetLoop(UvHandleS handle)
+    public static UvLoopS? UvHandleGetLoop(UvHandleS? handle)
     {
-        var __arg0    = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0    = handle?.__Instance ?? IntPtr.Zero;
         var ___ret    = __Internal.UvHandleGetLoop(__arg0);
         var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvHandleSetData(UvHandleS handle, IntPtr data)
+    public static void UvHandleSetData(UvHandleS? handle, IntPtr data)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         __Internal.UvHandleSetData(__arg0, data);
     }
 
@@ -1084,22 +1088,22 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static IntPtr UvReqGetData(UvReqS req)
+    public static IntPtr UvReqGetData(UvReqS? req)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvReqGetData(__arg0);
         return ___ret;
     }
 
-    public static void UvReqSetData(UvReqS req, IntPtr data)
+    public static void UvReqSetData(UvReqS? req, IntPtr data)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
         __Internal.UvReqSetData(__arg0, data);
     }
 
-    public static UvReqType UvReqGetType(UvReqS req)
+    public static UvReqType UvReqGetType(UvReqS? req)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvReqGetType(__arg0);
         return ___ret;
     }
@@ -1110,42 +1114,42 @@ public unsafe partial class uv
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static int UvIsActive(UvHandleS handle)
+    public static int UvIsActive(UvHandleS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsActive(__arg0);
         return ___ret;
     }
 
-    public static void UvWalk(UvLoopS loop, UvWalkCb walk_cb, IntPtr arg)
+    public static void UvWalk(UvLoopS? loop, UvWalkCb? walk_cb, IntPtr arg)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = walk_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(walk_cb);
         __Internal.UvWalk(__arg0, __arg1, arg);
     }
 
-    public static void UvPrintAllHandles(UvLoopS loop, IntPtr stream)
+    public static void UvPrintAllHandles(UvLoopS? loop, IntPtr stream)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         __Internal.UvPrintAllHandles(__arg0, stream);
     }
 
-    public static void UvPrintActiveHandles(UvLoopS loop, IntPtr stream)
+    public static void UvPrintActiveHandles(UvLoopS? loop, IntPtr stream)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         __Internal.UvPrintActiveHandles(__arg0, stream);
     }
 
-    public static void UvClose(UvHandleS handle, UvCloseCb close_cb)
+    public static void UvClose(UvHandleS? handle, UvCloseCb? close_cb)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = close_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
         __Internal.UvClose(__arg0, __arg1);
     }
 
-    public static int UvSendBufferSize(UvHandleS handle, ref int value)
+    public static int UvSendBufferSize(UvHandleS? handle, ref int value)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (int* __value1 = &value)
         {
             var __arg1 = __value1;
@@ -1154,9 +1158,9 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvRecvBufferSize(UvHandleS handle, ref int value)
+    public static int UvRecvBufferSize(UvHandleS? handle, ref int value)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (int* __value1 = &value)
         {
             var __arg1 = __value1;
@@ -1165,9 +1169,9 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvFileno(UvHandleS handle, IntPtr* fd)
+    public static int UvFileno(UvHandleS? handle, IntPtr* fd)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFileno(__arg0, fd);
         return ___ret;
     }
@@ -1195,50 +1199,50 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static ulong UvStreamGetWriteQueueSize(UvStreamS stream)
+    public static ulong UvStreamGetWriteQueueSize(UvStreamS? stream)
     {
-        var __arg0 = stream is null ? IntPtr.Zero : stream.__Instance;
+        var __arg0 = stream?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvStreamGetWriteQueueSize(__arg0);
         return ___ret;
     }
 
-    public static int UvListen(UvStreamS stream, int backlog, UvConnectionCb cb)
+    public static int UvListen(UvStreamS? stream, int backlog, UvConnectionCb? cb)
     {
-        var __arg0 = stream is null ? IntPtr.Zero : stream.__Instance;
+        var __arg0 = stream?.__Instance ?? IntPtr.Zero;
         var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvListen(__arg0, backlog, __arg2);
         return ___ret;
     }
 
-    public static int UvAccept(UvStreamS server, UvStreamS client)
+    public static int UvAccept(UvStreamS? server, UvStreamS? client)
     {
-        var __arg0 = server is null ? IntPtr.Zero : server.__Instance;
-        var __arg1 = client is null ? IntPtr.Zero : client.__Instance;
+        var __arg0 = server?.__Instance ?? IntPtr.Zero;
+        var __arg1 = client?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvAccept(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvReadStart(UvStreamS _0, UvAllocCb alloc_cb, UvReadCb read_cb)
+    public static int UvReadStart(UvStreamS? _0, UvAllocCb? alloc_cb, UvReadCb? read_cb)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var __arg1 = alloc_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(alloc_cb);
         var __arg2 = read_cb  == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(read_cb);
         var ___ret = __Internal.UvReadStart(__arg0, __arg1, __arg2);
         return ___ret;
     }
 
-    public static int UvReadStop(UvStreamS _0)
+    public static int UvReadStop(UvStreamS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvReadStop(__arg0);
         return ___ret;
     }
 
-    public static int UvWrite(UvWriteS req, UvStreamS handle, UvBufT[] bufs, uint nbufs, UvWriteCb cb)
+    public static int UvWrite(UvWriteS? req, UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvWriteCb? cb)
     {
-        var                 __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var                 __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                 __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var                 __arg1 = handle?.__Instance ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -1256,11 +1260,11 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvWrite2(UvWriteS req, UvStreamS handle, UvBufT[] bufs, uint nbufs, UvStreamS send_handle, UvWriteCb cb)
+    public static int UvWrite2(UvWriteS? req, UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvStreamS? send_handle, UvWriteCb? cb)
     {
-        var                 __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var                 __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                 __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var                 __arg1 = handle?.__Instance ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -1273,16 +1277,16 @@ public unsafe partial class uv
             }
         }
         var __arg2 = __bufs;
-        var __arg4 = send_handle is null ? IntPtr.Zero : send_handle.__Instance;
+        var __arg4 = send_handle?.__Instance ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvWrite2(__arg0, __arg1, __arg2, nbufs, __arg4, __arg5);
         return ___ret;
     }
 
-    public static int UvTryWrite(UvStreamS handle, UvBufT[] bufs, uint nbufs)
+    public static int UvTryWrite(UvStreamS? handle, UvBufT?[]? bufs, uint nbufs)
     {
-        var                 __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                 __arg0 = handle?.__Instance ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -1299,10 +1303,10 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTryWrite2(UvStreamS handle, UvBufT[] bufs, uint nbufs, UvStreamS send_handle)
+    public static int UvTryWrite2(UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvStreamS? send_handle)
     {
-        var                 __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                  __arg0 = handle?.__Instance ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -1315,202 +1319,202 @@ public unsafe partial class uv
             }
         }
         var __arg1 = __bufs;
-        var __arg3 = send_handle is null ? IntPtr.Zero : send_handle.__Instance;
+        var __arg3 = send_handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTryWrite2(__arg0, __arg1, nbufs, __arg3);
         return ___ret;
     }
 
-    public static int UvIsReadable(UvStreamS handle)
+    public static int UvIsReadable(UvStreamS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsReadable(__arg0);
         return ___ret;
     }
 
-    public static int UvIsWritable(UvStreamS handle)
+    public static int UvIsWritable(UvStreamS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsWritable(__arg0);
         return ___ret;
     }
 
-    public static int UvStreamSetBlocking(UvStreamS handle, int blocking)
+    public static int UvStreamSetBlocking(UvStreamS? handle, int blocking)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvStreamSetBlocking(__arg0, blocking);
         return ___ret;
     }
 
-    public static int UvIsClosing(UvHandleS handle)
+    public static int UvIsClosing(UvHandleS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsClosing(__arg0);
         return ___ret;
     }
 
-    public static int UvTcpInit(UvLoopS _0, UvTcpS handle)
+    public static int UvTcpInit(UvLoopS? _0, UvTcpS? handle)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvTcpInitEx(UvLoopS _0, UvTcpS handle, uint flags)
+    public static int UvTcpInitEx(UvLoopS? _0, UvTcpS? handle, uint flags)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpInitEx(__arg0, __arg1, flags);
         return ___ret;
     }
 
-    public static int UvTcpOpen(UvTcpS handle, ulong sock)
+    public static int UvTcpOpen(UvTcpS? handle, ulong sock)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpOpen(__arg0, sock);
         return ___ret;
     }
 
-    public static int UvTcpNodelay(UvTcpS handle, int enable)
+    public static int UvTcpNodelay(UvTcpS? handle, int enable)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpNodelay(__arg0, enable);
         return ___ret;
     }
 
-    public static int UvTcpKeepalive(UvTcpS handle, int enable, uint delay)
+    public static int UvTcpKeepalive(UvTcpS? handle, int enable, uint delay)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpKeepalive(__arg0, enable, delay);
         return ___ret;
     }
 
-    public static int UvTcpSimultaneousAccepts(UvTcpS handle, int enable)
+    public static int UvTcpSimultaneousAccepts(UvTcpS? handle, int enable)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTcpSimultaneousAccepts(__arg0, enable);
         return ___ret;
     }
 
-    public static int UvTcpCloseReset(UvTcpS handle, UvCloseCb close_cb)
+    public static int UvTcpCloseReset(UvTcpS? handle, UvCloseCb? close_cb)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = close_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
         var ___ret = __Internal.UvTcpCloseReset(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvUdpInit(UvLoopS _0, UvUdpS handle)
+    public static int UvUdpInit(UvLoopS? _0, UvUdpS? handle)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvUdpInitEx(UvLoopS _0, UvUdpS handle, uint flags)
+    public static int UvUdpInitEx(UvLoopS? _0, UvUdpS? handle, uint flags)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpInitEx(__arg0, __arg1, flags);
         return ___ret;
     }
 
-    public static int UvUdpOpen(UvUdpS handle, ulong sock)
+    public static int UvUdpOpen(UvUdpS? handle, ulong sock)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpOpen(__arg0, sock);
         return ___ret;
     }
 
-    public static int UvUdpSetMembership(UvUdpS handle, string multicast_addr, string interface_addr, UvMembership membership)
+    public static int UvUdpSetMembership(UvUdpS? handle, string multicast_addr, string interface_addr, UvMembership membership)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetMembership(__arg0, multicast_addr, interface_addr, membership);
         return ___ret;
     }
 
-    public static int UvUdpSetSourceMembership(UvUdpS handle, string multicast_addr, string interface_addr, string source_addr, UvMembership membership)
+    public static int UvUdpSetSourceMembership(UvUdpS? handle, string multicast_addr, string interface_addr, string source_addr, UvMembership membership)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetSourceMembership(__arg0, multicast_addr, interface_addr, source_addr, membership);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastLoop(UvUdpS handle, int on)
+    public static int UvUdpSetMulticastLoop(UvUdpS? handle, int on)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetMulticastLoop(__arg0, on);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastTtl(UvUdpS handle, int ttl)
+    public static int UvUdpSetMulticastTtl(UvUdpS? handle, int ttl)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetMulticastTtl(__arg0, ttl);
         return ___ret;
     }
 
-    public static int UvUdpSetMulticastInterface(UvUdpS handle, string interface_addr)
+    public static int UvUdpSetMulticastInterface(UvUdpS? handle, string interface_addr)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetMulticastInterface(__arg0, interface_addr);
         return ___ret;
     }
 
-    public static int UvUdpSetBroadcast(UvUdpS handle, int on)
+    public static int UvUdpSetBroadcast(UvUdpS? handle, int on)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetBroadcast(__arg0, on);
         return ___ret;
     }
 
-    public static int UvUdpSetTtl(UvUdpS handle, int ttl)
+    public static int UvUdpSetTtl(UvUdpS? handle, int ttl)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpSetTtl(__arg0, ttl);
         return ___ret;
     }
 
-    public static int UvUdpUsingRecvmmsg(UvUdpS handle)
+    public static int UvUdpUsingRecvmmsg(UvUdpS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpUsingRecvmmsg(__arg0);
         return ___ret;
     }
 
-    public static int UvUdpRecvStop(UvUdpS handle)
+    public static int UvUdpRecvStop(UvUdpS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpRecvStop(__arg0);
         return ___ret;
     }
 
-    public static ulong UvUdpGetSendQueueSize(UvUdpS handle)
+    public static ulong UvUdpGetSendQueueSize(UvUdpS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpGetSendQueueSize(__arg0);
         return ___ret;
     }
 
-    public static ulong UvUdpGetSendQueueCount(UvUdpS handle)
+    public static ulong UvUdpGetSendQueueCount(UvUdpS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvUdpGetSendQueueCount(__arg0);
         return ___ret;
     }
 
-    public static int UvTtyInit(UvLoopS _0, UvTtyS _1, int fd, int readable)
+    public static int UvTtyInit(UvLoopS? _0, UvTtyS? _1, int fd, int readable)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = _1 is null ? IntPtr.Zero : _1.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
+        var __arg1 = _1?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTtyInit(__arg0, __arg1, fd, readable);
         return ___ret;
     }
 
-    public static int UvTtySetMode(UvTtyS _0, UvTtyModeT mode)
+    public static int UvTtySetMode(UvTtyS? _0, UvTtyModeT mode)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTtySetMode(__arg0, mode);
         return ___ret;
     }
@@ -1521,9 +1525,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvTtyGetWinsize(UvTtyS _0, ref int width, ref int height)
+    public static int UvTtyGetWinsize(UvTtyS? _0, ref int width, ref int height)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         fixed (int* __width1 = &width)
         {
             var __arg1 = __width1;
@@ -1551,9 +1555,9 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvTtySetMode(UvTtyS handle, int mode)
+    public static int UvTtySetMode(UvTtyS? handle, int mode)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTtySetMode_1(__arg0, mode);
         return ___ret;
     }
@@ -1564,55 +1568,55 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvPipeInit(UvLoopS _0, UvPipeS handle, int ipc)
+    public static int UvPipeInit(UvLoopS? _0, UvPipeS? handle, int ipc)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipeInit(__arg0, __arg1, ipc);
         return ___ret;
     }
 
-    public static int UvPipeOpen(UvPipeS _0, int file)
+    public static int UvPipeOpen(UvPipeS? _0, int file)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipeOpen(__arg0, file);
         return ___ret;
     }
 
-    public static int UvPipeBind(UvPipeS handle, string name)
+    public static int UvPipeBind(UvPipeS? handle, string name)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipeBind(__arg0, name);
         return ___ret;
     }
 
-    public static int UvPipeBind2(UvPipeS handle, string name, ulong namelen, uint flags)
+    public static int UvPipeBind2(UvPipeS? handle, string name, ulong namelen, uint flags)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipeBind2(__arg0, name, namelen, flags);
         return ___ret;
     }
 
-    public static void UvPipeConnect(UvConnectS req, UvPipeS handle, string name, UvConnectCb cb)
+    public static void UvPipeConnect(UvConnectS? req, UvPipeS? handle, string name, UvConnectCb? cb)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         __Internal.UvPipeConnect(__arg0, __arg1, name, __arg3);
     }
 
-    public static int UvPipeConnect2(UvConnectS req, UvPipeS handle, string name, ulong namelen, uint flags, UvConnectCb cb)
+    public static int UvPipeConnect2(UvConnectS? req, UvPipeS? handle, string name, ulong namelen, uint flags, UvConnectCb? cb)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPipeConnect2(__arg0, __arg1, name, namelen, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvPipeGetsockname(UvPipeS handle, sbyte* buffer, ref ulong size)
+    public static int UvPipeGetsockname(UvPipeS? handle, sbyte* buffer, ref ulong size)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (ulong* __size2 = &size)
         {
             var __arg2 = __size2;
@@ -1621,9 +1625,9 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvPipeGetpeername(UvPipeS handle, sbyte* buffer, ref ulong size)
+    public static int UvPipeGetpeername(UvPipeS? handle, sbyte* buffer, ref ulong size)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (ulong* __size2 = &size)
         {
             var __arg2 = __size2;
@@ -1632,195 +1636,195 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvPipePendingInstances(UvPipeS handle, int count)
+    public static void UvPipePendingInstances(UvPipeS? handle, int count)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         __Internal.UvPipePendingInstances(__arg0, count);
     }
 
-    public static int UvPipePendingCount(UvPipeS handle)
+    public static int UvPipePendingCount(UvPipeS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipePendingCount(__arg0);
         return ___ret;
     }
 
-    public static UvHandleType UvPipePendingType(UvPipeS handle)
+    public static UvHandleType UvPipePendingType(UvPipeS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipePendingType(__arg0);
         return ___ret;
     }
 
-    public static int UvPipeChmod(UvPipeS handle, int flags)
+    public static int UvPipeChmod(UvPipeS? handle, int flags)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPipeChmod(__arg0, flags);
         return ___ret;
     }
 
-    public static int UvPollInit(UvLoopS loop, UvPollS handle, int fd)
+    public static int UvPollInit(UvLoopS? loop, UvPollS? handle, int fd)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPollInit(__arg0, __arg1, fd);
         return ___ret;
     }
 
-    public static int UvPollInitSocket(UvLoopS loop, UvPollS handle, ulong socket)
+    public static int UvPollInitSocket(UvLoopS? loop, UvPollS? handle, ulong socket)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPollInitSocket(__arg0, __arg1, socket);
         return ___ret;
     }
 
-    public static int UvPollStart(UvPollS handle, int events, UvPollCb cb)
+    public static int UvPollStart(UvPollS? handle, int events, UvPollCb? cb)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPollStart(__arg0, events, __arg2);
         return ___ret;
     }
 
-    public static int UvPollStop(UvPollS handle)
+    public static int UvPollStop(UvPollS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPollStop(__arg0);
         return ___ret;
     }
 
-    public static int UvPrepareInit(UvLoopS _0, UvPrepareS prepare)
+    public static int UvPrepareInit(UvLoopS? _0, UvPrepareS? prepare)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = prepare is null ? IntPtr.Zero : prepare.__Instance;
+        var __arg0 = _0?.__Instance      ?? IntPtr.Zero;
+        var __arg1 = prepare?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPrepareInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvPrepareStart(UvPrepareS prepare, UvPrepareCb cb)
+    public static int UvPrepareStart(UvPrepareS? prepare, UvPrepareCb? cb)
     {
-        var __arg0 = prepare is null ? IntPtr.Zero : prepare.__Instance;
+        var __arg0 = prepare?.__Instance ?? IntPtr.Zero;
         var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvPrepareStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvPrepareStop(UvPrepareS prepare)
+    public static int UvPrepareStop(UvPrepareS? prepare)
     {
-        var __arg0 = prepare is null ? IntPtr.Zero : prepare.__Instance;
+        var __arg0 = prepare?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvPrepareStop(__arg0);
         return ___ret;
     }
 
-    public static int UvCheckInit(UvLoopS _0, UvCheckS check)
+    public static int UvCheckInit(UvLoopS? _0, UvCheckS? check)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = check is null ? IntPtr.Zero : check.__Instance;
+        var __arg0 = _0?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = check?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvCheckInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvCheckStart(UvCheckS check, UvCheckCb cb)
+    public static int UvCheckStart(UvCheckS? check, UvCheckCb? cb)
     {
-        var __arg0 = check is null ? IntPtr.Zero : check.__Instance;
+        var __arg0 = check?.__Instance ?? IntPtr.Zero;
         var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvCheckStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvCheckStop(UvCheckS check)
+    public static int UvCheckStop(UvCheckS? check)
     {
-        var __arg0 = check is null ? IntPtr.Zero : check.__Instance;
+        var __arg0 = check?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvCheckStop(__arg0);
         return ___ret;
     }
 
-    public static int UvIdleInit(UvLoopS _0, UvIdleS idle)
+    public static int UvIdleInit(UvLoopS? _0, UvIdleS? idle)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = idle is null ? IntPtr.Zero : idle.__Instance;
+        var __arg0 = _0?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = idle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIdleInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvIdleStart(UvIdleS idle, UvIdleCb cb)
+    public static int UvIdleStart(UvIdleS? idle, UvIdleCb? cb)
     {
-        var __arg0 = idle is null ? IntPtr.Zero : idle.__Instance;
+        var __arg0 = idle?.__Instance ?? IntPtr.Zero;
         var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvIdleStart(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvIdleStop(UvIdleS idle)
+    public static int UvIdleStop(UvIdleS? idle)
     {
-        var __arg0 = idle is null ? IntPtr.Zero : idle.__Instance;
+        var __arg0 = idle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIdleStop(__arg0);
         return ___ret;
     }
 
-    public static int UvAsyncInit(UvLoopS _0, UvAsyncS async, UvAsyncCb async_cb)
+    public static int UvAsyncInit(UvLoopS? _0, UvAsyncS? async, UvAsyncCb? async_cb)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = async is null ? IntPtr.Zero : async.__Instance;
+        var __arg0 = _0?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = async?.__Instance ?? IntPtr.Zero;
         var __arg2 = async_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(async_cb);
         var ___ret = __Internal.UvAsyncInit(__arg0, __arg1, __arg2);
         return ___ret;
     }
 
-    public static int UvAsyncSend(UvAsyncS async)
+    public static int UvAsyncSend(UvAsyncS? async)
     {
-        var __arg0 = async is null ? IntPtr.Zero : async.__Instance;
+        var __arg0 = async?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvAsyncSend(__arg0);
         return ___ret;
     }
 
-    public static int UvTimerInit(UvLoopS _0, UvTimerS handle)
+    public static int UvTimerInit(UvLoopS? _0, UvTimerS? handle)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTimerInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvTimerStart(UvTimerS handle, UvTimerCb cb, ulong timeout, ulong repeat)
+    public static int UvTimerStart(UvTimerS? handle, UvTimerCb? cb, ulong timeout, ulong repeat)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvTimerStart(__arg0, __arg1, timeout, repeat);
         return ___ret;
     }
 
-    public static int UvTimerStop(UvTimerS handle)
+    public static int UvTimerStop(UvTimerS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTimerStop(__arg0);
         return ___ret;
     }
 
-    public static int UvTimerAgain(UvTimerS handle)
+    public static int UvTimerAgain(UvTimerS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTimerAgain(__arg0);
         return ___ret;
     }
 
-    public static void UvTimerSetRepeat(UvTimerS handle, ulong repeat)
+    public static void UvTimerSetRepeat(UvTimerS? handle, ulong repeat)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         __Internal.UvTimerSetRepeat(__arg0, repeat);
     }
 
-    public static ulong UvTimerGetRepeat(UvTimerS handle)
+    public static ulong UvTimerGetRepeat(UvTimerS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTimerGetRepeat(__arg0);
         return ___ret;
     }
 
-    public static ulong UvTimerGetDueIn(UvTimerS handle)
+    public static ulong UvTimerGetDueIn(UvTimerS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvTimerGetDueIn(__arg0);
         return ___ret;
     }
@@ -1845,9 +1849,9 @@ public unsafe partial class uv
         return handle;
     }
 
-    public static int UvProcessKill(UvProcessS _0, int signum)
+    public static int UvProcessKill(UvProcessS? _0, int signum)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvProcessKill(__arg0, signum);
         return ___ret;
     }
@@ -1858,26 +1862,26 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvProcessGetPid(UvProcessS _0)
+    public static int UvProcessGetPid(UvProcessS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvProcessGetPid(__arg0);
         return ___ret;
     }
 
-    public static int UvQueueWork(UvLoopS loop, UvWorkS req, UvWorkCb work_cb, UvAfterWorkCb after_work_cb)
+    public static int UvQueueWork(UvLoopS? loop, UvWorkS? req, UvWorkCb? work_cb, UvAfterWorkCb? after_work_cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg2 = work_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(work_cb);
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
+        var __arg2 = work_cb       == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(work_cb);
         var __arg3 = after_work_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(after_work_cb);
         var ___ret = __Internal.UvQueueWork(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvCancel(UvReqS req)
+    public static int UvCancel(UvReqS? req)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvCancel(__arg0);
         return ___ret;
     }
@@ -1932,9 +1936,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvGetrusage(UvRusageT rusage)
+    public static int UvGetrusage(UvRusageT? rusage)
     {
-        var __arg0 = rusage is null ? IntPtr.Zero : rusage.__Instance;
+        var __arg0 = rusage?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvGetrusage(__arg0);
         return ___ret;
     }
@@ -1959,36 +1963,36 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvOsGetPasswd(UvPasswdS pwd)
+    public static int UvOsGetPasswd(UvPasswdS? pwd)
     {
-        var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
+        var __arg0 = pwd?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvOsGetPasswd(__arg0);
         return ___ret;
     }
 
-    public static void UvOsFreePasswd(UvPasswdS pwd)
+    public static void UvOsFreePasswd(UvPasswdS? pwd)
     {
-        var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
+        var __arg0 = pwd?.__Instance ?? IntPtr.Zero;
         __Internal.UvOsFreePasswd(__arg0);
     }
 
-    public static int UvOsGetPasswd2(UvPasswdS pwd, byte uid)
+    public static int UvOsGetPasswd2(UvPasswdS? pwd, byte uid)
     {
-        var __arg0 = pwd is null ? IntPtr.Zero : pwd.__Instance;
+        var __arg0 = pwd?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvOsGetPasswd2(__arg0, uid);
         return ___ret;
     }
 
-    public static int UvOsGetGroup(UvGroupS grp, byte gid)
+    public static int UvOsGetGroup(UvGroupS? grp, byte gid)
     {
-        var __arg0 = grp is null ? IntPtr.Zero : grp.__Instance;
+        var __arg0 = grp?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvOsGetGroup(__arg0, gid);
         return ___ret;
     }
 
-    public static void UvOsFreeGroup(UvGroupS grp)
+    public static void UvOsFreeGroup(UvGroupS? grp)
     {
-        var __arg0 = grp is null ? IntPtr.Zero : grp.__Instance;
+        var __arg0 = grp?.__Instance ?? IntPtr.Zero;
         __Internal.UvOsFreeGroup(__arg0);
     }
 
@@ -2026,9 +2030,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvCpuInfo(UvCpuInfoS cpu_infos, ref int count)
+    public static int UvCpuInfo(UvCpuInfoS? cpu_infos, ref int count)
     {
-        var ____arg0 = cpu_infos is null ? IntPtr.Zero : cpu_infos.__Instance;
+        var ____arg0 = cpu_infos?.__Instance ?? IntPtr.Zero;
         var __arg0   = new IntPtr(&____arg0);
         fixed (int* __count1 = &count)
         {
@@ -2038,9 +2042,9 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvFreeCpuInfo(UvCpuInfoS cpu_infos, int count)
+    public static void UvFreeCpuInfo(UvCpuInfoS? cpu_infos, int count)
     {
-        var __arg0 = cpu_infos is null ? IntPtr.Zero : cpu_infos.__Instance;
+        var __arg0 = cpu_infos?.__Instance ?? IntPtr.Zero;
         __Internal.UvFreeCpuInfo(__arg0, count);
     }
 
@@ -2050,9 +2054,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvInterfaceAddresses(UvInterfaceAddressS addresses, ref int count)
+    public static int UvInterfaceAddresses(UvInterfaceAddressS? addresses, ref int count)
     {
-        var ____arg0 = addresses is null ? IntPtr.Zero : addresses.__Instance;
+        var ____arg0 = addresses?.__Instance ?? IntPtr.Zero;
         var __arg0   = new IntPtr(&____arg0);
         fixed (int* __count1 = &count)
         {
@@ -2062,15 +2066,15 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvFreeInterfaceAddresses(UvInterfaceAddressS addresses, int count)
+    public static void UvFreeInterfaceAddresses(UvInterfaceAddressS? addresses, int count)
     {
-        var __arg0 = addresses is null ? IntPtr.Zero : addresses.__Instance;
+        var __arg0 = addresses?.__Instance ?? IntPtr.Zero;
         __Internal.UvFreeInterfaceAddresses(__arg0, count);
     }
 
-    public static int UvOsEnviron(UvEnvItemS envitems, ref int count)
+    public static int UvOsEnviron(UvEnvItemS? envitems, ref int count)
     {
-        var ____arg0 = envitems is null ? IntPtr.Zero : envitems.__Instance;
+        var ____arg0 = envitems?.__Instance ?? IntPtr.Zero;
         var __arg0   = new IntPtr(&____arg0);
         fixed (int* __count1 = &count)
         {
@@ -2080,9 +2084,9 @@ public unsafe partial class uv
         }
     }
 
-    public static void UvOsFreeEnviron(UvEnvItemS envitems, int count)
+    public static void UvOsFreeEnviron(UvEnvItemS? envitems, int count)
     {
-        var __arg0 = envitems is null ? IntPtr.Zero : envitems.__Instance;
+        var __arg0 = envitems?.__Instance ?? IntPtr.Zero;
         __Internal.UvOsFreeEnviron(__arg0, count);
     }
 
@@ -2118,100 +2122,100 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvOsUname(UvUtsnameS buffer)
+    public static int UvOsUname(UvUtsnameS? buffer)
     {
-        var __arg0 = buffer is null ? IntPtr.Zero : buffer.__Instance;
+        var __arg0 = buffer?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvOsUname(__arg0);
         return ___ret;
     }
 
-    public static int UvMetricsInfo(UvLoopS loop, UvMetricsS metrics)
+    public static int UvMetricsInfo(UvLoopS? loop, UvMetricsS? metrics)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = metrics is null ? IntPtr.Zero : metrics.__Instance;
+        var __arg0 = loop?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = metrics?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvMetricsInfo(__arg0, __arg1);
         return ___ret;
     }
 
-    public static ulong UvMetricsIdleTime(UvLoopS loop)
+    public static ulong UvMetricsIdleTime(UvLoopS? loop)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvMetricsIdleTime(__arg0);
         return ___ret;
     }
 
-    public static UvFsType UvFsGetType(UvFsS _0)
+    public static UvFsType UvFsGetType(UvFsS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsGetType(__arg0);
         return ___ret;
     }
 
-    public static long UvFsGetResult(UvFsS _0)
+    public static long UvFsGetResult(UvFsS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsGetResult(__arg0);
         return ___ret;
     }
 
-    public static int UvFsGetSystemError(UvFsS _0)
+    public static int UvFsGetSystemError(UvFsS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsGetSystemError(__arg0);
         return ___ret;
     }
 
-    public static IntPtr UvFsGetPtr(UvFsS _0)
+    public static IntPtr UvFsGetPtr(UvFsS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsGetPtr(__arg0);
         return ___ret;
     }
 
-    public static string UvFsGetPath(UvFsS _0)
+    public static string UvFsGetPath(UvFsS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsGetPath(__arg0);
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static UvStatT UvFsGetStatbuf(UvFsS _0)
+    public static UvStatT UvFsGetStatbuf(UvFsS? _0)
     {
-        var __arg0    = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0    = _0?.__Instance ?? IntPtr.Zero;
         var ___ret    = __Internal.UvFsGetStatbuf(__arg0);
         var __result0 = UvStatT.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvFsReqCleanup(UvFsS req)
+    public static void UvFsReqCleanup(UvFsS? req)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
         __Internal.UvFsReqCleanup(__arg0);
     }
 
-    public static int UvFsClose(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
+    public static int UvFsClose(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsClose(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsOpen(UvLoopS loop, UvFsS req, string path, int flags, int mode, UvFsCb cb)
+    public static int UvFsOpen(UvLoopS? loop, UvFsS? req, string path, int flags, int mode, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsOpen(__arg0, __arg1, path, flags, mode, __arg5);
         return ___ret;
     }
 
-    public static int UvFsRead(UvLoopS loop, UvFsS req, int file, UvBufT[] bufs, uint nbufs, long offset, UvFsCb cb)
+    public static int UvFsRead(UvLoopS? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
     {
-        var                 __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var                 __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                 __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var                 __arg1 = req?.__Instance  ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -2229,20 +2233,20 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvFsUnlink(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsUnlink(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsUnlink(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsWrite(UvLoopS loop, UvFsS req, int file, UvBufT[] bufs, uint nbufs, long offset, UvFsCb cb)
+    public static int UvFsWrite(UvLoopS? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
     {
-        var                 __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var                 __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        UvBufT.__Internal[] __bufs;
+        var                 __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var                 __arg1 = req?.__Instance  ?? IntPtr.Zero;
+        UvBufT.__Internal[]? __bufs;
         if (bufs == null)
             __bufs = null;
         else
@@ -2260,321 +2264,321 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvFsCopyfile(UvLoopS loop, UvFsS req, string path, string new_path, int flags, UvFsCb cb)
+    public static int UvFsCopyfile(UvLoopS? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsCopyfile(__arg0, __arg1, path, new_path, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvFsMkdir(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
+    public static int UvFsMkdir(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkdir(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsMkdtemp(UvLoopS loop, UvFsS req, string tpl, UvFsCb cb)
+    public static int UvFsMkdtemp(UvLoopS? loop, UvFsS? req, string tpl, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkdtemp(__arg0, __arg1, tpl, __arg3);
         return ___ret;
     }
 
-    public static int UvFsMkstemp(UvLoopS loop, UvFsS req, string tpl, UvFsCb cb)
+    public static int UvFsMkstemp(UvLoopS? loop, UvFsS? req, string tpl, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsMkstemp(__arg0, __arg1, tpl, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRmdir(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsRmdir(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRmdir(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsScandir(UvLoopS loop, UvFsS req, string path, int flags, UvFsCb cb)
+    public static int UvFsScandir(UvLoopS? loop, UvFsS? req, string path, int flags, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsScandir(__arg0, __arg1, path, flags, __arg4);
         return ___ret;
     }
 
-    public static int UvFsScandirNext(UvFsS req, uv_dirent_s ent)
+    public static int UvFsScandirNext(UvFsS? req, uv_dirent_s? ent)
     {
-        var __arg0 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg1 = ent is null ? IntPtr.Zero : ent.__Instance;
+        var __arg0 = req?.__Instance ?? IntPtr.Zero;
+        var __arg1 = ent?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsScandirNext(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvFsOpendir(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsOpendir(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsOpendir(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsReaddir(UvLoopS loop, UvFsS req, UvDirS dir, UvFsCb cb)
+    public static int UvFsReaddir(UvLoopS? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg2 = dir is null ? IntPtr.Zero : dir.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
+        var __arg2 = dir?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsReaddir(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvFsClosedir(UvLoopS loop, UvFsS req, UvDirS dir, UvFsCb cb)
+    public static int UvFsClosedir(UvLoopS? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
-        var __arg2 = dir is null ? IntPtr.Zero : dir.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
+        var __arg2 = dir?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsClosedir(__arg0, __arg1, __arg2, __arg3);
         return ___ret;
     }
 
-    public static int UvFsStat(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsStat(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsStat(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFstat(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
+    public static int UvFsFstat(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFstat(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRename(UvLoopS loop, UvFsS req, string path, string new_path, UvFsCb cb)
+    public static int UvFsRename(UvLoopS? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRename(__arg0, __arg1, path, new_path, __arg4);
         return ___ret;
     }
 
-    public static int UvFsFsync(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
+    public static int UvFsFsync(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFsync(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFdatasync(UvLoopS loop, UvFsS req, int file, UvFsCb cb)
+    public static int UvFsFdatasync(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFdatasync(__arg0, __arg1, file, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFtruncate(UvLoopS loop, UvFsS req, int file, long offset, UvFsCb cb)
+    public static int UvFsFtruncate(UvLoopS? loop, UvFsS? req, int file, long offset, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFtruncate(__arg0, __arg1, file, offset, __arg4);
         return ___ret;
     }
 
-    public static int UvFsSendfile(UvLoopS loop, UvFsS req, int out_fd, int in_fd, long in_offset, ulong length, UvFsCb cb)
+    public static int UvFsSendfile(UvLoopS? loop, UvFsS? req, int out_fd, int in_fd, long in_offset, ulong length, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg6 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsSendfile(__arg0, __arg1, out_fd, in_fd, in_offset, length, __arg6);
         return ___ret;
     }
 
-    public static int UvFsAccess(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
+    public static int UvFsAccess(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsAccess(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsChmod(UvLoopS loop, UvFsS req, string path, int mode, UvFsCb cb)
+    public static int UvFsChmod(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsChmod(__arg0, __arg1, path, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsUtime(UvLoopS loop, UvFsS req, string path, double atime, double mtime, UvFsCb cb)
+    public static int UvFsUtime(UvLoopS? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsUtime(__arg0, __arg1, path, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsFutime(UvLoopS loop, UvFsS req, int file, double atime, double mtime, UvFsCb cb)
+    public static int UvFsFutime(UvLoopS? loop, UvFsS? req, int file, double atime, double mtime, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFutime(__arg0, __arg1, file, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLutime(UvLoopS loop, UvFsS req, string path, double atime, double mtime, UvFsCb cb)
+    public static int UvFsLutime(UvLoopS? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLutime(__arg0, __arg1, path, atime, mtime, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLstat(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsLstat(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLstat(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsLink(UvLoopS loop, UvFsS req, string path, string new_path, UvFsCb cb)
+    public static int UvFsLink(UvLoopS? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLink(__arg0, __arg1, path, new_path, __arg4);
         return ___ret;
     }
 
-    public static int UvFsSymlink(UvLoopS loop, UvFsS req, string path, string new_path, int flags, UvFsCb cb)
+    public static int UvFsSymlink(UvLoopS? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsSymlink(__arg0, __arg1, path, new_path, flags, __arg5);
         return ___ret;
     }
 
-    public static int UvFsReadlink(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsReadlink(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsReadlink(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsRealpath(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsRealpath(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsRealpath(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsFchmod(UvLoopS loop, UvFsS req, int file, int mode, UvFsCb cb)
+    public static int UvFsFchmod(UvLoopS? loop, UvFsS? req, int file, int mode, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFchmod(__arg0, __arg1, file, mode, __arg4);
         return ___ret;
     }
 
-    public static int UvFsChown(UvLoopS loop, UvFsS req, string path, byte uid, byte gid, UvFsCb cb)
+    public static int UvFsChown(UvLoopS? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsChown(__arg0, __arg1, path, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsFchown(UvLoopS loop, UvFsS req, int file, byte uid, byte gid, UvFsCb cb)
+    public static int UvFsFchown(UvLoopS? loop, UvFsS? req, int file, byte uid, byte gid, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsFchown(__arg0, __arg1, file, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsLchown(UvLoopS loop, UvFsS req, string path, byte uid, byte gid, UvFsCb cb)
+    public static int UvFsLchown(UvLoopS? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsLchown(__arg0, __arg1, path, uid, gid, __arg5);
         return ___ret;
     }
 
-    public static int UvFsStatfs(UvLoopS loop, UvFsS req, string path, UvFsCb cb)
+    public static int UvFsStatfs(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg3 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsStatfs(__arg0, __arg1, path, __arg3);
         return ___ret;
     }
 
-    public static int UvFsPollInit(UvLoopS loop, UvFsPollS handle)
+    public static int UvFsPollInit(UvLoopS? loop, UvFsPollS? handle)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsPollInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvFsPollStart(UvFsPollS handle, UvFsPollCb poll_cb, string path, uint interval)
+    public static int UvFsPollStart(UvFsPollS? handle, UvFsPollCb? poll_cb, string path, uint interval)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = poll_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(poll_cb);
         var ___ret = __Internal.UvFsPollStart(__arg0, __arg1, path, interval);
         return ___ret;
     }
 
-    public static int UvFsPollStop(UvFsPollS handle)
+    public static int UvFsPollStop(UvFsPollS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsPollStop(__arg0);
         return ___ret;
     }
 
-    public static int UvFsPollGetpath(UvFsPollS handle, sbyte* buffer, ref ulong size)
+    public static int UvFsPollGetpath(UvFsPollS? handle, sbyte* buffer, ref ulong size)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (ulong* __size2 = &size)
         {
             var __arg2 = __size2;
@@ -2583,33 +2587,33 @@ public unsafe partial class uv
         }
     }
 
-    public static int UvSignalInit(UvLoopS loop, UvSignalS handle)
+    public static int UvSignalInit(UvLoopS? loop, UvSignalS? handle)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvSignalInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvSignalStart(UvSignalS handle, UvSignalCb signal_cb, int signum)
+    public static int UvSignalStart(UvSignalS? handle, UvSignalCb? signal_cb, int signum)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = signal_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
         var ___ret = __Internal.UvSignalStart(__arg0, __arg1, signum);
         return ___ret;
     }
 
-    public static int UvSignalStartOneshot(UvSignalS handle, UvSignalCb signal_cb, int signum)
+    public static int UvSignalStartOneshot(UvSignalS? handle, UvSignalCb? signal_cb, int signum)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = signal_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(signal_cb);
         var ___ret = __Internal.UvSignalStartOneshot(__arg0, __arg1, signum);
         return ___ret;
     }
 
-    public static int UvSignalStop(UvSignalS handle)
+    public static int UvSignalStop(UvSignalS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvSignalStop(__arg0);
         return ___ret;
     }
@@ -2621,32 +2625,32 @@ public unsafe partial class uv
         __Internal.UvLoadavg(avg);
     }
 
-    public static int UvFsEventInit(UvLoopS loop, UvFsEventS handle)
+    public static int UvFsEventInit(UvLoopS? loop, UvFsEventS? handle)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsEventInit(__arg0, __arg1);
         return ___ret;
     }
 
-    public static int UvFsEventStart(UvFsEventS handle, UvFsEventCb cb, string path, uint flags)
+    public static int UvFsEventStart(UvFsEventS? handle, UvFsEventCb? cb, string path, uint flags)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvFsEventStart(__arg0, __arg1, path, flags);
         return ___ret;
     }
 
-    public static int UvFsEventStop(UvFsEventS handle)
+    public static int UvFsEventStop(UvFsEventS? handle)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFsEventStop(__arg0);
         return ___ret;
     }
 
-    public static int UvFsEventGetpath(UvFsEventS handle, sbyte* buffer, ref ulong size)
+    public static int UvFsEventGetpath(UvFsEventS? handle, sbyte* buffer, ref ulong size)
     {
-        var __arg0 = handle is null ? IntPtr.Zero : handle.__Instance;
+        var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (ulong* __size2 = &size)
         {
             var __arg2 = __size2;
@@ -2667,10 +2671,10 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvRandom(UvLoopS loop, UvRandomS req, IntPtr buf, ulong buflen, uint flags, UvRandomCb cb)
+    public static int UvRandom(UvLoopS? loop, UvRandomS? req, IntPtr buf, ulong buflen, uint flags, UvRandomCb? cb)
     {
-        var __arg0 = loop is null ? IntPtr.Zero : loop.__Instance;
-        var __arg1 = req is null ? IntPtr.Zero : req.__Instance;
+        var __arg0 = loop?.__Instance ?? IntPtr.Zero;
+        var __arg1 = req?.__Instance  ?? IntPtr.Zero;
         var __arg5 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
         var ___ret = __Internal.UvRandom(__arg0, __arg1, buf, buflen, flags, __arg5);
         return ___ret;
@@ -2746,9 +2750,9 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static int UvClockGettime(UvClockId clock_id, UvTimespec64T ts)
+    public static int UvClockGettime(UvClockId clock_id, UvTimespec64T? ts)
     {
-        var __arg1 = ts is null ? IntPtr.Zero : ts.__Instance;
+        var __arg1 = ts?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvClockGettime(clock_id, __arg1);
         return ___ret;
     }
@@ -2769,81 +2773,81 @@ public unsafe partial class uv
         __Internal.UvDisableStdioInheritance();
     }
 
-    public static int UvDlopen(string filename, UvLibT lib)
+    public static int UvDlopen(string filename, UvLibT? lib)
     {
-        var __arg1 = lib is null ? IntPtr.Zero : lib.__Instance;
+        var __arg1 = lib?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvDlopen(filename, __arg1);
         return ___ret;
     }
 
-    public static void UvDlclose(UvLibT lib)
+    public static void UvDlclose(UvLibT? lib)
     {
-        var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
+        var __arg0 = lib?.__Instance ?? IntPtr.Zero;
         __Internal.UvDlclose(__arg0);
     }
 
-    public static int UvDlsym(UvLibT lib, string name, IntPtr* ptr)
+    public static int UvDlsym(UvLibT? lib, string name, IntPtr* ptr)
     {
-        var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
+        var __arg0 = lib?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvDlsym(__arg0, name, ptr);
         return ___ret;
     }
 
-    public static string UvDlerror(UvLibT lib)
+    public static string UvDlerror(UvLibT? lib)
     {
-        var __arg0 = lib is null ? IntPtr.Zero : lib.__Instance;
+        var __arg0 = lib?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvDlerror(__arg0);
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static int UvRwlockInit(UvRwlockT rwlock)
+    public static int UvRwlockInit(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvRwlockInit(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockDestroy(UvRwlockT rwlock)
+    public static void UvRwlockDestroy(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         __Internal.UvRwlockDestroy(__arg0);
     }
 
-    public static void UvRwlockRdlock(UvRwlockT rwlock)
+    public static void UvRwlockRdlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         __Internal.UvRwlockRdlock(__arg0);
     }
 
-    public static int UvRwlockTryrdlock(UvRwlockT rwlock)
+    public static int UvRwlockTryrdlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvRwlockTryrdlock(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockRdunlock(UvRwlockT rwlock)
+    public static void UvRwlockRdunlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         __Internal.UvRwlockRdunlock(__arg0);
     }
 
-    public static void UvRwlockWrlock(UvRwlockT rwlock)
+    public static void UvRwlockWrlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         __Internal.UvRwlockWrlock(__arg0);
     }
 
-    public static int UvRwlockTrywrlock(UvRwlockT rwlock)
+    public static int UvRwlockTrywrlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvRwlockTrywrlock(__arg0);
         return ___ret;
     }
 
-    public static void UvRwlockWrunlock(UvRwlockT rwlock)
+    public static void UvRwlockWrunlock(UvRwlockT? rwlock)
     {
-        var __arg0 = rwlock is null ? IntPtr.Zero : rwlock.__Instance;
+        var __arg0 = rwlock?.__Instance ?? IntPtr.Zero;
         __Internal.UvRwlockWrunlock(__arg0);
     }
 
@@ -2903,76 +2907,76 @@ public unsafe partial class uv
         __Internal.UvCondBroadcast(__arg0);
     }
 
-    public static int UvBarrierInit(UvBarrierT barrier, uint count)
+    public static int UvBarrierInit(UvBarrierT? barrier, uint count)
     {
-        var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
+        var __arg0 = barrier?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBarrierInit(__arg0, count);
         return ___ret;
     }
 
-    public static void UvBarrierDestroy(UvBarrierT barrier)
+    public static void UvBarrierDestroy(UvBarrierT? barrier)
     {
-        var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
+        var __arg0 = barrier?.__Instance ?? IntPtr.Zero;
         __Internal.UvBarrierDestroy(__arg0);
     }
 
-    public static int UvBarrierWait(UvBarrierT barrier)
+    public static int UvBarrierWait(UvBarrierT? barrier)
     {
-        var __arg0 = barrier is null ? IntPtr.Zero : barrier.__Instance;
+        var __arg0 = barrier?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBarrierWait(__arg0);
         return ___ret;
     }
 
-    public static void UvOnce(UvOnceS guard, Action_ callback)
+    public static void UvOnce(UvOnceS? guard, Action_? callback)
     {
-        var __arg0 = guard is null ? IntPtr.Zero : guard.__Instance;
+        var __arg0 = guard?.__Instance ?? IntPtr.Zero;
         var __arg1 = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback);
         __Internal.UvOnce(__arg0, __arg1);
     }
 
-    public static int UvKeyCreate(UvKeyT key)
+    public static int UvKeyCreate(UvKeyT? key)
     {
-        var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
+        var __arg0 = key?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvKeyCreate(__arg0);
         return ___ret;
     }
 
-    public static void UvKeyDelete(UvKeyT key)
+    public static void UvKeyDelete(UvKeyT? key)
     {
-        var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
+        var __arg0 = key?.__Instance ?? IntPtr.Zero;
         __Internal.UvKeyDelete(__arg0);
     }
 
-    public static IntPtr UvKeyGet(UvKeyT key)
+    public static IntPtr UvKeyGet(UvKeyT? key)
     {
-        var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
+        var __arg0 = key?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvKeyGet(__arg0);
         return ___ret;
     }
 
-    public static void UvKeySet(UvKeyT key, IntPtr value)
+    public static void UvKeySet(UvKeyT? key, IntPtr value)
     {
-        var __arg0 = key is null ? IntPtr.Zero : key.__Instance;
+        var __arg0 = key?.__Instance ?? IntPtr.Zero;
         __Internal.UvKeySet(__arg0, value);
     }
 
-    public static int UvGettimeofday(UvTimeval64T tv)
+    public static int UvGettimeofday(UvTimeval64T? tv)
     {
-        var __arg0 = tv is null ? IntPtr.Zero : tv.__Instance;
+        var __arg0 = tv?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvGettimeofday(__arg0);
         return ___ret;
     }
 
-    public static int UvThreadCreate(IntPtr* tid, UvThreadCb entry, IntPtr arg)
+    public static int UvThreadCreate(IntPtr* tid, UvThreadCb? entry, IntPtr arg)
     {
         var __arg1 = entry == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
         var ___ret = __Internal.UvThreadCreate(tid, __arg1, arg);
         return ___ret;
     }
 
-    public static int UvThreadCreateEx(IntPtr* tid, UvThreadOptionsS @params, UvThreadCb entry, IntPtr arg)
+    public static int UvThreadCreateEx(IntPtr* tid, UvThreadOptionsS? @params, UvThreadCb? entry, IntPtr arg)
     {
-        var __arg1 = @params is null ? IntPtr.Zero : @params.__Instance;
+        var __arg1 = @params?.__Instance ?? IntPtr.Zero;
         var __arg2 = entry == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(entry);
         var ___ret = __Internal.UvThreadCreateEx(tid, __arg1, __arg2, arg);
         return ___ret;
@@ -3014,16 +3018,16 @@ public unsafe partial class uv
         return ___ret;
     }
 
-    public static IntPtr UvLoopGetData(UvLoopS _0)
+    public static IntPtr UvLoopGetData(UvLoopS? _0)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopGetData(__arg0);
         return ___ret;
     }
 
-    public static void UvLoopSetData(UvLoopS _0, IntPtr data)
+    public static void UvLoopSetData(UvLoopS? _0, IntPtr data)
     {
-        var __arg0 = _0 is null ? IntPtr.Zero : _0.__Instance;
+        var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvLoopSetData(__arg0, data);
     }
 }

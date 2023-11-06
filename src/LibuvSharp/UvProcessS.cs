@@ -516,7 +516,7 @@ public unsafe partial class UvProcessS : IDisposable
 
     private static void* __CopyValue(__Internal native)
     {
-        var ret = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
+        var ret = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         *(__Internal*) ret = native;
         return ret.ToPointer();
     }
@@ -537,14 +537,14 @@ public unsafe partial class UvProcessS : IDisposable
 
     public UvProcessS()
     {
-        __Instance           = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
+        __Instance           = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
     public UvProcessS(UvProcessS _0)
     {
-        __Instance = Marshal.AllocHGlobal((int)uv.UvHandleSize(UvHandleType.UV_PROCESS));
+        __Instance = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);

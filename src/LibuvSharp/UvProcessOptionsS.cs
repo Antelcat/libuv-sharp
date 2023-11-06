@@ -242,7 +242,6 @@ public unsafe partial class UvProcessOptionsS : IDisposable
                 return;
             }
 
-            __stdio_hasNativeMemory = true;
             StdioCount              = value.Length;
             Instance->stdio         = Marshal.AllocHGlobal(StdioCount * sizeof(UvStdioContainerS.__Internal));
             var stdio = (UvStdioContainerS.__Internal*)Instance->stdio;
@@ -274,7 +273,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             {
                 Flags |= (uint)UvProcessFlags.UV_PROCESS_SETGID;
             }
-            else
+            else if((Flags & (uint)UvProcessFlags.UV_PROCESS_SETGID) > 0)
             {
                 Flags -= (uint)UvProcessFlags.UV_PROCESS_SETGID;
             }
@@ -292,7 +291,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             {
                 Flags |= (uint)UvProcessFlags.UV_PROCESS_SETUID;
             }
-            else
+            else if((Flags & (uint)UvProcessFlags.UV_PROCESS_SETGID) > 0)
             {
                 Flags -= (uint)UvProcessFlags.UV_PROCESS_SETUID;
             }

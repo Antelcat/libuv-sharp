@@ -147,7 +147,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     private static void* __CopyValue(__Internal native)
     {
-        var ret = Marshal.AllocHGlobal((int)uv.UvLoopSize());
+        var ret = Marshal.AllocHGlobal((int)Uv.UvLoopSize());
         *(__Internal*) ret = native;
         return ret.ToPointer();
     }
@@ -168,7 +168,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     public UvLoopS()
     {
-        __Instance           = uv.UvDefaultLoop().__Instance;
+        __Instance           = Uv.UvDefaultLoop().__Instance;
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         
@@ -176,7 +176,7 @@ public unsafe partial class UvLoopS : IDisposable
 
     public UvLoopS(UvLoopS _0)
     {
-        __Instance           = Marshal.AllocHGlobal((int)uv.UvLoopSize());
+        __Instance           = Marshal.AllocHGlobal((int)Uv.UvLoopSize());
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
