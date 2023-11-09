@@ -635,11 +635,11 @@ public unsafe partial class UvTcpS : IDisposable
         set => ((__Internal*)__Instance)->data = value;
     }
 
-    public UvLoopS Loop
+    public UvLoop Loop
     {
         get
         {
-            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
+            var __result0 = UvLoop.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 

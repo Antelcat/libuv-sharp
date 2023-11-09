@@ -150,6 +150,8 @@ public unsafe partial class UvProcessOptions : IDisposable
         }
     }
 
+    internal IntPtr exit_cb => Instance->exit_cb;
+    
     private Action<UvProcess, long, int>? exitCb;
 
     public string? File
@@ -217,7 +219,7 @@ public unsafe partial class UvProcessOptions : IDisposable
 
     public UvPipe?[]? Stdio { get; init; }
 
-    internal void PreProcessStdio(UvLoopS loop, UvProcess process)
+    internal void PreProcessStdio(UvLoop loop, UvProcess process)
     {
         StdioCount = Stdio?.Length ?? 0;
         if (Stdio is null || Stdio.Length == 0)

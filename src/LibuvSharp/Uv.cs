@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using CppSharp.Runtime;
@@ -888,36 +889,36 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvLoopS? UvDefaultLoop()
+    public static UvLoop? UvDefaultLoop()
     {
         var ___ret    = __Internal.UvDefaultLoop();
-        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
+        var __result0 = UvLoop.__GetOrCreateInstance(___ret);
         UvLoopInit(__result0).Check();
         return __result0;
     }
 
-    public static int UvLoopInit(UvLoopS? loop)
+    public static int UvLoopInit(UvLoop? loop)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopInit(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopClose(UvLoopS? loop)
+    public static int UvLoopClose(UvLoop? loop)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopClose(__arg0);
         return ___ret;
     }
 
-    public static UvLoopS? UvLoopNew()
+    public static UvLoop? UvLoopNew()
     {
         var ___ret    = __Internal.UvLoopNew();
-        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
+        var __result0 = UvLoop.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
-    public static void UvLoopDelete(UvLoopS? _0)
+    public static void UvLoopDelete(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvLoopDelete(__arg0);
@@ -929,35 +930,35 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvLoopAlive(UvLoopS? loop)
+    public static int UvLoopAlive(UvLoop? loop)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopAlive(__arg0);
         return ___ret;
     }
 
-    public static int UvLoopConfigure(UvLoopS? loop, UvLoopOption option)
+    public static int UvLoopConfigure(UvLoop? loop, UvLoopOption option)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopConfigure(__arg0, option);
         return ___ret;
     }
 
-    public static int UvLoopFork(UvLoopS? loop)
+    public static int UvLoopFork(UvLoop? loop)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopFork(__arg0);
         return ___ret;
     }
 
-    public static int UvRun(UvLoopS? _0, UvRunMode mode)
+    public static int UvRun(UvLoop? _0, UvRunMode mode)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvRun(__arg0, mode);
         return ___ret;
     }
 
-    public static void UvStop(UvLoopS? _0)
+    public static void UvStop(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvStop(__arg0);
@@ -982,27 +983,27 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static void UvUpdateTime(UvLoopS? _0)
+    public static void UvUpdateTime(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvUpdateTime(__arg0);
     }
 
-    public static ulong UvNow(UvLoopS? _0)
+    public static ulong UvNow(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvNow(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendFd(UvLoopS? _0)
+    public static int UvBackendFd(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBackendFd(__arg0);
         return ___ret;
     }
 
-    public static int UvBackendTimeout(UvLoopS? _0)
+    public static int UvBackendTimeout(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvBackendTimeout(__arg0);
@@ -1074,11 +1075,11 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvLoopS? UvHandleGetLoop(UvHandleS? handle)
+    public static UvLoop? UvHandleGetLoop(UvHandleS? handle)
     {
         var __arg0    = handle?.__Instance ?? IntPtr.Zero;
         var ___ret    = __Internal.UvHandleGetLoop(__arg0);
-        var __result0 = UvLoopS.__GetOrCreateInstance(___ret);
+        var __result0 = UvLoop.__GetOrCreateInstance(___ret);
         return __result0;
     }
 
@@ -1127,20 +1128,20 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static void UvWalk(UvLoopS? loop, UvWalkCb? walk_cb, IntPtr arg)
+    public static void UvWalk(UvLoop? loop, UvWalkCb? walk_cb, IntPtr arg)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = walk_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(walk_cb);
         __Internal.UvWalk(__arg0, __arg1, arg);
     }
 
-    public static void UvPrintAllHandles(UvLoopS? loop, IntPtr stream)
+    public static void UvPrintAllHandles(UvLoop? loop, IntPtr stream)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         __Internal.UvPrintAllHandles(__arg0, stream);
     }
 
-    public static void UvPrintActiveHandles(UvLoopS? loop, IntPtr stream)
+    public static void UvPrintActiveHandles(UvLoop? loop, IntPtr stream)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         __Internal.UvPrintActiveHandles(__arg0, stream);
@@ -1368,7 +1369,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTcpInit(UvLoopS? _0, UvTcpS? handle)
+    public static int UvTcpInit(UvLoop? _0, UvTcpS? handle)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1376,7 +1377,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTcpInitEx(UvLoopS? _0, UvTcpS? handle, uint flags)
+    public static int UvTcpInitEx(UvLoop? _0, UvTcpS? handle, uint flags)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1420,7 +1421,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvUdpInit(UvLoopS? _0, UvUdpS? handle)
+    public static int UvUdpInit(UvLoop? _0, UvUdpS? handle)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1428,7 +1429,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvUdpInitEx(UvLoopS? _0, UvUdpS? handle, uint flags)
+    public static int UvUdpInitEx(UvLoop? _0, UvUdpS? handle, uint flags)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1520,7 +1521,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTtyInit(UvLoopS? _0, UvTtyS? _1, int fd, int readable)
+    public static int UvTtyInit(UvLoop? _0, UvTtyS? _1, int fd, int readable)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var __arg1 = _1?.__Instance ?? IntPtr.Zero;
@@ -1584,7 +1585,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvPipeInit(UvLoopS? _0, UvPipeS? handle, int ipc)
+    public static int UvPipeInit(UvLoop? _0, UvPipeS? handle, int ipc)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1679,7 +1680,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvPollInit(UvLoopS? loop, UvPollS? handle, int fd)
+    public static int UvPollInit(UvLoop? loop, UvPollS? handle, int fd)
     {
         var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1687,7 +1688,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvPollInitSocket(UvLoopS? loop, UvPollS? handle, ulong socket)
+    public static int UvPollInitSocket(UvLoop? loop, UvPollS? handle, ulong socket)
     {
         var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1710,7 +1711,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvPrepareInit(UvLoopS? _0, UvPrepareS? prepare)
+    public static int UvPrepareInit(UvLoop? _0, UvPrepareS? prepare)
     {
         var __arg0 = _0?.__Instance      ?? IntPtr.Zero;
         var __arg1 = prepare?.__Instance ?? IntPtr.Zero;
@@ -1733,7 +1734,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvCheckInit(UvLoopS? _0, UvCheckS? check)
+    public static int UvCheckInit(UvLoop? _0, UvCheckS? check)
     {
         var __arg0 = _0?.__Instance    ?? IntPtr.Zero;
         var __arg1 = check?.__Instance ?? IntPtr.Zero;
@@ -1756,7 +1757,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvIdleInit(UvLoopS? _0, UvIdleS? idle)
+    public static int UvIdleInit(UvLoop? _0, UvIdleS? idle)
     {
         var __arg0 = _0?.__Instance   ?? IntPtr.Zero;
         var __arg1 = idle?.__Instance ?? IntPtr.Zero;
@@ -1779,7 +1780,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvAsyncInit(UvLoopS? _0, UvAsyncS? async, UvAsyncCb? async_cb)
+    public static int UvAsyncInit(UvLoop? _0, UvAsyncS? async, UvAsyncCb? async_cb)
     {
         var __arg0 = _0?.__Instance    ?? IntPtr.Zero;
         var __arg1 = async?.__Instance ?? IntPtr.Zero;
@@ -1795,7 +1796,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTimerInit(UvLoopS? _0, UvTimerS? handle)
+    public static int UvTimerInit(UvLoop? _0, UvTimerS? handle)
     {
         var __arg0 = _0?.__Instance     ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1845,29 +1846,33 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvProcess UvSpawn(UvProcessOptions options)
-        => UvSpawn(null, options);
+    public static UvProcess UvSpawn(UvProcessOptions options) => UvSpawn(null, options);
     
-    public static UvProcess 
-        UvSpawn(UvLoopS? loop, UvProcessOptions options)
+    public static UvProcess UvSpawn(UvLoop? loop, UvProcessOptions options)
     {
-        loop ??= new UvLoopS();
+        loop ??= new UvLoop();
         var process = new UvProcess
         {
-            ExitSignal = 0
         };
-
+        process.ExitCb = (a, b, c) =>
+        {
+            options.ExitCb?.Invoke(process, b, c);
+        };
         options.PreProcessStdio(loop, process);
         
         var arg0   = loop.__Instance;
         var arg1   = process.__Instance;
         var arg2   = options.__Instance;
         __Internal.UvSpawn(arg0, arg1, arg2).Check();
-        
-        foreach (var containerS in options.Stdio)
+
+        if (options.Stdio != null)
         {
-            containerS?.Start();
+            foreach (var pipe in options.Stdio)
+            {
+                pipe?.Start();
+            }
         }
+
         UvRun(loop, UvRunMode.UV_RUN_NOWAIT).Check();
         return process;
     }
@@ -1892,7 +1897,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvQueueWork(UvLoopS? loop, UvWorkS? req, UvWorkCb? work_cb, UvAfterWorkCb? after_work_cb)
+    public static int UvQueueWork(UvLoop? loop, UvWorkS? req, UvWorkCb? work_cb, UvAfterWorkCb? after_work_cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2152,7 +2157,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvMetricsInfo(UvLoopS? loop, UvMetricsS? metrics)
+    public static int UvMetricsInfo(UvLoop? loop, UvMetricsS? metrics)
     {
         var __arg0 = loop?.__Instance    ?? IntPtr.Zero;
         var __arg1 = metrics?.__Instance ?? IntPtr.Zero;
@@ -2160,7 +2165,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static ulong UvMetricsIdleTime(UvLoopS? loop)
+    public static ulong UvMetricsIdleTime(UvLoop? loop)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvMetricsIdleTime(__arg0);
@@ -2216,7 +2221,7 @@ public static unsafe partial class Uv
         __Internal.UvFsReqCleanup(__arg0);
     }
 
-    public static int UvFsClose(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
+    public static int UvFsClose(UvLoop? loop, UvFsS? req, int file, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2225,7 +2230,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsOpen(UvLoopS? loop, UvFsS? req, string path, int flags, int mode, UvFsCb? cb)
+    public static int UvFsOpen(UvLoop? loop, UvFsS? req, string path, int flags, int mode, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2234,7 +2239,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsRead(UvLoopS? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
+    public static int UvFsRead(UvLoop? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
     {
         var                 __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var                 __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2256,7 +2261,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsUnlink(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsUnlink(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2265,7 +2270,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsWrite(UvLoopS? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
+    public static int UvFsWrite(UvLoop? loop, UvFsS? req, int file, UvBufT?[]? bufs, uint nbufs, long offset, UvFsCb? cb)
     {
         var                 __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var                 __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2287,7 +2292,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsCopyfile(UvLoopS? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
+    public static int UvFsCopyfile(UvLoop? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2296,7 +2301,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsMkdir(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
+    public static int UvFsMkdir(UvLoop? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2305,7 +2310,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsMkdtemp(UvLoopS? loop, UvFsS? req, string tpl, UvFsCb? cb)
+    public static int UvFsMkdtemp(UvLoop? loop, UvFsS? req, string tpl, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2314,7 +2319,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsMkstemp(UvLoopS? loop, UvFsS? req, string tpl, UvFsCb? cb)
+    public static int UvFsMkstemp(UvLoop? loop, UvFsS? req, string tpl, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2323,7 +2328,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsRmdir(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsRmdir(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2332,7 +2337,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsScandir(UvLoopS? loop, UvFsS? req, string path, int flags, UvFsCb? cb)
+    public static int UvFsScandir(UvLoop? loop, UvFsS? req, string path, int flags, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2349,7 +2354,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsOpendir(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsOpendir(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2358,7 +2363,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsReaddir(UvLoopS? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
+    public static int UvFsReaddir(UvLoop? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2368,7 +2373,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsClosedir(UvLoopS? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
+    public static int UvFsClosedir(UvLoop? loop, UvFsS? req, UvDirS? dir, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2378,7 +2383,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsStat(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsStat(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2387,7 +2392,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFstat(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
+    public static int UvFsFstat(UvLoop? loop, UvFsS? req, int file, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2396,7 +2401,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsRename(UvLoopS? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
+    public static int UvFsRename(UvLoop? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2405,7 +2410,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFsync(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
+    public static int UvFsFsync(UvLoop? loop, UvFsS? req, int file, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2414,7 +2419,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFdatasync(UvLoopS? loop, UvFsS? req, int file, UvFsCb? cb)
+    public static int UvFsFdatasync(UvLoop? loop, UvFsS? req, int file, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2423,7 +2428,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFtruncate(UvLoopS? loop, UvFsS? req, int file, long offset, UvFsCb? cb)
+    public static int UvFsFtruncate(UvLoop? loop, UvFsS? req, int file, long offset, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2432,7 +2437,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsSendfile(UvLoopS? loop, UvFsS? req, int out_fd, int in_fd, long in_offset, ulong length, UvFsCb? cb)
+    public static int UvFsSendfile(UvLoop? loop, UvFsS? req, int out_fd, int in_fd, long in_offset, ulong length, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2441,7 +2446,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsAccess(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
+    public static int UvFsAccess(UvLoop? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2450,7 +2455,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsChmod(UvLoopS? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
+    public static int UvFsChmod(UvLoop? loop, UvFsS? req, string path, int mode, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2459,7 +2464,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsUtime(UvLoopS? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
+    public static int UvFsUtime(UvLoop? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2468,7 +2473,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFutime(UvLoopS? loop, UvFsS? req, int file, double atime, double mtime, UvFsCb? cb)
+    public static int UvFsFutime(UvLoop? loop, UvFsS? req, int file, double atime, double mtime, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2477,7 +2482,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsLutime(UvLoopS? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
+    public static int UvFsLutime(UvLoop? loop, UvFsS? req, string path, double atime, double mtime, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2486,7 +2491,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsLstat(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsLstat(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2495,7 +2500,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsLink(UvLoopS? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
+    public static int UvFsLink(UvLoop? loop, UvFsS? req, string path, string new_path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2504,7 +2509,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsSymlink(UvLoopS? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
+    public static int UvFsSymlink(UvLoop? loop, UvFsS? req, string path, string new_path, int flags, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2513,7 +2518,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsReadlink(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsReadlink(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2522,7 +2527,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsRealpath(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsRealpath(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2531,7 +2536,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFchmod(UvLoopS? loop, UvFsS? req, int file, int mode, UvFsCb? cb)
+    public static int UvFsFchmod(UvLoop? loop, UvFsS? req, int file, int mode, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2540,7 +2545,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsChown(UvLoopS? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
+    public static int UvFsChown(UvLoop? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2549,7 +2554,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsFchown(UvLoopS? loop, UvFsS? req, int file, byte uid, byte gid, UvFsCb? cb)
+    public static int UvFsFchown(UvLoop? loop, UvFsS? req, int file, byte uid, byte gid, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2558,7 +2563,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsLchown(UvLoopS? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
+    public static int UvFsLchown(UvLoop? loop, UvFsS? req, string path, byte uid, byte gid, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2567,7 +2572,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsStatfs(UvLoopS? loop, UvFsS? req, string path, UvFsCb? cb)
+    public static int UvFsStatfs(UvLoop? loop, UvFsS? req, string path, UvFsCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -2576,7 +2581,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvFsPollInit(UvLoopS? loop, UvFsPollS? handle)
+    public static int UvFsPollInit(UvLoop? loop, UvFsPollS? handle)
     {
         var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -2610,7 +2615,7 @@ public static unsafe partial class Uv
         }
     }
 
-    public static int UvSignalInit(UvLoopS? loop, UvSignalS? handle)
+    public static int UvSignalInit(UvLoop? loop, UvSignalS? handle)
     {
         var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -2648,7 +2653,7 @@ public static unsafe partial class Uv
         __Internal.UvLoadavg(avg);
     }
 
-    public static int UvFsEventInit(UvLoopS? loop, UvFsEventS? handle)
+    public static int UvFsEventInit(UvLoop? loop, UvFsEventS? handle)
     {
         var __arg0 = loop?.__Instance   ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -2694,7 +2699,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvRandom(UvLoopS? loop, UvRandomS? req, IntPtr buf, ulong buflen, uint flags, UvRandomCb? cb)
+    public static int UvRandom(UvLoop? loop, UvRandomS? req, IntPtr buf, ulong buflen, uint flags, UvRandomCb? cb)
     {
         var __arg0 = loop?.__Instance ?? IntPtr.Zero;
         var __arg1 = req?.__Instance  ?? IntPtr.Zero;
@@ -3041,14 +3046,14 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static IntPtr UvLoopGetData(UvLoopS? _0)
+    public static IntPtr UvLoopGetData(UvLoop? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvLoopGetData(__arg0);
         return ___ret;
     }
 
-    public static void UvLoopSetData(UvLoopS? _0, IntPtr data)
+    public static void UvLoopSetData(UvLoop? _0, IntPtr data)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvLoopSetData(__arg0, data);

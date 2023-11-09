@@ -5,7 +5,7 @@ using CppSharp.Runtime;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvLoopS : IDisposable
+public unsafe partial class UvLoop : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 472)]
     public struct __Internal
@@ -106,14 +106,14 @@ public unsafe partial class UvLoopS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvLoopS> NativeToManagedMap = new();
+    internal static readonly ConcurrentDictionary<IntPtr, UvLoop> NativeToManagedMap = new();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, UvLoopS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvLoop managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvLoopS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvLoop managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -121,14 +121,14 @@ public unsafe partial class UvLoopS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvLoopS? __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvLoop? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
         return native == IntPtr.Zero 
             ? null 
-            : new UvLoopS(native.ToPointer(), skipVTables);
+            : new UvLoop(native.ToPointer(), skipVTables);
     }
 
-    internal static UvLoopS? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvLoop? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
@@ -140,9 +140,9 @@ public unsafe partial class UvLoopS : IDisposable
         return result;
     }
 
-    internal static UvLoopS __CreateInstance(__Internal native, bool skipVTables = false)
+    internal static UvLoop __CreateInstance(__Internal native, bool skipVTables = false)
     {
-        return new UvLoopS(native, skipVTables);
+        return new UvLoop(native, skipVTables);
     }
 
     private static void* __CopyValue(__Internal native)
@@ -152,21 +152,21 @@ public unsafe partial class UvLoopS : IDisposable
         return ret.ToPointer();
     }
 
-    private UvLoopS(__Internal native, bool skipVTables = false)
+    private UvLoop(__Internal native, bool skipVTables = false)
         : this(__CopyValue(native), skipVTables)
     {
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    protected UvLoopS(void* native, bool skipVTables = false)
+    protected UvLoop(void* native, bool skipVTables = false)
     {
         if (native == null)
             return;
         __Instance = new IntPtr(native);
     }
 
-    public UvLoopS()
+    public UvLoop()
     {
         __Instance           = Uv.UvDefaultLoop().__Instance;
         __ownsNativeInstance = true;
@@ -174,7 +174,7 @@ public unsafe partial class UvLoopS : IDisposable
         
     }
 
-    public UvLoopS(UvLoopS _0)
+    public UvLoop(UvLoop _0)
     {
         __Instance           = Marshal.AllocHGlobal((int)Uv.UvLoopSize());
         __ownsNativeInstance = true;

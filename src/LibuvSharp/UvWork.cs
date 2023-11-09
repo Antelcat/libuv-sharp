@@ -137,11 +137,11 @@ public unsafe partial class UvWork : IDisposable
         set => ((__Internal*)__Instance)->done = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public UvLoopS Loop
+    public UvLoop Loop
     {
         get
         {
-            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
+            var __result0 = UvLoop.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 

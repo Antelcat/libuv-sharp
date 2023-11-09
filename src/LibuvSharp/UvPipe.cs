@@ -211,7 +211,7 @@ public unsafe partial class UvPipe : IDisposable
     private          UvProcess?     process;
     private          bool            closed;
     
-    internal void NewAndInit(UvLoopS loop, UvProcess process, UvBufT.__Internal buffer)
+    internal void NewAndInit(UvLoop loop, UvProcess process, UvBufT.__Internal buffer)
     {
         this.process = process;
         Buffer       = UvBufT.__CreateInstance(buffer);
@@ -265,6 +265,7 @@ public unsafe partial class UvPipe : IDisposable
                     }
                     else
                     {
+                        var header = buf.As<UvBufT.__Internal>();
                         lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), (ulong)nRead);
                         process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
                     }
@@ -327,7 +328,7 @@ public class UvOutputBuffer
             *buf = Uv.__Internal.UvBufInit(null, 0);
         else
         {
-            fixed (sbyte* head = data_)
+            fixed (sbyte* head = data)
             {
                 *buf = Uv.__Internal.UvBufInit(head + Used, Available);
             }
@@ -336,7 +337,7 @@ public class UvOutputBuffer
 
     internal unsafe void OnRead(UvBufT.__Internal* buf, ulong nRead)
     {
-        fixed (sbyte* head = data_)
+        fixed (sbyte* head = data)
         {
             if (buf->@base != IntPtr.Add(new IntPtr(head), (int)Used))
             {
@@ -347,8 +348,8 @@ public class UvOutputBuffer
         Used += nRead;
     }
 
-    private  sbyte[]         data_ = new sbyte[BufferSize];
-    internal uint            Available { get; }
-    internal ulong            Used      { get; private set; }
-    internal UvOutputBuffer? Next      { get; set; }
+    private readonly sbyte[]         data = new sbyte[BufferSize];
+    internal         uint            Available => (uint)(data.Length - (uint)Used);
+    internal         ulong           Used      { get; private set; }
+    internal         UvOutputBuffer? Next      { get; set; }
 }

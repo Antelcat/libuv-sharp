@@ -372,11 +372,11 @@ public unsafe partial class UvGetaddrinfoS : IDisposable
         set => ((__Internal*)__Instance)->next_req = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public UvLoopS Loop
+    public UvLoop Loop
     {
         get
         {
-            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
+            var __result0 = UvLoop.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 

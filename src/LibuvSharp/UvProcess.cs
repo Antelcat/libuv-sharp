@@ -583,11 +583,11 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->data = value;
     }
 
-    public UvLoopS Loop
+    public UvLoop Loop
     {
         get
         {
-            var __result0 = UvLoopS.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
+            var __result0 = UvLoop.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
             return __result0;
         }
 
@@ -714,13 +714,13 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->exit_cb_pending = value;
     }
 
-    public void Kill(int signum = 0)
+    public void Kill(int sigNum = 0)
     {
         if(killed)return;
         killed = true;
         if (exitStatus < 0)
         {
-            var r = Uv.__Internal.UvProcessKill(__Instance, signum);
+            var r = Uv.__Internal.UvProcessKill(__Instance, sigNum);
             if (r < 0 && r != (int)UvErrno.UV_ESRCH) {
                 SetError((UvErrno)r);
 
@@ -768,13 +768,13 @@ public unsafe partial class UvProcess : IDisposable
     internal void IncrementBufferSizeAndCheckOverflow(ulong length)
     {
         bufferedOutputSize += length;
-        if (!(maxBuffer > 0) || !(bufferedOutputSize > maxBuffer)) return;
+        if (!(MaxBuffer > 0) || !(bufferedOutputSize > MaxBuffer)) return;
         SetError(UvErrno.UV_ENOBUFS);
         Kill();
     }
 
-    private double   maxBuffer;
-    private ulong    bufferedOutputSize;
+    public  double  MaxBuffer { get; init; } = 0;
+    private ulong   bufferedOutputSize;
     private UvErrno pipeError;
     private UvErrno error;
 

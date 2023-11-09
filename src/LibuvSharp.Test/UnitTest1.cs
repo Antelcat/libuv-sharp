@@ -50,7 +50,11 @@ public class Tests
                 Args  = Array.Empty<string>(),
                 Stdio = ios.ToArray(),
             });
-   
+        _ = Task.Delay(3000).ContinueWith(t =>
+        {
+            process.Kill(9);
+        });
+        
         await Task.Delay(10000);
     }
     
