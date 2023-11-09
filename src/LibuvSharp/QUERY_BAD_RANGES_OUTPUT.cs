@@ -125,7 +125,7 @@ public unsafe partial class QUERY_BAD_RANGES_OUTPUT : IDisposable
             {
                 __value = new QUERY_BAD_RANGES_OUTPUT_RANGE[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = QUERY_BAD_RANGES_OUTPUT_RANGE.__GetOrCreateInstance((IntPtr)((QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal*)&(((__Internal*)__Instance)->BadRanges[i * sizeof(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal)])), true, true);
+                    __value[i] = QUERY_BAD_RANGES_OUTPUT_RANGE.__GetOrCreateInstance((IntPtr)(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal*)&((__Internal*)__Instance)->BadRanges[i * sizeof(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal)], true, true);
             }
             return __value;
         }

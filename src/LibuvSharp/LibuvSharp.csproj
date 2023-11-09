@@ -21,6 +21,11 @@
         <PackageReference Include="Libuv" Version="1.10.0"/>
 
         <InternalsVisibleTo Include="LibuvSharp.Test"/>
+
+        <PackageReference Include="PolySharp" Version="1.13.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 

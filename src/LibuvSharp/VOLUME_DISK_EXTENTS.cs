@@ -110,7 +110,7 @@ public unsafe partial class VOLUME_DISK_EXTENTS : IDisposable
             {
                 __value = new DISK_EXTENT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = DISK_EXTENT.__GetOrCreateInstance((IntPtr)((DISK_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(DISK_EXTENT.__Internal)])), true, true);
+                    __value[i] = DISK_EXTENT.__GetOrCreateInstance((IntPtr)(DISK_EXTENT.__Internal*)&((__Internal*)__Instance)->Extents[i * sizeof(DISK_EXTENT.__Internal)], true, true);
             }
             return __value;
         }

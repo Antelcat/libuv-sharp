@@ -93,7 +93,7 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
+        *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
     }
 
     public void Dispose()
@@ -137,7 +137,7 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
             {
                 __value = new AFD_POLL_HANDLE_INFO[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = AFD_POLL_HANDLE_INFO.__GetOrCreateInstance((IntPtr)((AFD_POLL_HANDLE_INFO.__Internal*)&(((__Internal*)__Instance)->Handles[i * sizeof(AFD_POLL_HANDLE_INFO.__Internal)])), true, true);
+                    __value[i] = AFD_POLL_HANDLE_INFO.__GetOrCreateInstance((IntPtr)(AFD_POLL_HANDLE_INFO.__Internal*)&((__Internal*)__Instance)->Handles[i * sizeof(AFD_POLL_HANDLE_INFO.__Internal)], true, true);
             }
             return __value;
         }

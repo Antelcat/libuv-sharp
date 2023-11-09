@@ -164,7 +164,7 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
             {
                 __value = new USN_RECORD_EXTENT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = USN_RECORD_EXTENT.__GetOrCreateInstance((IntPtr)((USN_RECORD_EXTENT.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(USN_RECORD_EXTENT.__Internal)])), true, true);
+                    __value[i] = USN_RECORD_EXTENT.__GetOrCreateInstance((IntPtr)(USN_RECORD_EXTENT.__Internal*)&((__Internal*)__Instance)->Extents[i * sizeof(USN_RECORD_EXTENT.__Internal)], true, true);
             }
             return __value;
         }

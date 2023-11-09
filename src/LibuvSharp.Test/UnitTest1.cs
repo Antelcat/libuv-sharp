@@ -23,16 +23,23 @@ public class Tests
     [Test]
     public async Task Test1()
     {
-        var ios = new List<UvStdioContainerS>();
+        var ios = new List<UvPipe>();
         for (var i = 0; i < 7; i++)
         {
-            var pipe = new UvStdioContainerS();
+            var pipe = new UvPipe
+            {
+                Readable = true,
+                Writable = true
+            };
             ios.Add(pipe);
         }
 
-        var process = Uv.UvSpawn(new(),
-            new UvProcessOptionsS
+        var process = Uv.UvSpawn(new UvProcessOptionsS
             {
+                ExitCb = (a, exit, c) =>
+                {
+                    Debugger.Break();
+                },
                 File =
                     @"D:\Shared\WorkSpace\Git\mediasoup-sharp\src\MediasoupSharp.Test\bin\Debug\net7.0\runtimes\win-x64\native\mediasoup-worker.exe",
                 Env = (from DictionaryEntry arg
@@ -40,7 +47,8 @@ public class Tests
                         select $"{arg.Key}={arg.Value}")
                     .Append("MEDIASOUP_VERSION=3.11.12")
                     .ToArray(),
-                Stdio = null
+                Args  = Array.Empty<string>(),
+                Stdio = ios.ToArray(),
             });
 
         await Task.Delay(10000);

@@ -110,7 +110,7 @@ public unsafe partial class BIN_RESULTS : IDisposable
             {
                 __value = new BIN_COUNT[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = BIN_COUNT.__GetOrCreateInstance((IntPtr)((BIN_COUNT.__Internal*)&(((__Internal*)__Instance)->BinCounts[i * sizeof(BIN_COUNT.__Internal)])), true, true);
+                    __value[i] = BIN_COUNT.__GetOrCreateInstance((IntPtr)(BIN_COUNT.__Internal*)&((__Internal*)__Instance)->BinCounts[i * sizeof(BIN_COUNT.__Internal)], true, true);
             }
             return __value;
         }

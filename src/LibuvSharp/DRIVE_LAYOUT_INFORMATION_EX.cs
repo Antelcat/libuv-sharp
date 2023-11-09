@@ -152,7 +152,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
             {
                 __value = new PARTITION_INFORMATION_EX[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = PARTITION_INFORMATION_EX.__GetOrCreateInstance((IntPtr)((PARTITION_INFORMATION_EX.__Internal*)&(((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION_EX.__Internal)])), true, true);
+                    __value[i] = PARTITION_INFORMATION_EX.__GetOrCreateInstance((IntPtr)(PARTITION_INFORMATION_EX.__Internal*)&((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION_EX.__Internal)], true, true);
             }
             return __value;
         }

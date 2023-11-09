@@ -30,6 +30,8 @@ internal static class MarshalExtension
 
         return ret.ToArray();
     }
+
+    public static nint SafeCopyToPointer(this IEnumerable<string?>? args) => CopyToPointer(args.Where(x => x != null).ToArray());
     
     public static nint CopyToPointer(this string[]? args)
     {
@@ -58,4 +60,6 @@ internal static class MarshalExtension
             return (T)GCHandle.FromIntPtr(((UvHandleS.__Internal*)pointer)->data).Target;
         }
     }
+
+    public static unsafe T* As<T>(this IntPtr pointer) where T : unmanaged => (T*)pointer;
 }

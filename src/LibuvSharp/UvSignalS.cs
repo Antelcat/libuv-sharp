@@ -199,7 +199,7 @@ public unsafe partial class UvSignalS : IDisposable
             __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
-            *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
+            *(__Internal*) __Instance = *(__Internal*) __0.__Instance;
         }
 
         public void Dispose()
@@ -336,7 +336,7 @@ public unsafe partial class UvSignalS : IDisposable
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
+        *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
     }
 
     public void Dispose()

@@ -155,6 +155,9 @@ public static unsafe partial class Uv
         internal static extern int UvFileno(IntPtr handle, IntPtr* fd);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_buf_init", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern UvBufT.__Internal UvBufInit(sbyte* @base, uint len);
+        
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_buf_init", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvBufInit(IntPtr @return, sbyte* @base, uint len);
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_pipe", CallingConvention = CallingConvention.Cdecl)]
@@ -178,6 +181,9 @@ public static unsafe partial class Uv
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_read_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReadStop(IntPtr _0);
 
+        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int UvWrite(IntPtr req, IntPtr handle, IntPtr? buf, uint nbufs, IntPtr cb);
+        
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvWrite(IntPtr req, IntPtr handle, UvBufT.__Internal[]? bufs, uint nbufs, IntPtr cb);
 
@@ -1185,7 +1191,7 @@ public static unsafe partial class Uv
 
     public static int UvPipe(int[] fds, int read_flags, int write_flags)
     {
-        if (fds == null || fds.Length != 2)
+        if (fds is not { Length: 2 })
             throw new ArgumentOutOfRangeException("fds", "The dimensions of the provided array don't match the required size.");
         var ___ret = __Internal.UvPipe(fds, read_flags, write_flags);
         return ___ret;
@@ -1238,6 +1244,16 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
+    public static int UvWrite(UvWriteS? req, UvStreamS? handle, UvBufT? buf, UvWriteCb? cb)
+    {
+        var __arg0 = req?.__Instance    ?? IntPtr.Zero;
+        var __arg1 = handle?.__Instance ?? IntPtr.Zero;
+        var __arg2 = buf?.__Instance    ?? IntPtr.Zero;
+        var __arg4 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
+        var ___ret = __Internal.UvWrite(__arg0, __arg1, __arg2, 1, __arg4);
+        return ___ret;
+    }
+    
     public static int UvWrite(UvWriteS? req, UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvWriteCb? cb)
     {
         var                 __arg0 = req?.__Instance    ?? IntPtr.Zero;
@@ -1832,20 +1848,26 @@ public static unsafe partial class Uv
     public static UvProcessS UvSpawn(UvProcessOptionsS options)
         => UvSpawn(null, options);
     
-    public static UvProcessS UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
+    public static UvProcessS 
+        UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
     {
         loop ??= new UvLoopS();
-        options.ExitCb ??= (_, _, _) => { };
         var handle = new UvProcessS
         {
-            Loop = loop,
         };
-        handle.Data    =   GCHandle.ToIntPtr(GCHandle.Alloc(handle));
+
+        options.PreProcessStdio(loop, handle);
         
         var arg0   = loop.__Instance;
         var arg1   = handle.__Instance;
         var arg2   = options.__Instance;
         __Internal.UvSpawn(arg0, arg1, arg2).Check();
+        
+        foreach (var containerS in options.Stdio)
+        {
+            containerS?.Start();
+        }
+        UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
         return handle;
     }
 

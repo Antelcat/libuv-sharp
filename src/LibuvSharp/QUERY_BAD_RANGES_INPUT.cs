@@ -117,7 +117,7 @@ public unsafe partial class QUERY_BAD_RANGES_INPUT : IDisposable
             {
                 __value = new QUERY_BAD_RANGES_INPUT_RANGE[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = QUERY_BAD_RANGES_INPUT_RANGE.__GetOrCreateInstance((IntPtr)((QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)&(((__Internal*)__Instance)->Ranges[i * sizeof(QUERY_BAD_RANGES_INPUT_RANGE.__Internal)])), true, true);
+                    __value[i] = QUERY_BAD_RANGES_INPUT_RANGE.__GetOrCreateInstance((IntPtr)(QUERY_BAD_RANGES_INPUT_RANGE.__Internal*)&((__Internal*)__Instance)->Ranges[i * sizeof(QUERY_BAD_RANGES_INPUT_RANGE.__Internal)], true, true);
             }
             return __value;
         }

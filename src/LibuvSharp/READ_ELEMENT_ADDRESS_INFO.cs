@@ -109,7 +109,7 @@ public unsafe partial class READ_ELEMENT_ADDRESS_INFO : IDisposable
             {
                 __value = new CHANGER_ELEMENT_STATUS[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = CHANGER_ELEMENT_STATUS.__GetOrCreateInstance((IntPtr)((CHANGER_ELEMENT_STATUS.__Internal*)&(((__Internal*)__Instance)->ElementStatus[i * sizeof(CHANGER_ELEMENT_STATUS.__Internal)])), true, true);
+                    __value[i] = CHANGER_ELEMENT_STATUS.__GetOrCreateInstance((IntPtr)(CHANGER_ELEMENT_STATUS.__Internal*)&((__Internal*)__Instance)->ElementStatus[i * sizeof(CHANGER_ELEMENT_STATUS.__Internal)], true, true);
             }
             return __value;
         }

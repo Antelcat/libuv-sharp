@@ -106,7 +106,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
 
     public UvProcessOptionsS(UvProcessOptionsS _0) : this()
     {
-        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
+        *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
         if (_0.__file_OwnsNativeMemory)
             File = _0.File;
         if (_0.__cwd_OwnsNativeMemory)
@@ -135,20 +135,22 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         __Instance = IntPtr.Zero;
     }
 
-    public UvExitCb? ExitCb
+    public Action<UvProcessS,long,int>? ExitCb
     {
-        get
+        get => exitCb;
+        init
         {
-            var __ptr0 = Instance->exit_cb;
-            return __ptr0 == IntPtr.Zero
-                ? null
-                : (UvExitCb)Marshal.GetDelegateForFunctionPointer(__ptr0, typeof(UvExitCb));
+            Instance->exit_cb = value == null
+                ? IntPtr.Zero
+                : Marshal.GetFunctionPointerForDelegate((UvExitCb)((ptr, status, signal) =>
+                {
+                    value.Invoke(new UvProcessS(ptr), status, signal);
+                }));
+            exitCb = value;
         }
-
-        set => Instance->exit_cb = value == null 
-            ? IntPtr.Zero 
-            : Marshal.GetFunctionPointerForDelegate(value);
     }
+
+    private Action<UvProcessS, long, int>? exitCb;
 
     public string? File
     {
@@ -156,7 +158,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
             ? Marshal.PtrToStringAnsi(Instance->file)
             : null;
 
-        set
+        init
         {
             if (__file_OwnsNativeMemory)
                 Marshal.FreeHGlobal(Instance->file);
@@ -166,19 +168,19 @@ public unsafe partial class UvProcessOptionsS : IDisposable
         }
     }
     
-    public string[]? Args
+    public string?[]? Args
     {
         get => Instance->args.CopyToStrings();
 
-        set => Instance->args = value.CopyToPointer();
+        init => Instance->args = value.SafeCopyToPointer();
     }
 
         
-    public string[]? Env
+    public string?[]? Env
     {
         get => Instance->env.CopyToStrings();
 
-        set => Instance->env = value.CopyToPointer();
+        init => Instance->env = value.SafeCopyToPointer();
     }
 
 
@@ -186,7 +188,7 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => __cwd_OwnsNativeMemory ? Marshal.PtrToStringAnsi(Instance->cwd) : null;
 
-        set
+        init
         {
             if (__cwd_OwnsNativeMemory)
                 Marshal.FreeHGlobal(Instance->cwd);
@@ -201,81 +203,58 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => Instance->flags;
 
-        set => Instance->flags = value;
+        private set => Instance->flags = value;
     }
 
     public int StdioCount
     {
         get => Instance->stdio_count;
 
-        private set => Instance->stdio_count = value;
+        private set => Instance->stdio_count = value; 
     }
 
     private bool __stdio_hasNativeMemory;
-    
-    
-    /// <summary>
-    /// 如果改动，需要重新set
-    /// </summary>
-    public UvStdioContainerS?[]? Stdio
-    {
-        get
-        {
-            if (!__stdio_hasNativeMemory) return null;
-            var ret     = new UvStdioContainerS[StdioCount];
-            for (var i = 0; i < StdioCount; i++)
-            {
-                var native = &((UvStdioContainerS.__Internal*)Instance->stdio)[i];
-                ret[StdioCount] = UvStdioContainerS.__GetOrCreateInstance((IntPtr)native)!;
-            }
 
-            return ret;
+    public UvPipe?[]? Stdio { get; init; }
+ 
+    internal void PreProcessStdio(UvLoopS loop, UvProcessS process)
+    {
+        StdioCount      = Stdio?.Length ?? 0;
+        if (Stdio is null || Stdio.Length == 0)
+        {
+            Instance->stdio = IntPtr.Zero;
+            return;
         }
 
-        set
+        __stdio_hasNativeMemory = true;
+        Instance->stdio         = Marshal.AllocHGlobal(StdioCount * sizeof(UvPipe.__Internal));
+        var stdio = (UvPipe.__Internal*)Instance->stdio;
+        for (var i = 0; i < Stdio.Length; i++)
         {
-            if (__stdio_hasNativeMemory) Marshal.FreeHGlobal(__Instance);
-            if (value is null || value.Length == 0)
+            var curr = Stdio[i];
+            if (curr == null) stdio[i].flags = UvStdioFlags.UV_IGNORE;
+            else
             {
-                __stdio_hasNativeMemory = false;
-                StdioCount              = 0;
-                return;
-            }
-
-            StdioCount              = value.Length;
-            Instance->stdio         = Marshal.AllocHGlobal(StdioCount * sizeof(UvStdioContainerS.__Internal));
-            var stdio = (UvStdioContainerS.__Internal*)Instance->stdio;
-            for (var i = 0; i < value.Length; i++)
-            {
-                var curr = value[i];
-                if (curr == null)
-                {
-                    stdio[i].flags = UvStdioFlags.UV_IGNORE;
-                }
-                else
-                {
-                    var pointer = (UvStdioContainerS.__Internal*)curr.__Instance;
-                    stdio[i].flags = pointer->flags;
-                    stdio[i].data  = pointer->data;
-                }
+                var buf = Uv.__Internal.UvBufInit(null, 0);
+                curr.NewAndInit(loop, process, buf); 
+                var pointer = (UvPipe.__Internal*)curr.__Instance;
+                stdio[i].flags       = pointer->flags;
+                stdio[i].data.stream = pointer->data.stream;
             }
         }
     }
+    
 
     public byte Uid
     {
         get => Instance->uid;
 
-        set
+        init
         {
             Instance->uid = value;
             if (value != 0)
             {
                 Flags |= (uint)UvProcessFlags.UV_PROCESS_SETGID;
-            }
-            else if((Flags & (uint)UvProcessFlags.UV_PROCESS_SETGID) > 0)
-            {
-                Flags -= (uint)UvProcessFlags.UV_PROCESS_SETGID;
             }
         }
     }
@@ -284,16 +263,12 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     {
         get => Instance->gid;
 
-        set
+        init
         {
             Instance->gid = value;
             if (value != 0)
             {
                 Flags |= (uint)UvProcessFlags.UV_PROCESS_SETUID;
-            }
-            else if((Flags & (uint)UvProcessFlags.UV_PROCESS_SETGID) > 0)
-            {
-                Flags -= (uint)UvProcessFlags.UV_PROCESS_SETUID;
             }
         }
     }
@@ -301,14 +276,22 @@ public unsafe partial class UvProcessOptionsS : IDisposable
     public bool Detached
     {
         get => (Flags & (uint)UvProcessFlags.UV_PROCESS_DETACHED) > 0;
-        
-        set => Flags |= (uint)UvProcessFlags.UV_PROCESS_DETACHED;
+
+        init
+        {
+            if(value)
+                Flags |= (uint)UvProcessFlags.UV_PROCESS_DETACHED;
+        }
     }
 
     public bool WindowsVerbatimArguments
     {
         get => (Flags & (uint)UvProcessFlags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS) > 0;
-        
-        set => Flags |= (uint)UvProcessFlags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS;
+
+        init
+        {
+            if(value)
+                Flags |= (uint)UvProcessFlags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS;
+        }
     }
 }

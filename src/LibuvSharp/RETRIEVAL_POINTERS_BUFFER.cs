@@ -201,7 +201,7 @@ public unsafe partial class RETRIEVAL_POINTERS_BUFFER : IDisposable
             {
                 __value = new _0[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = _0.__GetOrCreateInstance((IntPtr)((_0.__Internal*)&(((__Internal*)__Instance)->Extents[i * sizeof(_0.__Internal)])), true, true);
+                    __value[i] = _0.__GetOrCreateInstance((IntPtr)(_0.__Internal*)&((__Internal*)__Instance)->Extents[i * sizeof(_0.__Internal)], true, true);
             }
             return __value;
         }

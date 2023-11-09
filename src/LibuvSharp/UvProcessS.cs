@@ -230,7 +230,7 @@ public unsafe partial class UvProcessS : IDisposable
                     __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
-                    *((__Internal*) __Instance) = *((__Internal*) __0.__Instance);
+                    *(__Internal*) __Instance = *(__Internal*) __0.__Instance;
                 }
 
                 public void Dispose()
@@ -394,7 +394,7 @@ public unsafe partial class UvProcessS : IDisposable
             __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
-            *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
+            *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
         }
 
         public void Dispose()
@@ -547,9 +547,17 @@ public unsafe partial class UvProcessS : IDisposable
         __Instance = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *((__Internal*) __Instance) = *((__Internal*) _0.__Instance);
+        *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
     }
 
+    internal UvProcessS(IntPtr instance)
+    {
+        __Instance           = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
+        __ownsNativeInstance = true;
+        __RecordNativeToManagedMapping(__Instance, this);
+        *(__Internal*) __Instance = *(__Internal*) instance;
+    }
+    
     public void Dispose()
     {
         Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
@@ -705,4 +713,37 @@ public unsafe partial class UvProcessS : IDisposable
 
         set => ((__Internal*)__Instance)->exit_cb_pending = value;
     }
+
+    public void Kill()
+    {
+        
+    }
+
+    internal void SetError(UvErrnoT error)
+    {
+        if (this.error == 0)
+        {
+            this.error = error;
+        }
+    }
+    internal void SetPipeError(UvErrnoT pipeError)
+    {
+        if (this.pipeError == 0)
+        {
+            this.pipeError = pipeError;
+        }
+    }
+
+    internal void IncrementBufferSizeAndCheckOverflow(ulong length)
+    {
+        bufferedOutputSize += length;
+        if (!(maxBuffer > 0) || !(bufferedOutputSize > maxBuffer)) return;
+        SetError(UvErrnoT.UV_ENOBUFS);
+        Kill();
+    }
+
+    private double   maxBuffer;
+    private ulong    bufferedOutputSize;
+    private UvErrnoT pipeError;
+    private UvErrnoT error;
 }

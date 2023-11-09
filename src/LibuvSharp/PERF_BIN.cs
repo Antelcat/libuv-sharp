@@ -117,7 +117,7 @@ public unsafe partial class PERF_BIN : IDisposable
             {
                 __value = new BIN_RANGE[1];
                 for (var i = 0; i < 1; i++)
-                    __value[i] = BIN_RANGE.__GetOrCreateInstance((IntPtr)((BIN_RANGE.__Internal*)&(((__Internal*)__Instance)->BinsRanges[i * sizeof(BIN_RANGE.__Internal)])), true, true);
+                    __value[i] = BIN_RANGE.__GetOrCreateInstance((IntPtr)(BIN_RANGE.__Internal*)&((__Internal*)__Instance)->BinsRanges[i * sizeof(BIN_RANGE.__Internal)], true, true);
             }
             return __value;
         }
