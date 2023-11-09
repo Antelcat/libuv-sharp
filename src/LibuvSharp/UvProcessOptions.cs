@@ -241,7 +241,7 @@ public unsafe partial class UvProcessOptions : IDisposable
                 curr.NewAndInit(loop, process, buf);
                 var pointer = (UvPipe.__Internal*)curr.__Instance;
                 stdio[i].flags       = pointer->flags;
-                stdio[i].data.stream = curr.stream!.__Instance;
+                stdio[i].data.stream = curr.Stream!.__Instance;
             }
         }
     }
