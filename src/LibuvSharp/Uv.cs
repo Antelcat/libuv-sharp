@@ -1845,21 +1845,22 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvProcessS UvSpawn(UvProcessOptionsS options)
+    public static UvProcess UvSpawn(UvProcessOptions options)
         => UvSpawn(null, options);
     
-    public static UvProcessS 
-        UvSpawn(UvLoopS? loop, UvProcessOptionsS options)
+    public static UvProcess 
+        UvSpawn(UvLoopS? loop, UvProcessOptions options)
     {
         loop ??= new UvLoopS();
-        var handle = new UvProcessS
+        var process = new UvProcess
         {
+            ExitSignal = 0
         };
 
-        options.PreProcessStdio(loop, handle);
+        options.PreProcessStdio(loop, process);
         
         var arg0   = loop.__Instance;
-        var arg1   = handle.__Instance;
+        var arg1   = process.__Instance;
         var arg2   = options.__Instance;
         __Internal.UvSpawn(arg0, arg1, arg2).Check();
         
@@ -1867,11 +1868,11 @@ public static unsafe partial class Uv
         {
             containerS?.Start();
         }
-        UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
-        return handle;
+        UvRun(loop, UvRunMode.UV_RUN_NOWAIT).Check();
+        return process;
     }
 
-    public static int UvProcessKill(UvProcessS? _0, int signum)
+    public static int UvProcessKill(UvProcess? _0, int signum)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvProcessKill(__arg0, signum);
@@ -1884,7 +1885,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvProcessGetPid(UvProcessS? _0)
+    public static int UvProcessGetPid(UvProcess? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvProcessGetPid(__arg0);

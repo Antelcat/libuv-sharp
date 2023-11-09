@@ -34,7 +34,7 @@ public class Tests
             ios.Add(pipe);
         }
 
-        var process = Uv.UvSpawn(new UvProcessOptionsS
+        var process = UvProcess.Spawn(new UvProcessOptions
             {
                 ExitCb = (a, exit, c) =>
                 {
@@ -50,32 +50,9 @@ public class Tests
                 Args  = Array.Empty<string>(),
                 Stdio = ios.ToArray(),
             });
-
+   
         await Task.Delay(10000);
     }
     
-    /*
-    public global::LibuvSharp.UvStdioContainerS[]? Stdio
-    {
-        get
-        {
-            var ret     = new UvStdioContainerS[StdioCount];
-            var pointer = (UvStdioContainerS.__Internal*)((__Internal*)__Instance)->stdio;
-            for (var i = 0; i < StdioCount; i++)
-            {
-                ret[StdioCount] = global::LibuvSharp.UvStdioContainerS.__GetOrCreateInstance((nint)pointer, false);
-                pointer++;
-            }
-
-            return ret;
-        }
-
-        set
-        {
-            ((__Internal*)__Instance)->stdio = value is null ? IntPtr.Zero : value[0].__Instance;
-            StdioCount                       = value?.Length ?? 0;
-        }
-    }
-    */
 }
 

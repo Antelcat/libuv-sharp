@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Xml;
@@ -14,7 +15,9 @@ public unsafe partial class UvPipe : IDisposable
         internal UvStdioFlags    flags;
         internal Data.__Internal data;
 
-        [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_stdio_container_s@@QEAA@AEBU0@@Z", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity,
+         DllImport(LibuvSharp.libuv, EntryPoint = "??0uv_stdio_container_s@@QEAA@AEBU0@@Z",
+             CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
@@ -23,13 +26,13 @@ public unsafe partial class UvPipe : IDisposable
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public struct __Internal
         {
-            [FieldOffset(0)]
-            internal IntPtr stream;
+            [FieldOffset(0)] internal IntPtr stream;
 
-            [FieldOffset(0)]
-            internal int fd;
+            [FieldOffset(0)] internal int fd;
 
-            [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-data>@uv_stdio_container_s@@QEAA@AEBT01@@Z", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity,
+             DllImport(LibuvSharp.libuv, EntryPoint = "??0<unnamed-type-data>@uv_stdio_container_s@@QEAA@AEBT01@@Z",
+                 CallingConvention = CallingConvention.Cdecl)]
             internal static extern IntPtr cctor(IntPtr __instance, IntPtr __0);
         }
 
@@ -54,7 +57,7 @@ public unsafe partial class UvPipe : IDisposable
 
         private Data(void* native, bool skipVTables = false) : this()
         {
-            __instance = *(__Internal*) native;
+            __instance = *(__Internal*)native;
         }
 
         public Data(Data __0)
@@ -98,7 +101,6 @@ public unsafe partial class UvPipe : IDisposable
 
     internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvPipe managed)
     {
-    
         return NativeToManagedMap.TryGetValue(native, out managed);
     }
 
@@ -106,8 +108,8 @@ public unsafe partial class UvPipe : IDisposable
 
     internal static UvPipe? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
-        return native == IntPtr.Zero 
-            ? null 
+        return native == IntPtr.Zero
+            ? null
             : new UvPipe(native.ToPointer(), skipVTables);
     }
 
@@ -131,7 +133,7 @@ public unsafe partial class UvPipe : IDisposable
     private static void* __CopyValue(__Internal native)
     {
         var ret = Marshal.AllocHGlobal(sizeof(__Internal));
-        *(__Internal*) ret = native;
+        *(__Internal*)ret = native;
         return ret.ToPointer();
     }
 
@@ -154,7 +156,7 @@ public unsafe partial class UvPipe : IDisposable
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        Flags       = UvStdioFlags.UV_IGNORE;
+        Flags  = UvStdioFlags.UV_IGNORE;
         stream = new();
     }
 
@@ -163,12 +165,12 @@ public unsafe partial class UvPipe : IDisposable
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
-        *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
+        *(__Internal*)__Instance = *(__Internal*)_0.__Instance;
     }
 
     public void Dispose()
     {
-        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
+        Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
     }
 
     partial void DisposePartial(bool disposing);
@@ -197,20 +199,25 @@ public unsafe partial class UvPipe : IDisposable
 
         set => ((__Internal*)__Instance)->data = value.__Instance;
     }
+
     internal         UvBufT?         Buffer { get; set; }
     private          UvPipeS?        pipe;
-    private          UvStreamS?      stream;
+    internal         UvStreamS?      stream;
+    private          UvHandleS       handle;
     private readonly UvWriteS        write    = new();
     private readonly UvShutdownS     shutdown = new();
     private          UvOutputBuffer? firstBuffer;
     private          UvOutputBuffer? lastBuffer;
-    private          UvProcessS?     process;
-    internal void NewAndInit(UvLoopS loop, UvProcessS process, UvBufT.__Internal buffer)
+    private          UvProcess?     process;
+    private          bool            closed;
+    
+    internal void NewAndInit(UvLoopS loop, UvProcess process, UvBufT.__Internal buffer)
     {
         this.process = process;
         Buffer       = UvBufT.__CreateInstance(buffer);
         pipe         = new();
         stream       = UvStreamS.__CreateInstance(pipe.__Instance);
+        handle       = UvHandleS.__CreateInstance(pipe.__Instance);
         Uv.UvPipeInit(loop, pipe, 0).Check();
         pipe.Data = __Instance;
     }
@@ -221,22 +228,16 @@ public unsafe partial class UvPipe : IDisposable
         {
             if (Buffer!.Len > 0)
             {
-                Uv.UvWrite(write, stream, Buffer, (req, result) =>
-                {
-                    result.Check();
-                }).Check();
+                Uv.UvWrite(write, stream, Buffer, static (req, result) => { result.Check(); }).Check();
             }
-            
-            Uv.UvShutdown(shutdown,stream, (req, result) =>
-            {
-                result.Check();
-            }).Check();
+
+            Uv.UvShutdown(shutdown, stream,static  (req, result) => { result.Check(); }).Check();
         }
 
         if (Writable)
         {
             Uv.UvReadStart(stream,
-                (handle, suggestedSize, buf) =>
+                (_, suggestedSize, buf) =>
                 {
                     if (lastBuffer == null)
                     {
@@ -251,23 +252,32 @@ public unsafe partial class UvPipe : IDisposable
 
                     lastBuffer.OnAlloc(suggestedSize, buf.As<UvBufT.__Internal>());
                 },
-                (handle, nRead, buf) =>
+                (_, nRead, buf) =>
                 {
-                    if (nRead == (long)UvErrnoT.UV_EOF)
+                    if (nRead == (long)UvErrno.UV_EOF)
                     {
                         
-                    }else if (nRead < 0)
+                    }
+                    else if (nRead < 0)
                     {
+                        SetError((int)nRead);
                         Uv.UvReadStop(stream);
-                        throw new Exception(nameof(nRead));
                     }
                     else
                     {
-                        lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), nRead);
+                        lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), (ulong)nRead);
                         process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
                     }
                 }).Check();
         }
+    }
+
+    internal void Close()
+    {
+        Uv.UvClose(handle,  (_) =>
+        {
+            closed = true;
+        });
     }
 
     public bool Readable
@@ -303,6 +313,8 @@ public unsafe partial class UvPipe : IDisposable
             }
         }
     }
+
+    private void SetError(int error) => process?.SetPipeError((UvErrno)error);
 }
 
 public class UvOutputBuffer
@@ -322,10 +334,21 @@ public class UvOutputBuffer
         }
     }
 
-    internal unsafe void OnRead(UvBufT.__Internal* buf, long nRead) => Used += (uint)nRead;
+    internal unsafe void OnRead(UvBufT.__Internal* buf, ulong nRead)
+    {
+        fixed (sbyte* head = data_)
+        {
+            if (buf->@base != IntPtr.Add(new IntPtr(head), (int)Used))
+            {
+                Debugger.Break();
+            }
+        }
 
-    private  sbyte[] data_ = new sbyte[BufferSize];
-    internal uint    Available { get; }
-    internal uint    Used      { get; private set; }
-    internal UvOutputBuffer? Next { get; set; }
+        Used += nRead;
+    }
+
+    private  sbyte[]         data_ = new sbyte[BufferSize];
+    internal uint            Available { get; }
+    internal ulong            Used      { get; private set; }
+    internal UvOutputBuffer? Next      { get; set; }
 }

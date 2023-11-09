@@ -7,13 +7,16 @@ internal static class UvErrorExtension
 {
     public static void Check(this int error,[CallerMemberName] string name = "")
     {
-        if (error == 0) return;
-        throw new ExternalException($"Libuv method : [ {name} ] throw an exception : [ {(UvErrnoT)error} ]");
+        if (error >= 0) return;
+        throw new ExternalException($"Libuv method : [ {name} ] throw an exception : [ {(UvErrno)error} ]");
     }
 }
 
-public enum UvErrnoT
+public enum UvErrno
 {
+    NOERROR = 0, // My defined
+    
+    
     UV_E2BIG           = -4093,
     UV_EACCES          = -4092,
     UV_EADDRINUSE      = -4091,

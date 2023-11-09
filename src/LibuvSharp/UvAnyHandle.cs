@@ -36,7 +36,7 @@ public unsafe partial struct UvAnyHandle
         internal UvPrepareS.__Internal prepare;
 
         [FieldOffset(0)]
-        internal UvProcessS.__Internal process;
+        internal UvProcess.__Internal process;
 
         [FieldOffset(0)]
         internal UvStreamS.__Internal stream;
@@ -203,15 +203,15 @@ public unsafe partial struct UvAnyHandle
         }
     }
 
-    public UvProcessS Process
+    public UvProcess Process
     {
-        get => UvProcessS.__CreateInstance(__instance.process);
+        get => UvProcess.__CreateInstance(__instance.process);
 
         set
         {
             if (ReferenceEquals(value, null))
                 throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            __instance.process = *(UvProcessS.__Internal*) value.__Instance;
+            __instance.process = *(UvProcess.__Internal*) value.__Instance;
         }
     }
 

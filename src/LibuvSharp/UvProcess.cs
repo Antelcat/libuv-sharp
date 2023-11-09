@@ -4,7 +4,7 @@ using System.Security;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvProcessS : IDisposable
+public unsafe partial class UvProcess : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 264)]
     public struct __Internal
@@ -19,7 +19,7 @@ public unsafe partial class UvProcessS : IDisposable
         internal uint                      flags;
         internal IntPtr                    exit_cb;
         internal int                       pid;
-        internal UvProcessExitS.__Internal exit_req;
+        internal UvProcessExit.__Internal exit_req;
         internal IntPtr                    unused;
         internal int                       exit_signal;
         internal IntPtr                    wait_handle;
@@ -113,7 +113,7 @@ public unsafe partial class UvProcessS : IDisposable
         }
     }
 
-    public partial class UvProcessExitS : IDisposable
+    public partial class UvProcessExit : IDisposable
     {
         [StructLayout(LayoutKind.Sequential, Size = 112)]
         public struct __Internal
@@ -321,15 +321,15 @@ public unsafe partial class UvProcessS : IDisposable
 
         public IntPtr __Instance { get; protected set; }
 
-        internal static readonly ConcurrentDictionary<IntPtr, UvProcessExitS> NativeToManagedMap =
-            new ConcurrentDictionary<IntPtr, UvProcessExitS>();
+        internal static readonly ConcurrentDictionary<IntPtr, UvProcessExit> NativeToManagedMap =
+            new ConcurrentDictionary<IntPtr, UvProcessExit>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcessExitS managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcessExit managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvProcessExitS managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvProcessExit managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -337,28 +337,28 @@ public unsafe partial class UvProcessS : IDisposable
 
         protected bool __ownsNativeInstance;
 
-        internal static UvProcessExitS __CreateInstance(IntPtr native, bool skipVTables = false)
+        internal static UvProcessExit __CreateInstance(IntPtr native, bool skipVTables = false)
         {
             if (native == IntPtr.Zero)
                 return null;
-            return new UvProcessExitS(native.ToPointer(), skipVTables);
+            return new UvProcessExit(native.ToPointer(), skipVTables);
         }
 
-        internal static UvProcessExitS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+        internal static UvProcessExit __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
         {
             if (native == IntPtr.Zero)
                 return null;
             if (__TryGetNativeToManagedMapping(native, out var managed))
-                return (UvProcessExitS)managed;
+                return (UvProcessExit)managed;
             var result = __CreateInstance(native, skipVTables);
             if (saveInstance)
                 __RecordNativeToManagedMapping(native, result);
             return result;
         }
 
-        internal static UvProcessExitS __CreateInstance(__Internal native, bool skipVTables = false)
+        internal static UvProcessExit __CreateInstance(__Internal native, bool skipVTables = false)
         {
-            return new UvProcessExitS(native, skipVTables);
+            return new UvProcessExit(native, skipVTables);
         }
 
         private static void* __CopyValue(__Internal native)
@@ -368,28 +368,28 @@ public unsafe partial class UvProcessS : IDisposable
             return ret.ToPointer();
         }
 
-        private UvProcessExitS(__Internal native, bool skipVTables = false)
+        private UvProcessExit(__Internal native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
         }
 
-        protected UvProcessExitS(void* native, bool skipVTables = false)
+        protected UvProcessExit(void* native, bool skipVTables = false)
         {
             if (native == null)
                 return;
             __Instance = new IntPtr(native);
         }
 
-        public UvProcessExitS()
+        public UvProcessExit()
         {
             __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
         }
 
-        public UvProcessExitS(UvProcessExitS _0)
+        public UvProcessExit(UvProcessExit _0)
         {
             __Instance = Marshal.AllocHGlobal(sizeof(__Internal));
             __ownsNativeInstance = true;
@@ -429,7 +429,7 @@ public unsafe partial class UvProcessS : IDisposable
             set => ((__Internal*)__Instance)->type = value;
         }
 
-        private IntPtr[] __reserved;
+        private IntPtr[]? __reserved;
 
         private bool __reservedInitialised;
         public IntPtr[] Reserved
@@ -475,14 +475,14 @@ public unsafe partial class UvProcessS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvProcessS> NativeToManagedMap = new();
+    internal static readonly ConcurrentDictionary<IntPtr, UvProcess> NativeToManagedMap = new();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcessS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvProcess managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvProcessS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvProcess managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -490,28 +490,28 @@ public unsafe partial class UvProcessS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvProcessS? __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvProcess? __CreateInstance(IntPtr native, bool skipVTables = false)
     {
         return native == IntPtr.Zero 
             ? null 
-            : new UvProcessS(native.ToPointer(), skipVTables);
+            : new UvProcess(native.ToPointer(), skipVTables);
     }
 
-    internal static UvProcessS? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvProcess? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
         if (__TryGetNativeToManagedMapping(native, out var managed))
-            return (UvProcessS)managed;
+            return (UvProcess)managed;
         var result = __CreateInstance(native, skipVTables);
         if (saveInstance)
             __RecordNativeToManagedMapping(native, result);
         return result;
     }
 
-    internal static UvProcessS __CreateInstance(__Internal native, bool skipVTables = false)
+    internal static UvProcess __CreateInstance(__Internal native, bool skipVTables = false)
     {
-        return new UvProcessS(native, skipVTables);
+        return new UvProcess(native, skipVTables);
     }
 
     private static void* __CopyValue(__Internal native)
@@ -521,28 +521,28 @@ public unsafe partial class UvProcessS : IDisposable
         return ret.ToPointer();
     }
 
-    private UvProcessS(__Internal native, bool skipVTables = false)
+    private UvProcess(__Internal native, bool skipVTables = false)
         : this(__CopyValue(native), skipVTables)
     {
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    protected UvProcessS(void* native, bool skipVTables = false)
+    protected UvProcess(void* native, bool skipVTables = false)
     {
         if (native == null)
             return;
         __Instance = new IntPtr(native);
     }
 
-    public UvProcessS()
+    public UvProcess()
     {
         __Instance           = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvProcessS(UvProcessS _0)
+    public UvProcess(UvProcess _0)
     {
         __Instance = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
@@ -550,7 +550,7 @@ public unsafe partial class UvProcessS : IDisposable
         *(__Internal*) __Instance = *(__Internal*) _0.__Instance;
     }
 
-    internal UvProcessS(IntPtr instance)
+    internal UvProcess(IntPtr instance)
     {
         __Instance           = Marshal.AllocHGlobal((int)Uv.UvHandleSize(UvHandleType.UV_PROCESS));
         __ownsNativeInstance = true;
@@ -667,15 +667,15 @@ public unsafe partial class UvProcessS : IDisposable
         set => ((__Internal*)__Instance)->pid = value;
     }
 
-    public UvProcessExitS ExitReq
+    public UvProcessExit ExitReq
     {
-        get => UvProcessExitS.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->exit_req));
+        get => UvProcessExit.__CreateInstance(new IntPtr(&((__Internal*)__Instance)->exit_req));
 
         set
         {
             if (ReferenceEquals(value, null))
                 throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
-            ((__Internal*)__Instance)->exit_req = *(UvProcessExitS.__Internal*) value.__Instance;
+            ((__Internal*)__Instance)->exit_req = *(UvProcessExit.__Internal*) value.__Instance;
         }
     }
 
@@ -714,19 +714,50 @@ public unsafe partial class UvProcessS : IDisposable
         set => ((__Internal*)__Instance)->exit_cb_pending = value;
     }
 
-    public void Kill()
+    public void Kill(int signum = 0)
     {
+        if(killed)return;
+        killed = true;
+        if (exitStatus < 0)
+        {
+            var r = Uv.__Internal.UvProcessKill(__Instance, signum);
+            if (r < 0 && r != (int)UvErrno.UV_ESRCH) {
+                SetError((UvErrno)r);
+
+                // Deliberately ignore the return value, we might not have
+                // sufficient privileges to signal the child process.
+                Uv.UvProcessKill(this, 9);
+            }
+        }
         
+        // Close all stdio pipes.
+        CloseStdioPipes();
+    }
+    internal UvPipe[]? Stdios { get; set; }
+    private  bool      killed;
+    private  long      exitStatus = -1;
+    
+    private void CloseStdioPipes()
+    {
+        if (Stdios != null)
+        {
+            foreach (var pipe in Stdios)
+            {
+                pipe.Close();
+            }
+        }
+
+        Stdios = null;
     }
 
-    internal void SetError(UvErrnoT error)
+    internal void SetError(UvErrno error)
     {
         if (this.error == 0)
         {
             this.error = error;
         }
     }
-    internal void SetPipeError(UvErrnoT pipeError)
+    internal void SetPipeError(UvErrno pipeError)
     {
         if (this.pipeError == 0)
         {
@@ -738,12 +769,15 @@ public unsafe partial class UvProcessS : IDisposable
     {
         bufferedOutputSize += length;
         if (!(maxBuffer > 0) || !(bufferedOutputSize > maxBuffer)) return;
-        SetError(UvErrnoT.UV_ENOBUFS);
+        SetError(UvErrno.UV_ENOBUFS);
         Kill();
     }
 
     private double   maxBuffer;
     private ulong    bufferedOutputSize;
-    private UvErrnoT pipeError;
-    private UvErrnoT error;
+    private UvErrno pipeError;
+    private UvErrno error;
+
+
+    public static UvProcess Spawn(UvProcessOptions options) => Uv.UvSpawn(options);
 }
