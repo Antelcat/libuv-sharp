@@ -340,7 +340,6 @@ public class UvOutputBuffer
 
     internal unsafe byte[]? OnRead(UvBufT.__Internal* buf, ulong nRead)
     {
-        byte[]? ret;
         fixed (sbyte* head = data)
         {
             if (buf->@base != IntPtr.Add(new IntPtr(head), (int)Used))
@@ -348,17 +347,17 @@ public class UvOutputBuffer
                 // Sequence length not match
             }
 
-            var count = (int)nRead;
-            ret = new byte[count];
+            var     count = (int)nRead;
+            var ret   = new byte[count];
             Array.Copy(data, (int)Used, ret, 0, count);
 #if DEBUG
             var str = Encoding.UTF8.GetString(ret);
             Debugger.Break();
 #endif
+            Used += nRead;
+            return ret;
         }
 
-        Used += nRead;
-        return ret;
     }
 
     private readonly sbyte[]         data = new sbyte[BufferSize];

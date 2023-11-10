@@ -234,14 +234,23 @@ public unsafe partial class UvProcessOptions : IDisposable
         for (var i = 0; i < Stdio.Length; i++)
         {
             var curr = Stdio[i];
-            if (curr == null) stdio[i].flags = UvStdioFlags.UV_IGNORE;
-            else
+            switch (curr)
             {
-                var buf = Uv.__Internal.UvBufInit(null, 0);
-                curr.NewAndInit(loop, process, buf);
-                var pointer = (UvPipe.__Internal*)curr.__Instance;
-                stdio[i].flags       = pointer->flags;
-                stdio[i].data.stream = curr.Stream!.__Instance;
+                case null:
+                    stdio[i].flags = UvStdioFlags.UV_IGNORE;
+                    break;
+                case { Readable: false, Writable: false }:
+                    stdio[i].flags = UvStdioFlags.UV_IGNORE;
+                    break;
+                default:
+                {
+                    var buf = Uv.__Internal.UvBufInit(null, 0);
+                    curr.NewAndInit(loop, process, buf);
+                    var pointer = (UvPipe.__Internal*)curr.__Instance;
+                    stdio[i].flags       = pointer->flags;
+                    stdio[i].data.stream = curr.Stream!.__Instance;
+                    break;
+                }
             }
         }
     }

@@ -1846,23 +1846,21 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvProcess UvSpawn(UvProcessOptions options) => UvSpawn(null, options);
+    public static UvProcess UvSpawn(UvProcessOptions options) => UvSpawn(new UvLoop(), options);
     
-    public static UvProcess UvSpawn(UvLoop? loop, UvProcessOptions options)
+    public static UvProcess UvSpawn(UvLoop loop, UvProcessOptions options)
     {
-        loop ??= new UvLoop();
-        var process = new UvProcess
-        {
-        };
-        process.ExitCb = (a, b, c) =>
+        var process = new UvProcess();
+        process.ExitCb = (_, b, c) =>
         {
             options.ExitCb?.Invoke(process, b, c);
         };
         options.PreProcessStdio(loop, process);
+
+        var arg0 = loop.__Instance;
+        var arg1 = process.__Instance;
+        var arg2 = options.__Instance;
         
-        var arg0   = loop.__Instance;
-        var arg1   = process.__Instance;
-        var arg2   = options.__Instance;
          __Internal.UvSpawn(arg0, arg1, arg2).Check();
 
         if (options.Stdio != null)
@@ -1872,7 +1870,7 @@ public static unsafe partial class Uv
                 pipe?.Start();
             }
         }
-        Thread.Sleep(100);
+        Thread.Sleep(200);
         UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
         return process;
     }
