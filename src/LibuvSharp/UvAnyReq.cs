@@ -84,7 +84,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.req = *(UvReqS.__Internal*) value.__Instance;
         }
     }
@@ -96,7 +96,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.connect = *(UvConnectS.__Internal*) value.__Instance;
         }
     }
@@ -108,7 +108,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.write = *(UvWriteS.__Internal*) value.__Instance;
         }
     }
@@ -120,7 +120,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.shutdown = *(UvShutdownS.__Internal*) value.__Instance;
         }
     }
@@ -132,7 +132,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.udp_send = *(UvUdpSendS.__Internal*) value.__Instance;
         }
     }
@@ -144,7 +144,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.fs = *(UvFsS.__Internal*) value.__Instance;
         }
     }
@@ -156,7 +156,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.work = *(UvWorkS.__Internal*) value.__Instance;
         }
     }
@@ -168,7 +168,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.getaddrinfo = *(UvGetaddrinfoS.__Internal*) value.__Instance;
         }
     }
@@ -180,7 +180,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.getnameinfo = *(UvGetnameinfoS.__Internal*) value.__Instance;
         }
     }
@@ -192,7 +192,7 @@ public unsafe partial struct UvAnyReq
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.random = *(UvRandomS.__Internal*) value.__Instance;
         }
     }

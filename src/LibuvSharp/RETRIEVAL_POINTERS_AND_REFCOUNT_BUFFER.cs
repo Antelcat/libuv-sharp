@@ -219,7 +219,7 @@ public unsafe partial class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(_0.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(_0.__Internal)] = *(_0.__Internal*)value[i].__Instance;
             }

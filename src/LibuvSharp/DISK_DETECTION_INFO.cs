@@ -123,7 +123,7 @@ public unsafe partial class DISK_DETECTION_INFO : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Int13 = *(DISK_INT13INFO.__Internal*) value.__Instance;
         }
     }
@@ -135,7 +135,7 @@ public unsafe partial class DISK_DETECTION_INFO : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->ExInt13 = *(DISK_EX_INT13INFO.__Internal*) value.__Instance;
         }
     }

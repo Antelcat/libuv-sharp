@@ -850,7 +850,7 @@ public unsafe partial class NTFS_STATISTICS_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->MftWritesUserLevel = *(MftWritesUserLevel.__Internal*) value.__Instance;
         }
     }
@@ -897,7 +897,7 @@ public unsafe partial class NTFS_STATISTICS_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Mft2WritesUserLevel = *(Mft2WritesUserLevel.__Internal*) value.__Instance;
         }
     }
@@ -1007,7 +1007,7 @@ public unsafe partial class NTFS_STATISTICS_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->BitmapWritesUserLevel = *(BitmapWritesUserLevel.__Internal*) value.__Instance;
         }
     }
@@ -1068,7 +1068,7 @@ public unsafe partial class NTFS_STATISTICS_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->MftBitmapWritesUserLevel = *(MftBitmapWritesUserLevel.__Internal*) value.__Instance;
         }
     }
@@ -1136,7 +1136,7 @@ public unsafe partial class NTFS_STATISTICS_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Allocate = *(Allocate.__Internal*) value.__Instance;
         }
     }

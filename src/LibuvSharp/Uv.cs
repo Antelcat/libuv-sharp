@@ -1193,7 +1193,7 @@ public static unsafe partial class Uv
     public static int UvPipe(int[] fds, int read_flags, int write_flags)
     {
         if (fds is not { Length: 2 })
-            throw new ArgumentOutOfRangeException("fds", "The dimensions of the provided array don't match the required size.");
+            throw new ArgumentOutOfRangeException(nameof(fds), "The dimensions of the provided array don't match the required size.");
         var ___ret = __Internal.UvPipe(fds, read_flags, write_flags);
         return ___ret;
     }
@@ -1201,7 +1201,7 @@ public static unsafe partial class Uv
     public static int UvSocketpair(int type, int protocol, ulong[] socket_vector, int flags0, int flags1)
     {
         if (socket_vector == null || socket_vector.Length != 2)
-            throw new ArgumentOutOfRangeException("socket_vector", "The dimensions of the provided array don't match the required size.");
+            throw new ArgumentOutOfRangeException(nameof(socket_vector), "The dimensions of the provided array don't match the required size.");
         var ___ret = __Internal.UvSocketpair(type, protocol, socket_vector, flags0, flags1);
         return ___ret;
     }
@@ -1232,8 +1232,8 @@ public static unsafe partial class Uv
     public static int UvReadStart(UvStreamS? _0, UvAllocCb? alloc_cb, UvReadCb? read_cb)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
-        var __arg1 = alloc_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(alloc_cb);
-        var __arg2 = read_cb  == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(read_cb);
+        var __arg1 = alloc_cb != null ? Marshal.GetFunctionPointerForDelegate(alloc_cb) : IntPtr.Zero;
+        var __arg2 = read_cb  != null ? Marshal.GetFunctionPointerForDelegate(read_cb) : IntPtr.Zero;
         var ___ret = __Internal.UvReadStart(__arg0, __arg1, __arg2);
         return ___ret;
     }
@@ -1873,7 +1873,7 @@ public static unsafe partial class Uv
             }
         }
 
-        UvRun(loop, UvRunMode.UV_RUN_NOWAIT).Check();
+        UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
         return process;
     }
 
@@ -2649,7 +2649,7 @@ public static unsafe partial class Uv
     public static void UvLoadavg(double[] avg)
     {
         if (avg == null || avg.Length != 3)
-            throw new ArgumentOutOfRangeException("avg", "The dimensions of the provided array don't match the required size.");
+            throw new ArgumentOutOfRangeException(nameof(avg), "The dimensions of the provided array don't match the required size.");
         __Internal.UvLoadavg(avg);
     }
 

@@ -100,7 +100,7 @@ public unsafe partial class BIN_COUNT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->BinRange = *(BIN_RANGE.__Internal*) value.__Instance;
         }
     }

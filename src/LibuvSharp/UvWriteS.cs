@@ -199,7 +199,7 @@ public unsafe partial class UvWriteS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.io = *(Connect.__Internal*) value.__Instance;
             }
         }
@@ -211,7 +211,7 @@ public unsafe partial class UvWriteS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.connect = *(Connect.__Internal*) value.__Instance;
             }
         }
@@ -417,7 +417,7 @@ public unsafe partial class UvWriteS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->write_buffer = *(UvBufT.__Internal*) value.__Instance;
         }
     }

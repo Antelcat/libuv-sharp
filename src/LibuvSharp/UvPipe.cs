@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using System.Xml;
 using LibuvSharp.Extensions;
 
@@ -157,7 +158,6 @@ public unsafe partial class UvPipe : IDisposable
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
         Flags  = UvStdioFlags.UV_IGNORE;
-        Stream = new();
     }
 
     public UvPipe(UvPipe _0)
@@ -208,7 +208,7 @@ public unsafe partial class UvPipe : IDisposable
     {
         this.process = process;
         Buffer       = UvBufT.__CreateInstance(buffer);
-        pipe         = new();
+        pipe         = new UvPipeS();
         Stream       = UvStreamS.__CreateInstance(pipe.__Instance);
         handle       = UvHandleS.__CreateInstance(pipe.__Instance);
         Uv.UvPipeInit(loop, pipe, 0).Check();
@@ -234,33 +234,33 @@ public unsafe partial class UvPipe : IDisposable
                 {
                     if (lastBuffer == null)
                     {
-                        firstBuffer = new();
-                        lastBuffer  = firstBuffer;
+                        lastBuffer = firstBuffer = new UvOutputBuffer();
                     }
                     else if (lastBuffer.Available == 0)
                     {
-                        lastBuffer      = new UvOutputBuffer();
-                        lastBuffer.Next = lastBuffer;
+                        var next = new UvOutputBuffer();
+                        lastBuffer.Next = next;
+                        lastBuffer      = next;
                     }
 
                     lastBuffer.OnAlloc(suggestedSize, buf.As<UvBufT.__Internal>());
                 },
                 (_, nRead, buf) =>
                 {
-                    if (nRead == (long)UvErrno.UV_EOF)
+                    switch (nRead)
                     {
-                        
-                    }
-                    else if (nRead < 0)
-                    {
-                        SetError((int)nRead);
-                        Uv.UvReadStop(Stream);
-                    }
-                    else
-                    {
-                        var header = buf.As<UvBufT.__Internal>();
-                        lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), (ulong)nRead);
-                        process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
+                        case (long)UvErrno.UV_EOF:
+                            break;
+                        case < 0:
+                            SetError((int)nRead);
+                            Uv.UvReadStop(Stream);
+                            break;
+                        default:
+                        {
+                            lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), (ulong)nRead);
+                            process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
+                            break;
+                        }
                     }
                 }).Check();
         }
@@ -283,16 +283,11 @@ public unsafe partial class UvPipe : IDisposable
     public bool Readable
     {
         get => Flags.HasFlag(UvStdioFlags.UV_READABLE_PIPE);
-        set
+        init
         {
             if (value)
             {
                 Flags |= UvStdioFlags.UV_READABLE_PIPE | UvStdioFlags.UV_CREATE_PIPE;
-            }
-            else
-            {
-                if ((Flags & UvStdioFlags.UV_READABLE_PIPE) != 0)
-                    Flags -= UvStdioFlags.UV_READABLE_PIPE;
             }
         }
     }
@@ -300,16 +295,11 @@ public unsafe partial class UvPipe : IDisposable
     public bool Writable
     {
         get => Flags.HasFlag(UvStdioFlags.UV_WRITABLE_PIPE);
-        set
+        init
         {
             if (value)
             {
                 Flags |= UvStdioFlags.UV_WRITABLE_PIPE | UvStdioFlags.UV_CREATE_PIPE;
-            }
-            else
-            {
-                if ((Flags & UvStdioFlags.UV_WRITABLE_PIPE) != 0)
-                    Flags -= UvStdioFlags.UV_WRITABLE_PIPE;
             }
         }
     }
@@ -348,6 +338,16 @@ public class UvOutputBuffer
             {
                 Debugger.Break();
             }
+
+            var count = (int)nRead;
+            var msg   = new byte[count];
+            for (var start = 0; start < count; start++)
+            {
+                msg[start] = (byte)data[(int)Used + start];
+            }
+
+            var str = Encoding.UTF8.GetString(msg);
+            Debugger.Break();
         }
 
         Used += nRead;

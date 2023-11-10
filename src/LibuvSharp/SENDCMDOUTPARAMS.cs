@@ -109,7 +109,7 @@ public unsafe partial class SENDCMDOUTPARAMS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->DriverStatus = *(DRIVERSTATUS.__Internal*) value.__Instance;
         }
     }

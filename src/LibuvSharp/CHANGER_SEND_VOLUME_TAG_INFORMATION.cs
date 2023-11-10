@@ -102,7 +102,7 @@ public unsafe partial class CHANGER_SEND_VOLUME_TAG_INFORMATION : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->StartingElement = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }

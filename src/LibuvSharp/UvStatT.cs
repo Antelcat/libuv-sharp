@@ -217,7 +217,7 @@ public unsafe partial class UvStatT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->st_atim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
@@ -229,7 +229,7 @@ public unsafe partial class UvStatT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->st_mtim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
@@ -241,7 +241,7 @@ public unsafe partial class UvStatT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->st_ctim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }
@@ -253,7 +253,7 @@ public unsafe partial class UvStatT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->st_birthtim = *(UvTimespecT.__Internal*) value.__Instance;
         }
     }

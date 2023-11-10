@@ -102,7 +102,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.async = *(UvAsyncS.__Internal*) value.__Instance;
         }
     }
@@ -114,7 +114,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.check = *(UvCheckS.__Internal*) value.__Instance;
         }
     }
@@ -126,7 +126,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.fs_event = *(UvFsEventS.__Internal*) value.__Instance;
         }
     }
@@ -138,7 +138,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.fs_poll = *(UvFsPollS.__Internal*) value.__Instance;
         }
     }
@@ -150,7 +150,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.handle = *(UvHandleS.__Internal*) value.__Instance;
         }
     }
@@ -162,7 +162,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.idle = *(UvIdleS.__Internal*) value.__Instance;
         }
     }
@@ -174,7 +174,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.pipe = *(UvPipeS.__Internal*) value.__Instance;
         }
     }
@@ -186,7 +186,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.poll = *(UvPollS.__Internal*) value.__Instance;
         }
     }
@@ -198,7 +198,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.prepare = *(UvPrepareS.__Internal*) value.__Instance;
         }
     }
@@ -210,7 +210,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.process = *(UvProcess.__Internal*) value.__Instance;
         }
     }
@@ -222,7 +222,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.stream = *(UvStreamS.__Internal*) value.__Instance;
         }
     }
@@ -234,7 +234,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.tcp = *(UvTcpS.__Internal*) value.__Instance;
         }
     }
@@ -246,7 +246,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.timer = *(UvTimerS.__Internal*) value.__Instance;
         }
     }
@@ -258,7 +258,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.tty = *(UvTtyS.__Internal*) value.__Instance;
         }
     }
@@ -270,7 +270,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.udp = *(UvUdpS.__Internal*) value.__Instance;
         }
     }
@@ -282,7 +282,7 @@ public unsafe partial struct UvAnyHandle
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.signal = *(UvSignalS.__Internal*) value.__Instance;
         }
     }

@@ -120,7 +120,7 @@ public unsafe partial class BIN_RESULTS : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(BIN_COUNT.__Internal*) &((__Internal*)__Instance)->BinCounts[i * sizeof(BIN_COUNT.__Internal)] = *(BIN_COUNT.__Internal*)value[i].__Instance;
             }

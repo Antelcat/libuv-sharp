@@ -126,7 +126,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Mbr = *(DRIVE_LAYOUT_INFORMATION_MBR.__Internal*) value.__Instance;
         }
     }
@@ -138,7 +138,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Gpt = *(DRIVE_LAYOUT_INFORMATION_GPT.__Internal*) value.__Instance;
         }
     }
@@ -162,7 +162,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION_EX : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(PARTITION_INFORMATION_EX.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION_EX.__Internal)] = *(PARTITION_INFORMATION_EX.__Internal*)value[i].__Instance;
             }

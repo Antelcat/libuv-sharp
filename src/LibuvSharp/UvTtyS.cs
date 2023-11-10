@@ -299,7 +299,7 @@ public unsafe partial class UvTtyS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.conn = *(Serv.__Internal*) value.__Instance;
             }
         }
@@ -311,7 +311,7 @@ public unsafe partial class UvTtyS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.serv = *(Serv.__Internal*) value.__Instance;
             }
         }
@@ -460,7 +460,7 @@ public unsafe partial class UvTtyS : IDisposable
                 set
                 {
                     if (ReferenceEquals(value, null))
-                        throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                     ((__Internal*)__Instance)->read_line_buffer = *(UvBufT.__Internal*) value.__Instance;
                 }
             }
@@ -550,7 +550,7 @@ public unsafe partial class UvTtyS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.rd = *(Wr.__Internal*) value.__Instance;
             }
         }
@@ -562,7 +562,7 @@ public unsafe partial class UvTtyS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.wr = *(Wr.__Internal*) value.__Instance;
             }
         }
@@ -707,7 +707,7 @@ public unsafe partial class UvTtyS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -787,7 +787,7 @@ public unsafe partial class UvTtyS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->read_req = *(UvReadS.__Internal*) value.__Instance;
         }
     }

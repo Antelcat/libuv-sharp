@@ -127,7 +127,7 @@ public unsafe partial class DRIVE_LAYOUT_INFORMATION : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(PARTITION_INFORMATION.__Internal*) &((__Internal*)__Instance)->PartitionEntry[i * sizeof(PARTITION_INFORMATION.__Internal)] = *(PARTITION_INFORMATION.__Internal*)value[i].__Instance;
             }

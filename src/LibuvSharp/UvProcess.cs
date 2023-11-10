@@ -171,7 +171,7 @@ public unsafe partial class UvProcess : IDisposable
                     return NativeToManagedMap.TryGetValue(native, out managed);
                 }
 
-                protected bool __ownsNativeInstance;
+                protected readonly bool __ownsNativeInstance;
 
                 internal static Connect __CreateInstance(IntPtr native, bool skipVTables = false)
                 {
@@ -301,7 +301,7 @@ public unsafe partial class UvProcess : IDisposable
                 set
                 {
                     if (ReferenceEquals(value, null))
-                        throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                     __instance.io = *(Connect.__Internal*) value.__Instance;
                 }
             }
@@ -313,7 +313,7 @@ public unsafe partial class UvProcess : IDisposable
                 set
                 {
                     if (ReferenceEquals(value, null))
-                        throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                     __instance.connect = *(Connect.__Internal*) value.__Instance;
                 }
             }
@@ -335,7 +335,7 @@ public unsafe partial class UvProcess : IDisposable
             return NativeToManagedMap.TryGetValue(native, out managed);
         }
 
-        protected bool __ownsNativeInstance;
+        protected readonly bool __ownsNativeInstance;
 
         internal static UvProcessExit __CreateInstance(IntPtr native, bool skipVTables = false)
         {
@@ -583,7 +583,7 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->data = value;
     }
 
-    public UvLoop Loop
+    public UvLoop? Loop
     {
         get
         {
@@ -591,7 +591,7 @@ public unsafe partial class UvProcess : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->loop = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->loop = value?.__Instance ?? IntPtr.Zero;
     }
 
     public UvHandleType Type
@@ -601,7 +601,7 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->type = value;
     }
 
-    public UvCloseCb CloseCb
+    public UvCloseCb? CloseCb
     {
         get
         {
@@ -619,7 +619,7 @@ public unsafe partial class UvProcess : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -631,7 +631,7 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public UvHandleS EndgameNext
+    public UvHandleS? EndgameNext
     {
         get
         {
@@ -639,7 +639,7 @@ public unsafe partial class UvProcess : IDisposable
             return __result0;
         }
 
-        set => ((__Internal*)__Instance)->endgame_next = value is null ? IntPtr.Zero : value.__Instance;
+        set => ((__Internal*)__Instance)->endgame_next = value?.__Instance ?? IntPtr.Zero;
     }
 
     public uint Flags
@@ -649,7 +649,7 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->flags = value;
     }
 
-    public UvExitCb ExitCb
+    public UvExitCb? ExitCb
     {
         get
         {
@@ -674,7 +674,7 @@ public unsafe partial class UvProcess : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->exit_req = *(UvProcessExit.__Internal*) value.__Instance;
         }
     }

@@ -155,7 +155,7 @@ public unsafe partial class UvWork : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->wq = *(UvQueue.__Internal*) value.__Instance;
         }
     }

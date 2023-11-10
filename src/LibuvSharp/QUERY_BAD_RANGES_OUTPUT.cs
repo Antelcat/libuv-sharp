@@ -135,7 +135,7 @@ public unsafe partial class QUERY_BAD_RANGES_OUTPUT : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal*) &((__Internal*)__Instance)->BadRanges[i * sizeof(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal)] = *(QUERY_BAD_RANGES_OUTPUT_RANGE.__Internal*)value[i].__Instance;
             }

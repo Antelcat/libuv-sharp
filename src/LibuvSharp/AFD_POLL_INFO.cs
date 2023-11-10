@@ -147,7 +147,7 @@ public unsafe partial class AFD_POLL_INFO : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(AFD_POLL_HANDLE_INFO.__Internal*) &((__Internal*)__Instance)->Handles[i * sizeof(AFD_POLL_HANDLE_INFO.__Internal)] = *(AFD_POLL_HANDLE_INFO.__Internal*)value[i].__Instance;
             }

@@ -127,7 +127,7 @@ public unsafe partial class PERF_BIN : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(BIN_RANGE.__Internal*) &((__Internal*)__Instance)->BinsRanges[i * sizeof(BIN_RANGE.__Internal)] = *(BIN_RANGE.__Internal*)value[i].__Instance;
             }

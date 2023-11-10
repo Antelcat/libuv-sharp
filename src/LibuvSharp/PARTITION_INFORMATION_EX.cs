@@ -139,7 +139,7 @@ public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Mbr = *(PARTITION_INFORMATION_MBR.__Internal*) value.__Instance;
         }
     }
@@ -151,7 +151,7 @@ public unsafe partial class PARTITION_INFORMATION_EX : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Gpt = *(PARTITION_INFORMATION_GPT.__Internal*) value.__Instance;
         }
     }

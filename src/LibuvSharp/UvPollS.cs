@@ -256,7 +256,7 @@ public unsafe partial class UvPollS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -318,7 +318,7 @@ public unsafe partial class UvPollS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->afd_poll_info_1 = *(AFD_POLL_INFO.__Internal*) value.__Instance;
         }
     }
@@ -330,7 +330,7 @@ public unsafe partial class UvPollS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->afd_poll_info_2 = *(AFD_POLL_INFO.__Internal*) value.__Instance;
         }
     }
@@ -342,7 +342,7 @@ public unsafe partial class UvPollS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->poll_req_1 = *(UvReqS.__Internal*) value.__Instance;
         }
     }
@@ -354,7 +354,7 @@ public unsafe partial class UvPollS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->poll_req_2 = *(UvReqS.__Internal*) value.__Instance;
         }
     }

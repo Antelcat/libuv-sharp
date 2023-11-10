@@ -108,7 +108,7 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Header = *(USN_RECORD_COMMON_HEADER.__Internal*) value.__Instance;
         }
     }
@@ -174,7 +174,7 @@ public unsafe partial class USN_RECORD_V4 : IDisposable
             if (value != null)
             {
                 if (value.Length != 1)
-                    throw new ArgumentOutOfRangeException("value", "The dimensions of the provided array don't match the required size.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The dimensions of the provided array don't match the required size.");
                 for (var i = 0; i < 1; i++)
                     *(USN_RECORD_EXTENT.__Internal*) &((__Internal*)__Instance)->Extents[i * sizeof(USN_RECORD_EXTENT.__Internal)] = *(USN_RECORD_EXTENT.__Internal*)value[i].__Instance;
             }

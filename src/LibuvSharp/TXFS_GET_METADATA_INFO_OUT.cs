@@ -207,7 +207,7 @@ public unsafe partial class TXFS_GET_METADATA_INFO_OUT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->TxfFileId = *(TxfFileId.__Internal*) value.__Instance;
         }
     }

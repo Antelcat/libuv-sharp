@@ -133,7 +133,7 @@ public unsafe partial class UvRusageT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->ru_utime = *(UvTimevalT.__Internal*) value.__Instance;
         }
     }
@@ -145,7 +145,7 @@ public unsafe partial class UvRusageT : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->ru_stime = *(UvTimevalT.__Internal*) value.__Instance;
         }
     }

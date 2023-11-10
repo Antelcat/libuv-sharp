@@ -100,7 +100,7 @@ public unsafe partial class CHANGER_READ_ELEMENT_STATUS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->ElementList = *(CHANGER_ELEMENT_LIST.__Internal*) value.__Instance;
         }
     }

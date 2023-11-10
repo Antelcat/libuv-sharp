@@ -296,7 +296,7 @@ public unsafe partial class UvStreamS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.conn = *(Serv.__Internal*) value.__Instance;
             }
         }
@@ -308,7 +308,7 @@ public unsafe partial class UvStreamS : IDisposable
             set
             {
                 if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                    throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
                 __instance.serv = *(Serv.__Internal*) value.__Instance;
             }
         }
@@ -453,7 +453,7 @@ public unsafe partial class UvStreamS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
@@ -533,7 +533,7 @@ public unsafe partial class UvStreamS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->read_req = *(UvReadS.__Internal*) value.__Instance;
         }
     }

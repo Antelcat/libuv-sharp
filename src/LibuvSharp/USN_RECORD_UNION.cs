@@ -51,7 +51,7 @@ public unsafe partial struct USN_RECORD_UNION
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.Header = *(USN_RECORD_COMMON_HEADER.__Internal*) value.__Instance;
         }
     }
@@ -63,7 +63,7 @@ public unsafe partial struct USN_RECORD_UNION
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.V2 = *(USN_RECORD_V2.__Internal*) value.__Instance;
         }
     }
@@ -75,7 +75,7 @@ public unsafe partial struct USN_RECORD_UNION
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.V3 = *(USN_RECORD_V3.__Internal*) value.__Instance;
         }
     }
@@ -87,7 +87,7 @@ public unsafe partial struct USN_RECORD_UNION
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             __instance.V4 = *(USN_RECORD_V4.__Internal*) value.__Instance;
         }
     }

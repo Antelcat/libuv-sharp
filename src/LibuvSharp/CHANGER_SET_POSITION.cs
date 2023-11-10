@@ -101,7 +101,7 @@ public unsafe partial class CHANGER_SET_POSITION : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Transport = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }
@@ -113,7 +113,7 @@ public unsafe partial class CHANGER_SET_POSITION : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->Destination = *(CHANGER_ELEMENT.__Internal*) value.__Instance;
         }
     }

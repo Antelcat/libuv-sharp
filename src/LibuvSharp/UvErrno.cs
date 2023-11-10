@@ -12,7 +12,7 @@ internal static class UvErrorExtension
     }
 }
 
-public enum UvErrno
+public enum UvErrno : long
 {
     NOERROR = 0, // My defined
     

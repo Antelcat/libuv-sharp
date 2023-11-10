@@ -250,7 +250,7 @@ public unsafe partial class UvTimerS : IDisposable
         set
         {
             if (ReferenceEquals(value, null))
-                throw new ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
             ((__Internal*)__Instance)->handle_queue = *(UvQueue.__Internal*) value.__Instance;
         }
     }
