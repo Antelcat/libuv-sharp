@@ -365,11 +365,11 @@ public unsafe partial class UvShutdownS : IDisposable
         set => ((__Internal*)__Instance)->next_req = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public UvStreamS Handle
+    public UvStream Handle
     {
         get
         {
-            var __result0 = UvStreamS.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
+            var __result0 = UvStream.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
             return __result0;
         }
 

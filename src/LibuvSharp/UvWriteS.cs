@@ -381,22 +381,22 @@ public unsafe partial class UvWriteS : IDisposable
         set => ((__Internal*)__Instance)->cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public UvStreamS SendHandle
+    public UvStream SendHandle
     {
         get
         {
-            var __result0 = UvStreamS.__GetOrCreateInstance(((__Internal*)__Instance)->send_handle);
+            var __result0 = UvStream.__GetOrCreateInstance(((__Internal*)__Instance)->send_handle);
             return __result0;
         }
 
         set => ((__Internal*)__Instance)->send_handle = value is null ? IntPtr.Zero : value.__Instance;
     }
 
-    public UvStreamS Handle
+    public UvStream Handle
     {
         get
         {
-            var __result0 = UvStreamS.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
+            var __result0 = UvStream.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
             return __result0;
         }
 

@@ -1040,7 +1040,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvShutdown(UvShutdownS? req, UvStreamS? handle, UvShutdownCb? cb)
+    public static int UvShutdown(UvShutdownS? req, UvStream? handle, UvShutdownCb? cb)
     {
         var __arg0 = req?.__Instance    ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1206,14 +1206,14 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static ulong UvStreamGetWriteQueueSize(UvStreamS? stream)
+    public static ulong UvStreamGetWriteQueueSize(UvStream? stream)
     {
         var __arg0 = stream?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvStreamGetWriteQueueSize(__arg0);
         return ___ret;
     }
 
-    public static int UvListen(UvStreamS? stream, int backlog, UvConnectionCb? cb)
+    public static int UvListen(UvStream? stream, int backlog, UvConnectionCb? cb)
     {
         var __arg0 = stream?.__Instance ?? IntPtr.Zero;
         var __arg2 = cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(cb);
@@ -1221,7 +1221,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvAccept(UvStreamS? server, UvStreamS? client)
+    public static int UvAccept(UvStream? server, UvStream? client)
     {
         var __arg0 = server?.__Instance ?? IntPtr.Zero;
         var __arg1 = client?.__Instance ?? IntPtr.Zero;
@@ -1229,7 +1229,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvReadStart(UvStreamS? _0, UvAllocCb? alloc_cb, UvReadCb? read_cb)
+    public static int UvReadStart(UvStream? _0, UvAllocCb? alloc_cb, UvReadCb? read_cb)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var __arg1 = alloc_cb != null ? Marshal.GetFunctionPointerForDelegate(alloc_cb) : IntPtr.Zero;
@@ -1238,14 +1238,14 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvReadStop(UvStreamS? _0)
+    public static int UvReadStop(UvStream? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvReadStop(__arg0);
         return ___ret;
     }
 
-    public static int UvWrite(UvWriteS? req, UvStreamS? handle, UvBufT? buf, UvWriteCb? cb)
+    public static int UvWrite(UvWriteS? req, UvStream? handle, UvBufT? buf, UvWriteCb? cb)
     {
         var __arg0 = req?.__Instance    ?? IntPtr.Zero;
         var __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1255,7 +1255,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
     
-    public static int UvWrite(UvWriteS? req, UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvWriteCb? cb)
+    public static int UvWrite(UvWriteS? req, UvStream? handle, UvBufT?[]? bufs, uint nbufs, UvWriteCb? cb)
     {
         var                 __arg0 = req?.__Instance    ?? IntPtr.Zero;
         var                 __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1277,7 +1277,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvWrite2(UvWriteS? req, UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvStreamS? send_handle, UvWriteCb? cb)
+    public static int UvWrite2(UvWriteS? req, UvStream? handle, UvBufT?[]? bufs, uint nbufs, UvStream? send_handle, UvWriteCb? cb)
     {
         var                 __arg0 = req?.__Instance    ?? IntPtr.Zero;
         var                 __arg1 = handle?.__Instance ?? IntPtr.Zero;
@@ -1300,7 +1300,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTryWrite(UvStreamS? handle, UvBufT?[]? bufs, uint nbufs)
+    public static int UvTryWrite(UvStream? handle, UvBufT?[]? bufs, uint nbufs)
     {
         var                 __arg0 = handle?.__Instance ?? IntPtr.Zero;
         UvBufT.__Internal[]? __bufs;
@@ -1320,7 +1320,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvTryWrite2(UvStreamS? handle, UvBufT?[]? bufs, uint nbufs, UvStreamS? send_handle)
+    public static int UvTryWrite2(UvStream? handle, UvBufT?[]? bufs, uint nbufs, UvStream? send_handle)
     {
         var                  __arg0 = handle?.__Instance ?? IntPtr.Zero;
         UvBufT.__Internal[]? __bufs;
@@ -1341,21 +1341,21 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvIsReadable(UvStreamS? handle)
+    public static int UvIsReadable(UvStream? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsReadable(__arg0);
         return ___ret;
     }
 
-    public static int UvIsWritable(UvStreamS? handle)
+    public static int UvIsWritable(UvStream? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsWritable(__arg0);
         return ___ret;
     }
 
-    public static int UvStreamSetBlocking(UvStreamS? handle, int blocking)
+    public static int UvStreamSetBlocking(UvStream? handle, int blocking)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvStreamSetBlocking(__arg0, blocking);
@@ -1863,7 +1863,7 @@ public static unsafe partial class Uv
         var arg0   = loop.__Instance;
         var arg1   = process.__Instance;
         var arg2   = options.__Instance;
-        __Internal.UvSpawn(arg0, arg1, arg2).Check();
+         __Internal.UvSpawn(arg0, arg1, arg2).Check();
 
         if (options.Stdio != null)
         {
@@ -1872,7 +1872,7 @@ public static unsafe partial class Uv
                 pipe?.Start();
             }
         }
-
+        Thread.Sleep(100);
         UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
         return process;
     }

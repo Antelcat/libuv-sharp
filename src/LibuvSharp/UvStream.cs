@@ -4,7 +4,7 @@ using System.Security;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvStreamS : IDisposable
+public unsafe partial class UvStream : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 272)]
     public struct __Internal
@@ -316,15 +316,15 @@ public unsafe partial class UvStreamS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvStreamS> NativeToManagedMap =
-        new ConcurrentDictionary<IntPtr, UvStreamS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvStream> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvStream>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, UvStreamS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvStream managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvStreamS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvStream managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -332,28 +332,28 @@ public unsafe partial class UvStreamS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvStreamS __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvStream __CreateInstance(IntPtr native, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
-        return new UvStreamS(native.ToPointer(), skipVTables);
+        return new UvStream(native.ToPointer(), skipVTables);
     }
 
-    internal static UvStreamS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvStream __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
         if (__TryGetNativeToManagedMapping(native, out var managed))
-            return (UvStreamS)managed;
+            return (UvStream)managed;
         var result = __CreateInstance(native, skipVTables);
         if (saveInstance)
             __RecordNativeToManagedMapping(native, result);
         return result;
     }
 
-    internal static UvStreamS __CreateInstance(__Internal native, bool skipVTables = false)
+    internal static UvStream __CreateInstance(__Internal native, bool skipVTables = false)
     {
-        return new UvStreamS(native, skipVTables);
+        return new UvStream(native, skipVTables);
     }
 
     private static void* __CopyValue(__Internal native)
@@ -363,28 +363,28 @@ public unsafe partial class UvStreamS : IDisposable
         return ret.ToPointer();
     }
 
-    private UvStreamS(__Internal native, bool skipVTables = false)
+    private UvStream(__Internal native, bool skipVTables = false)
         : this(__CopyValue(native), skipVTables)
     {
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    protected UvStreamS(void* native, bool skipVTables = false)
+    protected UvStream(void* native, bool skipVTables = false)
     {
         if (native == null)
             return;
         __Instance = new IntPtr(native);
     }
 
-    public UvStreamS()
+    public UvStream()
     {
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvStreamS(UvStreamS _0)
+    public UvStream(UvStream _0)
     {
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;

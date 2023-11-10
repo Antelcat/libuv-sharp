@@ -376,11 +376,11 @@ public unsafe partial class UvConnectS : IDisposable
         set => ((__Internal*)__Instance)->cb = value == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(value);
     }
 
-    public UvStreamS Handle
+    public UvStream Handle
     {
         get
         {
-            var __result0 = UvStreamS.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
+            var __result0 = UvStream.__GetOrCreateInstance(((__Internal*)__Instance)->handle);
             return __result0;
         }
 

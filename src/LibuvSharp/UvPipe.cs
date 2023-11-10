@@ -72,11 +72,11 @@ public unsafe partial class UvPipe : IDisposable
             }
         }
 
-        public UvStreamS Stream
+        public UvStream Stream
         {
             get
             {
-                var __result0 = UvStreamS.__GetOrCreateInstance(__instance.stream);
+                var __result0 = UvStream.__GetOrCreateInstance(__instance.stream);
                 return __result0;
             }
 
@@ -195,7 +195,7 @@ public unsafe partial class UvPipe : IDisposable
     
     private          UvBufT?         Buffer { get; set; }
     private          UvPipeS?        pipe;
-    internal         UvStreamS?      Stream;
+    internal         UvStream?      Stream;
     private          UvHandleS?      handle;
     private readonly UvWriteS        write    = new();
     private readonly UvShutdownS     shutdown = new();
@@ -209,7 +209,7 @@ public unsafe partial class UvPipe : IDisposable
         this.process = process;
         Buffer       = UvBufT.__CreateInstance(buffer);
         pipe         = new UvPipeS();
-        Stream       = UvStreamS.__CreateInstance(pipe.__Instance);
+        Stream       = UvStream.__CreateInstance(pipe.__Instance);
         handle       = UvHandleS.__CreateInstance(pipe.__Instance);
         Uv.UvPipeInit(loop, pipe, 0).Check();
         pipe.Data = __Instance;
@@ -221,51 +221,59 @@ public unsafe partial class UvPipe : IDisposable
         {
             if (Buffer!.Len > 0)
             {
-                Uv.UvWrite(write, Stream, Buffer, static (req, result) => { result.Check(); }).Check();
+                Uv.UvWrite(write, Stream, Buffer, OnWrite).Check();
             }
 
-            Uv.UvShutdown(shutdown, Stream,static  (req, result) => { result.Check(); }).Check();
+            Uv.UvShutdown(shutdown, Stream,  OnShutDown).Check();
         }
 
         if (Writable)
         {
-            Uv.UvReadStart(Stream,
-                (_, suggestedSize, buf) =>
-                {
-                    if (lastBuffer == null)
-                    {
-                        lastBuffer = firstBuffer = new UvOutputBuffer();
-                    }
-                    else if (lastBuffer.Available == 0)
-                    {
-                        var next = new UvOutputBuffer();
-                        lastBuffer.Next = next;
-                        lastBuffer      = next;
-                    }
-
-                    lastBuffer.OnAlloc(suggestedSize, buf.As<UvBufT.__Internal>());
-                },
-                (_, nRead, buf) =>
-                {
-                    switch (nRead)
-                    {
-                        case (long)UvErrno.UV_EOF:
-                            break;
-                        case < 0:
-                            SetError((int)nRead);
-                            Uv.UvReadStop(Stream);
-                            break;
-                        default:
-                        {
-                            lastBuffer?.OnRead(buf.As<UvBufT.__Internal>(), (ulong)nRead);
-                            process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
-                            break;
-                        }
-                    }
-                }).Check();
+            Uv.UvReadStart(Stream, OnAlloc, OnRead).Check();
         }
     }
 
+    private void OnWrite(IntPtr req, int result) => result.Check();
+    private void OnShutDown(IntPtr req,int result) => result.Check();
+
+    private void OnAlloc(IntPtr _, ulong suggestedSize, IntPtr buffer)
+    {
+        if (lastBuffer == null)
+        {
+            lastBuffer = firstBuffer = new UvOutputBuffer();
+        }
+        else if (lastBuffer.Available == 0)
+        {
+            var next = new UvOutputBuffer();
+            lastBuffer.Next = next;
+            lastBuffer      = next;
+        }
+
+        lastBuffer.OnAlloc(suggestedSize, buffer.As<UvBufT.__Internal>());
+    }
+    private void OnRead(IntPtr _, long nRead, IntPtr buffer)
+    {
+        switch (nRead)
+        {
+            case (long)UvErrno.UV_EOF:
+                break;
+            case < 0:
+                SetError((int)nRead);
+                Uv.UvReadStop(Stream);
+                break;
+            default:
+            {
+                var data = lastBuffer?.OnRead(buffer.As<UvBufT.__Internal>(), (ulong)nRead);
+                process?.IncrementBufferSizeAndCheckOverflow((ulong)nRead);
+                if (data != null)
+                {
+                    Data?.Invoke(new ArraySegment<byte>(data));
+                }
+                break;
+            }
+        }
+    }
+    
     public void Close()
     {
         if(closed)return;
@@ -330,27 +338,27 @@ public class UvOutputBuffer
         }
     }
 
-    internal unsafe void OnRead(UvBufT.__Internal* buf, ulong nRead)
+    internal unsafe byte[]? OnRead(UvBufT.__Internal* buf, ulong nRead)
     {
+        byte[]? ret;
         fixed (sbyte* head = data)
         {
             if (buf->@base != IntPtr.Add(new IntPtr(head), (int)Used))
             {
-                Debugger.Break();
+                // Sequence length not match
             }
 
             var count = (int)nRead;
-            var msg   = new byte[count];
-            for (var start = 0; start < count; start++)
-            {
-                msg[start] = (byte)data[(int)Used + start];
-            }
-
-            var str = Encoding.UTF8.GetString(msg);
+            ret = new byte[count];
+            Array.Copy(data, (int)Used, ret, 0, count);
+#if DEBUG
+            var str = Encoding.UTF8.GetString(ret);
             Debugger.Break();
+#endif
         }
 
         Used += nRead;
+        return ret;
     }
 
     private readonly sbyte[]         data = new sbyte[BufferSize];

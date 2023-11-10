@@ -39,7 +39,7 @@ public unsafe partial struct UvAnyHandle
         internal UvProcess.__Internal process;
 
         [FieldOffset(0)]
-        internal UvStreamS.__Internal stream;
+        internal UvStream.__Internal stream;
 
         [FieldOffset(0)]
         internal UvTcpS.__Internal tcp;
@@ -215,15 +215,15 @@ public unsafe partial struct UvAnyHandle
         }
     }
 
-    public UvStreamS Stream
+    public UvStream Stream
     {
-        get => UvStreamS.__CreateInstance(__instance.stream);
+        get => UvStream.__CreateInstance(__instance.stream);
 
         set
         {
             if (ReferenceEquals(value, null))
                 throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
-            __instance.stream = *(UvStreamS.__Internal*) value.__Instance;
+            __instance.stream = *(UvStream.__Internal*) value.__Instance;
         }
     }
 
