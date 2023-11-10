@@ -21,7 +21,7 @@ public unsafe partial struct UvAnyHandle
         internal UvFsPollS.__Internal fs_poll;
 
         [FieldOffset(0)]
-        internal UvHandleS.__Internal handle;
+        internal UvHandle.__Internal handle;
 
         [FieldOffset(0)]
         internal UvIdleS.__Internal idle;
@@ -143,15 +143,15 @@ public unsafe partial struct UvAnyHandle
         }
     }
 
-    public UvHandleS Handle
+    public UvHandle Handle
     {
-        get => UvHandleS.__CreateInstance(__instance.handle);
+        get => UvHandle.__CreateInstance(__instance.handle);
 
         set
         {
             if (ReferenceEquals(value, null))
                 throw new ArgumentNullException(nameof(value), "Cannot be null because it is passed by value.");
-            __instance.handle = *(UvHandleS.__Internal*) value.__Instance;
+            __instance.handle = *(UvHandle.__Internal*) value.__Instance;
         }
     }
 

@@ -4,7 +4,7 @@ using System.Security;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvHandleS : IDisposable
+public unsafe partial class UvHandle : IDisposable
 {
     [StructLayout(LayoutKind.Sequential, Size = 96)]
     public struct __Internal
@@ -107,15 +107,15 @@ public unsafe partial class UvHandleS : IDisposable
 
     public IntPtr __Instance { get; protected set; }
 
-    internal static readonly ConcurrentDictionary<IntPtr, UvHandleS> NativeToManagedMap =
-        new ConcurrentDictionary<IntPtr, UvHandleS>();
+    internal static readonly ConcurrentDictionary<IntPtr, UvHandle> NativeToManagedMap =
+        new ConcurrentDictionary<IntPtr, UvHandle>();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, UvHandleS managed)
+    internal static void __RecordNativeToManagedMapping(IntPtr native, UvHandle managed)
     {
         NativeToManagedMap[native] = managed;
     }
 
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvHandleS managed)
+    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvHandle managed)
     {
     
         return NativeToManagedMap.TryGetValue(native, out managed);
@@ -123,28 +123,28 @@ public unsafe partial class UvHandleS : IDisposable
 
     protected bool __ownsNativeInstance;
 
-    internal static UvHandleS __CreateInstance(IntPtr native, bool skipVTables = false)
+    internal static UvHandle __CreateInstance(IntPtr native, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
-        return new UvHandleS(native.ToPointer(), skipVTables);
+        return new UvHandle(native.ToPointer(), skipVTables);
     }
 
-    internal static UvHandleS __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
+    internal static UvHandle __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
     {
         if (native == IntPtr.Zero)
             return null;
         if (__TryGetNativeToManagedMapping(native, out var managed))
-            return (UvHandleS)managed;
+            return (UvHandle)managed;
         var result = __CreateInstance(native, skipVTables);
         if (saveInstance)
             __RecordNativeToManagedMapping(native, result);
         return result;
     }
 
-    internal static UvHandleS __CreateInstance(__Internal native, bool skipVTables = false)
+    internal static UvHandle __CreateInstance(__Internal native, bool skipVTables = false)
     {
-        return new UvHandleS(native, skipVTables);
+        return new UvHandle(native, skipVTables);
     }
 
     private static void* __CopyValue(__Internal native)
@@ -154,28 +154,28 @@ public unsafe partial class UvHandleS : IDisposable
         return ret.ToPointer();
     }
 
-    private UvHandleS(__Internal native, bool skipVTables = false)
+    private UvHandle(__Internal native, bool skipVTables = false)
         : this(__CopyValue(native), skipVTables)
     {
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    protected UvHandleS(void* native, bool skipVTables = false)
+    protected UvHandle(void* native, bool skipVTables = false)
     {
         if (native == null)
             return;
         __Instance = new IntPtr(native);
     }
 
-    public UvHandleS()
+    public UvHandle()
     {
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }
 
-    public UvHandleS(UvHandleS _0)
+    public UvHandle(UvHandle _0)
     {
         __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
         __ownsNativeInstance = true;
@@ -256,7 +256,7 @@ public unsafe partial class UvHandleS : IDisposable
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public UvHandleS EndgameNext
+    public UvHandle EndgameNext
     {
         get
         {

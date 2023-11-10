@@ -170,6 +170,10 @@ public unsafe partial class UvPipe : IDisposable
 
     public void Dispose()
     {
+        pipe?.Dispose();
+        write.Dispose();
+        shutdown.Dispose();
+        Buffer?.Dispose();
         Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
     }
 
@@ -195,8 +199,8 @@ public unsafe partial class UvPipe : IDisposable
     
     private          UvBufT?         Buffer { get; set; }
     private          UvPipeS?        pipe;
-    internal         UvStream?      Stream;
-    private          UvHandleS?      handle;
+    internal         UvStream?       Stream;
+    private          UvHandle?       handle;
     private readonly UvWriteS        write    = new();
     private readonly UvShutdownS     shutdown = new();
     private          UvOutputBuffer? firstBuffer;
@@ -210,7 +214,7 @@ public unsafe partial class UvPipe : IDisposable
         Buffer       = UvBufT.__CreateInstance(buffer);
         pipe         = new UvPipeS();
         Stream       = UvStream.__CreateInstance(pipe.__Instance);
-        handle       = UvHandleS.__CreateInstance(pipe.__Instance);
+        handle       = UvHandle.__CreateInstance(pipe.__Instance);
         Uv.UvPipeInit(loop, pipe, 0).Check();
         pipe.Data = __Instance;
     }
@@ -224,6 +228,7 @@ public unsafe partial class UvPipe : IDisposable
                 Uv.UvWrite(write, Stream, Buffer, OnWrite).Check();
             }
 
+            
             Uv.UvShutdown(shutdown, Stream,  OnShutDown).Check();
         }
 
@@ -281,6 +286,7 @@ public unsafe partial class UvPipe : IDisposable
         {
             closed = true;
         });
+        Dispose();
     }
 
     public void Write(byte[] data)
@@ -318,7 +324,6 @@ public unsafe partial class UvPipe : IDisposable
     public event Action<Exception>?          Error;
     public event Action<ArraySegment<byte>>? Data;
     public event Action?                     Closed;
-
 }
 
 public class UvOutputBuffer
@@ -352,6 +357,7 @@ public class UvOutputBuffer
             Array.Copy(data, (int)Used, ret, 0, count);
 #if DEBUG
             var str = Encoding.UTF8.GetString(ret);
+            Console.WriteLine(str);
             Debugger.Break();
 #endif
             Used += nRead;

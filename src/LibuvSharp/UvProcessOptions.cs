@@ -144,11 +144,14 @@ public unsafe partial class UvProcessOptions : IDisposable
                 ? IntPtr.Zero
                 : Marshal.GetFunctionPointerForDelegate((UvExitCb)((ptr, status, signal) =>
                 {
-                    value.Invoke(new UvProcess(ptr), status, signal);
+                    Process.OnExit(ptr, status, signal);
+                    value.Invoke(Process, status, signal);
                 }));
             exitCb = value;
         }
     }
+    
+    internal UvProcess Process { get; set; }
 
     internal IntPtr exit_cb => Instance->exit_cb;
     

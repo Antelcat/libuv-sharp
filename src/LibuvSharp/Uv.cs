@@ -964,19 +964,19 @@ public static unsafe partial class Uv
         __Internal.UvStop(__arg0);
     }
 
-    public static void UvRef(UvHandleS? _0)
+    public static void UvRef(UvHandle? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvRef(__arg0);
     }
 
-    public static void UvUnref(UvHandleS? _0)
+    public static void UvUnref(UvHandle? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         __Internal.UvUnref(__arg0);
     }
 
-    public static int UvHasRef(UvHandleS? _0)
+    public static int UvHasRef(UvHandle? _0)
     {
         var __arg0 = _0?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHasRef(__arg0);
@@ -1055,7 +1055,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvHandleType UvHandleGetType(UvHandleS? handle)
+    public static UvHandleType UvHandleGetType(UvHandle? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHandleGetType(__arg0);
@@ -1068,14 +1068,14 @@ public static unsafe partial class Uv
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static IntPtr UvHandleGetData(UvHandleS? handle)
+    public static IntPtr UvHandleGetData(UvHandle? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvHandleGetData(__arg0);
         return ___ret;
     }
 
-    public static UvLoop? UvHandleGetLoop(UvHandleS? handle)
+    public static UvLoop? UvHandleGetLoop(UvHandle? handle)
     {
         var __arg0    = handle?.__Instance ?? IntPtr.Zero;
         var ___ret    = __Internal.UvHandleGetLoop(__arg0);
@@ -1083,7 +1083,7 @@ public static unsafe partial class Uv
         return __result0;
     }
 
-    public static void UvHandleSetData(UvHandleS? handle, IntPtr data)
+    public static void UvHandleSetData(UvHandle? handle, IntPtr data)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         __Internal.UvHandleSetData(__arg0, data);
@@ -1121,7 +1121,7 @@ public static unsafe partial class Uv
         return MarshalUtil.GetString(Encoding.UTF8, ___ret);
     }
 
-    public static int UvIsActive(UvHandleS? handle)
+    public static int UvIsActive(UvHandle? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsActive(__arg0);
@@ -1147,14 +1147,14 @@ public static unsafe partial class Uv
         __Internal.UvPrintActiveHandles(__arg0, stream);
     }
 
-    public static void UvClose(UvHandleS? handle, UvCloseCb? close_cb)
+    public static void UvClose(UvHandle? handle, UvCloseCb? close_cb)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var __arg1 = close_cb == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(close_cb);
         __Internal.UvClose(__arg0, __arg1);
     }
 
-    public static int UvSendBufferSize(UvHandleS? handle, ref int value)
+    public static int UvSendBufferSize(UvHandle? handle, ref int value)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (int* __value1 = &value)
@@ -1165,7 +1165,7 @@ public static unsafe partial class Uv
         }
     }
 
-    public static int UvRecvBufferSize(UvHandleS? handle, ref int value)
+    public static int UvRecvBufferSize(UvHandle? handle, ref int value)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         fixed (int* __value1 = &value)
@@ -1176,7 +1176,7 @@ public static unsafe partial class Uv
         }
     }
 
-    public static int UvFileno(UvHandleS? handle, IntPtr* fd)
+    public static int UvFileno(UvHandle? handle, IntPtr* fd)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvFileno(__arg0, fd);
@@ -1362,7 +1362,7 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static int UvIsClosing(UvHandleS? handle)
+    public static int UvIsClosing(UvHandle? handle)
     {
         var __arg0 = handle?.__Instance ?? IntPtr.Zero;
         var ___ret = __Internal.UvIsClosing(__arg0);
@@ -1851,12 +1851,10 @@ public static unsafe partial class Uv
     public static UvProcess UvSpawn(UvLoop loop, UvProcessOptions options)
     {
         var process = new UvProcess();
-        process.ExitCb = (_, b, c) =>
-        {
-            options.ExitCb?.Invoke(process, b, c);
-        };
+        options.Process = process;
         options.PreProcessStdio(loop, process);
-
+        
+        Thread.Sleep(200);
         var arg0 = loop.__Instance;
         var arg1 = process.__Instance;
         var arg2 = options.__Instance;

@@ -412,11 +412,11 @@ public unsafe partial class UvSignalS : IDisposable
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public UvHandleS EndgameNext
+    public UvHandle EndgameNext
     {
         get
         {
-            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
+            var __result0 = UvHandle.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
             return __result0;
         }
 

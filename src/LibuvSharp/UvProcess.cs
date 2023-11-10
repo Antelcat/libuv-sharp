@@ -560,6 +560,11 @@ public unsafe partial class UvProcess : IDisposable
     
     public void Dispose()
     {
+        if(killed)return;
+        killed = true;
+        CloseStdioPipes();
+        Uv.UvRun(Loop, UvRunMode.UV_RUN_DEFAULT).Check();
+        Loop?.Dispose();
         Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
     }
 
@@ -631,11 +636,11 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->u = value.__Instance;
     }
 
-    public UvHandleS? EndgameNext
+    public UvHandle? EndgameNext
     {
         get
         {
-            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
+            var __result0 = UvHandle.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_next);
             return __result0;
         }
 
@@ -771,6 +776,11 @@ public unsafe partial class UvProcess : IDisposable
         if (!(MaxBuffer > 0) || !(bufferedOutputSize > MaxBuffer)) return;
         SetError(UvErrno.UV_ENOBUFS);
         Kill();
+    }
+
+    internal void OnExit(IntPtr handle,long exitStatus,int signal)
+    {
+        Uv.__Internal.UvClose(handle, default);
     }
 
     public  double  MaxBuffer { get; init; } = 0;

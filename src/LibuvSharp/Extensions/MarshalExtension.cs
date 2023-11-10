@@ -57,7 +57,7 @@ internal static class MarshalExtension
     {
         unsafe
         {
-            return (T)GCHandle.FromIntPtr(((UvHandleS.__Internal*)pointer)->data).Target;
+            return (T)GCHandle.FromIntPtr(((UvHandle.__Internal*)pointer)->data).Target;
         }
     }
 

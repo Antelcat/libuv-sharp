@@ -272,11 +272,11 @@ public unsafe partial class UvLoop : IDisposable
         set => ((__Internal*)__Instance)->pending_reqs_tail = value?.__Instance ?? IntPtr.Zero;
     }
 
-    public UvHandleS? EndgameHandles
+    public UvHandle? EndgameHandles
     {
         get
         {
-            var __result0 = UvHandleS.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_handles);
+            var __result0 = UvHandle.__GetOrCreateInstance(((__Internal*)__Instance)->endgame_handles);
             return __result0;
         }
 
