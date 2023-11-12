@@ -137,21 +137,31 @@ public unsafe partial class UvProcessOptions : IDisposable
 
     public Action<UvProcess, long, int>? ExitCb
     {
-        get => exitCb;
         init
         {
             Instance->exit_cb = value == null
                 ? IntPtr.Zero
                 : Marshal.GetFunctionPointerForDelegate((UvExitCb)((ptr, status, signal) =>
                 {
-                    Process.OnExit(ptr, status, signal);
+                    Uv.__Internal.UvClose(ptr, IntPtr.Zero);
+                    Process.OnExit(status,signal);
                     value.Invoke(Process, status, signal);
                 }));
             exitCb = value;
         }
     }
-    
-    internal UvProcess Process { get; set; }
+
+    internal UvProcess Process
+    {
+        get => process!;
+        set
+        {
+            process        = value;
+            process.Stdios = Stdio;
+        }
+    }
+
+    private UvProcess? process;
 
     internal IntPtr exit_cb => Instance->exit_cb;
     
@@ -230,6 +240,10 @@ public unsafe partial class UvProcessOptions : IDisposable
             Instance->stdio = IntPtr.Zero;
             return;
         }
+        if (__stdio_hasNativeMemory)
+        {
+            return;
+        }
 
         __stdio_hasNativeMemory = true;
         Instance->stdio         = Marshal.AllocHGlobal(StdioCount * sizeof(UvPipe.__Internal));
@@ -240,8 +254,6 @@ public unsafe partial class UvProcessOptions : IDisposable
             switch (curr)
             {
                 case null:
-                    stdio[i].flags = UvStdioFlags.UV_IGNORE;
-                    break;
                 case { Readable: false, Writable: false }:
                     stdio[i].flags = UvStdioFlags.UV_IGNORE;
                     break;
@@ -249,9 +261,8 @@ public unsafe partial class UvProcessOptions : IDisposable
                 {
                     var buf = Uv.__Internal.UvBufInit(null, 0);
                     curr.NewAndInit(loop, process, buf);
-                    var pointer = (UvPipe.__Internal*)curr.__Instance;
-                    stdio[i].flags       = pointer->flags;
-                    stdio[i].data.stream = curr.Stream!.__Instance;
+                    stdio[i].flags       = curr.Flags;
+                    stdio[i].data.stream = curr.Stream;
                     break;
                 }
             }

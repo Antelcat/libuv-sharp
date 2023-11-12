@@ -3,15 +3,14 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using System.Xml;
 using LibuvSharp.Extensions;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvPipe : IDisposable
+public unsafe partial class UvPipe : IDisposable , IUvState
 {
     [StructLayout(LayoutKind.Sequential, Size = 16)]
-    public struct __Internal
+    internal struct __Internal
     {
         internal UvStdioFlags    flags;
         internal PipeData.__Internal data;
@@ -22,7 +21,7 @@ public unsafe partial class UvPipe : IDisposable
         internal static extern IntPtr cctor(IntPtr __instance, IntPtr _0);
     }
 
-    public partial struct PipeData
+    internal partial struct PipeData
     {
         [StructLayout(LayoutKind.Explicit, Size = 8)]
         public struct __Internal
@@ -91,155 +90,89 @@ public unsafe partial class UvPipe : IDisposable
         }
     }
 
-    public IntPtr __Instance { get; protected set; }
 
     internal static readonly ConcurrentDictionary<IntPtr, UvPipe> NativeToManagedMap = new();
 
-    internal static void __RecordNativeToManagedMapping(IntPtr native, UvPipe managed)
-    {
-        NativeToManagedMap[native] = managed;
-    }
-
-    internal static bool __TryGetNativeToManagedMapping(IntPtr native, out UvPipe managed)
-    {
-        return NativeToManagedMap.TryGetValue(native, out managed);
-    }
-
-    protected bool __ownsNativeInstance;
-
-    internal static UvPipe? __CreateInstance(IntPtr native, bool skipVTables = false)
-    {
-        return native == IntPtr.Zero
-            ? null
-            : new UvPipe(native.ToPointer(), skipVTables);
-    }
-
-    internal static UvPipe? __GetOrCreateInstance(IntPtr native, bool saveInstance = false, bool skipVTables = false)
-    {
-        if (native == IntPtr.Zero)
-            return null;
-        if (__TryGetNativeToManagedMapping(native, out var managed))
-            return (UvPipe)managed;
-        var result = __CreateInstance(native, skipVTables);
-        if (saveInstance)
-            __RecordNativeToManagedMapping(native, result);
-        return result;
-    }
-
-    internal static UvPipe __CreateInstance(__Internal native, bool skipVTables = false)
-    {
-        return new UvPipe(native, skipVTables);
-    }
-
-    private static void* __CopyValue(__Internal native)
-    {
-        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
-        *(__Internal*)ret = native;
-        return ret.ToPointer();
-    }
-
-    private UvPipe(__Internal native, bool skipVTables = false)
-        : this(__CopyValue(native), skipVTables)
-    {
-        __ownsNativeInstance = true;
-        __RecordNativeToManagedMapping(__Instance, this);
-    }
-
-    protected UvPipe(void* native, bool skipVTables = false)
-    {
-        if (native == null)
-            return;
-        __Instance = new IntPtr(native);
-    }
-
-    public UvPipe()
-    {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
-        __ownsNativeInstance = true;
-        __RecordNativeToManagedMapping(__Instance, this);
-        Flags  = UvStdioFlags.UV_IGNORE;
-    }
-
-    public UvPipe(UvPipe _0)
-    {
-        __Instance           = Marshal.AllocHGlobal(sizeof(__Internal));
-        __ownsNativeInstance = true;
-        __RecordNativeToManagedMapping(__Instance, this);
-        *(__Internal*)__Instance = *(__Internal*)_0.__Instance;
-    }
-
     public void Dispose()
     {
-        pipe?.Dispose();
         write.Dispose();
         shutdown.Dispose();
-        Buffer?.Dispose();
-        Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
     }
 
-    partial void DisposePartial(bool disposing);
-
-    protected internal virtual void Dispose(bool disposing, bool callNativeDtor)
+    internal UvStdioFlags Flags
     {
-        if (__Instance == IntPtr.Zero)
-            return;
-        NativeToManagedMap.TryRemove(__Instance, out _);
-        DisposePartial(disposing);
-        if (__ownsNativeInstance)
-            Marshal.FreeHGlobal(__Instance);
-        __Instance = IntPtr.Zero;
-    }
+        get
+        {
+            var ret = UvStdioFlags.UV_IGNORE;
+            if (!Readable && !Writable) return ret;
+            ret = UvStdioFlags.UV_CREATE_PIPE;
+            if (Readable)
+            {
+                ret |= UvStdioFlags.UV_READABLE_PIPE;
+            }
 
-    private UvStdioFlags Flags
-    {
-        get => ((__Internal*)__Instance)->flags;
+            if (Writable)
+            {
+                ret |= UvStdioFlags.UV_WRITABLE_PIPE;
+            }
 
-        set => ((__Internal*)__Instance)->flags = value;
+            return ret;
+        }
     }
     
-    private          UvBufT?         Buffer { get; set; }
-    private          UvPipeS?        pipe;
-    internal         UvStream?       Stream;
-    private          UvHandle?       handle;
-    private readonly UvWriteS        write    = new();
-    private readonly UvShutdownS     shutdown = new();
-    private          UvOutputBuffer? firstBuffer;
-    private          UvOutputBuffer? lastBuffer;
-    private          UvProcess?      process;
-    private          bool            closed;
+    private          UvBufT.__Internal Buffer { get; set; }
+    private          IntPtr            pipe;
+    internal         IntPtr            Stream => pipe;
+    private          IntPtr            handle => pipe;
+    private readonly UvWriteS          write    = new();
+    private readonly UvShutdownS       shutdown = new();
+    private          UvOutputBuffer?   firstBuffer;
+    private          UvOutputBuffer?   lastBuffer;
+    private          UvProcess?        process;
     
     internal void NewAndInit(UvLoop loop, UvProcess process, UvBufT.__Internal buffer)
     {
         this.process = process;
-        Buffer       = UvBufT.__CreateInstance(buffer);
-        pipe         = new UvPipeS();
-        Stream       = UvStream.__CreateInstance(pipe.__Instance);
-        handle       = UvHandle.__CreateInstance(pipe.__Instance);
-        Uv.UvPipeInit(loop, pipe, 0).Check();
-        pipe.Data = __Instance;
+        Buffer       = buffer;
+        pipe = Marshal.AllocHGlobal(sizeof(UvPipeS.__Internal));
+        Uv.__Internal.UvPipeInit(loop.__Instance, pipe, 0).Check();
+        Status = UvStatus.INITIALIZED;
     }
 
     internal void Start()
     {
+        if (Status != UvStatus.INITIALIZED) return;
+        Status = UvStatus.STARTED;
         if (Readable)
         {
-            if (Buffer!.Len > 0)
+            if (Buffer.len > 0)
             {
-                Uv.UvWrite(write, Stream, Buffer, OnWrite).Check();
+                if (Buffer.@base == IntPtr.Zero)
+                    throw new Exception();
+
+                Uv.__Internal.UvWrite(write.__Instance,
+                    Stream,
+                    Buffer.GetAddress(),
+                    static (_, result) =>
+                    {
+                        result.Check();
+                    }).Check();
             }
 
-            
-            Uv.UvShutdown(shutdown, Stream,  OnShutDown).Check();
+
+            Uv.__Internal.UvShutdown(shutdown.__Instance,
+                Stream,
+                static (_, result) =>
+                {
+                    result.Check();
+                }).Check();
         }
 
         if (Writable)
         {
-            Uv.UvReadStart(Stream, OnAlloc, OnRead).Check();
+            Uv.__Internal.UvReadStart(Stream, OnAlloc, OnRead).Check();
         }
     }
-
-    private void OnWrite(IntPtr req, int result) => result.Check();
-    private void OnShutDown(IntPtr req,int result) => result.Check();
 
     private void OnAlloc(IntPtr _, ulong suggestedSize, IntPtr buffer)
     {
@@ -264,7 +197,7 @@ public unsafe partial class UvPipe : IDisposable
                 break;
             case < 0:
                 SetError((int)nRead);
-                Uv.UvReadStop(Stream);
+                Uv.__Internal.UvReadStop(Stream);
                 break;
             default:
             {
@@ -281,42 +214,21 @@ public unsafe partial class UvPipe : IDisposable
     
     public void Close()
     {
-        if(closed)return;
-        Uv.UvClose(handle,  (_) =>
+        if (!Status.HasFlag(UvStatus.INITIALIZED)) return;
+        Uv.__Internal.UvClose(handle, _ =>
         {
-            closed = true;
+            Status = UvStatus.CLOSED;
         });
-        Dispose();
+        Status = UvStatus.CLOSING;
     }
 
     public void Write(byte[] data)
     {
         
     }
-    
-    public bool Readable
-    {
-        get => Flags.HasFlag(UvStdioFlags.UV_READABLE_PIPE);
-        init
-        {
-            if (value)
-            {
-                Flags |= UvStdioFlags.UV_READABLE_PIPE | UvStdioFlags.UV_CREATE_PIPE;
-            }
-        }
-    }
 
-    public bool Writable
-    {
-        get => Flags.HasFlag(UvStdioFlags.UV_WRITABLE_PIPE);
-        init
-        {
-            if (value)
-            {
-                Flags |= UvStdioFlags.UV_WRITABLE_PIPE | UvStdioFlags.UV_CREATE_PIPE;
-            }
-        }
-    }
+    public bool Readable { get; init; }
+    public bool Writable { get; init; }
 
     private void SetError(int error) => process?.SetPipeError((UvErrno)error);
 
@@ -324,6 +236,10 @@ public unsafe partial class UvPipe : IDisposable
     public event Action<Exception>?          Error;
     public event Action<ArraySegment<byte>>? Data;
     public event Action?                     Closed;
+    public UvStatus                          Status { get; private set; } = UvStatus.UNINITIALIZED;
+
+
+    public static UvPipe Ignore { get; } = new() { Writable = false, Readable = false };
 }
 
 public class UvOutputBuffer
@@ -358,7 +274,6 @@ public class UvOutputBuffer
 #if DEBUG
             var str = Encoding.UTF8.GetString(ret);
             Console.WriteLine(str);
-            Debugger.Break();
 #endif
             Used += nRead;
             return ret;

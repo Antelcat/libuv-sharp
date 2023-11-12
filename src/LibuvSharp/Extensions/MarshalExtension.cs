@@ -62,4 +62,8 @@ internal static class MarshalExtension
     }
 
     public static unsafe T* As<T>(this IntPtr pointer) where T : unmanaged => (T*)pointer;
+
+
+    public static unsafe IntPtr GetAddress<T>(this T value) where T : unmanaged => (IntPtr)(&value);
+    public static IntPtr GetPointer(this Delegate @delegate) => Marshal.GetFunctionPointerForDelegate(@delegate);
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using System.Security;
+using LibuvSharp.Extensions;
 
 namespace LibuvSharp;
 
-public unsafe partial class UvProcess : IDisposable
+public unsafe partial class UvProcess : IDisposable , IUvState
 {
     [StructLayout(LayoutKind.Sequential, Size = 264)]
     public struct __Internal
@@ -557,7 +558,43 @@ public unsafe partial class UvProcess : IDisposable
         __RecordNativeToManagedMapping(__Instance, this);
         *(__Internal*) __Instance = *(__Internal*) instance;
     }
+
+    internal void TryInitializeAndRunLoop(UvProcessOptions options)
+    {
+        Status          = UvStatus.INITIALIZED;
+        options.Process = this;
+        options.PreProcessStdio(Loop, this);
+        pipeInitialized = true;
+    }
     
+    internal void CloseHandlesAndDeleteLoop()
+    {
+        if((Status & UvStatus.CLOSED) != 0)return;
+        if (Loop.__Instance != IntPtr.Zero)
+        {
+            CloseStdioPipes();
+
+            var handle = __Instance.As<UvHandle.__Internal>();
+            if (handle->type                          == UvHandleType.UV_PROCESS &&
+                Uv.__Internal.UvIsClosing(__Instance) <= 0)
+            {
+                Uv.__Internal.UvClose(__Instance, IntPtr.Zero);
+
+                Uv.UvRun(Loop, UvRunMode.UV_RUN_DEFAULT).Check();
+
+                CheckedUvLoopClose(Loop!);
+                
+                Loop!.Dispose();
+            }
+        }
+        Status = UvStatus.CLOSED;
+    }
+
+    private void CheckedUvLoopClose(UvLoop loop)
+    {
+        Uv.__Internal.UvIsClosing(loop.__Instance);
+    }
+
     public void Dispose()
     {
         if(killed)return;
@@ -588,8 +625,8 @@ public unsafe partial class UvProcess : IDisposable
         set => ((__Internal*)__Instance)->data = value;
     }
 
-    public UvLoop? Loop
-    {
+    public UvLoop Loop { get; init; }
+    /*{
         get
         {
             var __result0 = UvLoop.__GetOrCreateInstance(((__Internal*)__Instance)->loop);
@@ -597,7 +634,7 @@ public unsafe partial class UvProcess : IDisposable
         }
 
         set => ((__Internal*)__Instance)->loop = value?.__Instance ?? IntPtr.Zero;
-    }
+    }*/
 
     public UvHandleType Type
     {
@@ -721,9 +758,9 @@ public unsafe partial class UvProcess : IDisposable
 
     public void Kill(int sigNum = 0)
     {
-        if(killed)return;
+        if (killed) return;
         killed = true;
-        if (exitStatus < 0)
+        if (ExitStatus < 0)
         {
             var r = Uv.__Internal.UvProcessKill(__Instance, sigNum);
             if (r < 0 && r != (int)UvErrno.UV_ESRCH) {
@@ -738,21 +775,23 @@ public unsafe partial class UvProcess : IDisposable
         // Close all stdio pipes.
         CloseStdioPipes();
     }
-    internal UvPipe[]? Stdios { get; set; }
-    private  bool      killed;
-    private  long      exitStatus = -1;
-    
+    internal UvPipe?[]? Stdios { get; set; }
+    private  bool       killed;
+    private  long       ExitStatus { get; set; } = -1;
+    private  bool       pipeInitialized;
     private void CloseStdioPipes()
     {
+        if(pipeInitialized)return;
         if (Stdios != null)
         {
             foreach (var pipe in Stdios)
             {
-                pipe.Close();
+                pipe?.Close();
             }
         }
 
-        Stdios = null;
+        Stdios     = null;
+        pipeInitialized = true;
     }
 
     internal void SetError(UvErrno error)
@@ -778,9 +817,10 @@ public unsafe partial class UvProcess : IDisposable
         Kill();
     }
 
-    internal void OnExit(IntPtr handle,long exitStatus,int signal)
+    internal void OnExit(long exitStatus,int signal)
     {
-        Uv.__Internal.UvClose(handle, default);
+        ExitStatus = exitStatus;
+        ExitSignal = signal;
     }
 
     public  double  MaxBuffer { get; init; } = 0;
@@ -789,5 +829,8 @@ public unsafe partial class UvProcess : IDisposable
     private UvErrno error;
 
 
-    public static UvProcess Spawn(UvProcessOptions options) => Uv.UvSpawn(options);
+    public static UvProcess Spawn(UvProcessOptions options) =>
+        Uv.UvSpawn(options);
+
+    public UvStatus Status { get; private set; } = UvStatus.UNINITIALIZED;
 }

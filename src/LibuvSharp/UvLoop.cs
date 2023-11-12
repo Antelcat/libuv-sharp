@@ -169,7 +169,7 @@ public unsafe partial class UvLoop : IDisposable
     public UvLoop()
     {
         __Instance           = Marshal.AllocHGlobal((int)Uv.UvLoopSize());
-        Uv.__Internal.UvLoopInit(__Instance);
+        Uv.__Internal.UvLoopInit(__Instance).Check();
         __ownsNativeInstance = true;
         __RecordNativeToManagedMapping(__Instance, this);
     }

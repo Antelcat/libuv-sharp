@@ -4,6 +4,8 @@ using System.Security;
 using System.Text;
 using CppSharp.Runtime;
 using LibuvSharp.Delegates;
+using LibuvSharp.Extensions;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
 // ReSharper disable MemberHidesStaticFromOuterClass
@@ -98,6 +100,9 @@ public static unsafe partial class Uv
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_shutdown", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvShutdown(IntPtr req, IntPtr handle, IntPtr cb);
 
+        public static int UvShutdown(IntPtr req, IntPtr handle, UvShutdownCb cb) =>
+            UvShutdown(req, handle, cb.GetPointer());
+        
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_handle_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong UvHandleSize(UvHandleType type);
 
@@ -145,7 +150,9 @@ public static unsafe partial class Uv
 
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_close", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void UvClose(IntPtr handle, IntPtr close_cb);
-
+        public static void UvClose(IntPtr handle, UvCloseCb close_cb) =>
+            UvClose(handle, close_cb.GetPointer());
+        
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_send_buffer_size", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvSendBufferSize(IntPtr handle, int* value);
 
@@ -179,9 +186,15 @@ public static unsafe partial class Uv
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_read_start", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReadStart(IntPtr _0, IntPtr alloc_cb, IntPtr read_cb);
 
+        internal static int UvReadStart(IntPtr _0, UvAllocCb alloc_cb, UvReadCb read_cb) =>
+            UvReadStart(_0, alloc_cb.GetPointer(), read_cb.GetPointer());
+        
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_read_stop", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvReadStop(IntPtr _0);
 
+        internal static int UvWrite(IntPtr req, IntPtr handle, IntPtr? buf, UvWriteCb cb) =>
+            UvWrite(req, handle, buf, 1, cb.GetPointer());
+        
         [SuppressUnmanagedCodeSecurity, DllImport(LibuvSharp.libuv, EntryPoint = "uv_write", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int UvWrite(IntPtr req, IntPtr handle, IntPtr? buf, uint nbufs, IntPtr cb);
         
@@ -1244,7 +1257,7 @@ public static unsafe partial class Uv
         var ___ret = __Internal.UvReadStop(__arg0);
         return ___ret;
     }
-
+    
     public static int UvWrite(UvWriteS? req, UvStream? handle, UvBufT? buf, UvWriteCb? cb)
     {
         var __arg0 = req?.__Instance    ?? IntPtr.Zero;
@@ -1846,20 +1859,20 @@ public static unsafe partial class Uv
         return ___ret;
     }
 
-    public static UvProcess UvSpawn(UvProcessOptions options) => UvSpawn(new UvLoop(), options);
+    public static UvProcess UvSpawn(UvProcessOptions options) => 
+        UvSpawn(new UvLoop(), options);
     
     public static UvProcess UvSpawn(UvLoop loop, UvProcessOptions options)
     {
-        var process = new UvProcess();
-        options.Process = process;
-        options.PreProcessStdio(loop, process);
+        var process = new UvProcess
+        {
+            Loop = loop
+        };
+        process.TryInitializeAndRunLoop(options);
         
         Thread.Sleep(200);
-        var arg0 = loop.__Instance;
-        var arg1 = process.__Instance;
-        var arg2 = options.__Instance;
         
-         __Internal.UvSpawn(arg0, arg1, arg2).Check();
+         __Internal.UvSpawn(loop.__Instance, process.__Instance,  options.__Instance).Check();
 
         if (options.Stdio != null)
         {
@@ -1870,6 +1883,7 @@ public static unsafe partial class Uv
         }
         Thread.Sleep(200);
         UvRun(loop, UvRunMode.UV_RUN_DEFAULT).Check();
+        process.CloseHandlesAndDeleteLoop();
         return process;
     }
 
