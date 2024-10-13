@@ -1,32 +1,30 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace LibuvSharp;
+namespace LibuvSharp.Internal;
 
-[Flags]
 internal enum uv_process_flags : uint
 {
-    UV_PROCESS_SETUID = (1 << 0),
-    UV_PROCESS_SETGID = (1 << 1),
-    UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS = (1 << 2),
-    UV_PROCESS_DETACHED = (1 << 3)
-}
+    UV_PROCESS_SETUID                     = 1 << 0,
+    UV_PROCESS_SETGID                     = 1 << 1,
+    UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS = 1 << 2,
+    UV_PROCESS_DETACHED                   = 1 << 3
+};
 
-[Flags]
 internal enum uv_stdio_flags
 {
-    UV_IGNORE = 0x00,
-    UV_CREATE_PIPE = 0x01,
-    UV_INHERIT_FD = 0x02,
+    UV_IGNORE         = 0x00,
+    UV_CREATE_PIPE    = 0x01,
+    UV_INHERIT_FD     = 0x02,
     UV_INHERIT_STREAM = 0x04,
-    UV_READABLE_PIPE = 0x10,
-    UV_WRITABLE_PIPE = 0x20
+    UV_READABLE_PIPE  = 0x10,
+    UV_WRITABLE_PIPE  = 0x20
 }
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct uv_stdio_container_stream_t
 {
     public uv_stdio_flags flags;
-    public IntPtr stream;
+    public IntPtr         stream;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -45,60 +43,54 @@ internal unsafe struct uv_process_options_t : IDisposable
     public  int                          stdio_count;
     private uv_stdio_container_stream_t* stdio;
 
-    public int uid;
-    public int gid;
-    
+    public int? uid;
+    public int? gid;
+
+    // functions
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void uv_exit_cb(IntPtr handle, long exit_status, int term_signal);
+
     public uv_process_options_t(Process process, ProcessOptions options)
     {
-        if (string.IsNullOrEmpty(options.File))
-        {
-            throw new ArgumentException("file of processoptions can't be null");
-        }
-
-        file = Marshal.StringToHGlobalAnsi(options.File);
+        file = !string.IsNullOrWhiteSpace(options.File)
+            ? Marshal.StringToHGlobalAnsi(options.File)
+            : throw new ArgumentException("file of processoptions can't be null or white space.");
 
         args = alloc(options.Arguments);
-        env = alloc(options.Environment);
-        cwd = Marshal.StringToHGlobalAnsi(options.CurrentWorkingDirectory);
-
+        env  = alloc(options.Environment);
+        cwd  = Marshal.StringToHGlobalAnsi(options.CurrentWorkingDirectory);
 
         // all fields have to be set
         flags = 0;
-        uid = 0;
-        gid = 0;
+        uid   = 0;
+        gid   = 0;
 
-        if (options.Detached)
+        if(options.Detached)
         {
             flags |= (uint)uv_process_flags.UV_PROCESS_DETACHED;
         }
 
-        if (options.WindowsVerbatimArguments)
+        if(options.WindowsVerbatimArguments)
         {
             flags |= (uint)uv_process_flags.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS;
         }
 
-        if (options.UID.HasValue)
+        if(options.UID.HasValue)
         {
             flags |= (uint)uv_process_flags.UV_PROCESS_SETUID;
-            uid = options.GID.Value;
+            uid   =  options.GID;
         }
 
-        if (options.GID.HasValue)
+        if(options.GID.HasValue)
         {
             flags |= (uint)uv_process_flags.UV_PROCESS_SETGID;
-            gid = options.GID.Value;
+            gid   =  options.GID;
         }
 
-        uv_exit_cb cb = (handle, status, signal) =>
-        {
-            Handle.FromIntPtr<Process>(handle).OnExit(status, signal);
-        };
         exit_cb = Marshal.GetFunctionPointerForDelegate(cb);
 
-        stdio_count = options.Streams == null && options.Streams is not UVStream[]
-            ? 0
-            : options.Streams.Count;
-        if (stdio_count == 0)
+        stdio_count = options.Streams is null and not UVStream[]? 0 : options.Streams.Count;
+        if(stdio_count == 0)
         {
             stdio = null;
             return;
@@ -107,38 +99,47 @@ internal unsafe struct uv_process_options_t : IDisposable
         stdio = (uv_stdio_container_stream_t*)Marshal.AllocHGlobal(stdio_count * sizeof(uv_stdio_container_stream_t));
 
         var i = 0;
-        foreach (var stream in options.Streams)
+        if(options.Streams != null)
         {
-            stdio[i].flags = 0;
-            if (stream != null)
+            foreach(var stream in options.Streams)
             {
-                stdio[i].stream = stream.NativeHandle;
-                if ((stream.readable || stream.writeable) && stream is Pipe)
+                stdio[i].flags = 0;
+                if(stream != null)
                 {
-                    stdio[i].flags |= uv_stdio_flags.UV_CREATE_PIPE;
-                    if (stream.readable)
+                    stdio[i].stream = stream.NativeHandle;
+                    if((stream.readable || stream.writeable) && stream is Pipe)
                     {
-                        stdio[i].flags |= uv_stdio_flags.UV_READABLE_PIPE;
+                        stdio[i].flags |= uv_stdio_flags.UV_CREATE_PIPE;
+                        if(stream.readable)
+                        {
+                            stdio[i].flags |= uv_stdio_flags.UV_READABLE_PIPE;
+                        }
+                        if(stream.writeable)
+                        {
+                            stdio[i].flags |= uv_stdio_flags.UV_WRITABLE_PIPE;
+                        }
                     }
-
-                    if (stream.writeable)
+                    else
                     {
-                        stdio[i].flags |= uv_stdio_flags.UV_WRITABLE_PIPE;
+                        stdio[i].flags |= uv_stdio_flags.UV_INHERIT_STREAM;
                     }
                 }
-                else if (stream is UVStream)
-                {
-                    stdio[i].flags |= uv_stdio_flags.UV_INHERIT_STREAM;
-                }
+                i++;
             }
-
-            i++;
         }
+    }
+
+    private static readonly uv_exit_cb cb = exit;
+
+    private static void exit(IntPtr handlePointer, long exit_status, int term_signal)
+    {
+        var process = Handle.FromIntPtr<Process>(handlePointer);
+        process.OnExit(exit_status, term_signal);
     }
 
     public void Dispose()
     {
-        if (file != IntPtr.Zero)
+        if(file != IntPtr.Zero)
         {
             Marshal.FreeHGlobal(file);
             file = IntPtr.Zero;
@@ -147,46 +148,45 @@ internal unsafe struct uv_process_options_t : IDisposable
         free(ref args);
         free(ref env);
 
-        if (stdio != null)
+        if(stdio != null)
         {
             Marshal.FreeHGlobal((IntPtr)stdio);
             stdio = null;
         }
 
-        if (cwd != IntPtr.Zero)
+        if(cwd != IntPtr.Zero)
         {
             Marshal.FreeHGlobal(file);
             cwd = IntPtr.Zero;
         }
     }
 
-    private static IntPtr alloc(IReadOnlyList<string>? args)
+    private static IntPtr alloc(string[] args)
     {
-        if (args == null)
+        if(args == null)
         {
             return IntPtr.Zero;
         }
 
-        var arr = Marshal.AllocHGlobal((args.Count + 1) * sizeof(IntPtr));
-        for (var i = 0; i < args.Count; i++)
+        var arr = Marshal.AllocHGlobal((args.Length + 1) * sizeof(IntPtr));
+        for(var i = 0; i < args.Length; i++)
         {
             Marshal.WriteIntPtr(arr, i * sizeof(IntPtr), Marshal.StringToHGlobalAnsi(args[i]));
         }
-
-        Marshal.WriteIntPtr(arr, args.Count * sizeof(IntPtr), IntPtr.Zero);
+        Marshal.WriteIntPtr(arr, args.Length * sizeof(IntPtr), IntPtr.Zero);
         return arr;
     }
 
     private static void free(ref IntPtr ptr)
     {
-        if (ptr == IntPtr.Zero)
+        if(ptr == IntPtr.Zero)
         {
             return;
         }
 
-        var i = 0;
+        var    i = 0;
         var p = Marshal.ReadIntPtr(ptr);
-        while (p != IntPtr.Zero)
+        while(p != IntPtr.Zero)
         {
             Marshal.FreeHGlobal(p);
             i++;

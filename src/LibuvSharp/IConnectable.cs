@@ -1,6 +1,6 @@
 namespace LibuvSharp;
 
-public interface IConnectable<TType, in TEndPoint>
+public interface IConnectable<TType, TEndPoint>
 {
-	void Connect(TEndPoint endPoint, Action<Exception> callback);
+    void Connect(TEndPoint endPoint, Action<Exception?>? callback);
 }

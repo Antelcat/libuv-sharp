@@ -2,18 +2,27 @@ namespace LibuvSharp;
 
 public interface IUVStream<TData>
 {
-	Loop Loop { get; }
-	event Action<Exception> Error;
+    Loop Loop { get; }
 
-	bool Readable { get; }
-	event Action Complete;
-	event Action<TData> Data;
-	void Resume();
-	void Pause();
+    event Action<Exception?>? Error;
 
-	bool Writeable { get; }
-	event Action Drain;
-	long WriteQueueSize { get; }
-	void Write(TData data, Action<Exception>? callback);
-	void Shutdown(Action<Exception>? callback);
+    bool Readable { get; }
+
+    event Action? Complete;
+
+    event Action<TData>? Data;
+
+    void Resume();
+
+    void Pause();
+
+    bool Writeable { get; }
+
+    event Action? Drain;
+
+    long WriteQueueSize { get; }
+
+    void Write(TData data, Action<Exception?>? callback);
+
+    void Shutdown(Action<Exception?>? callback);
 }

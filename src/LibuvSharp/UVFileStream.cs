@@ -1,232 +1,248 @@
+﻿using LibuvSharp.Internal;
+
 namespace LibuvSharp;
 
-public class UVFileStream 
-	: IUVStream<ArraySegment<byte>>, IDisposable, IHandle
+public class UVFileStream(Loop loop) : IUVStream<ArraySegment<byte>>, IDisposable, IHandle
 {
-	public void Ref()
-	{
-	}
+    public void Ref()
+    {
+    }
 
-	public void Unref()
-	{
-	}
+    public void Unref()
+    {
+    }
 
-	public void Close(Action? callback)
-	{
-		Close(_ =>
-		{
-			callback?.Invoke();
-		});
-	}
+    public void Close(Action? callback)
+    {
+        Close(_ =>
+        {
+            callback?.Invoke();
+        });
+    }
 
-	public bool HasRef => true;
+    public bool HasRef => true;
 
-	public Loop Loop { get; private set; }
+    public Loop Loop { get; } = loop;
 
-	public bool IsClosed => uvfile == null;
+    public bool IsClosed => uvFile == null;
 
-	public bool IsClosing { get; private set; }
+    public bool IsClosing { get; private set; }
 
-	public UVFileStream()
-		: this(Loop.Constructor)
-	{
-	}
+    public UVFileStream() : this(Loop.Constructor)
+    {
+    }
 
-	public UVFileStream(Loop loop)
-	{
-		Loop = loop;
-	}
+    private UVFile? uvFile;
 
-	private UVFile? uvfile;
+    public void OpenRead(string path, Action<Exception?>? callback)
+    {
+        Open(path, UVFileAccess.Read, callback);
+    }
 
-	public void OpenRead(string path, Action<Exception> callback)
-	{
-		Open(path, UVFileAccess.Read, callback);
-	}
+    public void OpenWrite(string path, Action<Exception?>? callback)
+    {
+        Open(path, UVFileAccess.Write, callback);
+    }
 
-	public void OpenWrite(string path, Action<Exception> callback)
-	{
-		Open(path, UVFileAccess.Write, callback);
-	}
+    public void Open(string path, UVFileAccess access, Action<Exception?>? callback)
+    {
+        Ensure.ArgumentNotNull(path, nameof(path));
 
-	public void Open(string path, UVFileAccess access, Action<Exception>? callback)
-	{
-		callback.NotNull("path");
+        switch(access)
+        {
+            case UVFileAccess.Read:
+                Readable = true;
+                break;
 
-		switch (access) {
-			case UVFileAccess.Read:
-				Readable = true;
-				break;
-			case UVFileAccess.Write:
-				Writeable = true;
-				break;
-			case UVFileAccess.ReadWrite:
-				Writeable = true;
-				Readable = true;
-				break;
-			default:
-				throw new ArgumentException("access not supported");
-		}
+            case UVFileAccess.Write:
+                Writeable = true;
+                break;
 
-		UVFile.Open(Loop, path, access, (ex, file) => {
-			uvfile = file;
-			callback?.Invoke(ex);
-		});
-	}
+            case UVFileAccess.ReadWrite:
+                Writeable = true;
+                Readable  = true;
+                break;
 
-	protected void OnComplete()
-	{
-		Complete?.Invoke();
-	}
+            default:
+                throw new ArgumentOutOfRangeException(nameof(access));
+        }
 
-	public event Action? Complete;
+        UVFile.Open(Loop, path, access, (ex, file) =>
+        {
+            uvFile = file;
+            callback?.Invoke(ex);
+        });
+    }
 
-	protected void OnError(Exception ex)
-	{
-		Error?.Invoke(ex);
-	}
+    protected void OnComplete()
+    {
+        Complete?.Invoke();
+    }
 
-	public event Action<Exception>? Error;
+    public event Action? Complete;
 
-	public bool Readable { get; private set; }
+    protected void OnError(Exception ex)
+    {
+        Error?.Invoke(ex);
+    }
 
-	private byte[] buffer = new byte[0x1000];
-	private bool   reading;
-	private int    readposition;
+    public event Action<Exception>? Error;
 
-	private void HandleRead(Exception? ex, int size)
-	{
-		if (!reading) {
-			return;
-		}
+    public bool Readable { get; private set; }
 
-		if (ex != null) {
-			OnError(ex);
-			return;
-		}
+    private readonly byte[] buffer       = new byte[0x1000];
+    private          bool   reading;
+    private          int    readPosition;
 
-		if (size == 0) {
-			uvfile.Close(ex2 => {
-				OnComplete();
-			});
-			return;
-		}
+    private void HandleRead(Exception? ex, int? size)
+    {
+        if(!reading)
+        {
+            return;
+        }
 
-		readposition += size;
-		OnData(new ArraySegment<byte>(buffer, 0, size));
+        if(ex != null)
+        {
+            OnError(ex);
+            return;
+        }
 
-		if (reading) {
-			WorkRead();
-		}
-	}
+        if(size is 0 or null)
+        {
+            uvFile?.Close(_ =>
+            {
+                OnComplete();
+            });
+            return;
+        }
 
-	private void WorkRead()
-	{
-		uvfile.Read(Loop, readposition, new ArraySegment<byte>(buffer, 0, buffer.Length), HandleRead);
-	}
+        readPosition += size.Value;
+        OnData(new ArraySegment<byte>(buffer, 0, size.Value));
 
-	public void Resume()
-	{
-		reading = true;
-		WorkRead();
-	}
+        if(reading)
+        {
+            WorkRead();
+        }
+    }
 
-	public void Pause()
-	{
-		reading = false;
-	}
+    private void WorkRead()
+    {
+        uvFile?.Read(Loop, readPosition, new ArraySegment<byte>(buffer, 0, buffer.Length), HandleRead);
+    }
 
-	private void OnData(ArraySegment<byte> data)
-	{
-		Data?.Invoke(data);
-	}
-	public event Action<ArraySegment<byte>> Data;
+    public void Resume()
+    {
+        reading = true;
+        WorkRead();
+    }
 
-	private int                                                 writeoffset;
-	private Queue<Tuple<ArraySegment<byte>, Action<Exception>>> queue = new Queue<Tuple<ArraySegment<byte>, Action<Exception>>>();
+    public void Pause()
+    {
+        reading = false;
+    }
 
-	private void HandleWrite(Exception ex, int size)
-	{
-		var tuple = queue.Dequeue();
+    private void OnData(ArraySegment<byte> data)
+    {
+        Data?.Invoke(data);
+    }
 
-		WriteQueueSize -= tuple.Item1.Count;
+    public event Action<ArraySegment<byte>>? Data;
 
-		var cb = tuple.Item2;
-		cb?.Invoke(ex);
+    private int writeOffset;
 
-		writeoffset += size;
-		WorkWrite();
-	}
+    private readonly Queue<Tuple<ArraySegment<byte>, Action<Exception?>?>> queue = new();
 
-	private void WorkWrite()
-	{
-		if (queue.Count == 0) {
-			if (shutdown) {
-				uvfile.Truncate(writeoffset, Finish);
-				//uvfile.Close(shutdownCallback);
-			}
-			OnDrain();
-		} else {
-			// handle next write
-			var item = queue.Peek();
-			uvfile.Write(Loop, writeoffset, item.Item1, HandleWrite);
-		}
-	}
+    private void HandleWrite(Exception? ex, int? size)
+    {
+        var tuple = queue.Dequeue();
+        WriteQueueSize -= tuple.Item1.Count;
+        tuple.Item2?.Invoke(ex);
+        if(size is > 0)
+        {
+            writeOffset += size.Value;
+        }
+        WorkWrite();
+    }
 
-	private void Finish(Exception ex)
-	{
-		uvfile.Close(ex2 => {
-			uvfile = null;
-			IsClosing = false;
-			shutdownCallback?.Invoke(ex ?? ex2);
-		});
-	}
+    private void WorkWrite()
+    {
+        if(queue.Count == 0)
+        {
+            if(shutdown)
+            {
+                uvFile?.Truncate(writeOffset, Finish);
+                //uvfile.Close(shutdownCallback);
+            }
+            OnDrain();
+        }
+        else
+        {
+            // handle next write
+            var item = queue.Peek();
+            uvFile?.Write(Loop, writeOffset, item.Item1, HandleWrite);
+        }
+    }
 
-	private void OnDrain()
-	{
-		Drain?.Invoke();
-	}
+    private void Finish(Exception? ex)
+    {
+        uvFile?.Close(ex2 =>
+        {
+            uvFile    = null;
+            IsClosing = false;
+            shutdownCallback?.Invoke(ex ?? ex2);
+        });
+    }
 
-	public event Action? Drain;
+    private void OnDrain()
+    {
+        Drain?.Invoke();
+    }
 
-	public long WriteQueueSize { get; private set; }
+    public event Action? Drain;
 
-	public bool Writeable { private set; get; }
+    public long WriteQueueSize { get; private set; }
 
-	public void Write(ArraySegment<byte> data, Action<Exception> callback)
-	{
-		queue.Enqueue(Tuple.Create(data, callback));
-		WriteQueueSize += data.Count;
-		if (queue.Count == 1) {
-			WorkWrite();
-		}
-	}
+    public bool Writeable { private set; get; }
 
-	private bool               shutdown;
-	private Action<Exception>? shutdownCallback;
-	public void Shutdown(Action<Exception> callback)
-	{
-		shutdown = true;
-		shutdownCallback = callback;
-		if (queue.Count == 0) {
-			uvfile.Truncate(writeoffset, Finish);
-		}
-	}
+    public void Write(ArraySegment<byte> data, Action<Exception?>? callback)
+    {
+        queue.Enqueue(Tuple.Create(data, callback));
+        WriteQueueSize += data.Count;
+        if(queue.Count == 1)
+        {
+            WorkWrite();
+        }
+    }
 
-	private void Close(Action<Exception> callback)
-	{
-		if (IsClosed || IsClosing) return;
-		IsClosing = true;
-		uvfile.Close(callback);
-	}
+    private bool                shutdown;
+    private Action<Exception?>? shutdownCallback;
 
-	private void Close()
-	{
-		Close(ex => { });
-	}
+    public void Shutdown(Action<Exception?>? callback)
+    {
+        shutdown         = true;
+        shutdownCallback = callback;
+        if(queue.Count == 0)
+        {
+            uvFile?.Truncate(writeOffset, Finish);
+        }
+    }
 
-	public void Dispose()
-	{
-		Close();
-	}
+    private void Close(Action<Exception?>? callback)
+    {
+        if(!IsClosed && !IsClosing)
+        {
+            IsClosing = true;
+            uvFile?.Close(callback);
+        }
+    }
+
+    private void Close()
+    {
+        Close(_ => { });
+    }
+
+    public void Dispose()
+    {
+        Close();
+    }
 }

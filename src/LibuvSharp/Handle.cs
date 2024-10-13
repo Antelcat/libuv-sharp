@@ -1,216 +1,263 @@
-using System.Runtime.InteropServices;
-using static LibuvSharp.Libuv;
+﻿using System.Runtime.InteropServices;
+using LibuvSharp.Internal;
 
 namespace LibuvSharp;
 
 public abstract unsafe class Handle : IHandle, IDisposable
 {
-	public Loop Loop { get; protected set; }
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void callback(IntPtr req, int status);
 
-	public IntPtr NativeHandle { get; private set; }
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void alloc_callback(IntPtr data, int size, out uv_buf_t buf);
 
-	internal GCHandle GCHandle { get; set; }
+    public Loop Loop { get; protected set; }
 
-	private uv_handle_t * handle {
-		get {
-			CheckDisposed();
-			return (uv_handle_t *)NativeHandle;
-		}
-	}
+    public IntPtr NativeHandle { get; protected set; }
 
-	internal IntPtr DataPointer {
-		get => handle->data;
-		set => handle->data = value;
-	}
+    internal GCHandle GCHandle { get; set; }
 
-	internal static T FromIntPtr<T>(IntPtr ptr) => (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target;
+    private uv_handle_t* handle
+    {
+        get
+        {
+            CheckDisposed();
+            return (uv_handle_t*)NativeHandle;
+        }
+    }
 
-	public HandleType HandleType => handle->type;
+    internal IntPtr DataPointer
+    {
+        get => handle->data;
+        set => handle->data = value;
+    }
 
-	internal Handle(Loop loop, IntPtr handle)
-	{
-		loop.NotNull(nameof(loop));
+    internal static T FromIntPtr<T>(IntPtr ptr)
+    {
+        return (T)GCHandle.FromIntPtr(((uv_handle_t*)ptr)->data).Target!;
+    }
 
-		NativeHandle = handle;
-		GCHandle = GCHandle.Alloc(this);
-		Loop = loop;
+    public HandleType HandleType => handle->type;
 
-		Loop.handles[NativeHandle] = this;
+    internal Handle(Loop loop, IntPtr handle)
+    {
+        Ensure.ArgumentNotNull(loop, nameof(loop));
 
-		DataPointer = GCHandle.ToIntPtr(GCHandle);
-	}
+        NativeHandle = handle;
+        GCHandle     = GCHandle.Alloc(this);
+        Loop         = loop;
 
-	internal Handle(Loop loop, int size)
-		: this(loop, UV.Alloc(size)) { }
+        Loop.handles[NativeHandle] = this;
 
-	internal Handle(Loop loop, HandleType handleType)
-		: this(loop, Size(handleType)) { }
+        DataPointer = GCHandle.ToIntPtr(GCHandle);
+    }
 
-	internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int> constructor)
-		: this(loop, handleType) => Construct(constructor);
+    internal Handle(Loop loop, int size)
+        : this(loop, UV.Alloc(size))
+    {
+    }
 
-	internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int, int> constructor, int arg1)
-		: this(loop, handleType) => Construct(constructor, arg1);
+    internal Handle(Loop loop, HandleType handleType)
+        : this(loop, Size(handleType))
+    {
+    }
 
-	internal void Construct(Func<IntPtr, IntPtr, int> constructor)
-	{
-		constructor(Loop.NativeHandle, NativeHandle).Success();
-	}
+    internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int> constructor)
+        : this(loop, handleType)
+    {
+        Construct(constructor);
+    }
 
-	internal void Construct(Func<IntPtr, IntPtr, int, int> constructor, int arg1)
-	{
-		constructor(Loop.NativeHandle, NativeHandle, arg1).Success();
-	}
+    internal Handle(Loop loop, HandleType handleType, Func<IntPtr, IntPtr, int, int> constructor, int arg1)
+        : this(loop, handleType)
+    {
+        Construct(constructor, arg1);
+    }
 
-	internal void Construct(Func<IntPtr, IntPtr, int, int, int> constructor, int arg1, int arg2)
-	{
-		constructor(Loop.NativeHandle, NativeHandle, arg1, arg2).Success();
-	}
+    internal void Construct(Func<IntPtr, IntPtr, int> constructor)
+    {
+        var r = constructor(Loop.NativeHandle, NativeHandle);
+        Ensure.Success(r);
+    }
 
-	public event Action? Closed;
+    internal void Construct(Func<IntPtr, IntPtr, int, int> constructor, int arg1)
+    {
+        var r = constructor(Loop.NativeHandle, NativeHandle, arg1);
+        Ensure.Success(r);
+    }
 
-	private Action? closeCallback;
+    internal void Construct(Func<IntPtr, IntPtr, int, int, int> constructor, int arg1, int arg2)
+    {
+        var r = constructor(Loop.NativeHandle, NativeHandle, arg1, arg2);
+        Ensure.Success(r);
+    }
 
-	private static void CloseCallback(IntPtr handlePointer)
-	{
-		var pointer = FromIntPtr<Handle>(handlePointer);
-		pointer.Cleanup(handlePointer, pointer.closeCallback);
-	}
+    public event Action? Closed;
 
-	public void Cleanup(IntPtr nativeHandle, Action? callback)
-	{
-		// Remove handle
-		if (NativeHandle == IntPtr.Zero) return;
-		Loop.handles.Remove(nativeHandle);
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_close(IntPtr handle, close_callback cb);
 
-		UV.Free(nativeHandle);
-		NativeHandle = IntPtr.Zero;
-		Closed?.Invoke();
-		callback?.Invoke();
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void close_callback(IntPtr handle);
 
-		if (GCHandle.IsAllocated) GCHandle.Free();
-	}
+    private Action? closeCallback;
 
-	public void Close(Action? callback)
-	{
-		if (IsClosing || IsClosed) return;
-		closeCallback = callback;
-		uv_close(NativeHandle, CloseCallback);
-	}
+    private static readonly close_callback close_cb = CloseCallback;
 
-	public void Close()
-	{
-		Close(null);
-	}
+    private static void CloseCallback(IntPtr handlePointer)
+    {
+        var handle = FromIntPtr<Handle>(handlePointer);
+        handle.Cleanup(handlePointer, handle.closeCallback);
+    }
 
-	public bool IsClosed => NativeHandle == IntPtr.Zero;
+    public void Cleanup(IntPtr nativeHandle, Action? callback)
+    {
+        // Remove handle
+        if(NativeHandle != IntPtr.Zero)
+        {
+            Loop.handles.Remove(nativeHandle);
 
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
+            UV.Free(nativeHandle);
 
-	protected virtual void Dispose(bool disposing)
-	{
-		Close();
-	}
+            NativeHandle = IntPtr.Zero;
 
-	public bool IsActive {
-		get {
-			if (IsClosed) {
-				return false;
-			}
-			return uv_is_active(NativeHandle) != 0;
-		}
-	}
-	
-	public bool IsClosing {
-		get {
-			if (IsClosed) {
-				return false;
-			}
-			return uv_is_closing(NativeHandle) != 0;
-		}
-	}
+            Closed?.Invoke();
 
-	/// <summary>
-	/// Is the underlying still alive? Returns true if handle
-	/// is not closing or closed.
-	/// </summary>
-	/// <value><c>true</c> if this instance is not closing or closed; otherwise, <c>false</c>.</value>
-	public bool IsAlive => !IsClosed && !IsClosing;
+            callback?.Invoke();
 
-	public void Ref()
-	{
-		if (IsClosed) {
-			return;
-		}
-		uv_ref(NativeHandle);
-	}
+            if(GCHandle.IsAllocated)
+            {
+                GCHandle.Free();
+            }
+        }
+    }
 
-	public void Unref()
-	{
-		if (IsClosed) {
-			return;
-		}
-		uv_unref(NativeHandle);
-	}
+    public void Close(Action? callback)
+    {
+        if(!IsClosing && !IsClosed)
+        {
+            closeCallback = callback;
+            uv_close(NativeHandle, close_cb);
+        }
+    }
 
-	public bool HasRef {
-		get {
-			if (IsClosed) {
-				return false;
-			}
-			return uv_has_ref(NativeHandle) != 0;
-		}
-	}
+    public void Close()
+    {
+        Close(null);
+    }
 
-	
-	public static int Size(HandleType type)
-	{
-		return uv_handle_size(type);
-	}
+    public bool IsClosed => NativeHandle == IntPtr.Zero;
 
-	
-	public static HandleType Guess(int fd)
-	{
-		return uv_guess_handle(fd);
-	}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-	protected void CheckDisposed()
-	{
-		if (NativeHandle == IntPtr.Zero)
-		{
-			throw new ObjectDisposedException(GetType().ToString(), "handle was closed");
-		}
-	}
+    protected virtual void Dispose(bool disposing)
+    {
+        Close();
+    }
 
-	protected void Invoke(Func<IntPtr, int> function)
-	{
-		CheckDisposed();
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_is_active(IntPtr handle);
 
-		function(NativeHandle).Success();
-	}
+    public bool IsActive => !IsClosed && uv_is_active(NativeHandle) != 0;
 
-	protected void Invoke<T1>(Func<IntPtr, T1, int> function, T1 arg1)
-	{
-		CheckDisposed();
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_is_closing(IntPtr handle);
 
-		function(NativeHandle, arg1).Success();
-	}
+    public bool IsClosing => !IsClosed && uv_is_closing(NativeHandle) != 0;
 
-	protected void Invoke<T1, T2>(Func<IntPtr, T1, T2, int> function, T1 arg1, T2 arg2)
-	{
-		CheckDisposed();
+    /// <summary>
+    /// Is the underlying still alive? Returns true if handle
+    /// is not closing or closed.
+    /// </summary>
+    /// <value><c>true</c> if this instance is not closing or closed; otherwise, <c>false</c>.</value>
+    public bool IsAlive => !IsClosed && !IsClosing;
 
-		function(NativeHandle, arg1, arg2).Success();
-	}
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_ref(IntPtr handle);
 
-	protected void Invoke<T1, T2, T3>(Func<IntPtr, T1, T2, T3, int> function, T1 arg1, T2 arg2, T3 arg3)
-	{
-		CheckDisposed();
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_unref(IntPtr handle);
 
-		function(NativeHandle, arg1, arg2, arg3).Success();
-	}
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_has_ref(IntPtr handle);
+
+    public void Ref()
+    {
+        if(IsClosed)
+        {
+            return;
+        }
+        uv_ref(NativeHandle);
+    }
+
+    public void Unref()
+    {
+        if(IsClosed)
+        {
+            return;
+        }
+        uv_unref(NativeHandle);
+    }
+
+    public bool HasRef => !IsClosed && uv_has_ref(NativeHandle) != 0;
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_handle_size(HandleType type);
+
+    public static int Size(HandleType type)
+    {
+        return uv_handle_size(type);
+    }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern HandleType uv_guess_handle(int fd);
+
+    public static HandleType Guess(int fd)
+    {
+        return uv_guess_handle(fd);
+    }
+
+    protected void CheckDisposed()
+    {
+        if(NativeHandle == IntPtr.Zero)
+        {
+            throw new ObjectDisposedException(GetType().ToString(), "handle was closed");
+        }
+    }
+
+    protected void Invoke(Func<IntPtr, int> function)
+    {
+        CheckDisposed();
+
+        var r = function(NativeHandle);
+        Ensure.Success(r);
+    }
+
+    protected void Invoke<T1>(Func<IntPtr, T1, int> function, T1 arg1)
+    {
+        CheckDisposed();
+
+        var r = function(NativeHandle, arg1);
+        Ensure.Success(r);
+    }
+
+    protected void Invoke<T1, T2>(Func<IntPtr, T1, T2, int> function, T1 arg1, T2 arg2)
+    {
+        CheckDisposed();
+
+        var r = function(NativeHandle, arg1, arg2);
+        Ensure.Success(r);
+    }
+
+    protected void Invoke<T1, T2, T3>(Func<IntPtr, T1, T2, T3, int> function, T1 arg1, T2 arg2, T3 arg3)
+    {
+        CheckDisposed();
+
+        var r = function(NativeHandle, arg1, arg2, arg3);
+        Ensure.Success(r);
+    }
 }

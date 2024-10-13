@@ -1,34 +1,32 @@
-namespace LibuvSharp;
+﻿namespace LibuvSharp.Internal;
 
-internal class CallbackPermaRequest : PermaRequest
+internal class CallbackPermaRequest(int size) : PermaRequest(size)
 {
-	public CallbackPermaRequest(int size)
-		: base(size)
-	{
-	}
+    public CallbackPermaRequest(RequestType type)
+        : this(UV.Sizeof(type))
+    {
+    }
 
-	public CallbackPermaRequest(RequestType type)
-		: this(UV.Sizeof(type))
-	{
-	}
+    public Action<int, CallbackPermaRequest>? Callback { get; set; }
 
-	public Action<int, CallbackPermaRequest> Callback { get; set; }
+    protected void End(IntPtr ptr, int status)
+    {
+        Callback?.Invoke(status, this);
+        Dispose();
+    }
 
-	protected void End(IntPtr ptr, int status)
-	{
-		Callback(status, this);
-		Dispose();
-	}
+    public static readonly Handle.callback CallbackDelegate = StaticEnd;
 
-	public static callback CallbackDelegate = StaticEnd;
-
-	public static void StaticEnd(IntPtr ptr, int status)
-	{
-		var obj = GetObject<CallbackPermaRequest>(ptr);
-		if (obj == null) {
-			throw new Exception("Target is null");
-		}
-
-		obj.End(ptr, status);
-	}
+    public static void StaticEnd(IntPtr ptr, int status)
+    {
+        var obj = GetObject<CallbackPermaRequest>(ptr);
+        if(obj == null)
+        {
+            throw new Exception("Target is null");
+        }
+        else
+        {
+            obj.End(ptr, status);
+        }
+    }
 }

@@ -1,33 +1,28 @@
-namespace LibuvSharp;
+﻿namespace LibuvSharp.Internal;
 
-internal class WorkRequest : PermaRequest
+internal unsafe class WorkRequest() : PermaRequest(Size)
 {
-	public static readonly int Size = UV.Sizeof(RequestType.UV_WORK);
+    public static readonly int Size = UV.Sizeof(RequestType.UV_WORK);
 
-	public WorkRequest()
-		: base(Size)
-	{
-	}
+    private readonly Action? before;
+    private readonly Action? after;
 
-	private Action before;
-	private Action after;
+    public WorkRequest(Action before, Action after)
+        : this()
+    {
+        this.before = before;
+        this.after  = after;
+    }
 
-	public WorkRequest(Action before, Action after)
-		: this()
-	{
-		this.before = before;
-		this.after = after;
-	}
+    public static void BeforeCallback(IntPtr req)
+    {
+        var workreq = GetObject<WorkRequest>(req);
+        workreq?.before?.Invoke();
+    }
 
-	public static void BeforeCallback(IntPtr req)
-	{
-		GetObject<WorkRequest>(req)?.before();
-	}
-
-	public static void AfterCallback(IntPtr req)
-	{
-		var workreq = GetObject<WorkRequest>(req);
-		workreq?.after();
-		workreq?.Dispose();
-	}
+    public static void AfterCallback(IntPtr req)
+    {
+        using var workreq = GetObject<WorkRequest>(req);
+        workreq?.after?.Invoke();
+    }
 }

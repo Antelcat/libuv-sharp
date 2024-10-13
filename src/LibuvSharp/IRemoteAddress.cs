@@ -1,6 +1,6 @@
 ﻿namespace LibuvSharp;
 
-public interface IRemoteAddress<out T>
+public interface IRemoteAddress<T>
 {
-	T RemoteAddress { get; }
+    T RemoteAddress { get; }
 }

@@ -1,73 +1,88 @@
-using static LibuvSharp.Libuv;
+﻿using System.Runtime.InteropServices;
+using LibuvSharp.Internal;
 
 namespace LibuvSharp;
 
 public enum FileSystemEventFlags
 {
-	Default = 0,
-	WatchEntry = 1,
-	Stat = 2,
-	Recursive = 3
+    Default    = 0,
+    WatchEntry = 1,
+    Stat       = 2,
+    Recursive  = 3
 }
 
 public enum FileSystemEvent
 {
-	Rename = 1,
-	Change = 2
+    Rename = 1,
+    Change = 2
 }
 
-public class FileSystemWatcher : Handle
+public class FileSystemWatcher(Loop loop) : Handle(loop, HandleType.UV_FS_EVENT, uv_fs_event_init)
 {
-	private static uv_fs_event_cb fs_event_callback;
-	static FileSystemWatcher()
-	{
-		fs_event_callback = fs_event;
-	}
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void uv_fs_event_cb(IntPtr handle, string filename, int events, int status);
 
-	public FileSystemWatcher()
-		: this(Loop.Constructor)
-	{
-	}
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_fs_event_init(IntPtr loop, IntPtr handle);
 
-	public FileSystemWatcher(Loop loop)
-		: base(loop, HandleType.UV_FS_EVENT, uv_fs_event_init)
-	{
-	}
+    private static readonly uv_fs_event_cb fs_event_callback;
 
+    static FileSystemWatcher()
+    {
+        fs_event_callback = fs_event;
+    }
 
-	public void Start(string path, FileSystemEventFlags flags = FileSystemEventFlags.Default)
-	{
-		Invoke(uv_fs_event_start, fs_event_callback, path, (int)flags);
-	}
+    public FileSystemWatcher()
+        : this(Loop.Constructor)
+    {
+    }
 
-	private static void fs_event(IntPtr handlePointer, string filename, int events, int status)
-	{
-		var handle = FromIntPtr<FileSystemWatcher>(handlePointer);
-		if (status != 0) {
-			handle.Close();
-		} else {
-			handle.OnChange(filename, (FileSystemEvent)events);
-		}
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+    private static extern int uv_fs_event_start(IntPtr handle, uv_fs_event_cb callback, string filename, int flags);
 
-	}
+    public void Start(string path, FileSystemEventFlags flags = FileSystemEventFlags.Default)
+    {
+        Invoke(uv_fs_event_start, fs_event_callback, path, (int)flags);
+    }
 
-	public event Action<string, FileSystemEvent>? Change;
+    private static void fs_event(IntPtr handlePointer, string filename, int events, int status)
+    {
+        var handle = FromIntPtr<FileSystemWatcher>(handlePointer);
+        if(status != 0)
+        {
+            handle.Close();
+        }
+        else
+        {
+            handle.OnChange(filename, (FileSystemEvent)events);
+        }
+    }
 
-	private void OnChange(string filename, FileSystemEvent @event)
-	{
-		Change?.Invoke(filename, @event);
-	}
+    public event Action<string, FileSystemEvent>? Change;
 
-	public string Path {
-		get {
-			CheckDisposed();
+    private void OnChange(string filename, FileSystemEvent @event)
+    {
+        Change?.Invoke(filename, @event);
+    }
 
-			return UV.ToString(4096, (IntPtr buffer, ref IntPtr length) => uv_fs_event_getpath(NativeHandle, buffer, ref length));
-		}
-	}
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_fs_event_getpath(IntPtr handle, IntPtr buf, ref IntPtr len);
 
-	public void Stop()
-	{
-		Invoke(uv_fs_event_stop);
-	}
+    public string Path
+    {
+        get
+        {
+            CheckDisposed();
+
+            return UV.ToString(4096, (IntPtr buffer, ref IntPtr length) => uv_fs_event_getpath(NativeHandle, buffer, ref length));
+        }
+    }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_fs_event_stop(IntPtr handle);
+
+    public void Stop()
+    {
+        Invoke(uv_fs_event_stop);
+    }
 }

@@ -1,8 +1,10 @@
 namespace LibuvSharp;
 
-public interface IListener<out TStream>
+public interface IListener<TStream>
 {
-	void Listen();
-	event Action Connection;
-	TStream Accept();
+    void Listen();
+
+    event Action? Connection;
+
+    TStream? Accept();
 }

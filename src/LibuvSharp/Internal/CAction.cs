@@ -1,118 +1,115 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace LibuvSharp;
+namespace LibuvSharp.Internal;
 
 internal class CActionBase : IDisposable
 {
-	private GCHandle GCHandle { get; set; }
+    private GCHandle GCHandle { get; set; }
 
-	public CActionBase()
-	{
-		GCHandle = GCHandle.Alloc(this);
-	}
-	~CActionBase()
-	{
-		Dispose(false);
-	}
+    public CActionBase()
+    {
+        GCHandle = GCHandle.Alloc(this);
+    }
 
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
+    ~CActionBase()
+    {
+        Dispose(false);
+    }
 
-	protected void Dispose(bool disposing)
-	{
-		if (GCHandle.IsAllocated) {
-			GCHandle.Free();
-		}
-	}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected void Dispose(bool disposing)
+    {
+        if(GCHandle.IsAllocated)
+        {
+            GCHandle.Free();
+        }
+    }
 }
 
 internal class CAction : CActionBase
 {
-	public Action Callback { get; protected set; }
+    public Action Callback { get; protected set; }
 
-	private Action cb;
+    private readonly Action cb;
 
-	public CAction(Action callback)
-	{
-		cb = callback;
-		Callback = PrivateCallback;
-	}
+    public CAction(Action callback)
+        : base()
+    {
+        cb       = callback;
+        Callback = PrivateCallback;
+    }
 
-	private void PrivateCallback()
-	{
-		if (cb != null) {
-			cb();
-		}
+    private void PrivateCallback()
+    {
+        cb?.Invoke();
 
-		Dispose();
-	}
+        Dispose();
+    }
 }
 
 internal class CAction<T1> : CActionBase
 {
-	public Action<T1> Callback { get; protected set; }
+    public Action<T1> Callback { get; protected set; }
 
-	private Action<T1> cb;
+    private readonly Action<T1> cb;
 
-	public CAction(Action<T1> callback)
-	{
-		cb = callback;
-		Callback = PrivateCallback;
-	}
+    public CAction(Action<T1> callback)
+        : base()
+    {
+        cb       = callback;
+        Callback = PrivateCallback;
+    }
 
-	private void PrivateCallback(T1 arg1)
-	{
-		if (cb != null) {
-			cb(arg1);
-		}
+    private void PrivateCallback(T1 arg1)
+    {
+        cb?.Invoke(arg1);
 
-		Dispose();
-	}
+        Dispose();
+    }
 }
 
 internal class CAction<T1, T2> : CActionBase
 {
-	public Action<T1, T2> Callback { get; protected set; }
+    public Action<T1, T2> Callback { get; protected set; }
 
-	private Action<T1, T2> cb;
+    private readonly Action<T1, T2> cb;
 
-	public CAction(Action<T1, T2> callback)
-	{
-		cb = callback;
-		Callback = PrivateCallback;
-	}
+    public CAction(Action<T1, T2> callback)
+        : base()
+    {
+        cb       = callback;
+        Callback = PrivateCallback;
+    }
 
-	private void PrivateCallback(T1 arg1, T2 arg2)
-	{
-		if (cb != null) {
-			cb(arg1, arg2);
-		}
+    private void PrivateCallback(T1 arg1, T2 arg2)
+    {
+        cb?.Invoke(arg1, arg2);
 
-		Dispose();
-	}
+        Dispose();
+    }
 }
 
 internal class CAction<T1, T2, T3> : CActionBase
 {
-	public Action<T1, T2, T3> Callback { get; protected set; }
+    public Action<T1, T2, T3> Callback { get; protected set; }
 
-	private Action<T1, T2, T3> cb;
+    private readonly Action<T1, T2, T3> cb;
 
-	public CAction(Action<T1, T2, T3> callback)
-	{
-		cb = callback;
-		Callback = PrivateCallback;
-	}
+    public CAction(Action<T1, T2, T3> callback)
+    {
+        cb       = callback;
+        Callback = PrivateCallback;
+    }
 
-	private void PrivateCallback(T1 arg1, T2 arg2, T3 arg3)
-	{
-		if (cb != null) {
-			cb(arg1, arg2, arg3);
-		}
+    private void PrivateCallback(T1 arg1, T2 arg2, T3 arg3)
+    {
+        cb?.Invoke(arg1, arg2, arg3);
 
-		Dispose();
-	}
+        Dispose();
+    }
 }

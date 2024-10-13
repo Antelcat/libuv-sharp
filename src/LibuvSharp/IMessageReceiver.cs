@@ -1,6 +1,6 @@
 ﻿namespace LibuvSharp;
 
-public interface IMessageReceiver<out TMessage>
+public interface IMessageReceiver<TMessage>
 {
-	event Action<TMessage> Message;
+    event Action<TMessage> Message;
 }

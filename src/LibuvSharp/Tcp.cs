@@ -1,20 +1,25 @@
-using System.Net;
-using System.Net.Sockets;
-using static LibuvSharp.Libuv;
+﻿using System.Net;
+using System.Runtime.InteropServices;
+using LibuvSharp.Internal;
 
 namespace LibuvSharp;
 
-public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, ILocalAddress<IPEndPoint>
+public class TcpListener(Loop loop) : Listener<Tcp>(loop, HandleType.UV_TCP, uv_tcp_init),
+    IBindable<TcpListener, IPEndPoint>, ILocalAddress<IPEndPoint>
 {
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_init(IntPtr loop, IntPtr handle);
+
     public TcpListener()
         : this(Loop.Constructor)
     {
     }
 
-    public TcpListener(Loop loop)
-        : base(loop, HandleType.UV_TCP, uv_tcp_init)
-    {
-    }
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_bind(IntPtr handle, ref sockaddr_in sockaddr, uint flags);
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_bind(IntPtr handle, ref sockaddr_in6 sockaddr, uint flags);
 
     private void Bind(IPAddress ipAddress, int port, bool dualstack)
     {
@@ -30,7 +35,7 @@ public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, IL
 
     public void Bind(IPEndPoint endPoint)
     {
-        endPoint.NotNull(nameof(endPoint));
+        Ensure.ArgumentNotNull(endPoint, nameof(endPoint));
         Bind(endPoint.Address, endPoint.Port, false);
     }
 
@@ -38,6 +43,9 @@ public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, IL
     {
         return new Tcp(Loop);
     }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_simultaneos_accepts(IntPtr handle, int enable);
 
     public bool SimultaneosAccepts
     {
@@ -49,35 +57,42 @@ public class TcpListener : Listener<Tcp>, IBindable<TcpListener, IPEndPoint>, IL
         get
         {
             CheckDisposed();
-            return UV.GetSockname(this, uv_tcp_getsockname);
+
+            return UV.GetSockName(this, NativeMethods.uv_tcp_getsockname);
         }
     }
 }
 
-public class Tcp
-    : UVStream, IConnectable<Tcp, IPEndPoint>, ILocalAddress<IPEndPoint>, IRemoteAddress<IPEndPoint>
+public class Tcp(Loop loop) : UVStream(loop, HandleType.UV_TCP, uv_tcp_init), IConnectable<Tcp, IPEndPoint>,
+    ILocalAddress<IPEndPoint>, IRemoteAddress<IPEndPoint>
 {
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_tcp_init(IntPtr loop, IntPtr handle);
+
     public Tcp() : this(Loop.Constructor)
     {
     }
 
-    public Tcp(Loop loop) : base(loop, HandleType.UV_TCP, uv_tcp_init)
-    {
-    }
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_connect(IntPtr req, IntPtr handle, ref sockaddr_in addr, callback callback);
 
-    public void Connect(IPEndPoint ipEndPoint, Action<Exception> callback)
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_connect(IntPtr req, IntPtr handle, ref sockaddr_in6 addr, callback callback);
+
+    public void Connect(IPEndPoint ipEndPoint, Action<Exception?>? callback)
     {
         CheckDisposed();
 
-        ipEndPoint.NotNull(nameof(ipEndPoint));
-        callback.NotNull(nameof(callback));
+        Ensure.ArgumentNotNull(ipEndPoint, nameof(ipEndPoint));
         Ensure.AddressFamily(ipEndPoint.Address);
 
-        var cpr = new ConnectRequest();
-        cpr.Callback = (status, cpr2) => status.Success(callback);
+        var cpr = new ConnectRequest
+        {
+            Callback = (status, _) => Ensure.Success(status, callback)
+        };
 
         int r;
-        if (ipEndPoint.Address.AddressFamily == AddressFamily.InterNetwork)
+        if(ipEndPoint.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
         {
             var address = UV.ToStruct(ipEndPoint.Address.ToString(), ipEndPoint.Port);
             r = uv_tcp_connect(cpr.Handle, NativeHandle, ref address, CallbackPermaRequest.CallbackDelegate);
@@ -87,9 +102,14 @@ public class Tcp
             var address = UV.ToStruct6(ipEndPoint.Address.ToString(), ipEndPoint.Port);
             r = uv_tcp_connect(cpr.Handle, NativeHandle, ref address, CallbackPermaRequest.CallbackDelegate);
         }
-
-        r.Success();
+        Ensure.Success(r);
     }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_nodelay(IntPtr handle, int enable);
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_keepalive(IntPtr handle, int enable, int delay);
 
     public bool NoDelay
     {
@@ -101,13 +121,16 @@ public class Tcp
         Invoke(uv_tcp_keepalive, enable ? 1 : 0, delay);
     }
 
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int uv_tcp_getpeername(IntPtr handle, IntPtr addr, ref int length);
+
     public IPEndPoint LocalAddress
     {
         get
         {
             CheckDisposed();
 
-            return UV.GetSockname(this, uv_tcp_getsockname);
+            return UV.GetSockName(this, NativeMethods.uv_tcp_getsockname);
         }
     }
 
@@ -116,7 +139,8 @@ public class Tcp
         get
         {
             CheckDisposed();
-            return UV.GetSockname(this, uv_tcp_getpeername);
+
+            return UV.GetSockName(this, uv_tcp_getpeername);
         }
     }
 }

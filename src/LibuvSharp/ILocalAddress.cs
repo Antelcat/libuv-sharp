@@ -1,6 +1,6 @@
 ﻿namespace LibuvSharp;
 
-public interface ILocalAddress<out T>
+public interface ILocalAddress<T>
 {
-	T LocalAddress { get; }
+    T LocalAddress { get; }
 }

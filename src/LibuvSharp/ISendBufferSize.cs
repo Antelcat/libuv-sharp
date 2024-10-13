@@ -2,5 +2,5 @@
 
 public interface ISendBufferSize
 {
-	int SendBufferSize { get; set; }
+    int SendBufferSize { get; set; }
 }

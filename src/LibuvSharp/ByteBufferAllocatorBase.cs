@@ -1,33 +1,36 @@
+﻿using LibuvSharp.Internal;
+
 namespace LibuvSharp;
 
 public abstract class ByteBufferAllocatorBase : IDisposable
 {
-	internal alloc_callback AllocCallback { get; set; }
+    internal Handle.alloc_callback AllocCallback { get; set; }
 
-	public ByteBufferAllocatorBase()
-	{
-		AllocCallback = Alloc;
-	}
+    protected ByteBufferAllocatorBase()
+    {
+        AllocCallback = Alloc;
+    }
 
-	~ByteBufferAllocatorBase()
-	{
-		Dispose(false);
-	}
+    ~ByteBufferAllocatorBase()
+    {
+        Dispose(false);
+    }
 
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-	private void Alloc(IntPtr data, int size, out uv_buf_t buf)
-	{
-		IntPtr ptr;
-		size = Alloc(size, out ptr);
-		buf = new uv_buf_t(ptr, size);
-	}
+    private void Alloc(IntPtr data, int size, out uv_buf_t buf)
+    {
+        size = Alloc(size, out var ptr);
+        buf  = new uv_buf_t(ptr, size);
+    }
 
-	public abstract int Alloc(int size, out IntPtr pointer);
-	public abstract void Dispose(bool disposing);
-	public abstract ArraySegment<byte> Retrieve(int size);
+    protected abstract int Alloc(int size, out IntPtr pointer);
+
+    protected abstract void Dispose(bool disposing);
+
+    public abstract ArraySegment<byte> Retrieve(int size);
 }

@@ -2,5 +2,5 @@
 
 public interface ITrySend<in TMessage>
 {
-	int TrySend(TMessage message);
+    int TrySend(TMessage message);
 }

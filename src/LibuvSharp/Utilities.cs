@@ -1,49 +1,59 @@
-namespace LibuvSharp.Utilities;
+﻿namespace LibuvSharp;
 
 public static partial class UtilitiesExtensions
 {
-	public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream)
-	{
-		Pump(readStream, writeStream, null);
-	}
+    public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream)
+    {
+        Pump(readStream, writeStream, null);
+    }
 
-	public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception>? callback)
-	{
-		var pending = false;
-		var done = false;
+    public static void Pump<T>(this IUVStream<T> readStream, IUVStream<T> writeStream, Action<Exception?>? callback)
+    {
+        var pending = false;
+        var done    = false;
 
-		Action<Exception>? call = null;
-		void Complete() => call?.Invoke(null);
+        Action<Exception?>? call = null;
+        void complete()
+        {
+            call?.Invoke(null);
+        }
 
-		call = ex => {
-			if (done) {
-				return;
-			}
+        call = ex =>
+        {
+            if(done)
+            {
+                return;
+            }
 
-			readStream.Error -= call;
-			readStream.Complete -= Complete;
+            readStream.Error    -= call;
+            readStream.Complete -= complete;
 
-			done = true;
-			callback?.Invoke(ex);
-		};
+            done = true;
+            callback?.Invoke(ex);
+        };
 
-		readStream.Data += (data => {
-			writeStream.Write(data, null);
-			if (writeStream.WriteQueueSize <= 0) return;
-			pending = true;
-			readStream.Pause();
-		});
+        readStream.Data += data =>
+        {
+            writeStream.Write(data, null);
+            if(writeStream.WriteQueueSize > 0)
+            {
+                pending = true;
+                readStream.Pause();
+            }
+        };
 
-		writeStream.Drain += () =>
-		{
-			if (!pending) return;
-			pending = false;
-			readStream.Resume();
-		};
+        writeStream.Drain += () =>
+        {
+            if(pending)
+            {
+                pending = false;
+                readStream.Resume();
+            }
+        };
 
-		readStream.Error += call;
-		readStream.Complete += Complete;
+        readStream.Error    += call;
+        readStream.Complete += complete;
 
-		readStream.Resume();
-	}
+        readStream.Resume();
+    }
 }

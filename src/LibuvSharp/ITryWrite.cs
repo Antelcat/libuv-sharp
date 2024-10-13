@@ -1,6 +1,6 @@
 ﻿namespace LibuvSharp;
 
-public interface ITryWrite<in TData>
+public interface ITryWrite<TData>
 {
-	int TryWrite(TData data);
+    int TryWrite(TData data);
 }

@@ -1,269 +1,322 @@
-using System.Runtime.InteropServices;
-using static LibuvSharp.Libuv;
+﻿using System.Runtime.InteropServices;
+using LibuvSharp.Internal;
+
 namespace LibuvSharp;
 
 internal enum uv_run_mode
 {
-	UV_RUN_DEFAULT = 0,
-	UV_RUN_ONCE,
-	UV_RUN_NOWAIT
-}
+    UV_RUN_DEFAULT = 0,
+    UV_RUN_ONCE,
+    UV_RUN_NOWAIT
+};
 
 public partial class Loop : IDisposable
 {
-	private static Loop? @default;
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern IntPtr uv_default_loop();
 
-	public static Loop Default => @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_loop_init(IntPtr handle);
 
-	[ThreadStatic] private static Loop? currentLoop;
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_loop_close(IntPtr ptr);
 
-	public IntPtr NativeHandle { get; protected set; }
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern IntPtr uv_loop_size();
 
-	public ByteBufferAllocatorBase? ByteBufferAllocator { get; protected set; }
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_run(IntPtr loop, uv_run_mode mode);
 
-	private readonly Async         async;
-	private readonly AsyncCallback callback;
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_update_time(IntPtr loop);
 
-	internal Loop(IntPtr handle, ByteBufferAllocatorBase allocator)
-	{
-		NativeHandle        = handle;
-		ByteBufferAllocator = allocator;
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern ulong uv_now(IntPtr loop);
 
-		callback = new AsyncCallback(this);
-		async    = new Async(this);
+    private static Loop? @default;
 
-		// this fixes a strange bug, where you can't send async
-		// stuff from other threads
-		Sync(() => {});
-		async.Send();
-		RunOnce();
+    public static Loop Default
+    {
+        get
+        {
+            @default ??= new Loop(uv_default_loop(), new CopyingByteBufferAllocator());
+            return @default;
+        }
+    }
 
-		// ignore our allocated resources
-		async.Unref();
-		callback.Unref();
-	}
+    [ThreadStatic]
+    private static Loop? currentLoop;
 
-	public Loop()
-		: this(new CopyingByteBufferAllocator())
-	{
-	}
+    public IntPtr NativeHandle { get; protected set; }
 
-	public Loop(ByteBufferAllocatorBase allocator)
-		: this(CreateLoop(), allocator)
-	{
-	}
+    public ByteBufferAllocatorBase ByteBufferAllocator { get; protected set; }
 
-	private static IntPtr CreateLoop()
-	{
-		var ptr = UV.Alloc(uv_loop_size().ToInt32());
-		uv_loop_init(ptr).Success();
-		return ptr;
-	}
+    private readonly Async         async;
+    private readonly AsyncCallback callback;
 
-	private unsafe uv_loop_t* loop_t => (uv_loop_t*)NativeHandle;
+    internal Loop(IntPtr handle, ByteBufferAllocatorBase allocator)
+    {
+        NativeHandle        = handle;
+        ByteBufferAllocator = allocator;
 
-	public unsafe uint ActiveHandlesCount => loop_t->active_handles;
+        callback = new AsyncCallback(this);
+        async    = new Async(this);
 
-	public unsafe IntPtr Data
-	{
-		get => loop_t->data;
-		set => loop_t->data = value;
-	}
+        // this fixes a strange bug, where you can't send async
+        // stuff from other threads
+        Sync(() => { });
+        async.Send();
+        RunOnce();
 
-	public bool IsRunning { get; private set; }
+        // ignore our allocated resources
+        async.Unref();
+        callback.Unref();
+    }
 
-	private bool RunGuard(Action? action)
-	{
-		if (IsRunning)
-		{
-			return false;
-		}
+    public Loop()
+        : this(new CopyingByteBufferAllocator())
+    {
+    }
 
-		// save the value, restore it aftwards
-		var tmp = currentLoop;
+    public Loop(ByteBufferAllocatorBase allocator)
+        : this(CreateLoop(), allocator)
+    {
+    }
 
-		IsRunning   = true;
-		currentLoop = this;
+    private static IntPtr CreateLoop()
+    {
+        var ptr = UV.Alloc(uv_loop_size().ToInt32());
+        var    r   = uv_loop_init(ptr);
+        Ensure.Success(r);
+        return ptr;
+    }
 
-		action?.Invoke();
+    private unsafe uv_loop_t* loop_t => (uv_loop_t*)NativeHandle;
 
-		IsRunning   = false;
-		currentLoop = tmp;
+    public unsafe uint ActiveHandlesCount => loop_t->active_handles;
 
-		return true;
-	}
+    public unsafe IntPtr Data
+    {
+        get => loop_t->data;
+        set => loop_t->data = value;
+    }
 
-	private bool RunGuard(Action context, Func<bool> func)
-	{
-		return RunGuard(context) && func();
-	}
+    public bool IsRunning { get; private set; }
 
-	public bool Run()
-	{
-		return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_DEFAULT));
-	}
+    private bool RunGuard(Action action)
+    {
+        if(IsRunning)
+        {
+            return false;
+        }
 
-	public bool Run(Action context)
-	{
-		return RunGuard(context, Run);
-	}
+        // save the value, restore it aftwards
+        var tmp = currentLoop;
 
-	public bool RunOnce()
-	{
-		return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_ONCE));
-	}
+        IsRunning   = true;
+        currentLoop = this;
 
-	public bool RunOnce(Action context)
-	{
-		return RunGuard(context, RunOnce);
-	}
+        action?.Invoke();
 
-	public bool RunAsync()
-	{
-		return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_NOWAIT));
-	}
+        IsRunning   = false;
+        currentLoop = tmp;
 
-	public bool RunAsync(Action context)
-	{
-		return RunGuard(context, RunAsync);
-	}
+        return true;
+    }
 
-	public void UpdateTime()
-	{
-		uv_update_time(NativeHandle);
-	}
+    private bool RunGuard(Action context, Func<bool> func)
+    {
+        return RunGuard(context) && func();
+    }
 
-	public ulong Now => uv_now(NativeHandle);
+    public bool Run()
+    {
+        return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_DEFAULT));
+    }
 
-	public void Sync(Action cb)
-	{
-		callback.Send(cb);
-	}
+    public bool Run(Action context)
+    {
+        return RunGuard(context, Run);
+    }
 
-	public void Sync(IEnumerable<Action> callbacks)
-	{
-		callback.Send(callbacks);
-	}
+    public bool RunOnce()
+    {
+        return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_ONCE));
+    }
 
-	~Loop()
-	{
-		Dispose(false);
-	}
+    public bool RunOnce(Action context)
+    {
+        return RunGuard(context, RunOnce);
+    }
 
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
+    public bool RunAsync()
+    {
+        return RunGuard(() => uv_run(NativeHandle, uv_run_mode.UV_RUN_NOWAIT));
+    }
 
-	protected virtual void Dispose(bool disposing)
-	{
-		// close all active handles
-		foreach (var kvp in handles)
-		{
-			var handle = kvp.Value;
-			if (!handle.IsClosing)
-			{
-				handle.Dispose();
-			}
-		}
+    public bool RunAsync(Action context)
+    {
+        return RunGuard(context, RunAsync);
+    }
 
-		// make sure the callbacks of close are called
-		RunOnce();
+    public void UpdateTime()
+    {
+        uv_update_time(NativeHandle);
+    }
 
-		if (disposing)
-		{
-			if (ByteBufferAllocator != null)
-			{
-				ByteBufferAllocator.Dispose();
-				ByteBufferAllocator = null;
-			}
-		}
+    public ulong Now => uv_now(NativeHandle);
 
-		var r = uv_loop_close(NativeHandle);
-		r.Success();
-	}
+    public void Sync(Action cb)
+    {
+        callback.Send(cb);
+    }
 
-	private static walk_cb walk_callback = WalkCallback;
+    public void Sync(IEnumerable<Action> callbacks)
+    {
+        callback.Send(callbacks);
+    }
 
-	private static void WalkCallback(IntPtr handle, IntPtr arg)
-	{
-		var gchandle = GCHandle.FromIntPtr(arg);
-		(gchandle.Target as Action<IntPtr>)?.Invoke(handle);
-	}
+    ~Loop()
+    {
+        Dispose(false);
+    }
 
-	public void Walk(Action<IntPtr> cb)
-	{
-		var gcHandle = GCHandle.Alloc(cb, GCHandleType.Normal);
-		uv_walk(NativeHandle, walk_callback, GCHandle.ToIntPtr(gcHandle));
-		gcHandle.Free();
-	}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-	public IntPtr[] Handles
-	{
-		get
-		{
-			var list = new List<IntPtr>();
-			Walk(handle => list.Add(handle));
-			return list.ToArray();
-		}
-	}
+    protected virtual void Dispose(bool disposing)
+    {
+        // close all active handles
+        foreach(var kvp in handles)
+        {
+            var handle = kvp.Value;
+            if(!handle.IsClosing)
+            {
+                handle.Dispose();
+            }
+        }
 
-	internal readonly Dictionary<IntPtr, Handle> handles = new();
+        // make sure the callbacks of close are called
+        RunOnce();
 
-	public Handle? GetHandle(IntPtr ptr)
-	{
-		return handles.TryGetValue(ptr, out var handle) ? handle : null;
-	}
+        if(disposing)
+        {
+            if(ByteBufferAllocator != null)
+            {
+                ByteBufferAllocator.Dispose();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+                ByteBufferAllocator = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            }
+        }
 
-	public Handle?[] ActiveHandles
-	{
-		get
-		{
-			var tmp = Handles;
-			var ret = new Handle?[tmp.Length];
-			for (var i = 0; i < tmp.Length; i++)
-			{
-				ret[i] = GetHandle(tmp[i]);
-			}
+        var r = uv_loop_close(NativeHandle);
+        Ensure.Success(r);
+    }
 
-			return ret;
-		}
-	}
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void walk_cb(IntPtr handle, IntPtr arg);
 
-	public int RefCount { get; private set; }
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_walk(IntPtr loop, walk_cb cb, IntPtr arg);
 
-	public void Ref()
-	{
-		if (RefCount == 0)
-		{
-			async.Ref();
-		}
+    private static readonly walk_cb walk_callback = WalkCallback;
 
-		RefCount++;
-	}
+    private static void WalkCallback(IntPtr handle, IntPtr arg)
+    {
+        var gchandle = GCHandle.FromIntPtr(arg);
+        (gchandle.Target as Action<IntPtr>)?.Invoke(handle);
+    }
 
-	public void Unref()
-	{
-		switch (RefCount)
-		{
-			case <= 0:
-				return;
-			case 1:
-				async.Unref();
-				break;
-		}
+    public void Walk(Action<IntPtr> callback)
+    {
+        var gchandle = GCHandle.Alloc(callback, GCHandleType.Normal);
+        uv_walk(NativeHandle, walk_callback, GCHandle.ToIntPtr(gchandle));
+        gchandle.Free();
+    }
 
-		RefCount--;
-	}
+    public IntPtr[] Handles
+    {
+        get
+        {
+            var list = new List<IntPtr>();
+            Walk(handle => list.Add(handle));
+            return list.ToArray();
+        }
+    }
 
-	private LoopBackend? loopBackend;
-	public  LoopBackend  Backend => loopBackend ??= new LoopBackend(this);
+    internal readonly Dictionary<IntPtr, Handle> handles = new();
 
-	public void Stop()
-	{
-		uv_stop(NativeHandle);
-	}
+    public Handle? GetHandle(IntPtr ptr)
+    {
+        return handles.TryGetValue(ptr, out var handle) ? handle : null;
+    }
 
-	public bool IsAlive => uv_loop_alive(NativeHandle) != 0;
+    public Handle?[] ActiveHandles
+    {
+        get
+        {
+            var tmp     = Handles;
+            var handles = new Handle?[tmp.Length];
+            for(var i = 0; i < tmp.Length; i++)
+            {
+                handles[i] = GetHandle(tmp[i]);
+            }
+            return handles;
+        }
+    }
+
+    public int RefCount { get; private set; }
+
+    public void Ref()
+    {
+        if(RefCount == 0)
+        {
+            async.Ref();
+        }
+        RefCount++;
+    }
+
+    public void Unref()
+    {
+        if(RefCount <= 0)
+        {
+            return;
+        }
+        if(RefCount == 1)
+        {
+            async.Unref();
+        }
+        RefCount--;
+    }
+
+    private LoopBackend? loopBackend;
+
+    public LoopBackend Backend
+    {
+        get
+        {
+            if(loopBackend == null)
+            {
+                loopBackend = new LoopBackend(this);
+            }
+            return loopBackend;
+        }
+    }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern void uv_stop(IntPtr loop);
+
+    public void Stop()
+    {
+        uv_stop(NativeHandle);
+    }
+
+    [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int uv_loop_alive(IntPtr loop);
+
+    public bool IsAlive => uv_loop_alive(NativeHandle) != 0;
 }
