@@ -92,7 +92,7 @@ internal class BufferPin : IDisposable
 
     public bool Fits(IntPtr ptr)
     {
-        return (Start.ToInt64() <= ptr.ToInt64()) &&
-               ptr.ToInt64() <= End.ToInt64();
+        return Start.ToInt64() <= ptr.ToInt64() &&
+               ptr.ToInt64()   <= End.ToInt64();
     }
 }

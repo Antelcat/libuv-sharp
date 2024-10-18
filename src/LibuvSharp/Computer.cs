@@ -67,7 +67,7 @@ public unsafe class CpuInformation
 
         for(var i = 0; i < count; i++)
         {
-            var cpuinfo = (uv_cpu_info_t*)(info.ToInt64() + (i * sizeof(uv_cpu_info_t)));
+            var cpuinfo = (uv_cpu_info_t*)(info.ToInt64() + i * sizeof(uv_cpu_info_t));
             ret[i] = new CpuInformation(cpuinfo);
         }
 
@@ -124,7 +124,7 @@ public unsafe class NetworkInterface
 
         for(var i = 0; i < count; i++)
         {
-            var iface = (uv_interface_address_t*)(interfaces.ToInt64() + (i * sizeof(uv_interface_address_t)));
+            var iface = (uv_interface_address_t*)(interfaces.ToInt64() + i * sizeof(uv_interface_address_t));
             ret[i] = new NetworkInterface(iface);
         }
 
@@ -144,7 +144,7 @@ public unsafe class LoadAverage
         uv_loadavg(ptr);
         Last    = *(double*)ptr;
         Five    = *(double*)(ptr.ToInt64() + sizeof(double));
-        Fifteen = *(double*)(ptr.ToInt64() + (sizeof(double) * 2));
+        Fifteen = *(double*)(ptr.ToInt64() + sizeof(double) * 2);
         Marshal.FreeHGlobal(ptr);
     }
 
