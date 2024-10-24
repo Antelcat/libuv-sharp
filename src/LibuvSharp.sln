@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp", "LibuvSharp\LibuvSharp.csproj", "{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.LibuvSharp", "Antelcat.LibuvSharp\Antelcat.LibuvSharp.csproj", "{A5D17CD0-A83F-4304-BDF0-89AFFDBFE66F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibuvSharp.Test", "LibuvSharp.Test\LibuvSharp.Test.csproj", "{F7021181-074A-4AA3-BB06-29EF09C727C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.LibuvSharp.Test", "Antelcat.LibuvSharp.Test\Antelcat.LibuvSharp.Test.csproj", "{F7021181-074A-4AA3-BB06-29EF09C727C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
