@@ -1,6 +1,4 @@
-﻿using Antelcat.LibuvSharp.Threading;
-
-namespace Antelcat.LibuvSharp.Extensions;
+﻿namespace Antelcat.LibuvSharp.Extensions;
 
 internal static class ListenerExtensions
 {

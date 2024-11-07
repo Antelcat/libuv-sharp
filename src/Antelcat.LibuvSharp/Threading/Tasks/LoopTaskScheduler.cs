@@ -11,7 +11,7 @@ internal class LoopTaskScheduler : TaskScheduler
 
     protected override IEnumerable<Task> GetScheduledTasks()
     {
-        return new Task[] { };
+        return [];
     }
 
     protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)

@@ -31,10 +31,10 @@ public static class UV
     internal static          bool IsUnix => isUnix;
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-    internal static extern int uv_ip4_addr(string ip, int port, out sockaddr_in address);
+    private static extern int uv_ip4_addr(string ip, int port, out sockaddr_in address);
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-    internal static extern int uv_ip6_addr(string ip, int port, out sockaddr_in6 address);
+    private static extern int uv_ip6_addr(string ip, int port, out sockaddr_in6 address);
 
     internal static sockaddr_in ToStruct(string ip, int port)
     {
@@ -51,10 +51,10 @@ public static class UV
     }
 
     [DllImport("__Internal", EntryPoint = nameof(ntohs), CallingConvention = CallingConvention.Cdecl)]
-    internal static extern ushort ntohs_unix(ushort bytes);
+    private static extern ushort ntohs_unix(ushort bytes);
 
     [DllImport("Ws2_32", EntryPoint = nameof(ntohs))]
-    internal static extern ushort ntohs_win(ushort bytes);
+    private static extern ushort ntohs_win(ushort bytes);
 
     internal static ushort ntohs(ushort bytes)
     {
@@ -62,10 +62,10 @@ public static class UV
     }
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_ip4_name(IntPtr src, byte[] dst, IntPtr size);
+    private static extern int uv_ip4_name(IntPtr src, byte[] dst, IntPtr size);
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_ip6_name(IntPtr src, byte[] dst, IntPtr size);
+    private static extern int uv_ip6_name(IntPtr src, byte[] dst, IntPtr size);
 
     private static bool IsMapping(byte[] data)
     {
@@ -124,7 +124,7 @@ public static class UV
     }
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_req_size(RequestType type);
+    private static extern int uv_req_size(RequestType type);
 
     internal static int Sizeof(RequestType type)
     {
@@ -194,7 +194,7 @@ public static class UV
 #endif
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern uint uv_version();
+    private static extern uint uv_version();
 
     public static void GetVersion(out int major, out int minor, out int patch)
     {
@@ -214,7 +214,7 @@ public static class UV
     }
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern unsafe sbyte* uv_version_string();
+    private static extern unsafe sbyte* uv_version_string();
 
     public static unsafe string VersionString => new(uv_version_string());
 

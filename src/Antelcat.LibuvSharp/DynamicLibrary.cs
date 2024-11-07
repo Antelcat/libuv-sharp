@@ -32,19 +32,19 @@ public abstract class DynamicLibrary
 internal class LibuvDynamicLibrary : DynamicLibrary
 {
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_dlopen(IntPtr name, IntPtr handle);
+    private static extern int uv_dlopen(IntPtr name, IntPtr handle);
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_dlopen(string name, IntPtr handle);
+    private static extern int uv_dlopen(string name, IntPtr handle);
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void uv_dlclose(IntPtr handle);
+    private static extern void uv_dlclose(IntPtr handle);
 
     [DllImport(NativeMethods.Libuv, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
+    private static extern int uv_dlsym(IntPtr handle, string name, out IntPtr ptr);
 
     [DllImport(NativeMethods.Libuv)]
-    internal static extern IntPtr uv_dlerror(IntPtr handle);
+    private static extern IntPtr uv_dlerror(IntPtr handle);
 
     [DllImport(NativeMethods.Libuv)]
     internal static extern IntPtr uv_dlerror_free(IntPtr handle);
@@ -77,11 +77,9 @@ internal class LibuvDynamicLibrary : DynamicLibrary
 
     public override void Close()
     {
-        if(!Closed)
-        {
-            uv_dlclose(handle);
-            handle = IntPtr.Zero;
-        }
+        if (Closed) return;
+        uv_dlclose(handle);
+        handle = IntPtr.Zero;
     }
 
     public override bool TryGetSymbol(string name, out IntPtr pointer)

@@ -25,9 +25,6 @@ internal class Ensure
 
             case UVErrorCode.ENOTSUP:
                 return new NotSupportedException("UVErrorCode.ENOTSUP");
-
-            default:
-                break;
         }
 
         // everything else is a UVException
@@ -36,13 +33,11 @@ internal class Ensure
 
     public static void Success(int errorCode)
     {
-        if(errorCode < 0)
+        if (errorCode >= 0) return;
+        var e = Map(errorCode);
+        if(e != null)
         {
-            var e = Map(errorCode);
-            if(e != null)
-            {
-                throw e;
-            }
+            throw e;
         }
     }
 

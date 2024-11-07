@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
-using Antelcat.LibuvSharp.Threading.Tasks;
 
 namespace Antelcat.LibuvSharp.Extensions;
 

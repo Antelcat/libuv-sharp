@@ -26,7 +26,7 @@ internal unsafe class PermaRequest : IDisposable
         set => Data = GCHandle.ToIntPtr(value);
     }
 
-    public PermaRequest(int size)
+    protected PermaRequest(int size)
         : this(UV.Alloc(size))
     {
     }
@@ -47,16 +47,17 @@ internal unsafe class PermaRequest : IDisposable
 
     public virtual void Dispose(bool disposing)
     {
-        if(Data != IntPtr.Zero)
+        if (Data != IntPtr.Zero)
         {
-            if(GCHandle.IsAllocated)
+            if (GCHandle.IsAllocated)
             {
                 GCHandle.Free();
             }
+
             Data = IntPtr.Zero;
         }
 
-        if(Handle != IntPtr.Zero)
+        if (Handle != IntPtr.Zero)
         {
             UV.Free(Handle);
             Handle = IntPtr.Zero;

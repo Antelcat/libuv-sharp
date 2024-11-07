@@ -35,7 +35,7 @@ internal static class WrapExtensions
 
         return (exception, value) =>
         {
-            if(finished)
+            if (finished)
             {
                 return;
             }
@@ -44,7 +44,7 @@ internal static class WrapExtensions
 
             callback?.Invoke();
 
-            if(exception != null)
+            if (exception != null)
             {
                 tcs.SetException(exception);
             }
@@ -59,7 +59,7 @@ internal static class WrapExtensions
     {
         return exception =>
         {
-            if(exception != null)
+            if (exception != null)
             {
                 tcs.SetException(exception);
             }
@@ -74,7 +74,7 @@ internal static class WrapExtensions
     {
         return (exception, result) =>
         {
-            if(exception != null)
+            if (exception != null)
             {
                 tcs.SetException(exception);
             }
@@ -95,10 +95,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -112,10 +113,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -129,10 +131,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -146,10 +149,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -163,14 +167,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task Wrap<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception?>?> action)
+    public static Task Wrap<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4,
+                                            Action<T1, T2, T3, T4, Action<Exception?>?> action)
     {
         var tcs = new TaskCompletionSource<object?>();
         try
@@ -180,14 +186,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task Wrap<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception?>?> action)
+    public static Task Wrap<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5,
+                                                Action<T1, T2, T3, T4, T5, Action<Exception?>?> action)
     {
         var tcs = new TaskCompletionSource<object?>();
         try
@@ -197,10 +205,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -212,7 +221,7 @@ internal static class WrapExtensions
             var res = default(TResult);
             res = func(arg1, ex =>
             {
-                if(ex == null)
+                if (ex == null)
                 {
                     tcs.SetResult(res);
                 }
@@ -225,14 +234,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Func<T1, T2, Action<Exception?>?, TResult?> func)
+    public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2,
+                                                       Func<T1, T2, Action<Exception?>?, TResult?> func)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -240,7 +251,7 @@ internal static class WrapExtensions
             var res = default(TResult);
             res = func(arg1, arg2, ex =>
             {
-                if(ex == null)
+                if (ex == null)
                 {
                     tcs.SetResult(res);
                 }
@@ -253,14 +264,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Func<T1, T2, T3, Action<Exception?>?, TResult?> func)
+    public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3,
+                                                           Func<T1, T2, T3, Action<Exception?>?, TResult?> func)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -268,7 +281,7 @@ internal static class WrapExtensions
             var res = default(TResult);
             res = func(arg1, arg2, arg3, ex =>
             {
-                if(ex == null)
+                if (ex == null)
                 {
                     tcs.SetResult(res);
                 }
@@ -281,10 +294,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
@@ -298,14 +312,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2, Action<T1, T2, Action<Exception?, TResult?>> action)
+    public static Task<TResult?> Wrap<T1, T2, TResult>(T1 arg1, T2 arg2,
+                                                       Action<T1, T2, Action<Exception?, TResult?>> action)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -315,14 +331,16 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3, Action<T1, T2, T3, Action<Exception?, TResult?>> action)
+    public static Task<TResult?> Wrap<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3,
+                                                           Action<T1, T2, T3, Action<Exception?, TResult?>> action)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -332,14 +350,17 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, Action<T1, T2, T3, T4, Action<Exception?, TResult?>> action)
+    public static Task<TResult?> Wrap<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4,
+                                                               Action<T1, T2, T3, T4, Action<Exception?, TResult?>>
+                                                                   action)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -349,14 +370,17 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 
-    public static Task<TResult?> Wrap<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, Action<T1, T2, T3, T4, T5, Action<Exception?, TResult?>> action)
+    public static Task<TResult?> Wrap<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5,
+                                                                   Action<T1, T2, T3, T4, T5,
+                                                                       Action<Exception?, TResult?>> action)
     {
         var tcs = new TaskCompletionSource<TResult?>();
         try
@@ -366,10 +390,11 @@ internal static class WrapExtensions
 				SetStatus(tcs.Task, TaskStatus.Running);
 #endif
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             tcs.SetException(ex);
         }
+
         return tcs.Task;
     }
 }

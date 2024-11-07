@@ -6,7 +6,7 @@ internal class CActionBase : IDisposable
 {
     private GCHandle GCHandle { get; set; }
 
-    public CActionBase()
+    protected CActionBase()
     {
         GCHandle = GCHandle.Alloc(this);
     }
@@ -38,7 +38,6 @@ internal class CAction : CActionBase
     private readonly Action cb;
 
     public CAction(Action callback)
-        : base()
     {
         cb       = callback;
         Callback = PrivateCallback;
@@ -59,7 +58,6 @@ internal class CAction<T1> : CActionBase
     private readonly Action<T1> cb;
 
     public CAction(Action<T1> callback)
-        : base()
     {
         cb       = callback;
         Callback = PrivateCallback;
@@ -80,7 +78,6 @@ internal class CAction<T1, T2> : CActionBase
     private readonly Action<T1, T2> cb;
 
     public CAction(Action<T1, T2> callback)
-        : base()
     {
         cb       = callback;
         Callback = PrivateCallback;

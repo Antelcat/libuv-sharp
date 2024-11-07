@@ -1,5 +1,3 @@
-using Antelcat.LibuvSharp.Threading;
-
 namespace Antelcat.LibuvSharp.Extensions;
 
 internal static class UVFileStreamExtensions

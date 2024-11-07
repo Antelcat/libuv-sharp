@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using Antelcat.LibuvSharp.Internal;
-using Antelcat.LibuvSharp.Threading;
 
 namespace Antelcat.LibuvSharp.Extensions;
 
