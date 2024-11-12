@@ -6,18 +6,35 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
-    </PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Title>Antelcat.LibuvSharp</Title>
+        <Version>1.0.0</Version>
+        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Antelcat</Authors>
+        <Description>.NET bindings of libuv</Description>
+        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
+        <PackageProjectUrl>https://github.com/Antelcat/libuv-sharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Antelcat/libuv-sharp.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>libuv;spawn;channel</PackageTags>
+        <PackageReleaseNotes>Initial</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>Icon.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Libuv" Version="1.10.0" />
+        <None Include="..\Icon.png">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+            <Link>Icon.png</Link>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
-
 </Project>
